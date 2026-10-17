@@ -12,6 +12,9 @@ extends Resource
 @export var cutout_destinations: Array[Resource] = []
 @export var is_placeholder: bool = false
 @export_multiline var placeholder_description: String
+@export var initial_flags: Array[StringName] = []
+@export var dark_observe_surcharge: int = 0
+@export var entry_entity: EntityData
 
 
 func find_event(event_id: StringName) -> EventData:

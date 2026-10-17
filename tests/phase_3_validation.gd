@@ -301,6 +301,7 @@ func _snapshot_cards(pile: Array[CardInstance]) -> Array[Dictionary]:
 			record["display_name"] = definition.display_name
 			record["ap_cost"] = definition.ap_cost
 			record["effect_type"] = definition.effect_type
+			record["effect_value"] = definition.effect_value
 			record["exploration_action"] = definition.exploration_action
 			record["placeholder_damage"] = definition.placeholder_damage
 		snapshots.append(record)

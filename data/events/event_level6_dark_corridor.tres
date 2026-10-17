@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/events/event_action_data.gd" id="2_action"]
+[ext_resource type="Resource" path="res://data/insights/insight_level6_darkness_limits_vision.tres" id="3_insight"]
+
+[sub_resource type="Resource" id="Record"]
+script = ExtResource("2_action")
+action_id = &"observe"
+granted_flags = Array[StringName]([&"dark_corridor_noted"])
+revealed_text = "你记住了墙面的触感，视觉仍无法提供方向。"
+
+[sub_resource type="Resource" id="Confirm"]
+script = ExtResource("2_action")
+action_id = &"observe"
+required_flags = Array[StringName]([&"dark_corridor_noted"])
+insight = ExtResource("3_insight")
+revealed_text = "你验证出这里的黑暗使普通视觉失效，触觉仍可提供线索。"
+resolves_event = true
+
+[sub_resource type="Resource" id="Search"]
+script = ExtResource("2_action")
+action_id = &"deep_search"
+insight = ExtResource("3_insight")
+revealed_text = "你验证出这里的黑暗使普通视觉失效，触觉仍可提供线索。"
+resolves_event = true
+
+[sub_resource type="Resource" id="Inspect"]
+script = ExtResource("2_action")
+action_id = &"inspect"
+granted_flags = Array[StringName]([&"dark_corridor_noted"])
+revealed_text = "你记住了墙面的触感，视觉仍无法提供方向。"
+
+[sub_resource type="Resource" id="SearchNearby"]
+script = ExtResource("2_action")
+action_id = &"search_nearby"
+granted_flags = Array[StringName]([&"dark_corridor_noted"])
+revealed_text = "你在附近摸索，找到另一处可比较的表面。"
+
+[resource]
+script = ExtResource("1_event")
+id = &"event_level6_dark_corridor"
+display_name = "失去轮廓的走廊"
+display_text = "你伸手触到墙面，眼前却看不到任何轮廓。"
+action_results = Array[ExtResource("2_action")]([SubResource("Record"), SubResource("Confirm"), SubResource("Search"), SubResource("Inspect"), SubResource("SearchNearby")])

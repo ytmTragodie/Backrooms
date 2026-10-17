@@ -2,6 +2,13 @@ class_name RuleResolver
 extends RefCounted
 
 
+static func card_ap_cost(definition: CardData, state: RunState, data: FloorData) -> int:
+	var cost: int = definition.ap_cost
+	if data != null and state.floor_state != null and state.floor_state.floor_flags.has(&"darkness") and not state.floor_state.dark_observation_used and definition.exploration_action == &"observe":
+		cost += data.dark_observe_surcharge
+	return cost
+
+
 static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem, floor_data: FloorData = null) -> ActionResult:
 	# 解析器不持有 RunState；调用者必须显式提供同一局的状态与牌堆系统。
 	var result: ActionResult = ActionResult.new()
@@ -15,20 +22,33 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 		return _fail(result, &"invalid_command", card_id)
 	if state == null or state.deck_state == null or cards == null or not cards.is_bound_to(state):
 		return _fail(result, &"invalid_state_context", card_id)
+	if state.player_hp <= 0:
+		return _fail(result, &"run_ended", card_id)
 	if not state.deck_state.hand.has(card):
 		return _fail(result, &"card_not_in_hand", card_id)
 	if floor_data != null and floor_data.is_placeholder:
 		return _fail(result, &"floor_inactive", card_id)
+	if state.floor_state != null:
+		var context_error: StringName = _validate_floor_context(state, floor_data)
+		if not context_error.is_empty():
+			return _fail(result, context_error, card_id)
 	var definition: CardData = card.definition
 	if definition == null or definition.id.is_empty():
 		return _fail(result, &"invalid_card_definition", card_id)
-	if definition.ap_cost < 0 or definition.placeholder_damage < 0:
+	if definition.ap_cost < 0 or definition.placeholder_damage < 0 or definition.effect_value < 0:
 		return _fail(result, &"invalid_card_definition", card_id)
-	if definition.effect_type != CardData.EffectType.NO_OP and definition.effect_type != CardData.EffectType.PLACEHOLDER_DAMAGE:
+	if definition.effect_type not in [CardData.EffectType.NO_OP, CardData.EffectType.PLACEHOLDER_DAMAGE, CardData.EffectType.ATTACK, CardData.EffectType.BLOCK, CardData.EffectType.RUN]:
 		return _fail(result, &"unsupported_effect", card_id)
 	if definition.effect_type == CardData.EffectType.NO_OP and definition.placeholder_damage != 0:
 		return _fail(result, &"invalid_card_definition", card_id)
-	var final_cost: int = definition.ap_cost
+	if definition.effect_type in [CardData.EffectType.NO_OP, CardData.EffectType.PLACEHOLDER_DAMAGE, CardData.EffectType.RUN] and definition.effect_value != 0:
+		return _fail(result, &"invalid_card_definition", card_id)
+	if definition.effect_type in [CardData.EffectType.ATTACK, CardData.EffectType.BLOCK] and (definition.effect_value == 0 or definition.placeholder_damage != 0):
+		return _fail(result, &"invalid_card_definition", card_id)
+	if not definition.exploration_action.is_empty() and definition.effect_type != CardData.EffectType.NO_OP:
+		return _fail(result, &"invalid_card_definition", card_id)
+	var final_cost: int = card_ap_cost(definition, state, floor_data)
+	var dark_observation: bool = state.floor_state != null and state.floor_state.floor_flags.has(&"darkness") and not state.floor_state.dark_observation_used and definition.exploration_action == &"observe"
 	if state.ap < final_cost:
 		return _fail(result, &"insufficient_ap", card_id)
 	if not definition.exploration_action.is_empty():
@@ -39,17 +59,33 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 			var error: StringName = _prepare_floor_action(result, definition.exploration_action, state, floor_data)
 			if not error.is_empty():
 				return _fail(result, error, card_id)
+	var combat_effect: bool = definition.effect_type in [CardData.EffectType.ATTACK, CardData.EffectType.BLOCK, CardData.EffectType.RUN]
+	var contextual_attack: bool = definition.effect_type == CardData.EffectType.PLACEHOLDER_DAMAGE and floor_data != null and floor_data.entry_entity != null
+	if combat_effect or contextual_attack:
+		if state.floor_state == null:
+			return _fail(result, &"floor_required", card_id)
+		var entity_error: StringName = EntitySystem.plan_card(result, definition, state)
+		if not entity_error.is_empty():
+			return _fail(result, entity_error, card_id)
+		result.action_id = &"block" if definition.effect_type == CardData.EffectType.BLOCK else (&"run" if definition.effect_type == CardData.EffectType.RUN else &"attack")
 
 	# 先计算并构建完整结果；占位伤害只进入结果，不修改任何目标的 HP。
 	result.success = true
 	result.ap_spent = final_cost
 	result.card_played = card
+	result.dark_observation = dark_observation
 	match definition.effect_type:
 		CardData.EffectType.NO_OP:
 			result.effect = &"no_op"
 		CardData.EffectType.PLACEHOLDER_DAMAGE:
-			result.effect = &"placeholder_damage"
+			result.effect = &"damage" if contextual_attack else &"placeholder_damage"
 			result.damage_requested = definition.placeholder_damage
+		CardData.EffectType.ATTACK:
+			result.effect = &"damage"
+		CardData.EffectType.BLOCK:
+			result.effect = &"block"
+		CardData.EffectType.RUN:
+			result.effect = &"run"
 	result.debug_lines.append("[RULE] validation success")
 	result.debug_lines.append("[RULE] final_cost=%d" % final_cost)
 
@@ -71,6 +107,8 @@ static func resolve_exploration(command: ExplorationCommand, state: RunState, da
 	result.debug_lines.append("[COMMAND] action %s" % action)
 	if command == null or state == null:
 		return _fail(result, &"invalid_command", action)
+	if state.player_hp <= 0:
+		return _fail(result, &"run_ended", action)
 	var cost: int = 0
 	match action:
 		&"inspect", &"search_nearby", &"loot", &"prepare_cutout", &"cutout_safe", &"cutout_rushed":
@@ -115,12 +153,13 @@ static func _validate_floor_context(state: RunState, data: FloorData) -> StringN
 		return &"floor_inactive"
 	if floor.cognition < 0 or floor.cognition > FloorState.MAX_COGNITION or floor.threat < 0 or floor.threat > FloorState.MAX_THREAT or floor.turn_count < 1:
 		return &"invalid_floor_state"
-	if data.overstay_start_turn < 3 or data.overstay_interval < 1:
+	if data.overstay_start_turn < 3 or data.overstay_interval < 1 or data.dark_observe_surcharge < 0:
 		return &"invalid_floor_definition"
 	var error: StringName = CutOutSystem.validate_state(floor.cutout_state)
 	if not error.is_empty():
 		return error
-	return ResourceNodeSystem.validate(floor, data)
+	error = ResourceNodeSystem.validate(floor, data)
+	return error if not error.is_empty() else EntitySystem.validate(floor, data)
 
 
 static func _prepare_floor_command(result: ActionResult, command: ExplorationCommand, state: RunState, data: FloorData) -> StringName:
@@ -180,6 +219,7 @@ static func _prepare_floor_action(result: ActionResult, action: StringName, stat
 		if floor.turn_count >= data.overstay_start_turn and (floor.turn_count - data.overstay_start_turn) % data.overstay_interval == 0:
 			result.threat_delta = mini(1, FloorState.MAX_THREAT - floor.threat)
 			result.threat_reason = &"overstay"
+		EntitySystem.plan_end_turn(result, state, data)
 		return &""
 	if action == &"search_nearby":
 		ResourceNodeSystem.plan_discovery(result, state, data, false)
@@ -224,6 +264,11 @@ static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
 	var floor: FloorState = state.floor_state
 	if floor == null:
 		return
+	if result.dark_observation:
+		floor.dark_observation_used = true
+		result.debug_lines.append("[FLOOR] darkness first_observation surcharge_applied")
+	if result.action_id == &"end_turn":
+		floor.dark_observation_used = false
 	if floor.current_event != null and result.action_id != &"end_turn":
 		var instance: EventInstance = floor.current_event
 		var previous_phase: StringName = instance.phase
@@ -246,6 +291,7 @@ static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
 		floor.threat += result.threat_delta
 		result.debug_lines.append("[THREAT] +%d reason=%s total=%d" % [result.threat_delta, result.threat_reason, floor.threat])
 	ResourceNodeSystem.commit(result, state)
+	EntitySystem.commit(result, state)
 	CutOutSystem.commit(result, state)
 
 

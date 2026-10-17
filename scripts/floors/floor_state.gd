@@ -20,11 +20,17 @@ var current_event_id: StringName:
 var floor_flags: Array[StringName] = []
 var resource_nodes: Array[ResourceNode] = []
 var cutout_state: CutOutState = CutOutState.new()
+var entity: EntityInstance
+var player_block: int = 0
+var dark_observation_used: bool = false
 
 
 func _init(definition: FloorData) -> void:
 	assert(definition != null and not definition.id.is_empty(), "Floor needs a stable ID")
 	floor_id = definition.id
+	floor_flags = definition.initial_flags.duplicate()
+	if definition.entry_entity != null:
+		entity = EntitySystem.spawn(definition.entry_entity)
 	for node: ResourceNodeData in definition.resource_nodes:
 		assert(node != null and not node.id.is_empty() and find_resource(node.id) == null, "Resource node needs a unique stable ID")
 		resource_nodes.append(ResourceNode.new(node.id))

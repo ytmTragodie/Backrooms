@@ -31,4 +31,15 @@ var destination: FloorData
 var next_floor: FloorState
 var rng_state_after: int = 0
 var commit_rng: bool = false
+var entity_hp_after: int = -1
+var entity_state_after: StringName
+var entity_intent_after: StringName
+var entity_damage: int = 0
+var entity_defeated: bool = false
+var block_gained: int = 0
+var expire_block: bool = false
+var intent_resolved: StringName
+var player_damage: int = 0
+var damage_blocked: int = 0
+var dark_observation: bool = false
 var debug_lines: Array[String] = []

@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/turns/turn_manager.gd" id="2_turns"]
 [ext_resource type="Resource" path="res://data/floors/floor_level_0.tres" id="3_floor"]
+
+[ext_resource type="Resource" path="res://data/cards/demo_deck.tres" id="4_deck"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -16,6 +18,7 @@ script = ExtResource("1_main")
 [node name="TurnManager" type="Node" parent="."]
 script = ExtResource("2_turns")
 floor_data = ExtResource("3_floor")
+starter_deck = ExtResource("4_deck")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -55,6 +58,12 @@ unique_name_in_owner = true
 layout_mode = 2
 horizontal_alignment = 1
 text = "补给：0"
+
+[node name="BlockInfo" type="Label" parent="CenterContainer/Messages"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+text = "本回合格挡：0"
 
 [node name="PileCounts" type="Label" parent="CenterContainer/Messages"]
 unique_name_in_owner = true
@@ -178,3 +187,26 @@ text = "仓促切出（1 行动点，有失败风险）"
 unique_name_in_owner = true
 layout_mode = 2
 text = "强行切出（无需行动点，压力 +2）"
+
+[node name="EntityPanel" type="VBoxContainer" parent="FloorMargin/FloorTabs"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Heading" type="Label" parent="FloorMargin/FloorTabs/EntityPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "当前实体与回合末意图"
+
+[node name="EntityInfo" type="Label" parent="FloorMargin/FloorTabs/EntityPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 2
+
+[node name="CombatHelp" type="Label" parent="FloorMargin/FloorTabs/EntityPanel"]
+layout_mode = 2
+autowrap_mode = 2
+text = "从原有手牌打出攻击、防御或奔跑。
+攻击造成 4 伤害；防御获得本回合 4 格挡。
+完整挡住攻击会使实体踉跄，此时奔跑可以脱离；其他时候奔跑会触发追击并增加威胁。
+点击原有的结束回合按钮执行实体意图，随后恢复 3 行动点并抽至 5 张。
+探索、威胁与切出始终继续运行。"

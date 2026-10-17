@@ -4,6 +4,10 @@ const ACTION_NAMES: Dictionary = {
 	&"inspect": "检查环境", &"search_nearby": "搜索附近", &"end_turn": "结束回合",
 	&"loot": "搜刮物资", &"prepare_cutout": "准备切出",
 }
+const ENTITY_STATES: Dictionary = {
+	&"WATCHING": "凝视", &"APPROACHING": "靠近", &"CHASING": "追击",
+	&"STAGGERED": "踉跄", &"DEFEATED": "已击败", &"DISENGAGED": "已脱离",
+}
 const FAILURE_MESSAGES: Dictionary = {
 	&"insufficient_ap": "行动点不足", &"card_not_in_hand": "这张牌已不在手牌中",
 	&"interaction_used": "本次事件中已完成此交互", &"event_resolved": "当前事件已解决",
@@ -21,6 +25,9 @@ const FAILURE_MESSAGES: Dictionary = {
 	&"preparation_complete": "切出准备已充分", &"invalid_cutout_state": "切出状态异常",
 	&"destination_unavailable": "暂无可用目的地", &"invalid_destination": "目的地数据异常",
 	&"cutout_unprepared": "空间或目的地准备不足，可继续准备或选择冒险切出",
+	&"invalid_entity_definition": "实体数据异常", &"invalid_entity_state": "实体状态异常",
+	&"invalid_entity_context": "实体与楼层数据不匹配", &"no_active_entity": "当前没有可攻击的实体",
+	&"run_ended": "生命耗尽，本局已结束",
 }
 
 @onready var _turn_manager: TurnManager = $TurnManager
@@ -42,6 +49,8 @@ const FAILURE_MESSAGES: Dictionary = {
 @onready var _rushed_cutout: Button = %RushedCutOut
 @onready var _forced_cutout: Button = %ForcedCutOut
 @onready var _supply: Label = %Supply
+@onready var _entity_info: Label = %EntityInfo
+@onready var _block_info: Label = %BlockInfo
 
 
 func _ready() -> void:
@@ -52,21 +61,30 @@ func _ready() -> void:
 	_search_action.pressed.connect(_turn_manager.request_exploration.bind(&"search_nearby"))
 	_floor_tabs.set_tab_title(0, "探索现场")
 	_floor_tabs.set_tab_title(1, "资源与切出")
+	_floor_tabs.set_tab_title(2, "实体意图")
 	_prepare_cutout.pressed.connect(_turn_manager.request_exploration.bind(&"prepare_cutout"))
 	_safe_cutout.pressed.connect(_turn_manager.request_exploration.bind(&"cutout_safe"))
 	_rushed_cutout.pressed.connect(_turn_manager.request_exploration.bind(&"cutout_rushed"))
 	_forced_cutout.pressed.connect(_turn_manager.request_exploration.bind(&"cutout_forced"))
 	_refresh_state()
+	if _turn_manager.run_state.floor_state != null and _turn_manager.run_state.floor_state.entity != null:
+		_floor_tabs.current_tab = 2
 	print("[APP] Project initialized")
 
 
 func _on_action_resolved(result: ActionResult) -> void:
 	if result.success and result.cutout_attempt != null:
 		_status_label.text = "切出成功，抵达%s。压力：+%d。" % [result.destination.display_name, result.stress_delta] if result.cutout_attempt.succeeded else "仓促切出未成功，仍在当前楼层。压力：+%d；威胁：+%d。可继续准备或强行切出。" % [result.stress_delta, result.threat_delta]
+		if result.cutout_attempt.succeeded and _turn_manager.run_state.floor_state.entity != null:
+			_floor_tabs.current_tab = 2
 	elif result.success and result.card_played != null:
 		_status_label.text = "已打出%s；消耗行动点：%d；认知：+%d；威胁：+%d。" % [result.card_played.definition.display_name, result.ap_spent, result.cognition_delta, result.threat_delta]
-		if result.damage_requested > 0:
+		if result.effect == &"damage":
+			_status_label.text += "造成伤害：%d。" % result.entity_damage
+		elif result.damage_requested > 0:
 			_status_label.text += "预期伤害：%d（尚未结算）。" % result.damage_requested
+		if result.block_gained > 0:
+			_status_label.text += "获得格挡：%d。" % result.block_gained
 	elif result.success:
 		_status_label.text = "%s；消耗行动点：%d；认知：+%d；威胁：+%d。" % [ACTION_NAMES.get(result.action_id, "行动完成"), result.ap_spent, result.cognition_delta, result.threat_delta]
 	else:
@@ -75,6 +93,12 @@ func _on_action_resolved(result: ActionResult) -> void:
 		_status_label.text += "补给：+%d。" % result.supply_delta
 	elif result.success and not result.resource_discovered_id.is_empty():
 		_status_label.text += "已定位一处物资。"
+	if result.player_damage > 0:
+		_status_label.text += "受到伤害：%d。" % result.player_damage
+	if result.damage_blocked > 0:
+		_status_label.text += "格挡吸收伤害：%d。" % result.damage_blocked
+	if _turn_manager.run_state.player_hp <= 0:
+		_status_label.text = "生命耗尽，本局结束。"
 
 
 func _refresh_state() -> void:
@@ -94,12 +118,16 @@ func _refresh_state() -> void:
 		child.queue_free()
 	for card: CardInstance in deck.hand:
 		var play_button: Button = Button.new()
-		play_button.text = "%s｜行动点：%d｜打出" % [card.definition.display_name, card.definition.ap_cost]
+		play_button.text = "%s｜行动点：%d｜打出" % [card.definition.display_name, RuleResolver.card_ap_cost(card.definition, state, _turn_manager.floor_data)]
 		# UI 只转发请求；规则验证、AP 扣除和牌区移动全部留在领域层。
 		play_button.pressed.connect(_turn_manager.request_play_card.bind(card))
 		_hand.add_child(play_button)
 	_refresh_floor(state.floor_state)
 	_refresh_resources_and_cutout(state)
+	_refresh_entity(state.floor_state)
+	if state.player_hp <= 0:
+		_inspect_action.disabled = true
+		_search_action.disabled = true
 
 
 func _refresh_floor(floor: FloorState) -> void:
@@ -119,6 +147,8 @@ func _refresh_floor(floor: FloorState) -> void:
 		_search_action.disabled = true
 		return
 	_floor_info.text = "当前楼层：%s\n楼层回合：%d\n威胁：%d／%d｜认知：%d／%d\n剩余新鲜事件：%d" % [data.display_name, floor.turn_count, floor.threat, FloorState.MAX_THREAT, floor.cognition, FloorState.MAX_COGNITION, floor.remaining_fresh_events.size()]
+	if floor.floor_flags.has(&"darkness"):
+		_floor_info.text += "\n黑暗：每回合首次观察额外消耗 %d 行动点%s。" % [data.dark_observe_surcharge, "（本回合已支付）" if floor.dark_observation_used else ""]
 	var event: EventData = data.find_event(floor.current_event_id)
 	var instance: EventInstance = floor.current_event
 	if event != null and instance != null:
@@ -142,7 +172,7 @@ func _refresh_resources_and_cutout(state: RunState) -> void:
 	_supply.text = "补给：%d" % state.supply
 	var floor: FloorState = state.floor_state
 	var data: FloorData = _turn_manager.floor_data
-	var active: bool = floor != null and data != null and not data.is_placeholder
+	var active: bool = floor != null and data != null and not data.is_placeholder and state.player_hp > 0
 	_end_turn_button.disabled = not active
 	for child: Node in _hand.get_children():
 		(child as Button).disabled = not active
@@ -154,7 +184,7 @@ func _refresh_resources_and_cutout(state: RunState) -> void:
 	_rushed_cutout.disabled = not active
 	_forced_cutout.disabled = not active
 	if not active:
-		_cutout_info.text = data.placeholder_description if data != null and data.is_placeholder else "尚未进入楼层"
+		_cutout_info.text = "生命耗尽，本局结束。" if state.player_hp <= 0 else (data.placeholder_description if data != null and data.is_placeholder else "尚未进入楼层")
 		if data != null and data.is_placeholder:
 			_floor_tabs.current_tab = 1
 		return
@@ -188,3 +218,23 @@ func _refresh_resources_and_cutout(state: RunState) -> void:
 			names.append(data.find_destination(destination_id).display_name)
 		destination = "目的地已辨明：%s" % "、".join(names)
 	_cutout_info.text = "%s。\n%s。\n确认新的认知线索或消耗补给，可改善切出准备。\n强行切出始终可用，但会增加压力。" % [stability, destination]
+
+
+func _refresh_entity(floor: FloorState) -> void:
+	_block_info.text = "本回合格挡：%d" % (floor.player_block if floor != null else 0)
+	if floor == null or floor.entity == null:
+		_entity_info.text = "当前没有实体。探索、回合和切出使用同一套行动点。"
+		return
+	var entity: EntityInstance = floor.entity
+	var data: EntityData = _turn_manager.floor_data.entry_entity
+	var intent: String = "无后续行动"
+	match entity.intent:
+		&"approach":
+			intent = "回合末靠近，暂不造成伤害"
+		&"bite":
+			intent = "回合末撕咬，造成 %d 伤害" % data.normal_damage
+		&"lunge":
+			intent = "回合末扑咬，造成 %d 伤害" % data.aggressive_damage
+		&"recover":
+			intent = "回合末重新观察，暂不攻击"
+	_entity_info.text = "%s\n生命：%d／%d\n状态：%s\n意图：%s\n当前格挡：%d" % [data.display_name, entity.hp, entity.max_hp, ENTITY_STATES.get(entity.state, "未知"), intent, floor.player_block]

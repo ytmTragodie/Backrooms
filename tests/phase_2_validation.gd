@@ -166,14 +166,14 @@ func _test_debug_ui() -> void:
 	var counts: Label = main.get_node("CenterContainer/Messages/PileCounts") as Label
 	var stats: Label = main.get_node("CenterContainer/Messages/RunStats") as Label
 	var end_turn: Button = main.get_node("CenterContainer/Messages/EndTurn") as Button
-	_check(hand.get_child_count() == 5 and counts.text == "抽牌堆：4｜弃牌堆：0", "Debug UI displays the hand and pile counts")
+	_check(hand.get_child_count() == 5 and counts.text == "抽牌堆：5｜弃牌堆：0", "Debug UI displays the hand and pile counts")
 	var first_button: Button = hand.get_child(0) as Button
 	_check(first_button.text == "观察｜行动点：1｜打出", "Each card button presents its name, AP cost and Play command")
 	for expected_ap: int in [2, 1, 0]:
 		var button: Button = hand.get_child(0) as Button
 		button.pressed.emit()
 		_check(manager.run_state.ap == expected_ap and stats.text.contains("行动点：%d" % expected_ap), "Play button refreshes AP from domain state")
-	_check(hand.get_child_count() == 2 and counts.text == "抽牌堆：4｜弃牌堆：3", "Successful commands refresh the hand and discard count")
+	_check(hand.get_child_count() == 2 and counts.text == "抽牌堆：5｜弃牌堆：3", "Successful commands refresh the hand and discard count")
 	var rejected_button: Button = hand.get_child(0) as Button
 	rejected_button.pressed.emit()
 	_check(hand.get_child_count() == 2 and manager.run_state.ap == 0, "Unaffordable button command preserves hand and AP")

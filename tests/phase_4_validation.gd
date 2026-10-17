@@ -335,8 +335,10 @@ func _test_notifications_and_exhaustion() -> void:
 
 func _test_debug_ui() -> void:
 	var main: Control = MAIN_SCENE.instantiate() as Control
-	root.add_child(main)
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
+	# 保留九张探索牌夹具，避免 Phase 6 新增牌序改变早期探索路径断言。
+	manager.starter_deck = preload("res://data/cards/starter_deck.tres")
+	root.add_child(main)
 	var info: Label = main.get_node("FloorMargin/FloorTabs/FloorPanel/FloorInfo") as Label
 	var event_info: Label = main.get_node("FloorMargin/FloorTabs/FloorPanel/EventInfo") as Label
 	var insights: Label = main.get_node("FloorMargin/FloorTabs/FloorPanel/InsightList") as Label

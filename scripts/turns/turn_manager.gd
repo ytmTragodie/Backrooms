@@ -24,6 +24,8 @@ func _ready() -> void:
 		run_state.floor_state = FloorState.new(floor_data)
 		if OS.is_debug_build():
 			print("[FLOOR] enter %s" % floor_data.id)
+			if run_state.floor_state.entity != null:
+				print("[ENTITY] spawn %s hp=%d state=%s" % [run_state.floor_state.entity.entity_id, run_state.floor_state.entity.hp, run_state.floor_state.entity.state])
 		EventSystem.draw_fresh(floor_data, run_state.floor_state, run_state.rng)
 	card_system.draw_to_hand_size()
 	if OS.is_debug_build():
@@ -35,6 +37,11 @@ func end_turn() -> ActionResult:
 	# 滞留压力先经过规则结算；回合计数、弃牌、抽牌仍由本节点协调。
 	var result: ActionResult = RuleResolver.resolve_exploration(ExplorationCommand.new(&"end_turn"), run_state, floor_data)
 	if not result.success:
+		action_resolved.emit(result)
+		return result
+	# 致命意图已完整提交；不再给死亡角色恢复 AP 或开启下一回合。
+	if run_state.player_hp <= 0:
+		state_changed.emit()
 		action_resolved.emit(result)
 		return result
 	var ended_turn: int = run_state.turn_number

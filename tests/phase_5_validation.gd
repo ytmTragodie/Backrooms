@@ -32,7 +32,14 @@ func _run() -> void:
 
 func _manager(data: FloorData = LEVEL_0) -> TurnManager:
 	var manager: TurnManager = TurnManager.new()
-	manager.floor_data = data
+	# 保留 Phase 5 的通用占位边界回归；真实六层入口由 Phase 6 和下方 UI 测试覆盖。
+	var fixture: FloorData = data.duplicate(false) as FloorData
+	var placeholder: FloorData = FloorData.new()
+	placeholder.id = &"floor_level_6"
+	placeholder.display_name = "六层（占位夹具）"
+	placeholder.is_placeholder = true
+	fixture.cutout_destinations = [placeholder]
+	manager.floor_data = fixture
 	manager.starter_deck = DeckData.new()
 	manager.starter_deck.cards = [OBSERVE, OBSERVE, DEEP_SEARCH, WAIT, WAIT]
 	root.add_child(manager)
@@ -153,6 +160,7 @@ func _test_rushed_outcomes() -> void:
 			manager.run_state.rng_seed = _seed_for_roll(roll)
 			manager.run_state.rng.seed = manager.run_state.rng_seed
 			var floor: FloorState = manager.run_state.floor_state
+			var source_data: FloorData = manager.floor_data
 			var before: Dictionary = _snapshot(manager)
 			var result: ActionResult = manager.request_exploration(&"cutout_rushed")
 			_check(result.success and result.ap_spent == 1 and result.cutout_attempt.roll == roll, "A legal rushed attempt has a reproducible roll and AP cost")
@@ -161,7 +169,7 @@ func _test_rushed_outcomes() -> void:
 			if roll == 1:
 				_check(result.cutout_attempt.succeeded and manager.run_state.floor_state.floor_id == &"floor_level_6", "Successful rushed cut-out changes the floor")
 			else:
-				_check(not result.cutout_attempt.succeeded and manager.run_state.floor_state == floor and manager.floor_data == LEVEL_0, "A failed rushed attempt keeps both floor state and definition unchanged")
+				_check(not result.cutout_attempt.succeeded and manager.run_state.floor_state == floor and manager.floor_data == source_data, "A failed rushed attempt keeps both floor state and definition unchanged")
 				_check(result.threat_delta == 1 and floor.threat == 1 and manager.run_state.last_cutout_attempt == result.cutout_attempt, "Failed rushed attempt records its risk and domain outcome")
 				var forced: ActionResult = manager.request_exploration(&"cutout_forced")
 				_check(forced.cutout_attempt.succeeded, "Failure never removes the guaranteed forced route")
@@ -257,8 +265,8 @@ func _test_ui() -> void:
 	await process_frame
 	_check(main.get_viewport_rect().encloses(forced.get_global_rect()), "Forced route remains reachable inside the scrollable panel")
 	safe.pressed.emit()
-	_check(manager.run_state.floor_state.floor_id == &"floor_level_6" and tabs.current_tab == 1, "Safe UI command switches to the destination placeholder")
-	_check((main.get_node("%CutOutInfo") as Label).text.contains("六层玩法尚未开放") and end_turn.disabled and forced.disabled, "Placeholder clearly ends Phase 5 without enabling Level 6 gameplay")
+	_check(manager.run_state.floor_state.floor_id == &"floor_level_6" and tabs.current_tab == 2, "Safe UI command enters the active Level 6 and shows its entity intent")
+	_check(not manager.floor_data.is_placeholder and not end_turn.disabled and not forced.disabled, "Active Level 6 preserves the existing turn and cut-out commands")
 	_check(manager.run_state.last_cutout_attempt.succeeded, "UI is not the owner of the transition outcome")
 	await process_frame
 	main.free()

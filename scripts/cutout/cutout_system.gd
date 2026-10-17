@@ -24,9 +24,12 @@ static func validate(state: CutOutState, data: FloorData) -> StringName:
 	var ids: Array[StringName] = []
 	for id: StringName in state.destination_candidates:
 		var destination: FloorData = data.find_destination(id)
-		# 本阶段只接受无玩法的过渡终点，避免误启下一楼层的事件或回合规则。
-		if destination == null or id.is_empty() or ids.has(id) or not destination.is_placeholder:
+		if destination == null or id.is_empty() or ids.has(id):
 			return &"invalid_destination"
+		if destination.entry_entity != null:
+			error = EntitySystem.validate_definition(destination.entry_entity)
+			if not error.is_empty():
+				return error
 		ids.append(id)
 	return &""
 
@@ -75,6 +78,9 @@ static func plan_attempt(result: ActionResult, state: RunState, data: FloorData,
 		attempt.destination_id = cutout.destination_candidates[index]
 		result.destination = data.find_destination(attempt.destination_id)
 		result.next_floor = FloorState.new(result.destination)
+		# 新楼层只在私有计划对象上初始化；不改 AP、手牌、管理器或当前楼层。
+		if not result.destination.is_placeholder:
+			EventSystem.draw_fresh(result.destination, result.next_floor, rng, false)
 	result.cutout_attempt = attempt
 	result.rng_state_after = rng.state
 	result.commit_rng = true
@@ -98,5 +104,9 @@ static func commit(result: ActionResult, state: RunState) -> void:
 		# 目的地定义和新状态已在规划阶段创建；此处只切换权威状态引用。
 		state.floor_state = result.next_floor
 		result.debug_lines.append("[CUTOUT] success destination=%s" % result.cutout_attempt.destination_id)
+		if state.floor_state.current_event != null:
+			result.debug_lines.append("[EVENT] draw %s" % state.floor_state.current_event_id)
+		if state.floor_state.entity != null:
+			result.debug_lines.append("[ENTITY] spawn %s hp=%d state=%s" % [state.floor_state.entity.entity_id, state.floor_state.entity.hp, state.floor_state.entity.state])
 	else:
 		result.debug_lines.append("[CUTOUT] failed floor_unchanged")
