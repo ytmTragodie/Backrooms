@@ -30,11 +30,13 @@ func _run_validation() -> void:
 
 
 func _test_draw_play_and_rejection() -> void:
-	var state: RunState = RunState.new(101)
-	var system: CardSystem = CardSystem.new(state, STARTER_DECK.cards)
+	# 迁移到统一命令入口，保留 Phase 2 的出牌、拒绝与守恒断言。
+	var manager: TurnManager = TurnManager.new()
+	root.add_child(manager)
+	var state: RunState = manager.run_state
 	var deck: DeckState = state.deck_state
-	var inventory: Array[CardInstance] = deck.draw_pile.duplicate()
-	system.draw_to_hand_size()
+	var inventory: Array[CardInstance] = deck.hand.duplicate()
+	inventory.append_array(deck.draw_pile)
 	_check(deck.hand.size() == 5 and deck.draw_pile.size() == 4, "Initial draw fills the hand to 5")
 	_check(deck.hand[0] != deck.hand[2], "Copies have distinct runtime identities")
 	_check(deck.hand[0].definition == deck.hand[2].definition, "Copies share only static definition data")
@@ -42,15 +44,15 @@ func _test_draw_play_and_rejection() -> void:
 	var struggle: CardInstance = deck.hand[1]
 	var second_observe: CardInstance = deck.hand[2]
 	var wait: CardInstance = deck.hand[4]
-	_check(system.play_card(observe), "Observe succeeds")
+	_check(manager.request_play_card(observe).success, "Observe succeeds")
 	_check(state.ap == 2, "One AP card deducts exactly 1 AP")
 	_check(not deck.hand.has(observe) and deck.discard_pile.has(observe), "Played card moves from hand to discard")
 	_check_inventory(deck, inventory)
-	_check(system.play_card(struggle), "Struggle succeeds")
+	_check(manager.request_play_card(struggle).success, "Struggle succeeds")
 	_check(struggle.definition.placeholder_damage == 2, "Struggle reports 2 placeholder damage")
 	_check(state.ap == 1, "Struggle costs 1 AP")
-	_check(system.play_card(second_observe) and state.ap == 0, "Final available AP can be spent")
-	_check(system.play_card(wait) and state.ap == 0, "Wait costs zero and can be played at zero AP")
+	_check(manager.request_play_card(second_observe).success and state.ap == 0, "Final available AP can be spent")
+	_check(manager.request_play_card(wait).success and state.ap == 0, "Wait costs zero and can be played at zero AP")
 	_check(state.cognition == 0, "Observe never directly changes Cognition")
 	_check(state.player_hp == 30 and state.stress == 0 and state.threat == 0, "Prototype plays apply no future gameplay effects")
 	var remaining: CardInstance = deck.hand[0]
@@ -58,10 +60,10 @@ func _test_draw_play_and_rejection() -> void:
 	var draw_before: Array[CardInstance] = deck.draw_pile.duplicate()
 	var discard_before: Array[CardInstance] = deck.discard_pile.duplicate()
 	var rng_before: int = state.rng.state
-	_check(not system.play_card(remaining), "Insufficient AP rejects the play")
-	_check(not system.play_card(null), "Null command is rejected")
-	_check(not system.play_card(CardInstance.new(OBSERVE)), "An instance outside the hand is rejected")
-	_check(not system.play_card(wait), "A discarded card cannot be played again")
+	_check(not manager.request_play_card(remaining).success, "Insufficient AP rejects the play")
+	_check(not manager.request_play_card(null).success, "Null command is rejected")
+	_check(not manager.request_play_card(CardInstance.new(OBSERVE)).success, "An instance outside the hand is rejected")
+	_check(not manager.request_play_card(wait).success, "A discarded card cannot be played again")
 	_check(state.ap == 0, "Rejected plays do not alter AP")
 	_check(deck.hand == hand_before, "Rejected plays preserve the entire hand and order")
 	_check(deck.draw_pile == draw_before and deck.discard_pile == discard_before, "Rejected plays preserve both piles")
@@ -70,6 +72,7 @@ func _test_draw_play_and_rejection() -> void:
 	_check(OBSERVE.id == &"card_observe" and OBSERVE.ap_cost == 1 and OBSERVE.placeholder_damage == 0, "Observe definition is unchanged")
 	_check(WAIT.id == &"card_wait" and WAIT.ap_cost == 0, "Wait definition is unchanged")
 	_check(STRUGGLE.id == &"card_struggle" and STRUGGLE.ap_cost == 1 and STRUGGLE.placeholder_damage == 2, "Struggle definition is unchanged")
+	manager.free()
 
 
 func _test_discard_and_short_decks() -> void:
@@ -135,7 +138,7 @@ func _test_turn_integration() -> void:
 	inventory.append_array(deck.draw_pile)
 	_check(state.turn_number == 1 and state.ap == 3 and deck.hand.size() == 5, "Turn 1 starts with 3 AP and a hand of 5")
 	var draw_before: Array[CardInstance] = deck.draw_pile.duplicate()
-	_check(manager.play_card(deck.hand[0]), "TurnManager forwards validated play commands")
+	_check(manager.request_play_card(deck.hand[0]).success, "TurnManager forwards validated play commands")
 	manager.end_turn()
 	_check(state.turn_number == 2 and state.ap == 3, "Next turn advances once and restores 3 AP")
 	_check(deck.hand.size() == 5, "Next turn draws back to 5")
@@ -146,7 +149,7 @@ func _test_turn_integration() -> void:
 	for expected_turn: int in range(3, 7):
 		var current_hand: Array[CardInstance] = deck.hand.duplicate()
 		for card: CardInstance in current_hand:
-			manager.play_card(card)
+			manager.request_play_card(card)
 			_check_inventory(deck, inventory)
 		manager.end_turn()
 		_check(state.turn_number == expected_turn and state.ap == 3 and deck.hand.size() == 5, "Repeated turns restore AP and refill the hand")

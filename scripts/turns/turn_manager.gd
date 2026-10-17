@@ -3,10 +3,17 @@ extends Node
 
 signal turn_started(turn_number: int)
 signal state_changed
+signal action_resolved(result: ActionResult)
 
 @export var starter_deck: DeckData = preload("res://data/cards/starter_deck.tres")
 
-var run_state: RunState = RunState.new()
+# 本节点与 CardSystem 始终绑定同一局状态；新一局应创建新的 TurnManager。
+var _run_state: RunState = RunState.new()
+var run_state: RunState:
+	get:
+		return _run_state
+	set(_value):
+		push_error("RunState cannot be replaced; create a new TurnManager for a new run")
 var card_system: CardSystem
 
 
@@ -29,11 +36,14 @@ func end_turn() -> void:
 	_announce_turn_start()
 
 
-func play_card(card: CardInstance) -> bool:
-	if not card_system.play_card(card):
-		return false
-	state_changed.emit()
-	return true
+func request_play_card(card: CardInstance) -> ActionResult:
+	# 所有对外出牌请求统一经过这里，避免提交成功却漏发界面通知。
+	var result: ActionResult = RuleResolver.resolve(PlayCardCommand.new(card), run_state, card_system)
+	# 完整提交后才通知；失败仅发布结果，不伪装成一次状态变化。
+	if result.success:
+		state_changed.emit()
+	action_resolved.emit(result)
+	return result
 
 
 func _announce_turn_start() -> void:
