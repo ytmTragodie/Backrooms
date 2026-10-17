@@ -1,7 +1,7 @@
 # 后室：切出 Demo
 
 Godot 4.x、Compatibility、类型化 GDScript。打开 `project.godot`，按 F5 运行。
-当前实现 Phase 1–7：零层探索与有限搜刮 → 切出 → 六层黑暗与猎犬 → 再次切出到测试终点。
+当前实现 Phase 1–8：零层探索与有限搜刮 → 切出 → 六层猎犬／笑魇遭遇 → 再次切出到测试终点。
 三格携带装备在本局中持续保留，独立于抽弃牌循环；没有独立战斗场景或第二套战斗 AP。
 
 ## 权威文档
@@ -40,7 +40,7 @@ UI -> TurnManager -> PlayCardCommand / ExplorationCommand / UseEquipmentCommand
 - 深入搜索：2 AP，威胁 +1，强化调查并定位、直接搜刮一个未发现节点。
 - 攻击：1 AP，实际伤害 4，要求当前存在活跃实体。
 - 防御：1 AP，本回合格挡 +4，可叠加；意图执行后未使用的部分也消失。
-- 奔跑：1 AP，威胁 +1；使当前活跃实体追击，若实体踉跄则成功脱离。
+- 奔跑：1 AP，威胁 +1；使当前活跃猎犬追击，若猎犬踉跄则成功脱离；不对笑魇套用追击状态。
 - 挣扎：1 AP，有实体目标时应用已有的 2 伤害；零层无目标时保留旧占位结果。
 - 等待：0 AP，无额外效果，可在零 AP 时打出。
 
@@ -88,7 +88,8 @@ DeckState、手牌，不恢复 AP，也不偷偷执行一次实体意图。
 
 ## 六层与实体
 
-六层包含三个 Fresh Events、两个唯一 Insight，以及 darkness 楼层旗标。
+六层包含三个 Fresh Events 提供的两个唯一 Insight，新增避光规则 Insight 共三个，
+以及 darkness 楼层旗标。
 未照明时，每回合第一张成功打出的观察额外耗 1 AP；失败不消耗该标记，
 原有 End Turn 清除它。检查只给表层信息。UI 与解析器共用费用查询，
 因此实际费用为 2 时卡牌按钮也显示 2。手电筒开启后，本回合观察只花基础 1 AP，
@@ -96,9 +97,9 @@ DeckState、手牌，不恢复 AP，也不偷偷执行一次实体意图。
 重复 Insight 不再奖励认知或切出准备；结束回合清除临时照明。
 
 FloorData.entry_entity 配置遭遇，FloorState 每次创建独立 EntityInstance。
-EntityData 仅保存 ID、名字、初始状态、最大生命和伤害参数；当前 HP、
-状态与意图属于实例。alive/active 从 HP 与脱离状态派生，不保存重复布尔值。
-目前唯一实体为 18 HP 猎犬，使用以下小型确定性状态机：
+EntityData 保存 ID、名字、初始状态、最大生命、伤害参数、行为类型与规则 Insight；
+当前 HP、状态、意图与是否经历过光照反应属于实例。alive/active 从 HP、脱离／退去
+状态派生，不保存重复布尔值。18 HP 猎犬仍使用原确定性状态机：
 
 | 状态 | 当前公示意图／回合末行为 |
 | --- | --- |
@@ -109,8 +110,8 @@ EntityData 仅保存 ID、名字、初始状态、最大生命和伤害参数；
 | DEFEATED / 已击败 | HP 0，死亡、非活跃，无后续意图 |
 | DISENGAGED / 已脱离 | 仍存活但非活跃，无后续攻击 |
 
-攻击凝视中的实体会使其靠近；奔跑一般使其直接追击。
-完整格挡一次攻击会令其踉跄，部分格挡只减少伤害。
+攻击凝视中的猎犬会使其靠近；奔跑一般使其直接追击。
+完整格挡一次猎犬攻击会令其踉跄，部分格挡只减少伤害。
 踉跄时奔跑可以脱离。当前只有奔跑作为显式的风险追击触发，不做复杂噪音 AI。
 HP 不会低于 0，重复攻击已击败／已脱离实体会被拒绝，不重复结算击败。
 
@@ -141,6 +142,42 @@ EquipmentInstance.remaining_uses 保存本局电量／耐久／次数，Equipmen
 不会刷新次数，临时照明不跨层。装备 tags 留作后续条件匹配的数据入口，尚未实现组合。
 UI 的“携带装备”页签固定显示三格、名字、计数与按钮，只读取状态并转发槽位命令。
 
+## 笑魇规则遭遇（Phase 8）
+
+六层保留猎犬入场流程。猎犬被击败或成功脱离后，在“实体意图”页签花 1 AP
+追查远处异常，进入一次可选笑魇遭遇。FloorData.followup_entity 配置后续定义，
+仍只有一个当前实体；已经活跃的猎犬不能被覆盖，笑魇结束后不能重复生成。
+遭遇不更换 RunState、FloorState、TurnManager、手牌或装备，不恢复 AP。
+
+EntityData.behavior_type 选择 PURSUIT 或 LIGHT_REACTIVE 两个小型规则模型，
+EntitySystem 统一规划与提交，代码不按 entity_smiler ID 分支。
+笑魇使用同一个 EntityInstance，120 HP，可受普通卡牌／撬棍伤害，HP 0 仍为 DEFEATED。
+高 HP 只是原型锚点，正常目标是理解光照规则并让它存活退去。
+
+| 状态 | 原型行为／可见意图 |
+| --- | --- |
+| HIDDEN / 潜藏 | 不开灯，回合末直接退去；没有验证规律则不奖励 Insight |
+| OBSERVING / 观察 | 第一次开灯进入；暂不攻击，再次开灯会躁动 |
+| AGITATED / 躁动 | 第二次开灯进入并因反复强光增加 1 Threat；若回合末仍有光，准备进攻 |
+| ATTACKING / 进攻 | 第三次开灯或被主动攻击进入；回合末仍有光时攻击 6，可正常格挡 |
+| WITHDRAWN / 已退去 | 无光回合末进入；仍有 HP，非活跃，不再攻击 |
+
+普通原型手电视为强光。成功开启才触发实体反应，重复开启已亮光源等失败动作
+不消耗电量、不改变状态。手动熄灯后同一回合再开也会升级；第二次及后续开灯
+每次 Threat +1，仍遵守楼层 10 上限，并记录 repeated_strong_light 原因。
+第一次亮灯的回合末不造成伤害；第二次会给出进攻意图，后续才执行条件攻击。
+
+“关闭光源”是现有 ExplorationCommand 的零 AP 命令，不额外消耗电量，
+所以零 AP 也能纠正行为。必须在仍存活时熄灯，再结束回合；意图规划先检查
+实际光照，之后统一提交才清除本回合光源。也可以直接停用手电一个完整回合。
+格挡仍有效，但笑魇不会因为完整格挡变成猎犬的 STAGGERED。
+
+经历过光照反应，再观察到无光退去，会确认 insight_level6_light_attracts：
+认知 +1、切出稳定度 +1。只攻击后退去不能假装验证光照规律；击杀本身不奖励此 Insight。
+另一条路径是花 1 AP 查阅楼层地标的避光警示，不依赖事件、实体是否存活或剩余电量。
+两条路径共用 InsightSystem.plan_confirmation 与原楼层唯一 ID 记录，互相不能重复领奖。
+新 Insight 不改变原有两个事件 Insight，也不是离层门槛，强行切出始终保留。
+
 ## 验证
 
 从项目目录运行，将 godot 替换为本机 Godot 控制台路径：
@@ -154,6 +191,7 @@ godot --headless --path . --script res://tests/phase_4_validation.gd
 godot --headless --path . --script res://tests/phase_5_validation.gd
 godot --headless --path . --script res://tests/phase_6_validation.gd
 godot --headless --path . --script res://tests/phase_7_validation.gd
+godot --headless --path . --script res://tests/phase_8_validation.gd
 godot --headless --path . --quit-after 3
 git diff --check
 ```
@@ -171,6 +209,9 @@ Insight、失败不写入、死亡停止回合、威胁与切出共存、跨层�
 Phase 7 覆盖三格容量、定义与实例隔离、成功扣次数、失败完整快照不变、耗尽／损坏、
 杏仁水条件恢复与一次性消耗、照明费用与 Insight 去重、装备不入牌区、跨层身份保留，
 以及真实主场景的三格中文 UI、按钮命令和空槽布局。
+Phase 8 覆盖通用 HP、照明跨回合升级、熄灯纠正、不照明规避、有限电量耗尽、
+唯一 Insight 两条路径与上限、伤害／格挡、技术击杀、坏定义／失败事务、
+猎犬击败和脱离后的可选遭遇，以及实际主场景十张牌组的完整按钮流程。
 
 ## 手动验证
 
@@ -185,48 +226,55 @@ Phase 7 覆盖三格容量、定义与实例隔离、成功扣次数、失败完
 7. 继续攻击／防御／奔跑或强行切出到测试终点，确认装备次数保留。
    高压力恢复 HP、容量超限及全部失败边界由确定性脚本另行验证。
 
+### Phase 8 手动验证
+
+1. F5 从零层进入六层。保留至少 1 次手电电量，用原攻击／防御牌击败猎犬，
+   或完整格挡后奔跑脱离。确认“追查远处异常：笑魇”按钮启用。
+2. 结束回合补足 3 AP，点追查：消耗 1 AP，出现 120/120 HP 的潜藏笑魇。
+   也可以直接不照明结束回合，验证无伤规避；此时没有自动 Insight。
+3. 验证光照路径：在潜藏时使用手电，状态为观察；点“关闭光源”，再结束回合。
+   确认笑魇 120/120、已退去；认知与切出稳定度各加 1。
+4. 尝试“查阅墙上避光警示”，应已禁用且不能重复奖励。另开一局先查阅警示，
+   无需遭遇或使用电量也能确认同一 Insight；后续实体退去不重复奖励。
+5. 另开一局保留三次电量：遭遇后连续各回合开灯，依次观察 → 躁动 → 进攻。
+   第三次亮灯结束回合预计受到 6 伤害，防御可减伤；也可在进攻前零 AP 熄灯避免攻击。
+6. 装备耗尽后，不再开灯的回合仍能使笑魇退去。任意存活阶段也可强行切出，
+   确认沿用原牌组、AP、Threat、装备和切出流程。
+
 ## 已知限制
 
-没有实现 Phase 8、Smiler、多敌人、Boss、复杂状态、正式胜负结算或元进度。
+没有实现 Phase 9、多敌人、Boss、复杂状态、正式胜负结算或元进度。
 装备只有三件，无维修、制作、升级、稀有度、双槽装备或复杂卡牌组合。
 没有新增插件或依赖，渲染器保持 Compatibility；照明仅为本回合玩法状态，暂无视觉光照。
-六层仅两个 Insight，认知最多 2；Fresh 耗尽后没有 Residual Events。
+六层仅三个 Insight，认知最多 3；Fresh 耗尽后没有 Residual Events。
+笑魇采用明确的可选后续遭遇，不实现完整实体刷新池、危险阈值随机生成、弱光／红光分类。
 压力尚不执行精神崩溃后果。参数仍为原型，尚未做图形窗口人工目视验收。
 
-## Phase 7 变更文件清单
+## Phase 8 变更文件清单
 
-本清单对应本次 Phase 7 增量，包含 Godot 生成的脚本 UID。
+以下为本次 Phase 8 增量；未修改 Phase 1–7 测试或项目配置。
 
 ### 新增
 
-- `data/equipment/equip_almond_water.tres`
-- `data/equipment/equip_crowbar.tres`
-- `data/equipment/equip_flashlight.tres`
-- `scripts/equipment/equipment_data.gd`
-- `scripts/equipment/equipment_data.gd.uid`
-- `scripts/equipment/equipment_instance.gd`
-- `scripts/equipment/equipment_instance.gd.uid`
-- `scripts/equipment/equipment_system.gd`
-- `scripts/equipment/equipment_system.gd.uid`
-- `scripts/rules/use_equipment_command.gd`
-- `scripts/rules/use_equipment_command.gd.uid`
-- `tests/phase_7_validation.gd`
-- `tests/phase_7_validation.gd.uid`
+- `data/entities/entity_smiler.tres`
+- `data/insights/insight_level6_light_attracts.tres`
+- `tests/phase_8_validation.gd`
+- `tests/phase_8_validation.gd.uid`
 
 ### 修改
 
 - `Readme.md`
-- `data/events/event_level6_claw_marks.tres`
-- `data/events/event_level6_dark_corridor.tres`
-- `data/events/event_level6_wall_seam.tres`
+- `data/floors/floor_level_6.tres`
 - `scenes/main/Main.tscn`
+- `scripts/cutout/cutout_system.gd`
+- `scripts/entities/entity_data.gd`
+- `scripts/entities/entity_instance.gd`
 - `scripts/entities/entity_system.gd`
-- `scripts/events/event_action_data.gd`
-- `scripts/floors/floor_state.gd`
+- `scripts/equipment/equipment_system.gd`
+- `scripts/floors/floor_data.gd`
+- `scripts/floors/insight_system.gd`
 - `scripts/rules/action_result.gd`
 - `scripts/rules/rule_resolver.gd`
-- `scripts/run/run_state.gd`
-- `scripts/turns/turn_manager.gd`
 - `scripts/ui/main.gd`
 
 ### 删除

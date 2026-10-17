@@ -3,10 +3,13 @@ extends Control
 const ACTION_NAMES: Dictionary = {
 	&"inspect": "检查环境", &"search_nearby": "搜索附近", &"end_turn": "结束回合",
 	&"loot": "搜刮物资", &"prepare_cutout": "准备切出",
+	&"encounter": "进入后续遭遇", &"study_landmark": "查阅地标记录", &"extinguish_light": "关闭光源",
 }
 const ENTITY_STATES: Dictionary = {
 	&"WATCHING": "凝视", &"APPROACHING": "靠近", &"CHASING": "追击",
 	&"STAGGERED": "踉跄", &"DEFEATED": "已击败", &"DISENGAGED": "已脱离",
+	&"HIDDEN": "潜藏", &"OBSERVING": "观察", &"AGITATED": "躁动",
+	&"ATTACKING": "进攻", &"WITHDRAWN": "已退去",
 }
 const EQUIPMENT_COUNTERS: Dictionary = {
 	&"battery": "电量", &"durability": "耐久", &"charges": "次数",
@@ -35,6 +38,8 @@ const FAILURE_MESSAGES: Dictionary = {
 	&"invalid_equipment_slot": "携带槽位置无效", &"equipment_unavailable": "该携带槽为空",
 	&"equipment_depleted": "装备已耗尽或损坏", &"light_not_needed": "这里不需要额外照明",
 	&"light_already_active": "本回合照明已开启", &"nothing_to_restore": "当前没有可恢复的状态",
+	&"encounter_unavailable": "当前不能进入后续遭遇", &"light_not_active": "当前没有开启的光源",
+	&"landmark_unavailable": "这里没有可查阅的地标记录", &"insight_known": "这条规律已经确认",
 }
 
 @onready var _turn_manager: TurnManager = $TurnManager
@@ -59,6 +64,9 @@ const FAILURE_MESSAGES: Dictionary = {
 @onready var _entity_info: Label = %EntityInfo
 @onready var _block_info: Label = %BlockInfo
 @onready var _equipment_slots: VBoxContainer = %EquipmentSlots
+@onready var _encounter_action: Button = %EncounterAction
+@onready var _landmark_action: Button = %LandmarkAction
+@onready var _extinguish_light: Button = %ExtinguishLight
 
 
 func _ready() -> void:
@@ -67,6 +75,9 @@ func _ready() -> void:
 	_end_turn_button.pressed.connect(_turn_manager.end_turn)
 	_inspect_action.pressed.connect(_turn_manager.request_exploration.bind(&"inspect"))
 	_search_action.pressed.connect(_turn_manager.request_exploration.bind(&"search_nearby"))
+	_encounter_action.pressed.connect(_turn_manager.request_exploration.bind(&"encounter"))
+	_landmark_action.pressed.connect(_turn_manager.request_exploration.bind(&"study_landmark"))
+	_extinguish_light.pressed.connect(_turn_manager.request_exploration.bind(&"extinguish_light"))
 	_floor_tabs.set_tab_title(0, "探索现场")
 	_floor_tabs.set_tab_title(1, "资源与切出")
 	_floor_tabs.set_tab_title(2, "实体意图")
@@ -246,11 +257,20 @@ func _refresh_resources_and_cutout(state: RunState) -> void:
 
 func _refresh_entity(floor: FloorState) -> void:
 	_block_info.text = "本回合格挡：%d" % (floor.player_block if floor != null else 0)
+	var floor_data: FloorData = _turn_manager.floor_data
+	var active: bool = floor != null and floor_data != null and not floor_data.is_placeholder and _turn_manager.run_state.player_hp > 0
+	_encounter_action.visible = floor_data != null and floor_data.followup_entity != null
+	_encounter_action.disabled = not active or not EntitySystem.can_enter_followup(floor, floor_data)
+	if _encounter_action.visible:
+		_encounter_action.text = "追查远处异常：%s（1 行动点）" % floor_data.followup_entity.display_name
+	_landmark_action.visible = floor_data != null and floor_data.landmark_insight != null
+	_landmark_action.disabled = not active or (floor_data.landmark_insight != null and floor.discovered_insight_ids.has(floor_data.landmark_insight.id))
+	_extinguish_light.disabled = not active or not floor.light_active
 	if floor == null or floor.entity == null:
 		_entity_info.text = "当前没有实体。探索、回合和切出使用同一套行动点。"
 		return
 	var entity: EntityInstance = floor.entity
-	var data: EntityData = _turn_manager.floor_data.entry_entity
+	var data: EntityData = floor_data.find_entity(entity.entity_id)
 	var intent: String = "无后续行动"
 	match entity.intent:
 		&"approach":
@@ -261,6 +281,14 @@ func _refresh_entity(floor: FloorState) -> void:
 			intent = "回合末扑咬，造成 %d 伤害" % data.aggressive_damage
 		&"recover":
 			intent = "回合末重新观察，暂不攻击"
+		&"remain_hidden":
+			intent = "保持黑暗则在回合末退去；强光会引来注视"
+		&"watch_light":
+			intent = "暂不攻击；再次开灯会升级，无光回合末将退去"
+		&"warn_light":
+			intent = "回合末若仍有光则准备进攻；熄灯可使其退去"
+		&"light_strike":
+			intent = "回合末若仍有光则攻击 %d；熄灯可避免攻击并使其退去" % data.aggressive_damage
 	_entity_info.text = "%s\n生命：%d／%d\n状态：%s\n意图：%s\n当前格挡：%d" % [data.display_name, entity.hp, entity.max_hp, ENTITY_STATES.get(entity.state, "未知"), intent, floor.player_block]
 
 

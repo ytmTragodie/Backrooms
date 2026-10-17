@@ -218,10 +218,31 @@ autowrap_mode = 2
 layout_mode = 2
 text = "从原有手牌打出攻击、防御或奔跑。
 攻击造成 4 伤害；防御获得本回合 4 格挡。
-完整挡住攻击会使实体踉跄，此时奔跑可以脱离；其他时候奔跑会触发追击并增加威胁。
+完整挡住猎犬攻击会使其踉跄，此时奔跑可以脱离；其他时候奔跑会触发猎犬追击并增加威胁。
 点击原有的结束回合按钮执行实体意图，随后恢复 3 行动点并抽至 5 张。
 探索、威胁与切出始终继续运行。"
 autowrap_mode = 2
+
+[node name="EncounterAction" type="Button" parent="FloorMargin/FloorTabs/EntityPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "追查远处异常（1 行动点）"
+
+[node name="LandmarkAction" type="Button" parent="FloorMargin/FloorTabs/EntityPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "查阅墙上避光警示（1 行动点）"
+
+[node name="ExtinguishLight" type="Button" parent="FloorMargin/FloorTabs/EntityPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "关闭光源（无需行动点）"
+
+[node name="LightRuleHelp" type="Label" parent="FloorMargin/FloorTabs/EntityPanel"]
+layout_mode = 2
+autowrap_mode = 2
+text = "猎犬失去活跃性后可追查远处异常。笑魇会回应强光：反复开灯将升级危险。
+熄灯后结束回合，观察它是否退去；高生命不代表必须击杀。墙上警示也可验证避光规律。"
 
 [node name="EquipmentPanel" type="VBoxContainer" parent="FloorMargin/FloorTabs" unique_id=57642360]
 layout_mode = 2

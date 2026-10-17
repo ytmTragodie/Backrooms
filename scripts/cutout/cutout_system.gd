@@ -30,6 +30,14 @@ static func validate(state: CutOutState, data: FloorData) -> StringName:
 			error = EntitySystem.validate_definition(destination.entry_entity)
 			if not error.is_empty():
 				return error
+		if destination.followup_entity != null:
+			error = EntitySystem.validate_definition(destination.followup_entity)
+			if not error.is_empty():
+				return error
+		if destination.landmark_insight != null:
+			error = InsightSystem.validate_definition(destination.landmark_insight)
+			if not error.is_empty():
+				return error
 		ids.append(id)
 	return &""
 

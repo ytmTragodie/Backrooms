@@ -36,6 +36,9 @@ var entity_state_after: StringName
 var entity_intent_after: StringName
 var entity_damage: int = 0
 var entity_defeated: bool = false
+var entity_spawned: EntityInstance
+var entity_state_reason: StringName
+var entity_light_exposed: bool = false
 var block_gained: int = 0
 var expire_block: bool = false
 var intent_resolved: StringName
@@ -46,6 +49,7 @@ var equipment_used: EquipmentInstance
 var equipment_slot: int = -1
 var equipment_uses_spent: int = 0
 var light_activated: bool = false
+var light_extinguished: bool = false
 var stress_restored: int = 0
 var hp_restored: int = 0
 var debug_lines: Array[String] = []

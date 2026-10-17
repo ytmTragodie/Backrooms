@@ -15,6 +15,16 @@ extends Resource
 @export var initial_flags: Array[StringName] = []
 @export var dark_observe_surcharge: int = 0
 @export var entry_entity: EntityData
+# 原型只容纳一个当前实体；后续遭遇必须在前一个失去活跃性后由命令进入。
+@export var followup_entity: EntityData
+@export var landmark_insight: InsightData
+
+
+func find_entity(entity_id: StringName) -> EntityData:
+	for definition: EntityData in [entry_entity, followup_entity]:
+		if definition != null and definition.id == entity_id:
+			return definition
+	return null
 
 
 func find_event(event_id: StringName) -> EventData:
@@ -25,6 +35,11 @@ func find_event(event_id: StringName) -> EventData:
 
 
 func find_insight(insight_id: StringName) -> InsightData:
+	if landmark_insight != null and landmark_insight.id == insight_id:
+		return landmark_insight
+	for definition: EntityData in [entry_entity, followup_entity]:
+		if definition != null and definition.rule_insight != null and definition.rule_insight.id == insight_id:
+			return definition.rule_insight
 	for event: EventData in fresh_events:
 		for rule: EventActionData in event.action_results:
 			if rule.insight != null and rule.insight.id == insight_id:

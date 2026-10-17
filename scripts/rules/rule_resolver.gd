@@ -64,7 +64,7 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	if combat_effect or contextual_attack:
 		if state.floor_state == null:
 			return _fail(result, &"floor_required", card_id)
-		var entity_error: StringName = EntitySystem.plan_card(result, definition, state)
+		var entity_error: StringName = EntitySystem.plan_card(result, definition, state, floor_data)
 		if not entity_error.is_empty():
 			return _fail(result, entity_error, card_id)
 		result.action_id = &"block" if definition.effect_type == CardData.EffectType.BLOCK else (&"run" if definition.effect_type == CardData.EffectType.RUN else &"attack")
@@ -126,9 +126,11 @@ static func resolve_equipment(command: UseEquipmentCommand, state: RunState, dat
 		return _fail(result, &"equipment_depleted", item.definition.id)
 	if state.ap < item.definition.ap_cost:
 		return _fail(result, &"insufficient_ap", item.definition.id)
-	error = EquipmentSystem.plan_use(result, item, state)
+	error = EquipmentSystem.plan_use(result, item, state, data)
 	if not error.is_empty():
 		return _fail(result, error, item.definition.id)
+	if result.light_activated:
+		EntitySystem.plan_light_reaction(result, state, data)
 	result.success = true
 	result.action_id = &"use_equipment"
 	result.effect = &"damage" if item.definition.effect_type == EquipmentData.EffectType.ATTACK else (&"light" if result.light_activated else &"recover")
@@ -157,9 +159,9 @@ static func resolve_exploration(command: ExplorationCommand, state: RunState, da
 		return _fail(result, &"run_ended", action)
 	var cost: int = 0
 	match action:
-		&"inspect", &"search_nearby", &"loot", &"prepare_cutout", &"cutout_safe", &"cutout_rushed":
+		&"inspect", &"search_nearby", &"loot", &"prepare_cutout", &"cutout_safe", &"cutout_rushed", &"encounter", &"study_landmark":
 			cost = 1
-		&"end_turn", &"cutout_forced":
+		&"end_turn", &"cutout_forced", &"extinguish_light":
 			cost = 0
 		_:
 			return _fail(result, &"unknown_action", action)
@@ -170,7 +172,7 @@ static func resolve_exploration(command: ExplorationCommand, state: RunState, da
 			return _fail(result, &"floor_required", action)
 	else:
 		var error: StringName
-		if action in [&"loot", &"prepare_cutout", &"cutout_safe", &"cutout_rushed", &"cutout_forced"]:
+		if action in [&"loot", &"prepare_cutout", &"cutout_safe", &"cutout_rushed", &"cutout_forced", &"encounter", &"study_landmark", &"extinguish_light"]:
 			error = _prepare_floor_command(result, command, state, data)
 		else:
 			error = _prepare_floor_action(result, action, state, data)
@@ -212,6 +214,19 @@ static func _prepare_floor_command(result: ActionResult, command: ExplorationCom
 	var error: StringName = _validate_floor_context(state, data)
 	if not error.is_empty():
 		return error
+	if command.action_id == &"encounter":
+		return EntitySystem.plan_followup(result, state, data)
+	if command.action_id == &"extinguish_light":
+		if not state.floor_state.light_active:
+			return &"light_not_active"
+		result.light_extinguished = true
+		return &""
+	if command.action_id == &"study_landmark":
+		if data.landmark_insight == null:
+			return &"landmark_unavailable"
+		if state.floor_state.discovered_insight_ids.has(data.landmark_insight.id):
+			return &"insight_known"
+		return InsightSystem.plan_confirmation(result, data.landmark_insight, state.floor_state)
 	if command.action_id == &"loot":
 		return ResourceNodeSystem.plan_loot(result, state, data, command.target_id)
 	error = CutOutSystem.validate(state.floor_state.cutout_state, data)
@@ -280,8 +295,6 @@ static func _prepare_floor_action(result: ActionResult, action: StringName, stat
 		completed.append(action)
 		result.event_resolved = completed.has(&"inspect") and completed.has(&"search_nearby")
 	var no_blocked_flags: Array[StringName] = []
-	var stability: int = 0
-	var knowledge: int = 0
 	for rule: EventActionData in event.action_results:
 		if rule.action_id != action or (rule.requires_light and not floor.light_active) or not EventSystem.conditions_met(rule.required_flags, no_blocked_flags, floor.floor_flags):
 			continue
@@ -291,15 +304,9 @@ static func _prepare_floor_action(result: ActionResult, action: StringName, stat
 		if not rule.revealed_text.is_empty() and not floor.current_event.known_information.has(rule.revealed_text) and not result.event_information.has(rule.revealed_text):
 			result.event_information.append(rule.revealed_text)
 		result.event_resolved = result.event_resolved or rule.resolves_event
-		if rule.insight != null and not floor.discovered_insight_ids.has(rule.insight.id) and not result.insight_ids.has(rule.insight.id):
-			result.insight_ids.append(rule.insight.id)
-			# 使用本次实际命中的、已校验的定义，不重新扫描其他事件的内容。
-			stability += rule.insight.cutout_stability
-			knowledge += rule.insight.cutout_knowledge
+		if rule.insight != null:
+			InsightSystem.plan_confirmation(result, rule.insight, floor)
 	# 所有条件读取动作前的状态；本次刚记录的线索不能立即充当验证依据。
-	result.cognition_delta = mini(result.insight_ids.size(), FloorState.MAX_COGNITION - floor.cognition)
-	if stability > 0 or knowledge > 0:
-		CutOutSystem.plan_gain(result, floor.cutout_state, stability, knowledge, &"unique_insight")
 	return &""
 
 
@@ -310,6 +317,9 @@ static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
 	var floor: FloorState = state.floor_state
 	if floor == null:
 		return
+	if result.light_extinguished:
+		floor.light_active = false
+		result.debug_lines.append("[LIGHT] extinguished reason=player_command")
 	if result.dark_observation:
 		floor.dark_observation_used = true
 		result.debug_lines.append("[FLOOR] darkness first_observation surcharge_applied")

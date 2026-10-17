@@ -60,7 +60,7 @@ static func validate_inventory(state: RunState) -> StringName:
 	return &""
 
 
-static func plan_use(result: ActionResult, item: EquipmentInstance, state: RunState) -> StringName:
+static func plan_use(result: ActionResult, item: EquipmentInstance, state: RunState, floor_data: FloorData) -> StringName:
 	var data: EquipmentData = item.definition
 	match data.effect_type:
 		EquipmentData.EffectType.LIGHT:
@@ -71,7 +71,9 @@ static func plan_use(result: ActionResult, item: EquipmentInstance, state: RunSt
 			result.light_activated = true
 		EquipmentData.EffectType.ATTACK:
 			# 装备直接使用通用伤害入口，不构造假卡，也不接触任何牌区。
-			var error: StringName = EntitySystem.plan_attack(result, data.effect_value, state)
+			var entity: EntityInstance = state.floor_state.entity
+			var target: EntityData = floor_data.find_entity(entity.entity_id) if entity != null else null
+			var error: StringName = EntitySystem.plan_attack(result, data.effect_value, state, target)
 			if not error.is_empty():
 				return error
 		EquipmentData.EffectType.RECOVER:
