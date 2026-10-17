@@ -1,15 +1,20 @@
 # 后室：切出 Demo
 
+> **迁移状态：CARD-FIRST V2 已成为权威设计，玩法代码尚未迁移。**
+> 下文描述 Phase 1–8 旧构建，保留用于复现与回归；其中独立检查、搜刮、装备、
+> 地标、开关灯和切出按钮已被新方向废弃，不是后续实现规范。
+> 当前设计见 [GDD.md](docs/GDD.md)，迁移分类见 [MIGRATION_PLAN.md](docs/MIGRATION_PLAN.md)。
+
 Godot 4.x、Compatibility、类型化 GDScript。打开 `project.godot`，按 F5 运行。
 当前实现 Phase 1–8：零层探索与有限搜刮 → 切出 → 六层猎犬／笑魇遭遇 → 再次切出到测试终点。
 三格携带装备在本局中持续保留，独立于抽弃牌循环；没有独立战斗场景或第二套战斗 AP。
 
 ## 权威文档
 
-遵循 AGENTS.md、docs/ARCHITECTURE.md、docs/CODING_RULES.md。
-仓库没有 docs/GDD.md 或 docs/GDD.docx，设计依据为
-`docs/Backrooms_Card_Roguelike_GDD_v0.4_Demo_Baseline.docx`。
-当前阶段用户任务优先于完整 GDD 内容量；所有数值和卡组均是原型。
+遵循 AGENTS.md、docs/ARCHITECTURE.md、docs/CODING_RULES.md 与新建的 docs/GDD.md。
+`docs/Backrooms_Card_Roguelike_GDD_v0.4_Demo_Baseline.docx` 仅保留为历史设计资料，
+不再是当前规则源。当前用户任务优先；下文数值、卡组、按钮流程和测试结果是旧原型说明。
+本轮仅更新文档，没有实现 BoardState、Explore 进度或世界卡牌界面。
 
 ## 状态与结算
 

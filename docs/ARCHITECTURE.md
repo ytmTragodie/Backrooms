@@ -8,6 +8,13 @@ It is a **hard constraint for AI coding**. If generated code conflicts with this
 
 The current goal is a small, playable vertical slice, not a production-scale framework.
 
+**Authoritative direction: CARD-FIRST V2, 2026-10-17.** This revision defines the
+migration target. The current Phase 1-8 code is a legacy prototype; this document
+update does not implement BoardState, Explore, World Card rendering, or new APIs.
+Read `GDD.md` for design and `MIGRATION_PLAN.md` for KEEP / ADAPT / DEPRECATE /
+REMOVE LATER classifications. The retained v0.4 DOCX and legacy README flows do
+not override these rules. Repository instruction priority remains as in AGENTS.md.
+
 ---
 
 ## 1. Technical Baseline
@@ -20,7 +27,7 @@ The current goal is a small, playable vertical slice, not a production-scale fra
 - Persistence: local save files only
 - Networking: none
 - Mod support: none for the demo
-- Primary design source: current GDD Demo Baseline
+- Primary design source: `docs/GDD.md` — CARD-FIRST V2
 
 Do not introduce C#, native extensions, ECS frameworks, third-party dependency injection frameworks, or external runtime dependencies unless explicitly requested.
 
@@ -61,8 +68,8 @@ Game state lives in domain state objects such as:
 
 - `RunState`
 - `FloorState`
-- `CombatState`
-- `DeckState`
+- `BoardState` (floor-local World Card zone)
+- `DeckState` (Player Cards only)
 - `EntityInstance`
 - `EquipmentInstance`
 
@@ -78,18 +85,23 @@ All meaningful game-state modifications must pass through a controlled resolutio
 
 Preferred flow:
 
-`PlayerCommand -> RuleResolver -> EffectResult -> State Mutation -> Signals -> UI Refresh`
+`Player Card + target selection -> PlayCardCommand -> RuleResolver -> ActionResult -> State Mutation -> Signals -> UI Refresh`
 
-Examples of `PlayerCommand`:
+Player gameplay commands originate from an actual Player Card in the current hand,
+with optional world-target and carried-equipment references. Inspect, Search,
+Deep Search, Attack, Guard, Run, Stealth, loot, equipment activation, light switching,
+landmark investigation, encounter interaction, cut-out preparation and attempts
+are card effects, not independent gameplay commands exposed by UI.
 
-- play card
-- use equipment
-- inspect
-- search
-- loot
-- retreat
-- attempt cut-out
-- end turn
+End Turn remains a lifecycle command. Pause, read-only deck inspection, settings,
+viewing already-public card details, and choosing/cancelling targets are pure system controls.
+They must not grant gameplay effects. Automatic entity/floor/turn triggers are
+rule resolution, not additional player inputs. Zero AP is not a system-control exemption.
+Revealing new clues/Insight is a gameplay effect, not a free details-view operation.
+
+Legacy ExplorationCommand / UseEquipmentCommand may temporarily remain in the
+unmigrated build. They are not a second approved v2 gameplay input boundary;
+internal domain planning helpers may survive after their public entry points retire.
 
 Examples of `EffectResult`:
 
@@ -173,7 +185,7 @@ player_hp
 player_max_hp
 stress
 supply
-current_floor_id
+floor_state
 depth_band
 deck_state
 equipment_slots
@@ -185,6 +197,8 @@ rng_seed
 `RunState` must not contain UI references.
 
 `RunState` must not implement floor-specific rules.
+It owns the current FloorState reference, player DeckState and EquipmentInstances.
+A current-floor ID may be a derived read, never another independently writable owner.
 
 ---
 
@@ -225,16 +239,27 @@ Responsibilities:
 Example resolution order:
 
 ```text
-base action/card/equipment rule
+Player Card baseline + declared target/branch
 -> player modifiers
--> equipment modifiers
--> floor modifiers
--> entity reactions
+-> selected equipment requirements/modifiers
+-> floor and active Event tag/condition modifiers
+-> Entity reactions to actual resolved effects/tags
 -> global state modifiers
--> final result
+-> complete ActionResult / planned mutations
+-> one synchronous commit
+-> signals / UI refresh
 ```
 
 When a new rule can be represented through existing conditions/effects, add data rather than adding another hard-coded branch.
+
+Validate card ownership/hand membership, floor visit, target identity and lifecycle,
+selected equipment, final costs and complete effect legality before any gameplay
+write. A missing optional context uses a card's declared useful baseline; an
+explicit stale/invalid target is rejected, never silently redirected.
+AP, card movement, Explore, HP/Guard, equipment uses, Insight rewards, entity
+transitions and RNG advancement commit together. Failure changes none of them.
+Domain systems plan/commit their own effects; RuleResolver coordinates order.
+Do not replace this boundary with a new UI rule engine or a giant generic interpreter.
 
 ---
 
@@ -252,7 +277,18 @@ Responsibilities:
 - reshuffle
 - play validation
 
-Cards represent actions, techniques, memories, and other draw-based opportunities.
+CardData / CardInstance represent Player Cards: actions, techniques, memories,
+and other draw-based opportunities. CardSystem owns pile operations, not Event
+or Entity resolution. RuleResolver performs authoritative play/cost validation.
+
+Use small reusable effects: Explore, Damage, Guard, Threat, Draw, Discard;
+Retain/Exhaust only as needed. Normal cards require a useful baseline that does
+not depend solely on a particular Event, Entity or carried item. Data declares
+contextual bonuses/penalties and baseline alternatives; successful no-ops and
+unconsumed placeholder values do not satisfy the baseline rule.
+
+World Cards never enter or count toward the player's draw/hand/discard/exhaust
+zones. Do not generalize CardSystem to shuffle EventInstances or EntityInstances.
 
 Persistent equipment does **not** belong in the normal draw pile.
 
@@ -266,8 +302,10 @@ Demo baseline:
 
 - 3 carry slots
 - equipment may use durability, charges, battery, or consumable count
-- using equipment normally costs AP
-- equipment can modify card effects or unlock actions
+- active equipment use is requested by a Player Card effect
+- equipment can modify a card or enable an enhanced branch of a useful normal card
+- the final card cost includes declared equipment-related cost; do not blindly
+  add the old standalone-use AP charge a second time
 
 Examples:
 
@@ -278,6 +316,13 @@ Examples:
 Equipment state belongs to the run, not the hand.
 
 Cards may reference equipment requirements through tags/conditions.
+EquipmentData remains a static physical-item definition and EquipmentInstance
+owns remaining battery/durability/charges. EquipmentSystem validates and plans
+uses during card resolution; it has no independent UI active-use pathway.
+Only a fully successful action decrements uses. Missing or empty optional gear
+cannot invalidate a normal card's entire baseline.
+The carry-slot UI may inspect/select gear for the current card; rendering an item
+as a card-like tile does not make it a Player Card drawn from the deck.
 
 ---
 
@@ -301,7 +346,7 @@ cognition
 fresh_event_deck
 residual_event_pool
 resource_nodes
-active_entities
+board_state
 discovered_insights
 landmarks
 cutout_state
@@ -309,6 +354,12 @@ floor_flags
 ```
 
 Returning to the same Level usually creates a new FloorState unless a landmark is explicitly persistent.
+BoardState belongs to this floor visit and owns the active Event/Entity instances
+as specified in section 4.12. FloorState must not retain a second writable copy
+of current_event or active_entities after migration. Legacy properties may only
+be temporary derived aliases to the exact same instances, with removal recorded.
+Event candidate pools/seen IDs remain floor-local scheduling state, not a second
+board of active instances. Resource and cut-out state remain in their domains.
 
 ---
 
@@ -328,12 +379,22 @@ effects
 tags
 ```
 
-Demo flow:
+Event Cards occupy the active Event board slot and retain their own domain types:
 
-- generate 5 Fresh Events from a floor's 6-event candidate pool
-- Fresh Events are no-repeat during that floor instance
-- when exhausted, use Residual Events
-- Residual Events may repeat and generally provide lower rewards / higher pressure
+- EventData: stable ID, name, description, tags, eligibility, Explore threshold,
+  clue milestones, card-tag modifiers and rewards / Insight outcomes.
+- EventInstance: progress, reached milestones, known clues and resolved state.
+- EventSystem plans progress/modifiers and threshold rewards in response to
+  Player Card effects; it does not expose standalone Inspect/Search actions.
+- Crossing a clue or completion threshold triggers that result at most once.
+  Unique Insight rewards still deduplicate across all discovery routes.
+
+Fresh Events remain no-repeat within a visit; Fresh exhaustion must not reshuffle
+one-time rewards. Residual content may repeat under state conditions and should
+not restore depleted resources. The v0.4 six-candidate/five-selected budget is a
+historical content target, not this documentation task's implementation scope.
+The current code has three events per floor and no Residual pool. Event replacement
+and overflow rules must be settled as described in MIGRATION_PLAN.md before migration.
 
 An event whose conditions are false must not be selectable.
 
@@ -389,6 +450,13 @@ Entities may be:
 HP is a common technical model, but HP reaching zero is not the only valid solution.
 
 Entity behavior must be modeled through state + intent + triggers.
+EntityData / EntityInstance remain domain types; an Entity World Card is their
+board presentation. HP/state/intent are read from the instance, not a UI copy.
+Player Cards apply Damage/Guard or interact via tags, conditions and additional
+effects. NOISE may affect Hound behavior, LIGHT may escalate Smiler behavior.
+Read actual resolved exposure, not just a printed tag whose equipment branch failed.
+High HP/mitigation is compatible with behavioral WITHDRAWN outcomes. Do not route
+Smiler through a separate system outside EntitySystem.
 
 Do not implement each entity as an unrelated monolithic script if reusable state/condition/effect components can express the behavior.
 
@@ -456,9 +524,57 @@ Examples:
 - destination partially identified
 - destination confirmed
 
+Cut-out preparation and attempts are Player Card effects. Resource/landmark data
+can supply targets and alternative paths, not independent gameplay buttons.
+The old zero-AP forced-cut button is deprecated; a later Exit World Card, if ever
+introduced, would be a target/presentation, not a free command exception.
+
 Critical anti-soft-lock rule:
 
 > The player must always retain some possible route to leave a normal floor, even if safe preparation failed. A rushed or forced cut-out may be dangerous, but the run must not become permanently stuck because one event did not appear.
+
+This guarantee must hold within the Player Card economy, including bad draws,
+exhaustion and depleted gear/resources. The exact exit-card access/retention or
+recovery guarantee is unresolved; it is a migration gate, not permission to
+restore an independent exit button. Floor transition commits only on success.
+
+---
+
+### 4.12 BoardState and minimal World Card targeting
+
+BoardState is a small runtime container owned by FloorState for one floor visit.
+It is not an Autoload, combat mode, scene tree, or universal card database.
+Conceptual capacity: one active Event slot (nullable when empty), zero to two
+active Entities. A later Exit/Objective is a design possibility only.
+Do not implement RESOURCE/EXIT/ANOMALY/OBJECTIVE board frameworks in this migration
+without a specific follow-up scope.
+
+| Owner | Sole authoritative runtime state |
+| --- | --- |
+| RunState | Player HP/Stress/AP, DeckState, three EquipmentInstance slots, current FloorState reference, run RNG |
+| FloorState | Threat/Cognition/knowledge, pools/flags/resources/cut-out, floor-local temporary defense/light, BoardState |
+| BoardState | Active EventInstance and active EntityInstance references; no duplicate HP/progress/intent |
+| DeckState | Player CardInstances in their mutually exclusive player zones |
+| UI | Presentation and transient selection only; no domain-owned progress or costs |
+
+The existing player_block can remain a floor-local temporary Guard value during
+migration; do not create a competing combat defense pool. Exact expiry must be
+explicit in the card rules and cannot serve as a substitute for useful empty-board
+baseline design.
+
+Keep EventData/EventInstance and EntityData/EntityInstance. CardData is only for
+Player Cards; there is no giant universal CardData with nullable HP/event/equipment
+fields. Share only the presentation/target information actually needed: kind
+(EVENT or ENTITY), runtime instance key scoped to the floor visit, display data,
+and a domain instance reference for read-only rendering. Reuse domain state,
+not shadow WorldCard HP/progress objects.
+A target names a runtime instance, not only a content-definition ID: two instances
+of the same definition or a later floor visit must not satisfy a stale reference.
+
+A click/drag target selection conveys intent for the card in hand and commits
+nothing by itself. RuleResolver validates target existence, kind, active/resolved
+state and visit before producing a plan. Entity intent ordering for two targets
+is a future implementation gate; this documentation task creates no board code.
 
 ---
 
@@ -602,6 +718,10 @@ Do not rely on scattered print statements with no category or context.
 ## 11. Testing Boundaries
 
 At minimum, game rules should be testable without polished UI.
+The existing Phase 1-8 suite validates the legacy build. Keep state/transaction
+invariants, adapt their callers to Player Cards, and explicitly retire tests
+requiring deprecated buttons/no-op baselines. Passing legacy tests alone does
+not establish v2 compliance; see MIGRATION_PLAN.md for the acceptance matrix.
 
 High-priority tests:
 
@@ -619,6 +739,13 @@ High-priority tests:
 - entity conditions invalidate impossible events.
 - HP reaching 0 ends the run.
 - seeded RNG reproduces the same result.
+- every normal Player Card has a useful baseline without a specific Event/Entity.
+- Event modifiers match tags and threshold rewards trigger exactly once.
+- World Cards never enter player zones; instances have one authoritative owner.
+- stale/removed/foreign-visit targets fail without spending AP, cards or equipment.
+- direct legacy gameplay commands/buttons cannot bypass the hand-card requirement.
+- Smiler can withdraw alive through card-mediated correct behavior; Insight remains unique.
+- bad draws/exhaustion/depleted equipment retain a card-based exit route.
 
 ---
 
@@ -667,3 +794,13 @@ When uncertain, choose the option that is:
 5. sufficient for the current demo.
 
 Do not design for hypothetical scale before the demo proves the core loop.
+
+## 14. Deprecated interaction assumptions (historical reference only)
+
+The pre-v2 architecture listed use equipment, inspect, search, loot, retreat and
+attempt cut-out as independent PlayerCommands. That input model is deprecated.
+Those domain effects remain useful internally, but their player-facing execution
+must come from Player Cards. The old rule "equipment unlocks actions" now means
+card enhancements/branches, never a permanent active-use button.
+The old single FloorState.current_event / entity fields describe Phase 1-8 only;
+they are not an alternative authority beside BoardState.

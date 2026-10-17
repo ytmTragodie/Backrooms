@@ -14,6 +14,12 @@ When asked to implement a feature, the AI must read:
 
 before modifying gameplay code.
 
+Current authority: **CARD-FIRST V2 (2026-10-17)**. Read `MIGRATION_PLAN.md` as well
+when touching legacy Phase 1-8 behavior. The retained v0.4 DOCX is historical,
+including its old "canonical" sections. Existing code/tests do not override v2.
+The present design-direction task is documentation-only: do not change scripts,
+Resources, scenes, tests, engine settings or implement migration under this task.
+
 ---
 
 ## 1. Environment
@@ -105,8 +111,8 @@ inside UI button scripts.
 Correct pattern:
 
 ```text
-UI action
--> gameplay command
+Player Card in hand + optional target/equipment selection
+-> PlayCardCommand
 -> RuleResolver/domain system
 -> state update
 -> signal
@@ -114,6 +120,17 @@ UI action
 ```
 
 UI may format values, animate changes, and display descriptions.
+
+Independent controls may only perform pure system operations: End Turn, Pause,
+read-only deck inspection, settings, viewing already-public details, selecting/cancelling targets.
+Inspect/Search/loot, attacks, defense, Run/Stealth, equipment activation, light
+switching, landmark/encounter interactions, preparation and cut-out attempts must
+be effects of a Player Card drawn from the deck. A zero-AP gameplay action still
+needs a Player Card. A card-styled persistent button is not such a card.
+Clicking a World Card may inspect/select it; it must not resolve its own action.
+Inspect here means viewing already-revealed information, not revealing a new clue or Insight.
+UI must not call a legacy direct gameplay API as a fallback when the hand lacks
+an action. Automatic turn/floor/entity effects remain controlled domain rules.
 
 ---
 
@@ -184,6 +201,8 @@ Important state includes:
 - Cognition
 - AP
 - deck/hand/discard
+- board membership and Event Explore progress/milestones
+- Guard and light state
 - equipment durability
 - entity HP/state/intent
 - resource node state
@@ -212,7 +231,18 @@ Before applying an action:
 
 Do not partially mutate state before discovering that an action is invalid.
 
-When feasible, calculate first and commit second.
+Calculate a complete plan before committing nontrivial actions. Validate the
+Player Card's actual hand membership, current floor visit, runtime target kind /
+identity / availability, chosen baseline branch, equipment and final AP cost.
+AP, card movement, Explore progress, milestones, HP/Guard, Threat, equipment uses,
+unique Insight/preparation rewards, board changes and RNG must commit together.
+Notify observers only after the complete commit. An invalid command cannot
+consume any of those resources or leave partial effects in ActionResult.
+
+A card's normal absent-context baseline must be declared in content. This is
+not permission to silently retarget stale/removed targets or to mark no-op
+placeholder effects as successful gameplay. Avoid parallel UI and resolver cost
+formulas. Domain systems own their plan/commit work; RuleResolver owns order.
 
 ---
 
@@ -237,7 +267,18 @@ Do not put most individual card logic in separate scripts.
 
 Cards do not directly search the scene tree for player/entity/floor nodes.
 
-Persistent equipment must not be mixed into normal draw/discard behavior.
+CardData / CardInstance describe Player Cards only. Use reusable Explore, Damage,
+Guard, Threat, Draw, Discard effects and add Retain/Exhaust only as needed.
+Normal cards need useful baseline behavior without a particular Event/Entity or
+optional gear; contextual tags/conditions/modifiers must enhance or vary it rather
+than provide its only use. Neither an unused placeholder damage number nor an
+Explore counter with no gameplay consumer satisfies that requirement.
+Unsettled empty-board baselines are migration design gates, not license to keep
+normal dead cards. Explicit burden/curse cards must be distinguished in design.
+
+Persistent physical equipment and World Cards must not be mixed into normal
+player draw/discard behavior. World Cards keep EventData/EventInstance or
+EntityData/EntityInstance; do not build one giant universal CardData type.
 
 ---
 
@@ -261,11 +302,28 @@ Durability/charge values belong to runtime equipment instances, not shared Resou
 
 Do not mutate a shared `EquipmentData` Resource to store per-run durability.
 
+Keep three run-persistent physical slots outside the deck. Active use is requested
+by a Player Card effect through RuleResolver/EquipmentSystem; the carry UI only
+reads or selects an item for that card. Missing/empty gear must leave a normal
+card's declared useful baseline available; invalid requested enhanced branches
+fail without spending. Card/equipment cost is calculated once in the final cost,
+not by independently charging both old and new input paths.
+Only complete successful resolution consumes battery/durability/charges.
+Passive modifiers may resolve automatically under their declared conditions;
+they do not create a new active-use control.
+
 ---
 
 ## 11. Events
 
-Events must support conditions.
+Events must support conditions and render as EVENT World Cards in BoardState.
+
+Static EventData defines ID, name/description/tags, Explore threshold, clue
+milestones, tag-based modifiers and reward/Insight outcomes. Runtime EventInstance
+owns progress, reached milestones, known clues and resolved state. Normal Player
+Cards advance them via reusable Explore effects; no Event-owned Inspect/Search
+execution buttons. Rewards/milestones trigger once even if one action crosses
+multiple thresholds. Never store runtime progress in EventData or a UI copy.
 
 Do not assume every event can always happen.
 
@@ -297,7 +355,11 @@ Instead:
 
 The same Insight can never increase Cognition twice.
 
-An Insight should have alternative discovery paths when reasonable to avoid soft locks.
+An important Insight needs reachable alternative discovery paths, expressed
+through Player Cards and domain consequences, to avoid soft locks. Multiple
+routes must reference the same stable Insight ID. Explore itself does not add
+Cognition; only a confirmed unique Insight does. Entity withdrawal and Event
+completion must not duplicate an already-earned Insight or preparation reward.
 
 ---
 
@@ -339,6 +401,11 @@ Entity behavior must be based on:
 - conditions
 
 Avoid purely random attack selection where readable intent is part of the design.
+All entities keep the common runtime HP/state/intent model. Smiler may have high
+HP/mitigation and resolve alive as WITHDRAWN through actual LIGHT/no-LIGHT rule
+interactions. Keep this inside EntitySystem and the shared turn pipeline.
+Do not infer actual LIGHT from an optional equipment branch that did not execute.
+Card-mediated evasion/control/observation must not require a separate combat mode.
 
 ---
 
@@ -536,6 +603,24 @@ Examples:
 
 When fixing a gameplay bug, add a regression test if feasible.
 
+For future v2 migration, add or adapt tests for:
+
+- useful baseline behavior with the specific Event/Entity absent and optional gear empty;
+- card tags modifying Event Explore and thresholds/rewards firing once;
+- Event/Entity World Cards never entering player piles;
+- one authoritative BoardState owner and no UI/runtime shadow state;
+- stale, foreign-visit, resolved and removed target rejection without any spending;
+- card + equipment AP/charge + domain effects committing before notification;
+- card-based Smiler withdrawal and shared unique Insight alternative routes;
+- card-mediated exit access despite bad draws, exhausted resources and missing events;
+- no independent gameplay-button or direct-command bypass after the cutover.
+
+Classify existing Phase 1-8 assertions before changing them: preserve invariants,
+adapt callers, explicitly retire deprecated button/no-op expectations. Do not
+rewrite tests to legitimize an accidental regression or claim v2 complete merely
+because the legacy suite passes. Documentation-only tasks use documentation/scope
+checks; they do not imply gameplay migration or require new gameplay tests.
+
 ---
 
 ## 25. AI Task Protocol
@@ -639,6 +724,30 @@ If a proposed abstraction or feature does not help this loop, defer it.
 
 
 
+
+## 30. Board ownership and World Card presentation
+
+Use the minimum floor-local BoardState in ARCHITECTURE.md: one active Event slot
+and zero to two active Entities as design capacity. BoardState owns the active
+EventInstance/EntityInstance references. FloorState keeps pools, flags, resources,
+cut-out and floor-local temporary defense/light. DeckState owns Player Cards only.
+A temporary legacy alias must return the same board instances, never a second
+writable collection or copied HP/progress/intent.
+
+Keep shared rendering/targeting small: world kind, floor-scoped runtime instance
+key, display information and a read-only domain reference. Definition ID alone is
+not a runtime target identity. Do not introduce WorldCardData mega-resources,
+parallel WorldCardInstance state, a second combat state, or future board types
+just to make unlike domain objects inherit the same card base class.
+
+## 31. Deprecated pre-v2 assumptions
+
+The old basic-interaction fallback, direct equipment use, direct landmark/
+encounter/light-switch and cut-out buttons are deprecated design, even while
+still executable in the Phase 1-8 build. Their internal domain planning can be
+reused; their public bypass paths are REMOVE LATER after card equivalents and
+failure/anti-soft-lock tests exist. See MIGRATION_PLAN.md, not old tests or
+v0.4 wording, for the retirement conditions.
 
 ## Player-facing language
 
