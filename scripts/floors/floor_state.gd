@@ -18,12 +18,28 @@ var current_event_id: StringName:
 	get:
 		return current_event.event_id if current_event != null else &""
 var floor_flags: Array[StringName] = []
+var resource_nodes: Array[ResourceNode] = []
+var cutout_state: CutOutState = CutOutState.new()
 
 
 func _init(definition: FloorData) -> void:
 	assert(definition != null and not definition.id.is_empty(), "Floor needs a stable ID")
 	floor_id = definition.id
+	for node: ResourceNodeData in definition.resource_nodes:
+		assert(node != null and not node.id.is_empty() and find_resource(node.id) == null, "Resource node needs a unique stable ID")
+		resource_nodes.append(ResourceNode.new(node.id))
+	for resource: Resource in definition.cutout_destinations:
+		var destination: FloorData = resource as FloorData
+		assert(destination != null and not destination.id.is_empty(), "Cut-out destination needs a stable ID")
+		cutout_state.destination_candidates.append(destination.id)
 	for event: EventData in definition.fresh_events:
 		assert(event != null and not event.id.is_empty(), "Fresh event needs a stable ID")
 		assert(not remaining_fresh_events.has(event.id), "Duplicate Fresh Event ID")
 		remaining_fresh_events.append(event.id)
+
+
+func find_resource(node_id: StringName) -> ResourceNode:
+	for node: ResourceNode in resource_nodes:
+		if node != null and node.node_id == node_id:
+			return node
+	return null

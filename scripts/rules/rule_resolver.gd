@@ -17,6 +17,8 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 		return _fail(result, &"invalid_state_context", card_id)
 	if not state.deck_state.hand.has(card):
 		return _fail(result, &"card_not_in_hand", card_id)
+	if floor_data != null and floor_data.is_placeholder:
+		return _fail(result, &"floor_inactive", card_id)
 	var definition: CardData = card.definition
 	if definition == null or definition.id.is_empty():
 		return _fail(result, &"invalid_card_definition", card_id)
@@ -71,9 +73,9 @@ static func resolve_exploration(command: ExplorationCommand, state: RunState, da
 		return _fail(result, &"invalid_command", action)
 	var cost: int = 0
 	match action:
-		&"inspect", &"search_nearby":
+		&"inspect", &"search_nearby", &"loot", &"prepare_cutout", &"cutout_safe", &"cutout_rushed":
 			cost = 1
-		&"end_turn":
+		&"end_turn", &"cutout_forced":
 			cost = 0
 		_:
 			return _fail(result, &"unknown_action", action)
@@ -83,7 +85,11 @@ static func resolve_exploration(command: ExplorationCommand, state: RunState, da
 		if action != &"end_turn" or data != null:
 			return _fail(result, &"floor_required", action)
 	else:
-		var error: StringName = _prepare_floor_action(result, action, state, data)
+		var error: StringName
+		if action in [&"loot", &"prepare_cutout", &"cutout_safe", &"cutout_rushed", &"cutout_forced"]:
+			error = _prepare_floor_command(result, command, state, data)
+		else:
+			error = _prepare_floor_action(result, action, state, data)
 		if not error.is_empty():
 			return _fail(result, error, action)
 	result.action_id = action
@@ -101,14 +107,46 @@ static func resolve_exploration(command: ExplorationCommand, state: RunState, da
 	return result
 
 
-static func _prepare_floor_action(result: ActionResult, action: StringName, state: RunState, data: FloorData) -> StringName:
+static func _validate_floor_context(state: RunState, data: FloorData) -> StringName:
 	var floor: FloorState = state.floor_state
 	if floor == null or data == null or floor.floor_id != data.id:
 		return &"invalid_floor_context"
+	if data.is_placeholder:
+		return &"floor_inactive"
 	if floor.cognition < 0 or floor.cognition > FloorState.MAX_COGNITION or floor.threat < 0 or floor.threat > FloorState.MAX_THREAT or floor.turn_count < 1:
 		return &"invalid_floor_state"
 	if data.overstay_start_turn < 3 or data.overstay_interval < 1:
 		return &"invalid_floor_definition"
+	var error: StringName = CutOutSystem.validate_state(floor.cutout_state)
+	if not error.is_empty():
+		return error
+	return ResourceNodeSystem.validate(floor, data)
+
+
+static func _prepare_floor_command(result: ActionResult, command: ExplorationCommand, state: RunState, data: FloorData) -> StringName:
+	var error: StringName = _validate_floor_context(state, data)
+	if not error.is_empty():
+		return error
+	if command.action_id == &"loot":
+		return ResourceNodeSystem.plan_loot(result, state, data, command.target_id)
+	error = CutOutSystem.validate(state.floor_state.cutout_state, data)
+	if not error.is_empty():
+		return error
+	if command.action_id == &"prepare_cutout":
+		return CutOutSystem.plan_preparation(result, state)
+	var attempt_type: StringName = &"safe"
+	if command.action_id == &"cutout_rushed":
+		attempt_type = &"rushed"
+	elif command.action_id == &"cutout_forced":
+		attempt_type = &"forced"
+	return CutOutSystem.plan_attempt(result, state, data, attempt_type)
+
+
+static func _prepare_floor_action(result: ActionResult, action: StringName, state: RunState, data: FloorData) -> StringName:
+	var error: StringName = _validate_floor_context(state, data)
+	if not error.is_empty():
+		return error
+	var floor: FloorState = state.floor_state
 	var event: EventData = data.find_event(floor.current_event_id)
 	if not floor.current_event_id.is_empty() and event == null:
 		return &"invalid_event_context"
@@ -118,6 +156,8 @@ static func _prepare_floor_action(result: ActionResult, action: StringName, stat
 			if rule == null or rule.action_id not in [&"observe", &"deep_search", &"inspect", &"search_nearby"]:
 				return &"invalid_event_definition"
 			if rule.insight != null and rule.insight.id.is_empty():
+				return &"invalid_insight_definition"
+			if rule.insight != null and (rule.insight.cutout_stability < 0 or rule.insight.cutout_knowledge < 0):
 				return &"invalid_insight_definition"
 			for flag: StringName in rule.granted_flags:
 				if flag.is_empty():
@@ -133,6 +173,7 @@ static func _prepare_floor_action(result: ActionResult, action: StringName, stat
 	result.action_id = action
 	result.event_id = floor.current_event_id
 	if action == &"deep_search":
+		ResourceNodeSystem.plan_discovery(result, state, data, true)
 		result.threat_delta = mini(1, FloorState.MAX_THREAT - floor.threat)
 		result.threat_reason = &"deep_search"
 	elif action == &"end_turn":
@@ -140,6 +181,8 @@ static func _prepare_floor_action(result: ActionResult, action: StringName, stat
 			result.threat_delta = mini(1, FloorState.MAX_THREAT - floor.threat)
 			result.threat_reason = &"overstay"
 		return &""
+	if action == &"search_nearby":
+		ResourceNodeSystem.plan_discovery(result, state, data, false)
 	if event == null:
 		return &""
 	# 已理解的事件允许正常出牌，但不再产生线索奖励；卡牌照常消耗并弃置。
@@ -151,6 +194,8 @@ static func _prepare_floor_action(result: ActionResult, action: StringName, stat
 		completed.append(action)
 		result.event_resolved = completed.has(&"inspect") and completed.has(&"search_nearby")
 	var no_blocked_flags: Array[StringName] = []
+	var stability: int = 0
+	var knowledge: int = 0
 	for rule: EventActionData in event.action_results:
 		if rule.action_id != action or not EventSystem.conditions_met(rule.required_flags, no_blocked_flags, floor.floor_flags):
 			continue
@@ -162,8 +207,13 @@ static func _prepare_floor_action(result: ActionResult, action: StringName, stat
 		result.event_resolved = result.event_resolved or rule.resolves_event
 		if rule.insight != null and not floor.discovered_insight_ids.has(rule.insight.id) and not result.insight_ids.has(rule.insight.id):
 			result.insight_ids.append(rule.insight.id)
+			# 使用本次实际命中的、已校验的定义，不重新扫描其他事件的内容。
+			stability += rule.insight.cutout_stability
+			knowledge += rule.insight.cutout_knowledge
 	# 所有条件读取动作前的状态；本次刚记录的线索不能立即充当验证依据。
 	result.cognition_delta = mini(result.insight_ids.size(), FloorState.MAX_COGNITION - floor.cognition)
+	if stability > 0 or knowledge > 0:
+		CutOutSystem.plan_gain(result, floor.cutout_state, stability, knowledge, &"unique_insight")
 	return &""
 
 
@@ -195,6 +245,8 @@ static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
 	if not result.threat_reason.is_empty():
 		floor.threat += result.threat_delta
 		result.debug_lines.append("[THREAT] +%d reason=%s total=%d" % [result.threat_delta, result.threat_reason, floor.threat])
+	ResourceNodeSystem.commit(result, state)
+	CutOutSystem.commit(result, state)
 
 
 static func _fail(result: ActionResult, reason: StringName, card_id: StringName) -> ActionResult:

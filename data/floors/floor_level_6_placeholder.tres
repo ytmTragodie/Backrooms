@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="FloorData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="1_floor"]
+
+[resource]
+script = ExtResource("1_floor")
+id = &"floor_level_6"
+display_name = "六层（占位）"
+is_placeholder = true
+placeholder_description = "你已离开零层，抵达一片黑暗。
+本阶段只验证楼层过渡，六层玩法尚未开放。"

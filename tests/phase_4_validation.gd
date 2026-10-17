@@ -337,11 +337,11 @@ func _test_debug_ui() -> void:
 	var main: Control = MAIN_SCENE.instantiate() as Control
 	root.add_child(main)
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
-	var info: Label = main.get_node("FloorMargin/FloorPanel/FloorInfo") as Label
-	var event_info: Label = main.get_node("FloorMargin/FloorPanel/EventInfo") as Label
-	var insights: Label = main.get_node("FloorMargin/FloorPanel/InsightList") as Label
-	var inspect: Button = main.get_node("FloorMargin/FloorPanel/InspectAction") as Button
-	var search: Button = main.get_node("FloorMargin/FloorPanel/SearchNearbyAction") as Button
+	var info: Label = main.get_node("FloorMargin/FloorTabs/FloorPanel/FloorInfo") as Label
+	var event_info: Label = main.get_node("FloorMargin/FloorTabs/FloorPanel/EventInfo") as Label
+	var insights: Label = main.get_node("FloorMargin/FloorTabs/FloorPanel/InsightList") as Label
+	var inspect: Button = main.get_node("FloorMargin/FloorTabs/FloorPanel/InspectAction") as Button
+	var search: Button = main.get_node("FloorMargin/FloorTabs/FloorPanel/SearchNearbyAction") as Button
 	var end_turn: Button = main.get_node("CenterContainer/Messages/EndTurn") as Button
 	var hand: VBoxContainer = main.get_node("CenterContainer/Messages/Hand") as VBoxContainer
 	var status: Label = main.get_node("CenterContainer/Messages/Status") as Label

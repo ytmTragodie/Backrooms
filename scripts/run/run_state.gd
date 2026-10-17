@@ -5,6 +5,9 @@ const AP_PER_TURN: int = 3
 
 var player_hp: int = 30
 var stress: int = 0
+var supply: int = 0
+# 尝试记录属于整局，成功切换楼层后仍可读取；不在旧、新楼层各存一份。
+var last_cutout_attempt: CutOutAttemptResult
 var floor_state: FloorState
 # 兼容旧调试读取；这里只转发楼层值，不再保存第二份 Threat / Cognition。
 var threat: int:

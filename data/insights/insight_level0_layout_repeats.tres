@@ -6,3 +6,5 @@
 script = ExtResource("1_insight")
 id = &"insight_level0_layout_repeats"
 display_name = "走廊布局重复"
+cutout_stability = 1
+cutout_knowledge = 1

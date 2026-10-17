@@ -19,4 +19,16 @@ var threat_reason: StringName
 var event_interaction: StringName
 var event_information: Array[String] = []
 var event_resolved: bool = false
+var resource_discovered_id: StringName
+var resource_looted_id: StringName
+var supply_delta: int = 0
+var stability_delta: int = 0
+var knowledge_delta: int = 0
+var preparation_reason: StringName
+var stress_delta: int = 0
+var cutout_attempt: CutOutAttemptResult
+var destination: FloorData
+var next_floor: FloorState
+var rng_state_after: int = 0
+var commit_rng: bool = false
 var debug_lines: Array[String] = []

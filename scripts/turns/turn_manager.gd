@@ -44,6 +44,7 @@ func end_turn() -> ActionResult:
 	run_state.turn_number += 1
 	run_state.ap = RunState.AP_PER_TURN
 	if run_state.floor_state != null:
+		ResourceNodeSystem.finish_turn(run_state.floor_state)
 		run_state.floor_state.turn_count += 1
 		# 仅已解决事件在新回合推进；未完成事件及其交互记录继续保留。
 		EventSystem.draw_fresh(floor_data, run_state.floor_state, run_state.rng)
@@ -63,11 +64,14 @@ func request_play_card(card: CardInstance) -> ActionResult:
 	return result
 
 
-func request_exploration(action_id: StringName) -> ActionResult:
+func request_exploration(action_id: StringName, target_id: StringName = &"") -> ActionResult:
 	if action_id == &"end_turn":
 		return end_turn()
-	var result: ActionResult = RuleResolver.resolve_exploration(ExplorationCommand.new(action_id), run_state, floor_data)
+	var result: ActionResult = RuleResolver.resolve_exploration(ExplorationCommand.new(action_id, target_id), run_state, floor_data)
 	if result.success:
+		# 解析器已提交楼层状态；在通知前同步相应的只读定义，不在信号里执行规则。
+		if result.destination != null:
+			floor_data = result.destination
 		state_changed.emit()
 	action_resolved.emit(result)
 	return result

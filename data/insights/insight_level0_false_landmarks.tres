@@ -6,3 +6,5 @@
 script = ExtResource("1_insight")
 id = &"insight_level0_false_landmarks"
 display_name = "熟悉地标并不可靠"
+cutout_stability = 1
+cutout_knowledge = 1

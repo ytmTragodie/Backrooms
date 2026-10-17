@@ -6,3 +6,5 @@
 script = ExtResource("1_insight")
 id = &"insight_level0_hum_changes"
 display_name = "嗡鸣随位置改变"
+cutout_stability = 1
+cutout_knowledge = 1
