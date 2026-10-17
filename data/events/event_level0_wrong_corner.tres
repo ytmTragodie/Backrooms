@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/events/event_action_data.gd" id="2_action"]
+[ext_resource type="Resource" path="res://data/insights/insight_level0_false_landmarks.tres" id="3_insight"]
+
+[sub_resource type="Resource" id="Record"]
+script = ExtResource("2_action")
+action_id = &"observe"
+granted_flags = Array[StringName]([&"corner_noted"])
+
+revealed_text = "你记录了转角附近的特征，但方向仍不可靠。"
+
+[sub_resource type="Resource" id="Confirm"]
+script = ExtResource("2_action")
+action_id = &"observe"
+required_flags = Array[StringName]([&"corner_noted"])
+insight = ExtResource("3_insight")
+revealed_text = "你重新验证了路线，确认熟悉的转角不能作为可靠地标。"
+resolves_event = true
+
+[sub_resource type="Resource" id="Search"]
+script = ExtResource("2_action")
+action_id = &"deep_search"
+insight = ExtResource("3_insight")
+revealed_text = "你重新验证了路线，确认熟悉的转角不能作为可靠地标。"
+resolves_event = true
+
+[sub_resource type="Resource" id="Inspect"]
+script = ExtResource("2_action")
+action_id = &"inspect"
+granted_flags = Array[StringName]([&"corner_noted"])
+revealed_text = "你记录了转角附近的特征，但方向仍不可靠。"
+
+[sub_resource type="Resource" id="SearchNearby"]
+script = ExtResource("2_action")
+action_id = &"search_nearby"
+granted_flags = Array[StringName]([&"corner_noted"])
+revealed_text = "附近的地毯接缝与记忆中的位置并不吻合。"
+
+[resource]
+script = ExtResource("1_event")
+id = &"event_level0_wrong_corner"
+display_name = "错位的转角"
+display_text = "你再次走到熟悉的转角，前方却通向了陌生的位置。"
+action_results = Array[ExtResource("2_action")]([SubResource("Record"), SubResource("Confirm"), SubResource("Search"), SubResource("Inspect"), SubResource("SearchNearby")])

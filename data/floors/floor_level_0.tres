@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FloorData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="1_floor"]
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="2_event"]
+[ext_resource type="Resource" path="res://data/events/event_level0_humming.tres" id="3_humming"]
+[ext_resource type="Resource" path="res://data/events/event_level0_wall_marks.tres" id="4_marks"]
+[ext_resource type="Resource" path="res://data/events/event_level0_wrong_corner.tres" id="5_corner"]
+
+[resource]
+script = ExtResource("1_floor")
+id = &"floor_level_0"
+display_name = "零层"
+fresh_events = Array[ExtResource("2_event")]([ExtResource("3_humming"), ExtResource("4_marks"), ExtResource("5_corner")])

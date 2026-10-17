@@ -5,5 +5,6 @@
 [resource]
 script = ExtResource("1_card")
 id = &"card_observe"
-display_name = "Observe"
+display_name = "观察"
 ap_cost = 1
+exploration_action = &"observe"

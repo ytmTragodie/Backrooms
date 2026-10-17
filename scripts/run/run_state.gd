@@ -5,9 +5,14 @@ const AP_PER_TURN: int = 3
 
 var player_hp: int = 30
 var stress: int = 0
-# Phase 1 的临时占位值；引入楼层后由 FloorState 持有。
-var threat: int = 0
-var cognition: int = 0
+var floor_state: FloorState
+# 兼容旧调试读取；这里只转发楼层值，不再保存第二份 Threat / Cognition。
+var threat: int:
+	get:
+		return floor_state.threat if floor_state != null else 0
+var cognition: int:
+	get:
+		return floor_state.cognition if floor_state != null else 0
 var turn_number: int = 1
 # AP 的唯一权威值：TurnManager 在新回合恢复，RuleResolver 在合法出牌时扣除。
 var ap: int = AP_PER_TURN

@@ -1,73 +1,126 @@
-# Backrooms Demo
+# 后室：切出 Demo
 
-Godot 4.x project using the Compatibility renderer. Open `project.godot` and run
-the main scene with F6 or the project with F5.
+Godot 4.x / Compatibility / 类型化 GDScript。打开 `project.godot`，按 F5 运行。
+本项目目前完成 Phase 1–4 原型与 Phase 4 交互修正，尚未进入 Phase 5。
 
-New runs start with 30 HP, zero Stress/Threat/Cognition, turn 1 and 3 AP.
-The scene-owned TurnManager owns RunState and coordinates turn lifecycle. UI
-reads state and sends Play or End Turn commands. Threat and Cognition remain
-temporary RunState fields until FloorState is introduced.
+## 状态与结算边界
 
-Phase 2 adds an ordered nine-card prototype deck: three copies each of Observe
-(1 AP), Wait (0 AP), and Struggle (1 AP). The opening hand is Observe, Struggle,
-Observe, Struggle, Wait. This temporary deck replaces the canonical GDD starter
-content only for Phase 2 validation. The starter list and card definitions are
-Resources under `data/cards/`; each copy has a separate runtime CardInstance.
+新局：生命 30、压力 0、威胁 0、认知 0、回合 1、行动点 3。
+`TurnManager` 持有唯一 `RunState`，协调回合；楼层内的威胁和认知只存于
+`FloorState`，`RunState` 的兼容读取不另存副本。新一局创建新的管理器。
 
-Each turn draws to five. Played cards enter discard; End Turn discards the rest,
-restores AP to 3, and draws the next hand. When the draw pile runs out, discard
-is shuffled with the run-owned RNG (default seed 1, logged at startup), then
-drawing continues. Existing draw cards are consumed before any reshuffle.
-Unaffordable and out-of-hand plays are rejected without changing state.
+UI 只显示状态并发送命令。统一流程：
 
-Phase 3 routes plays through a stateless RuleResolver:
-UI -> TurnManager.request_play_card -> PlayCardCommand -> RuleResolver ->
-ActionResult -> RunState AP / CardSystem location commit -> notifications -> UI.
-The resolver receives state explicitly and validates the whole request before
-building a result and committing changes. CardSystem still owns draw, discard,
-and reshuffle; it has no play-command entry and does not depend on RuleResolver.
-All external play requests use TurnManager.request_play_card so both state and
-result notifications are delivered consistently. Phase 2 assertions are kept
-and migrated to this command entry.
+```text
+UI -> TurnManager -> PlayCardCommand / ExplorationCommand
+   -> RuleResolver 验证与计算 -> ActionResult
+   -> AP / 牌区 / 事件 / Insight / 威胁一次提交 -> 通知 -> UI 刷新
+```
 
-TurnManager exposes a fixed RunState reference; create a new TurnManager for a
-new run. CardSystem reads the current DeckState from its bound RunState on each
-operation instead of caching a second deck reference.
+失败操作不改变 AP、卡牌位置、事件进度、楼层旗标、Insight 或 RNG。
+`CardSystem` 负责抽牌、弃牌和洗牌，不提供绕过管理器的出牌入口，也不缓存
+第二份 DeckState 引用。共享的 CardData、FloorData 和 EventData 只保存定义。
 
-CardData declares only NO_OP or PLACEHOLDER_DAMAGE. Observe and Wait return
-successful no-op results; Struggle returns `damage_requested=2`. No damage is
-applied and Observe never grants Cognition. ActionResult includes success,
-failure reason, AP spent, played instance, placeholder effect, and trace lines.
-The debug status shows the last success or rejection. There are no floors,
-events, entities, combat, equipment, cut-out, or polished card UI.
+## 卡牌与基础场景交互
 
-Run deterministic validation from the project directory, replacing `godot` with
-the path to your Godot executable if it is not on PATH:
+当前九张临时测试牌：观察 ×3、等待 ×3、挣扎 ×1、深入搜索 ×2。
+初始手牌为观察、挣扎、观察、深入搜索、等待。它不是 GDD 的最终起始牌组。
+每张卡拥有独立 `CardInstance`，共享只读 `CardData`。
+
+- **检查环境**：场景交互，1 行动点，记录表层线索；当前事件中限一次。
+- **搜索附近**：场景交互，1 行动点，记录另一条局部信息；当前事件中限一次。
+- **观察**：手牌中的 1 费卡。首次可记录证据；已有基础线索或观察证据时，
+  可验证该事件配置的 Insight。没有唯一新发现就不会自动增加认知。
+- **深入搜索**：手牌中的 2 费卡，可直接验证事件配置的 Insight，成功打出时
+  威胁 +1（受上限约束）。成功后和其他卡一样离开手牌并进入弃牌堆。
+- **挣扎**：1 费，仅返回预期伤害 2，不对实际目标应用伤害。
+- **等待**：0 费，保留无效果原型，可在零行动点时打出。
+
+场景交互不是卡，不加入任何牌区。侧栏不再提供无限的观察／深入搜索按钮；
+通过场景命令请求这两种卡牌行动也会被拒绝。
+所有卡都要求实际在手牌中，费用读取 CardData。已解决或暂无事件时，调查卡
+仍可正常消耗并弃置，但没有新的事件信息或 Insight；深入搜索仍承担行为威胁。
+预览下一事件等替代效果暂未实现。
+
+结束回合弃掉剩余手牌，恢复 3 行动点并抽至 5 张。先抽完原抽牌堆，再用本局
+RNG 洗弃牌堆继续抽牌。运行种子默认 1，开发日志显示种子。
+
+## 事件生命周期
+
+进入零层创建新的 FloorState，按条件、权重和本局 RNG 激活一个新鲜事件。
+目前只有三个原型事件，尚不是完整 GDD 的六选五／滞留事件池。
+
+```text
+激活事件 -> 未调查 -> 检查、搜索或观察留下线索 -> 调查中
+         -> 两项基础交互均完成，或卡牌验证事件 -> 已解决
+         -> 结束回合 -> 激活下一个符合条件的新鲜事件
+```
+
+`FloorState.current_event` 持有唯一 `EventInstance`；当前事件 ID 从实例派生。
+实例保存已完成基础交互、已知信息和解决状态，不把进度写回共享 EventData。
+基础交互只提供表层信息，不保证 Insight；两项都用完可以结束事件而不获得认知。
+卡牌的确认条件、信息文本和解决效果由 EventActionData 配置。
+
+未完成事件跨回合保留，结束回合不会清空交互记录，也不会重置按钮。
+已用交互禁用并标为“已完成”，已解决事件禁用所有基础交互；领域层仍会拒绝
+重复请求。已解决事件在下个回合开始推进，首次行动不会直接替换当前事件。
+新鲜事件不重复、不重洗；耗尽后明确显示中文提示，不伪造滞留内容。
+
+两条调查路径引用相同稳定 Insight ID，只能首次确认时增加认知，认知上限 5。
+三个现有 Insight 使新局最多达到认知 3；测试夹具额外验证上限。
+威胁上限 10；第 1、2 回合无滞留增长，第 3、5、7……回合末滞留威胁 +1。
+所有威胁变化记录原因，包括深入搜索与滞留。
+
+## 中文界面
+
+应用与场景标题为“后室：切出 Demo”。状态、牌区、卡名、事件标题和描述、
+已知信息、认知线索、操作反馈和失败提示均使用简体中文。
+左侧“手牌”和右侧“场景交互”明确分区。内部稳定 ID、类名和日志继续使用
+英文；UI 用独立的 display_name 显示中文，不直接展示内部 ID。
+
+## 验证
+
+在项目目录执行，将 `godot` 替换为本机 Godot 控制台程序路径：
 
 ```powershell
 godot --headless --path . --editor --quit
 godot --headless --path . --script res://tests/phase_1_validation.gd
 godot --headless --path . --script res://tests/phase_2_validation.gd
 godot --headless --path . --script res://tests/phase_3_validation.gd
+godot --headless --path . --script res://tests/phase_4_validation.gd
 godot --headless --path . --quit-after 3
+git diff --check
 ```
 
-Each validation exits with code 1 on a failed check. Phase 1 covers initial
-values, AP restoration, repeated turns, independent runs, signals, and UI.
-Phase 2 covers draw-to-five, paid/free plays, rejection without mutation,
-discard, partial draws and reshuffling, empty/short decks, conservation of every
-runtime instance, fixed-seed determinism, unchanged Resources, and UI commands.
-Phase 3 verifies transactional failure, structured effects, exactly one AP/card
-commit and result notification, invalid commands/state/definitions, unchanged
-Resources/RNG, and UI result presentation. Failure snapshots copy instance and
-definition identities plus static field values. Regression checks verify that
-definition replacement/field changes are detected and that deck operations
-never use an outdated DeckState reference.
+每个验证脚本在断言失败时以状态码 1 退出。
+Phase 1 验证初始值、回合、AP、独立局和 UI 命令。
+Phase 2 验证抽弃洗、免费／付费出牌、非法出牌、短牌组、实例守恒和确定性。
+Phase 3 验证事务失败、结构化结果、显式状态上下文、定义不变和完整提交后通知。
+Phase 4 验证事件条件／无重复／种子、事件进度、两类交互边界、基本动作限次、
+观察与深入搜索卡、唯一 Insight／上下限、威胁／滞留、失败快照和中文 UI。
+失败快照按值保存事件进度和牌区；测试还验证快照能检测后续值变化。
+坏内容夹具逐层复制 Resource，避免污染正式定义。UI 测试通过按钮信号执行
+完整操作流程，并检查基础交互禁用、中文文本、稳定 ID 与视口内布局。
 
-Manual check: run with F5. Play the first three 1 AP cards to reach zero AP,
-then try Struggle: the hand and AP must stay unchanged. Play Wait successfully
-at zero AP. End Turn should show turn 2, AP 3 and five cards. Watch the Output
-panel for `[COMMAND]`, `[RULE]`, `[AP]`, `[CARD]`, and `[RESULT]` traces.
-Successful Struggle reports `damage_requested=2`; the rejected play reports
-`insufficient_ap`. Observe must leave Cognition at 0. Turn/discard/reshuffle
-behavior remains the same.
+## 手动验证
+
+1. 按 F5，确认零层、回合 1、生命 30、行动点 3、威胁／认知 0，手牌 5 张。
+2. 点“检查环境”：行动点变 2、出现局部信息、按钮禁用并标记已完成，牌区不变。
+3. 确认不能再次点击获得收益。事件应显示“调查中”，不会直接换成下一事件。
+4. 点击手牌“观察”：行动点变 1，卡从手牌移到弃牌堆，唯一线索确认后认知变 1，
+   当前事件显示已解决，两个基础交互都禁用。
+5. 此时尝试打出“深入搜索”：因费用 2 大于剩余行动点 1 而失败；卡、事件、
+   认知与威胁不变，显示中文原因。
+6. 点“结束回合”：进入回合 2、恢复 3 行动点、抽至 5 张，激活下一事件。
+   默认起始牌序保证此时手中仍有“深入搜索”。
+7. 从手牌打出“深入搜索”：行动点变 1、威胁变 1、认知变 2，该卡进入弃牌堆，
+   当前事件解决。检查技术日志中的事件状态、Insight、AP、卡牌和威胁原因。
+8. 另开新局，仅用“检查环境＋搜索附近”：二者各限一次，合计 2 行动点，事件
+   可以解决但不保证认知；结束回合后才出现下一事件。
+
+## 当前限制
+
+没有资源节点、切出、零层以外楼层、实体、真实战斗、装备、完整卡池、
+滞留事件、美术、拖拽、存档或本地化框架，没有新增插件或依赖。
+当前事件只有有限原型发现路线；已解决事件的卡牌替代收益留待后续设计。
+仓库尚无 `docs/GDD.md`，设计依据为现有 GDD v0.4 Demo Baseline Word 文档。

@@ -252,23 +252,23 @@ func _test_debug_ui() -> void:
 	var end_turn: Button = main.get_node("CenterContainer/Messages/EndTurn") as Button
 	var observe_button: Button = hand.get_child(0) as Button
 	observe_button.pressed.emit()
-	_check(status.text == "Played Observe | AP spent: 1 | Damage requested: 0", "UI presents the Observe result")
+	_check(status.text == "已打出观察；消耗行动点：1；认知：+0；威胁：+0。", "UI presents the Observe result")
 	_check(manager.run_state.ap == 2 and manager.run_state.cognition == 0, "UI Observe request uses domain AP without granting Cognition")
 	var struggle_button: Button = hand.get_child(0) as Button
 	struggle_button.pressed.emit()
-	_check(status.text == "Played Struggle | AP spent: 1 | Damage requested: 2", "UI presents the placeholder damage result")
+	_check(status.text == "已打出挣扎；消耗行动点：1；认知：+0；威胁：+0。预期伤害：2（尚未结算）。", "UI presents the placeholder damage result")
 	var second_observe: Button = hand.get_child(0) as Button
 	second_observe.pressed.emit()
 	var before_failure: Dictionary = _snapshot(manager.run_state)
 	var rejected_button: Button = hand.get_child(0) as Button
 	rejected_button.pressed.emit()
-	_check(status.text == "Play failed: insufficient_ap" and _snapshot(manager.run_state) == before_failure, "UI rejection reports the reason with zero gameplay mutation")
+	_check(status.text == "行动失败：行动点不足。" and _snapshot(manager.run_state) == before_failure, "UI rejection reports the reason with zero gameplay mutation")
 	var wait_button: Button = hand.get_child(1) as Button
 	wait_button.pressed.emit()
-	_check(status.text == "Played Wait | AP spent: 0 | Damage requested: 0", "UI Wait request works at zero AP")
+	_check(status.text == "已打出等待；消耗行动点：0；认知：+0；威胁：+0。", "UI Wait request works at zero AP")
 	end_turn.pressed.emit()
 	_check(manager.run_state.turn_number == 2 and manager.run_state.ap == 3 and hand.get_child_count() == 5, "Resolver integration preserves End Turn and redraw")
-	_check(stats.text.contains("Turn: 2") and stats.text.contains("AP: 3"), "UI refresh remains synchronized with RunState")
+	_check(stats.text.contains("回合：2") and stats.text.contains("行动点：3"), "UI refresh remains synchronized with RunState")
 	main.free()
 
 
@@ -301,6 +301,7 @@ func _snapshot_cards(pile: Array[CardInstance]) -> Array[Dictionary]:
 			record["display_name"] = definition.display_name
 			record["ap_cost"] = definition.ap_cost
 			record["effect_type"] = definition.effect_type
+			record["exploration_action"] = definition.exploration_action
 			record["placeholder_damage"] = definition.placeholder_damage
 		snapshots.append(record)
 	return snapshots

@@ -635,3 +635,20 @@ Enter Level 0
 ```
 
 If a proposed abstraction or feature does not help this loop, defer it.
+
+
+
+
+
+## Player-facing language
+
+All player-facing game UI text should default to Simplified Chinese.
+
+Internal code identifiers, stable IDs, filenames, class names, logs, and resource keys should remain in English unless there is a specific reason otherwise.
+
+Examples:
+
+- internal ID: `card_observe`
+- player-facing name: `观察`
+
+Do not use internal IDs directly as visible UI text.

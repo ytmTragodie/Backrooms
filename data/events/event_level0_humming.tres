@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/events/event_action_data.gd" id="2_action"]
+[ext_resource type="Resource" path="res://data/insights/insight_level0_hum_changes.tres" id="3_insight"]
+
+[sub_resource type="Resource" id="Record"]
+script = ExtResource("2_action")
+action_id = &"observe"
+granted_flags = Array[StringName]([&"hum_noted"])
+
+revealed_text = "你记下了嗡鸣的节奏，但还无法判断它意味着什么。"
+
+[sub_resource type="Resource" id="Confirm"]
+script = ExtResource("2_action")
+action_id = &"observe"
+required_flags = Array[StringName]([&"hum_noted"])
+insight = ExtResource("3_insight")
+revealed_text = "你反复比对脚步与声音，确认嗡鸣会随位置改变。"
+resolves_event = true
+
+[sub_resource type="Resource" id="Search"]
+script = ExtResource("2_action")
+action_id = &"deep_search"
+insight = ExtResource("3_insight")
+revealed_text = "你反复比对脚步与声音，确认嗡鸣会随位置改变。"
+resolves_event = true
+
+[sub_resource type="Resource" id="Inspect"]
+script = ExtResource("2_action")
+action_id = &"inspect"
+granted_flags = Array[StringName]([&"hum_noted"])
+revealed_text = "你记下了嗡鸣的节奏，但还无法判断它意味着什么。"
+
+[sub_resource type="Resource" id="SearchNearby"]
+script = ExtResource("2_action")
+action_id = &"search_nearby"
+granted_flags = Array[StringName]([&"hum_noted"])
+revealed_text = "附近灯管的亮度相似，声音却并不一致。"
+
+[resource]
+script = ExtResource("1_event")
+id = &"event_level0_humming"
+display_name = "灯管嗡鸣"
+display_text = "你听见灯管的嗡鸣随着脚步改变。表面的规律尚未得到验证。"
+action_results = Array[ExtResource("2_action")]([SubResource("Record"), SubResource("Confirm"), SubResource("Search"), SubResource("Inspect"), SubResource("SearchNearby")])

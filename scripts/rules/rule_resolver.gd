@@ -2,7 +2,7 @@ class_name RuleResolver
 extends RefCounted
 
 
-static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem) -> ActionResult:
+static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem, floor_data: FloorData = null) -> ActionResult:
 	# 解析器不持有 RunState；调用者必须显式提供同一局的状态与牌堆系统。
 	var result: ActionResult = ActionResult.new()
 	var card: CardInstance = command.card if command != null else null
@@ -29,6 +29,14 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	var final_cost: int = definition.ap_cost
 	if state.ap < final_cost:
 		return _fail(result, &"insufficient_ap", card_id)
+	if not definition.exploration_action.is_empty():
+		if definition.exploration_action != &"observe" and definition.exploration_action != &"deep_search":
+			return _fail(result, &"invalid_card_definition", card_id)
+		# 无楼层的早期测试夹具仍保留原型 no-op；有楼层时按事件条件解析。
+		if state.floor_state != null:
+			var error: StringName = _prepare_floor_action(result, definition.exploration_action, state, floor_data)
+			if not error.is_empty():
+				return _fail(result, error, card_id)
 
 	# 先计算并构建完整结果；占位伤害只进入结果，不修改任何目标的 HP。
 	result.success = true
@@ -49,9 +57,144 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	cards.move_hand_to_discard(card)
 	result.debug_lines.append("[AP] %d -> %d" % [previous_ap, state.ap])
 	result.debug_lines.append("[CARD] hand -> discard %s" % card_id)
+	_commit_floor_result(result, state)
 	result.debug_lines.append("[RESULT] success %s effect=%s damage_requested=%d" % [card_id, result.effect, result.damage_requested])
 	_write_log(result)
 	return result
+
+
+static func resolve_exploration(command: ExplorationCommand, state: RunState, data: FloorData) -> ActionResult:
+	var result: ActionResult = ActionResult.new()
+	var action: StringName = command.action_id if command != null else &""
+	result.debug_lines.append("[COMMAND] action %s" % action)
+	if command == null or state == null:
+		return _fail(result, &"invalid_command", action)
+	var cost: int = 0
+	match action:
+		&"inspect", &"search_nearby":
+			cost = 1
+		&"end_turn":
+			cost = 0
+		_:
+			return _fail(result, &"unknown_action", action)
+	if state.ap < cost:
+		return _fail(result, &"insufficient_ap", action)
+	if state.floor_state == null:
+		if action != &"end_turn" or data != null:
+			return _fail(result, &"floor_required", action)
+	else:
+		var error: StringName = _prepare_floor_action(result, action, state, data)
+		if not error.is_empty():
+			return _fail(result, error, action)
+	result.action_id = action
+	result.success = true
+	result.effect = action
+	result.ap_spent = cost
+	result.debug_lines.append("[RULE] validation success")
+	result.debug_lines.append("[RULE] final_cost=%d" % cost)
+	var previous_ap: int = state.ap
+	state.ap -= cost
+	result.debug_lines.append("[AP] %d -> %d" % [previous_ap, state.ap])
+	_commit_floor_result(result, state)
+	result.debug_lines.append("[RESULT] success %s" % action)
+	_write_log(result)
+	return result
+
+
+static func _prepare_floor_action(result: ActionResult, action: StringName, state: RunState, data: FloorData) -> StringName:
+	var floor: FloorState = state.floor_state
+	if floor == null or data == null or floor.floor_id != data.id:
+		return &"invalid_floor_context"
+	if floor.cognition < 0 or floor.cognition > FloorState.MAX_COGNITION or floor.threat < 0 or floor.threat > FloorState.MAX_THREAT or floor.turn_count < 1:
+		return &"invalid_floor_state"
+	if data.overstay_start_turn < 3 or data.overstay_interval < 1:
+		return &"invalid_floor_definition"
+	var event: EventData = data.find_event(floor.current_event_id)
+	if not floor.current_event_id.is_empty() and event == null:
+		return &"invalid_event_context"
+	# 全部内容校验先完成，再构建计划，失败结果不会携带半成品效果。
+	if event != null:
+		for rule: EventActionData in event.action_results:
+			if rule == null or rule.action_id not in [&"observe", &"deep_search", &"inspect", &"search_nearby"]:
+				return &"invalid_event_definition"
+			if rule.insight != null and rule.insight.id.is_empty():
+				return &"invalid_insight_definition"
+			for flag: StringName in rule.granted_flags:
+				if flag.is_empty():
+					return &"invalid_event_definition"
+	var basic: bool = action == &"inspect" or action == &"search_nearby"
+	if basic:
+		if event == null or not event.has_action(action):
+			return &"interaction_unavailable"
+		if floor.current_event.completed_interactions.has(action):
+			return &"interaction_used"
+		if floor.current_event.resolved:
+			return &"event_resolved"
+	result.action_id = action
+	result.event_id = floor.current_event_id
+	if action == &"deep_search":
+		result.threat_delta = mini(1, FloorState.MAX_THREAT - floor.threat)
+		result.threat_reason = &"deep_search"
+	elif action == &"end_turn":
+		if floor.turn_count >= data.overstay_start_turn and (floor.turn_count - data.overstay_start_turn) % data.overstay_interval == 0:
+			result.threat_delta = mini(1, FloorState.MAX_THREAT - floor.threat)
+			result.threat_reason = &"overstay"
+		return &""
+	if event == null:
+		return &""
+	# 已理解的事件允许正常出牌，但不再产生线索奖励；卡牌照常消耗并弃置。
+	if floor.current_event.resolved:
+		return &""
+	if basic:
+		result.event_interaction = action
+		var completed: Array[StringName] = floor.current_event.completed_interactions.duplicate()
+		completed.append(action)
+		result.event_resolved = completed.has(&"inspect") and completed.has(&"search_nearby")
+	var no_blocked_flags: Array[StringName] = []
+	for rule: EventActionData in event.action_results:
+		if rule.action_id != action or not EventSystem.conditions_met(rule.required_flags, no_blocked_flags, floor.floor_flags):
+			continue
+		for flag: StringName in rule.granted_flags:
+			if not floor.floor_flags.has(flag) and not result.floor_flags_added.has(flag):
+				result.floor_flags_added.append(flag)
+		if not rule.revealed_text.is_empty() and not floor.current_event.known_information.has(rule.revealed_text) and not result.event_information.has(rule.revealed_text):
+			result.event_information.append(rule.revealed_text)
+		result.event_resolved = result.event_resolved or rule.resolves_event
+		if rule.insight != null and not floor.discovered_insight_ids.has(rule.insight.id) and not result.insight_ids.has(rule.insight.id):
+			result.insight_ids.append(rule.insight.id)
+	# 所有条件读取动作前的状态；本次刚记录的线索不能立即充当验证依据。
+	result.cognition_delta = mini(result.insight_ids.size(), FloorState.MAX_COGNITION - floor.cognition)
+	return &""
+
+
+static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
+	if result.action_id.is_empty():
+		return
+	result.debug_lines.append("[ACTION] %s" % result.action_id)
+	var floor: FloorState = state.floor_state
+	if floor == null:
+		return
+	if floor.current_event != null and result.action_id != &"end_turn":
+		var instance: EventInstance = floor.current_event
+		var previous_phase: StringName = instance.phase
+		if not result.event_interaction.is_empty():
+			instance.completed_interactions.append(result.event_interaction)
+			result.debug_lines.append("[EVENT] %s %s" % [result.event_interaction, instance.event_id])
+		instance.known_information.append_array(result.event_information)
+		instance.resolved = instance.resolved or result.event_resolved
+		if instance.phase != previous_phase:
+			result.debug_lines.append("[EVENT] state %s -> %s" % [previous_phase, instance.phase])
+	for flag: StringName in result.floor_flags_added:
+		floor.floor_flags.append(flag)
+		result.debug_lines.append("[FLOOR] flag %s" % flag)
+	for insight_id: StringName in result.insight_ids:
+		var previous: int = floor.cognition
+		InsightSystem.confirm(floor, insight_id)
+		result.debug_lines.append("[INSIGHT] discovered %s" % insight_id)
+		result.debug_lines.append("[COGNITION] %d -> %d" % [previous, floor.cognition])
+	if not result.threat_reason.is_empty():
+		floor.threat += result.threat_delta
+		result.debug_lines.append("[THREAT] +%d reason=%s total=%d" % [result.threat_delta, result.threat_reason, floor.threat])
 
 
 static func _fail(result: ActionResult, reason: StringName, card_id: StringName) -> ActionResult:
