@@ -1,14 +1,13 @@
-[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://bfo3duu6nyus2"]
 
-[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/events/event_action_data.gd" id="2_action"]
+[ext_resource type="Script" uid="uid://cgqk5m5366nak" path="res://scripts/events/event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://kockijsg7m7d" path="res://scripts/events/event_action_data.gd" id="2_action"]
 [ext_resource type="Resource" path="res://data/insights/insight_level0_layout_repeats.tres" id="3_insight"]
 
 [sub_resource type="Resource" id="Record"]
 script = ExtResource("2_action")
 action_id = &"observe"
 granted_flags = Array[StringName]([&"marks_noted"])
-
 revealed_text = "你记下了墙痕的位置，还需要验证两处是否相连。"
 
 [sub_resource type="Resource" id="Confirm"]

@@ -1,8 +1,8 @@
 # 后室：切出 Demo
 
 Godot 4.x、Compatibility、类型化 GDScript。打开 `project.godot`，按 F5 运行。
-当前实现 Phase 1–6：零层探索与有限搜刮 → 切出 → 六层黑暗与猎犬 → 再次切出到测试终点。
-尚未实现 Phase 7，没有独立战斗场景或第二套战斗 AP。
+当前实现 Phase 1–7：零层探索与有限搜刮 → 切出 → 六层黑暗与猎犬 → 再次切出到测试终点。
+三格携带装备在本局中持续保留，独立于抽弃牌循环；没有独立战斗场景或第二套战斗 AP。
 
 ## 权威文档
 
@@ -16,16 +16,17 @@ Godot 4.x、Compatibility、类型化 GDScript。打开 `project.godot`，按 F5
 新局：生命 30、压力 0、补给 0、威胁 0、认知 0、回合 1、AP 3。
 TurnManager 持有唯一 RunState，当前 FloorState 保存楼层威胁、认知、事件、
 资源节点、切出准备、实体实例和临时格挡。RunState 的 Threat/Cognition 读取
-仅转发楼层值，不另存副本；HP、压力、补给和 DeckState 随 Run 保留。
+仅转发楼层值，不另存副本；HP、压力、补给、DeckState 和三格装备随 Run 保留。
 
 ```text
-UI -> TurnManager -> PlayCardCommand / ExplorationCommand
+UI -> TurnManager -> PlayCardCommand / ExplorationCommand / UseEquipmentCommand
    -> RuleResolver 完整验证、计算 ActionResult
-   -> AP / 牌区 / 楼层 / 实体统一提交 -> 通知 -> UI 读取刷新
+   -> AP / 牌区 / 楼层 / 实体 / 装备统一提交 -> 通知 -> UI 读取刷新
 ```
 
 重要动作没有信号驱动的隐式规则。失败命令不改变牌区、AP、事件、资源、
-实体或 RNG。共享 Data Resources 保存定义，运行时值存于各次访问的实例。
+实体、装备次数或 RNG。共享 Data Resources 保存定义，楼层实例随访问创建，
+装备实例随 Run 保留；临时照明属于当前 FloorState。
 
 ## 统一卡牌与回合
 
@@ -58,7 +59,7 @@ HP 到 0 时立即停止回合推进和所有玩家命令，不恢复 AP；尚�
 Cognition 上限 5，Threat 上限 10；第 3、5、7……楼层回合末滞留威胁 +1。
 
 零层有三个有限节点：补给储物柜（2 补给）、隐藏电池缓存（2 补给）、
-材料箱（1 补给）。电池／材料暂统一折算补给，不引入背包、装备或制作。
+材料箱（1 补给）。电池／材料暂统一折算补给，不会给携带装备补充电量或耐久。
 节点状态为 UNDISCOVERED → DISCOVERED → LOOTED → DEPLETED。
 搜索附近定位表层节点，已定位节点花 1 AP 搜刮；深入搜索优先处理隐藏节点。
 已搜刮和枯竭均禁止再次领奖，回合末只改变标记，不刷新资源。
@@ -88,9 +89,11 @@ DeckState、手牌，不恢复 AP，也不偷偷执行一次实体意图。
 ## 六层与实体
 
 六层包含三个 Fresh Events、两个唯一 Insight，以及 darkness 楼层旗标。
-黑暗规则：每回合第一张成功打出的观察额外耗 1 AP；失败不消耗该标记，
+未照明时，每回合第一张成功打出的观察额外耗 1 AP；失败不消耗该标记，
 原有 End Turn 清除它。检查只给表层信息。UI 与解析器共用费用查询，
-因此实际费用为 2 时卡牌按钮也显示 2。尚未实现光源、装备和开灯交互。
+因此实际费用为 2 时卡牌按钮也显示 2。手电筒开启后，本回合观察只花基础 1 AP，
+并可经事件数据中的 requires_light 路径直接验证当前事件的既有 Insight。
+重复 Insight 不再奖励认知或切出准备；结束回合清除临时照明。
 
 FloorData.entry_entity 配置遭遇，FloorState 每次创建独立 EntityInstance。
 EntityData 仅保存 ID、名字、初始状态、最大生命和伤害参数；当前 HP、
@@ -116,6 +119,28 @@ UI 的“实体意图”页签显示中文生命、状态、意图和格挡，�
 敌方动作只在现有 End Turn 中通过 EntitySystem 规划并由 RuleResolver 提交。
 没有实体场景脚本、战斗场景切换、动画 AI、独立战斗时钟或复杂状态系统。
 
+## 携带装备（Phase 7）
+
+主场景开局携带以下三件装备，每件占一格。EquipmentData 只保存静态定义，
+EquipmentInstance.remaining_uses 保存本局电量／耐久／次数，EquipmentSystem
+负责装备验证、效果规划和提交；RuleResolver 统一验证并提交 AP 与效果。
+任何失败均不扣 AP 或次数。卡牌描述行动方式，装备描述实际携带物；装备使用
+不要求抽到装备卡，也不会进入抽牌堆、手牌或弃牌堆。
+
+| 装备 | 初始次数 | AP | 原型效果 |
+| --- | --- | --- | --- |
+| 手电筒 | 电量 3 | 1 | 黑暗楼层内开启本回合照明，重复开启被拒绝 |
+| 撬棍 | 耐久 3 | 1 | 对活跃实体造成 4 伤害，共用卡牌的伤害规划入口 |
+| 杏仁水 | 次数 1 | 1 | 压力降低 2；使用前压力至少 7 时额外恢复 1 HP，上限 30 |
+
+手电筒和撬棍采用本阶段要求的 3 次，覆盖 GDD 原型的 4／5 次。
+杏仁水依本阶段要求作为携带消耗品，恢复方向沿用 GDD 的压力恢复规则；
+没有可恢复效果时拒绝消耗。不更改原有十张牌组。
+
+耗尽装备仍占槽；当前不提供拾取、丢弃、更换、充电或维修。跨层保留同一装备实例，
+不会刷新次数，临时照明不跨层。装备 tags 留作后续条件匹配的数据入口，尚未实现组合。
+UI 的“携带装备”页签固定显示三格、名字、计数与按钮，只读取状态并转发槽位命令。
+
 ## 验证
 
 从项目目录运行，将 godot 替换为本机 Godot 控制台路径：
@@ -128,6 +153,7 @@ godot --headless --path . --script res://tests/phase_3_validation.gd
 godot --headless --path . --script res://tests/phase_4_validation.gd
 godot --headless --path . --script res://tests/phase_5_validation.gd
 godot --headless --path . --script res://tests/phase_6_validation.gd
+godot --headless --path . --script res://tests/phase_7_validation.gd
 godot --headless --path . --quit-after 3
 git diff --check
 ```
@@ -142,76 +168,67 @@ Phase 5 域测试保留可配置占位终点夹具，其真实主场景测试更
 Phase 6 覆盖初始遭遇、意图、伤害／防御、击败去重、脱离、黑暗费用、三事件两
 Insight、失败不写入、死亡停止回合、威胁与切出共存、跨层状态身份和中文意图 UI。
 另以默认种子、实际主场景十张牌组执行攻击／防御，验证可存活击败猎犬并继续切出。
+Phase 7 覆盖三格容量、定义与实例隔离、成功扣次数、失败完整快照不变、耗尽／损坏、
+杏仁水条件恢复与一次性消耗、照明费用与 Insight 去重、装备不入牌区、跨层身份保留，
+以及真实主场景的三格中文 UI、按钮命令和空槽布局。
 
 ## 手动验证
 
-1. F5 启动，在“资源与切出”点强行切出。确认进入六层、猎犬 18/18、凝视、
-   意图回合末靠近；AP 仍为 3、回合仍为 1，手牌没有替换。
-2. 直接点原来的结束回合：猎犬靠近、尚未造成伤害；AP 3，抽到五张战斗牌。
-3. 打出攻击：猎犬生命 18 → 14、AP 3 → 2。打出防御：格挡 4、AP 2 → 1。
-   可再打一张攻击；结束回合后撕咬被完全格挡，猎犬踉跄、格挡归零。
-4. 按手牌继续攻击／防御；踉跄时若有奔跑，可测试脱离。其他状态下奔跑会
-   显示追击、扑咬 5 意图及威胁 +1。结束回合执行意图，部分格挡也应正确减伤。
-5. 在探索页调查事件，确认首次观察实际费用为 2，认知只因唯一 Insight 增加。
-   战斗期间楼层回合、滞留威胁、抽弃洗和切出都继续运行。
-6. 击败后确认猎犬 0/18、已击败、无后续意图，不能再次对其造成伤害。
-   或随时直接强行切出，即使零 AP 也能到测试终点；没有额外战斗场景。
-7. 若生命降到 0，确认本局停止、命令禁用，不出现新回合 AP 恢复。
+1. F5 启动，打开“携带装备”：三格依次为手电筒 3/3、撬棍 3/3、杏仁水 1/1。
+   初始五张手牌与原十张牌组不变。零层使用手电筒或撬棍会被拒绝，AP／次数不变。
+2. 在“资源与切出”强行切出到六层：压力 2、AP 3、装备实例与次数保留，猎犬 18 HP。
+3. 开启手电筒：AP 2、电量 2。探索页显示本回合已照明，观察按钮费用 1。
+   打出观察：AP 1、确认当前事件的唯一 Insight；装备没有进入任何牌区。
+4. 使用撬棍：猎犬 18 → 14、AP 0、耐久 2。再次点击应提示 AP 不足，耐久仍为 2。
+5. 结束回合：沿用原猎犬意图与抽弃牌循环，AP 恢复 3；照明结束，电量和耐久不会恢复。
+6. 饮用杏仁水：压力 2 → 0、AP 2、次数 0，按钮显示已耗尽；不能再饮用。
+7. 继续攻击／防御／奔跑或强行切出到测试终点，确认装备次数保留。
+   高压力恢复 HP、容量超限及全部失败边界由确定性脚本另行验证。
 
 ## 已知限制
 
-没有 Smiler、多敌人、装备、Boss、复杂状态、暴击／护甲公式、掉落表、
-正式胜负结算、元进度或 Phase 7。没有新增插件或依赖，渲染器保持 Compatibility。
-六层仅两个 Insight，认知最多 2；没有正式光源／光照效率系统。
-Fresh 耗尽后没有 Residual Events；压力目前只累计数值，不执行精神崩溃后果。
-攻击、防御、奔跑和状态机参数仍为原型，尚未做图形窗口人工目视验收。
+没有实现 Phase 8、Smiler、多敌人、Boss、复杂状态、正式胜负结算或元进度。
+装备只有三件，无维修、制作、升级、稀有度、双槽装备或复杂卡牌组合。
+没有新增插件或依赖，渲染器保持 Compatibility；照明仅为本回合玩法状态，暂无视觉光照。
+六层仅两个 Insight，认知最多 2；Fresh 耗尽后没有 Residual Events。
+压力尚不执行精神崩溃后果。参数仍为原型，尚未做图形窗口人工目视验收。
 
-## Phase 6 变更文件清单
+## Phase 7 变更文件清单
 
-以下清单对应本次 Phase 6 增量，包含新增脚本的 Godot UID。
+本清单对应本次 Phase 7 增量，包含 Godot 生成的脚本 UID。
 
 ### 新增
 
-- `data/cards/card_attack.tres`
-- `data/cards/card_defend.tres`
-- `data/cards/card_run.tres`
-- `data/cards/demo_deck.tres`
-- `data/entities/entity_hound.tres`
-- `data/events/event_level6_claw_marks.tres`
-- `data/events/event_level6_dark_corridor.tres`
-- `data/events/event_level6_wall_seam.tres`
-- `data/floors/floor_level_6.tres`
-- `data/floors/floor_phase6_exit.tres`
-- `data/insights/insight_level6_darkness_limits_vision.tres`
-- `data/insights/insight_level6_seams_offer_exit.tres`
-- `scripts/entities/entity_data.gd`
-- `scripts/entities/entity_data.gd.uid`
-- `scripts/entities/entity_instance.gd`
-- `scripts/entities/entity_instance.gd.uid`
-- `scripts/entities/entity_system.gd`
-- `scripts/entities/entity_system.gd.uid`
-- `tests/phase_6_validation.gd`
-- `tests/phase_6_validation.gd.uid`
+- `data/equipment/equip_almond_water.tres`
+- `data/equipment/equip_crowbar.tres`
+- `data/equipment/equip_flashlight.tres`
+- `scripts/equipment/equipment_data.gd`
+- `scripts/equipment/equipment_data.gd.uid`
+- `scripts/equipment/equipment_instance.gd`
+- `scripts/equipment/equipment_instance.gd.uid`
+- `scripts/equipment/equipment_system.gd`
+- `scripts/equipment/equipment_system.gd.uid`
+- `scripts/rules/use_equipment_command.gd`
+- `scripts/rules/use_equipment_command.gd.uid`
+- `tests/phase_7_validation.gd`
+- `tests/phase_7_validation.gd.uid`
 
 ### 修改
 
 - `Readme.md`
-- `data/floors/floor_level_0.tres`
+- `data/events/event_level6_claw_marks.tres`
+- `data/events/event_level6_dark_corridor.tres`
+- `data/events/event_level6_wall_seam.tres`
 - `scenes/main/Main.tscn`
-- `scripts/cards/card_data.gd`
-- `scripts/cutout/cutout_system.gd`
-- `scripts/events/event_system.gd`
-- `scripts/floors/floor_data.gd`
+- `scripts/entities/entity_system.gd`
+- `scripts/events/event_action_data.gd`
 - `scripts/floors/floor_state.gd`
 - `scripts/rules/action_result.gd`
 - `scripts/rules/rule_resolver.gd`
+- `scripts/run/run_state.gd`
 - `scripts/turns/turn_manager.gd`
 - `scripts/ui/main.gd`
-- `tests/phase_2_validation.gd`
-- `tests/phase_3_validation.gd`
-- `tests/phase_4_validation.gd`
-- `tests/phase_5_validation.gd`
 
 ### 删除
 
-- `data/floors/floor_level_6_placeholder.tres`
+无。

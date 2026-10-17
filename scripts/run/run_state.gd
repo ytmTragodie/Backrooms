@@ -2,8 +2,10 @@ class_name RunState
 extends RefCounted
 
 const AP_PER_TURN: int = 3
+const MAX_PLAYER_HP: int = 30
+const CARRY_SLOT_COUNT: int = 3
 
-var player_hp: int = 30
+var player_hp: int = MAX_PLAYER_HP
 var stress: int = 0
 var supply: int = 0
 # 尝试记录属于整局，成功切换楼层后仍可读取；不在旧、新楼层各存一份。
@@ -20,11 +22,14 @@ var turn_number: int = 1
 # AP 的唯一权威值：TurnManager 在新回合恢复，RuleResolver 在合法出牌时扣除。
 var ap: int = AP_PER_TURN
 var deck_state: DeckState = DeckState.new()
+# 三个固定槽是装备的唯一所有者，楼层过渡不会重建或填充它们。
+var equipment_slots: Array[EquipmentInstance] = []
 var rng_seed: int = 1
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 
 func _init(seed_value: int = 1) -> void:
+	equipment_slots.resize(CARRY_SLOT_COUNT)
 	# 每局持有独立 RNG，牌堆系统不得调用全局随机源。
 	rng_seed = seed_value
 	rng.seed = rng_seed

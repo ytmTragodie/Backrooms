@@ -8,3 +8,4 @@ extends Resource
 @export var insight: InsightData
 @export_multiline var revealed_text: String
 @export var resolves_event: bool = false
+@export var requires_light: bool = false

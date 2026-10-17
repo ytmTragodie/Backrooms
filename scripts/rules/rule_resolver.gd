@@ -4,7 +4,7 @@ extends RefCounted
 
 static func card_ap_cost(definition: CardData, state: RunState, data: FloorData) -> int:
 	var cost: int = definition.ap_cost
-	if data != null and state.floor_state != null and state.floor_state.floor_flags.has(&"darkness") and not state.floor_state.dark_observation_used and definition.exploration_action == &"observe":
+	if data != null and state.floor_state != null and state.floor_state.floor_flags.has(&"darkness") and not state.floor_state.light_active and not state.floor_state.dark_observation_used and definition.exploration_action == &"observe":
 		cost += data.dark_observe_surcharge
 	return cost
 
@@ -48,7 +48,7 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	if not definition.exploration_action.is_empty() and definition.effect_type != CardData.EffectType.NO_OP:
 		return _fail(result, &"invalid_card_definition", card_id)
 	var final_cost: int = card_ap_cost(definition, state, floor_data)
-	var dark_observation: bool = state.floor_state != null and state.floor_state.floor_flags.has(&"darkness") and not state.floor_state.dark_observation_used and definition.exploration_action == &"observe"
+	var dark_observation: bool = state.floor_state != null and state.floor_state.floor_flags.has(&"darkness") and not state.floor_state.light_active and not state.floor_state.dark_observation_used and definition.exploration_action == &"observe"
 	if state.ap < final_cost:
 		return _fail(result, &"insufficient_ap", card_id)
 	if not definition.exploration_action.is_empty():
@@ -97,6 +97,52 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	result.debug_lines.append("[CARD] hand -> discard %s" % card_id)
 	_commit_floor_result(result, state)
 	result.debug_lines.append("[RESULT] success %s effect=%s damage_requested=%d" % [card_id, result.effect, result.damage_requested])
+	_write_log(result)
+	return result
+
+
+static func resolve_equipment(command: UseEquipmentCommand, state: RunState, data: FloorData) -> ActionResult:
+	var result: ActionResult = ActionResult.new()
+	var slot: int = command.slot_index if command != null else -1
+	result.debug_lines.append("[COMMAND] use_equipment slot=%d" % slot)
+	if command == null or state == null:
+		return _fail(result, &"invalid_command", &"use_equipment")
+	if state.player_hp <= 0:
+		return _fail(result, &"run_ended", &"use_equipment")
+	if state.floor_state == null:
+		return _fail(result, &"floor_required", &"use_equipment")
+	var error: StringName = _validate_floor_context(state, data)
+	if not error.is_empty():
+		return _fail(result, error, &"use_equipment")
+	error = EquipmentSystem.validate_inventory(state)
+	if not error.is_empty():
+		return _fail(result, error, &"use_equipment")
+	if slot < 0 or slot >= RunState.CARRY_SLOT_COUNT:
+		return _fail(result, &"invalid_equipment_slot", &"use_equipment")
+	var item: EquipmentInstance = state.equipment_slots[slot]
+	if item == null:
+		return _fail(result, &"equipment_unavailable", &"use_equipment")
+	if item.remaining_uses == 0:
+		return _fail(result, &"equipment_depleted", item.definition.id)
+	if state.ap < item.definition.ap_cost:
+		return _fail(result, &"insufficient_ap", item.definition.id)
+	error = EquipmentSystem.plan_use(result, item, state)
+	if not error.is_empty():
+		return _fail(result, error, item.definition.id)
+	result.success = true
+	result.action_id = &"use_equipment"
+	result.effect = &"damage" if item.definition.effect_type == EquipmentData.EffectType.ATTACK else (&"light" if result.light_activated else &"recover")
+	result.ap_spent = item.definition.ap_cost
+	result.equipment_used = item
+	result.equipment_slot = slot
+	result.equipment_uses_spent = 1
+	result.debug_lines.append("[RULE] validation success")
+	result.debug_lines.append("[RULE] final_cost=%d" % result.ap_spent)
+	var previous_ap: int = state.ap
+	state.ap -= result.ap_spent
+	result.debug_lines.append("[AP] %d -> %d" % [previous_ap, state.ap])
+	_commit_floor_result(result, state)
+	result.debug_lines.append("[RESULT] success use_equipment %s" % item.definition.id)
 	_write_log(result)
 	return result
 
@@ -237,7 +283,7 @@ static func _prepare_floor_action(result: ActionResult, action: StringName, stat
 	var stability: int = 0
 	var knowledge: int = 0
 	for rule: EventActionData in event.action_results:
-		if rule.action_id != action or not EventSystem.conditions_met(rule.required_flags, no_blocked_flags, floor.floor_flags):
+		if rule.action_id != action or (rule.requires_light and not floor.light_active) or not EventSystem.conditions_met(rule.required_flags, no_blocked_flags, floor.floor_flags):
 			continue
 		for flag: StringName in rule.granted_flags:
 			if not floor.floor_flags.has(flag) and not result.floor_flags_added.has(flag):
@@ -269,6 +315,9 @@ static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
 		result.debug_lines.append("[FLOOR] darkness first_observation surcharge_applied")
 	if result.action_id == &"end_turn":
 		floor.dark_observation_used = false
+		if floor.light_active:
+			floor.light_active = false
+			result.debug_lines.append("[LIGHT] expired reason=end_turn")
 	if floor.current_event != null and result.action_id != &"end_turn":
 		var instance: EventInstance = floor.current_event
 		var previous_phase: StringName = instance.phase
@@ -292,6 +341,7 @@ static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
 		result.debug_lines.append("[THREAT] +%d reason=%s total=%d" % [result.threat_delta, result.threat_reason, floor.threat])
 	ResourceNodeSystem.commit(result, state)
 	EntitySystem.commit(result, state)
+	EquipmentSystem.commit(result, state)
 	CutOutSystem.commit(result, state)
 
 

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://c0r705k2v12md"]
 
-[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/events/event_action_data.gd" id="2_action"]
+[ext_resource type="Script" uid="uid://cgqk5m5366nak" path="res://scripts/events/event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://kockijsg7m7d" path="res://scripts/events/event_action_data.gd" id="2_action"]
 [ext_resource type="Resource" path="res://data/insights/insight_level6_seams_offer_exit.tres" id="3_insight"]
 
 [sub_resource type="Resource" id="Record"]
@@ -37,9 +37,17 @@ action_id = &"search_nearby"
 granted_flags = Array[StringName]([&"cold_seam_noted"])
 revealed_text = "你在附近摸索，找到另一处可比较的表面。"
 
+[sub_resource type="Resource" id="LitConfirm"]
+script = ExtResource("2_action")
+action_id = &"observe"
+insight = ExtResource("3_insight")
+revealed_text = "你沿着冷风反复探查，确认墙缝对应一处空间薄弱点。"
+resolves_event = true
+requires_light = true
+
 [resource]
 script = ExtResource("1_event")
 id = &"event_level6_wall_seam"
 display_name = "冰冷的墙缝"
 display_text = "你指尖下的墙缝比四周更冷，空气似乎从另一侧流过。"
-action_results = Array[ExtResource("2_action")]([SubResource("Record"), SubResource("Confirm"), SubResource("Search"), SubResource("Inspect"), SubResource("SearchNearby")])
+action_results = Array[ExtResource("2_action")]([SubResource("Record"), SubResource("Confirm"), SubResource("Search"), SubResource("Inspect"), SubResource("SearchNearby"), SubResource("LitConfirm")])

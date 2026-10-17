@@ -23,6 +23,7 @@ var cutout_state: CutOutState = CutOutState.new()
 var entity: EntityInstance
 var player_block: int = 0
 var dark_observation_used: bool = false
+var light_active: bool = false
 
 
 func _init(definition: FloorData) -> void:

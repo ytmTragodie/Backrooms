@@ -1,12 +1,15 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://xerrjjrq64n0"]
 
-[ext_resource type="Script" path="res://scripts/ui/main.gd" id="1_main"]
-[ext_resource type="Script" path="res://scripts/turns/turn_manager.gd" id="2_turns"]
+[ext_resource type="Script" uid="uid://bgsjqemol5v3q" path="res://scripts/ui/main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://crs4xtrpkhags" path="res://scripts/turns/turn_manager.gd" id="2_turns"]
 [ext_resource type="Resource" path="res://data/floors/floor_level_0.tres" id="3_floor"]
-
 [ext_resource type="Resource" path="res://data/cards/demo_deck.tres" id="4_deck"]
+[ext_resource type="Script" uid="uid://dl0xfdmplptqe" path="res://scripts/equipment/equipment_data.gd" id="5_equipment"]
+[ext_resource type="Resource" path="res://data/equipment/equip_flashlight.tres" id="6_flashlight"]
+[ext_resource type="Resource" path="res://data/equipment/equip_crowbar.tres" id="7_crowbar"]
+[ext_resource type="Resource" path="res://data/equipment/equip_almond_water.tres" id="8_water"]
 
-[node name="Main" type="Control"]
+[node name="Main" type="Control" unique_id=1470173285]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,78 +18,80 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_main")
 
-[node name="TurnManager" type="Node" parent="."]
+[node name="TurnManager" type="Node" parent="." unique_id=1421210309]
 script = ExtResource("2_turns")
-floor_data = ExtResource("3_floor")
 starter_deck = ExtResource("4_deck")
+floor_data = ExtResource("3_floor")
+starting_equipment = Array[ExtResource("5_equipment")]([ExtResource("6_flashlight"), ExtResource("7_crowbar"), ExtResource("8_water")])
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=867124948]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 0.5
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Messages" type="VBoxContainer" parent="CenterContainer"]
+[node name="Messages" type="VBoxContainer" parent="CenterContainer" unique_id=1160017995]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="CenterContainer/Messages"]
+[node name="Title" type="Label" parent="CenterContainer/Messages" unique_id=1523607955]
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
 text = "后室：切出 Demo"
 horizontal_alignment = 1
 
-[node name="Status" type="Label" parent="CenterContainer/Messages"]
+[node name="Status" type="Label" parent="CenterContainer/Messages" unique_id=1000550293]
 unique_name_in_owner = true
-layout_mode = 2
 custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "项目已初始化"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="RunStats" type="Label" parent="CenterContainer/Messages"]
+[node name="RunStats" type="Label" parent="CenterContainer/Messages" unique_id=469202256]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="Supply" type="Label" parent="CenterContainer/Messages"]
+[node name="Supply" type="Label" parent="CenterContainer/Messages" unique_id=1406462573]
 unique_name_in_owner = true
 layout_mode = 2
-horizontal_alignment = 1
 text = "补给：0"
+horizontal_alignment = 1
 
-[node name="BlockInfo" type="Label" parent="CenterContainer/Messages"]
+[node name="BlockInfo" type="Label" parent="CenterContainer/Messages" unique_id=855429920]
 unique_name_in_owner = true
 layout_mode = 2
-horizontal_alignment = 1
 text = "本回合格挡：0"
+horizontal_alignment = 1
 
-[node name="PileCounts" type="Label" parent="CenterContainer/Messages"]
+[node name="PileCounts" type="Label" parent="CenterContainer/Messages" unique_id=1450444279]
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="HandHeading" type="Label" parent="CenterContainer/Messages"]
+[node name="HandHeading" type="Label" parent="CenterContainer/Messages" unique_id=1258224225]
 layout_mode = 2
 text = "手牌（点击卡牌打出）"
 horizontal_alignment = 1
 
-[node name="Hand" type="VBoxContainer" parent="CenterContainer/Messages"]
+[node name="Hand" type="VBoxContainer" parent="CenterContainer/Messages" unique_id=1787601590]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 
-[node name="EndTurn" type="Button" parent="CenterContainer/Messages"]
+[node name="EndTurn" type="Button" parent="CenterContainer/Messages" unique_id=956302783]
 unique_name_in_owner = true
 layout_mode = 2
 text = "结束回合"
 
-[node name="FloorMargin" type="MarginContainer" parent="."]
+[node name="FloorMargin" type="MarginContainer" parent="." unique_id=26640551]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -97,116 +102,147 @@ offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="FloorTabs" type="TabContainer" parent="FloorMargin"]
+[node name="FloorTabs" type="TabContainer" parent="FloorMargin" unique_id=1278091179]
 unique_name_in_owner = true
 layout_mode = 2
+current_tab = 3
 
-[node name="FloorPanel" type="VBoxContainer" parent="FloorMargin/FloorTabs"]
+[node name="FloorPanel" type="VBoxContainer" parent="FloorMargin/FloorTabs" unique_id=765119866]
+visible = false
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 12
+metadata/_tab_index = 0
 
-[node name="FloorHeading" type="Label" parent="FloorMargin/FloorTabs/FloorPanel"]
+[node name="FloorHeading" type="Label" parent="FloorMargin/FloorTabs/FloorPanel" unique_id=102192646]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "探索原型"
 
-[node name="FloorInfo" type="Label" parent="FloorMargin/FloorTabs/FloorPanel"]
+[node name="FloorInfo" type="Label" parent="FloorMargin/FloorTabs/FloorPanel" unique_id=1477223916]
 unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 2
 
-[node name="EventInfo" type="Label" parent="FloorMargin/FloorTabs/FloorPanel"]
+[node name="EventInfo" type="Label" parent="FloorMargin/FloorTabs/FloorPanel" unique_id=441685400]
 unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 2
 
-[node name="InsightList" type="Label" parent="FloorMargin/FloorTabs/FloorPanel"]
+[node name="InsightList" type="Label" parent="FloorMargin/FloorTabs/FloorPanel" unique_id=1728867942]
 unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 2
 
-[node name="InteractionHeading" type="Label" parent="FloorMargin/FloorTabs/FloorPanel"]
+[node name="InteractionHeading" type="Label" parent="FloorMargin/FloorTabs/FloorPanel" unique_id=141723929]
 layout_mode = 2
 text = "场景交互（每个事件限一次）"
 
-[node name="InspectAction" type="Button" parent="FloorMargin/FloorTabs/FloorPanel"]
+[node name="InspectAction" type="Button" parent="FloorMargin/FloorTabs/FloorPanel" unique_id=245483354]
 unique_name_in_owner = true
 layout_mode = 2
 text = "检查环境（1 行动点）"
 
-[node name="SearchNearbyAction" type="Button" parent="FloorMargin/FloorTabs/FloorPanel"]
+[node name="SearchNearbyAction" type="Button" parent="FloorMargin/FloorTabs/FloorPanel" unique_id=670223434]
 unique_name_in_owner = true
 layout_mode = 2
 text = "搜索附近（1 行动点）"
 
-[node name="ResourcesCutOut" type="ScrollContainer" parent="FloorMargin/FloorTabs"]
+[node name="ResourcesCutOut" type="ScrollContainer" parent="FloorMargin/FloorTabs" unique_id=657040573]
+visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
+metadata/_tab_index = 1
 
-[node name="Content" type="VBoxContainer" parent="FloorMargin/FloorTabs/ResourcesCutOut"]
+[node name="Content" type="VBoxContainer" parent="FloorMargin/FloorTabs/ResourcesCutOut" unique_id=1699360202]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="ResourceHeading" type="Label" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content"]
+[node name="ResourceHeading" type="Label" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content" unique_id=955632298]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "有限物资"
 
-[node name="ResourceList" type="VBoxContainer" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content"]
+[node name="ResourceList" type="VBoxContainer" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content" unique_id=358877792]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="CutOutHeading" type="Label" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content"]
+[node name="CutOutHeading" type="Label" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content" unique_id=2130270098]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "切出准备"
 
-[node name="CutOutInfo" type="Label" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content"]
+[node name="CutOutInfo" type="Label" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content" unique_id=1326614027]
 unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 2
 
-[node name="PrepareCutOut" type="Button" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content"]
+[node name="PrepareCutOut" type="Button" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content" unique_id=937780142]
 unique_name_in_owner = true
 layout_mode = 2
 text = "准备切出（1 行动点、1 补给）"
 
-[node name="SafeCutOut" type="Button" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content"]
+[node name="SafeCutOut" type="Button" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content" unique_id=529285116]
 unique_name_in_owner = true
 layout_mode = 2
 text = "准备充分后切出（1 行动点）"
 
-[node name="RushedCutOut" type="Button" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content"]
+[node name="RushedCutOut" type="Button" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content" unique_id=304672831]
 unique_name_in_owner = true
 layout_mode = 2
 text = "仓促切出（1 行动点，有失败风险）"
 
-[node name="ForcedCutOut" type="Button" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content"]
+[node name="ForcedCutOut" type="Button" parent="FloorMargin/FloorTabs/ResourcesCutOut/Content" unique_id=2044376171]
 unique_name_in_owner = true
 layout_mode = 2
 text = "强行切出（无需行动点，压力 +2）"
 
-[node name="EntityPanel" type="VBoxContainer" parent="FloorMargin/FloorTabs"]
+[node name="EntityPanel" type="VBoxContainer" parent="FloorMargin/FloorTabs" unique_id=669163666]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
+metadata/_tab_index = 2
 
-[node name="Heading" type="Label" parent="FloorMargin/FloorTabs/EntityPanel"]
+[node name="Heading" type="Label" parent="FloorMargin/FloorTabs/EntityPanel" unique_id=1517260726]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "当前实体与回合末意图"
 
-[node name="EntityInfo" type="Label" parent="FloorMargin/FloorTabs/EntityPanel"]
+[node name="EntityInfo" type="Label" parent="FloorMargin/FloorTabs/EntityPanel" unique_id=1996172437]
 unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 2
 
-[node name="CombatHelp" type="Label" parent="FloorMargin/FloorTabs/EntityPanel"]
+[node name="CombatHelp" type="Label" parent="FloorMargin/FloorTabs/EntityPanel" unique_id=1756474131]
 layout_mode = 2
-autowrap_mode = 2
 text = "从原有手牌打出攻击、防御或奔跑。
 攻击造成 4 伤害；防御获得本回合 4 格挡。
 完整挡住攻击会使实体踉跄，此时奔跑可以脱离；其他时候奔跑会触发追击并增加威胁。
 点击原有的结束回合按钮执行实体意图，随后恢复 3 行动点并抽至 5 张。
 探索、威胁与切出始终继续运行。"
+autowrap_mode = 2
+
+[node name="EquipmentPanel" type="VBoxContainer" parent="FloorMargin/FloorTabs" unique_id=57642360]
+layout_mode = 2
+theme_override_constants/separation = 12
+metadata/_tab_index = 3
+
+[node name="Heading" type="Label" parent="FloorMargin/FloorTabs/EquipmentPanel" unique_id=463886910]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "携带装备（三格）"
+
+[node name="EquipmentSlots" type="VBoxContainer" parent="FloorMargin/FloorTabs/EquipmentPanel" unique_id=1353610375]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="EquipmentHelp" type="Label" parent="FloorMargin/FloorTabs/EquipmentPanel" unique_id=418828519]
+layout_mode = 2
+text = "装备一直随身携带，不进入抽牌堆、手牌或弃牌堆。使用消耗同一套行动点。
+手电筒：本回合照明，使六层观察更有效。
+撬棍：攻击当前活跃实体，造成 4 伤害。
+杏仁水：压力降低 2；使用前压力至少 7 时额外恢复 1 生命。
+耗尽或损坏后仍占槽，暂不支持修理、补充或替换。"
+autowrap_mode = 2

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://dlsh7dwnhwjr3"]
 
-[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/events/event_action_data.gd" id="2_action"]
+[ext_resource type="Script" uid="uid://cgqk5m5366nak" path="res://scripts/events/event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://kockijsg7m7d" path="res://scripts/events/event_action_data.gd" id="2_action"]
 [ext_resource type="Resource" path="res://data/insights/insight_level6_darkness_limits_vision.tres" id="3_insight"]
 
 [sub_resource type="Resource" id="Record"]
@@ -37,9 +37,17 @@ action_id = &"search_nearby"
 granted_flags = Array[StringName]([&"claw_marks_noted"])
 revealed_text = "你在附近摸索，找到另一处可比较的表面。"
 
+[sub_resource type="Resource" id="LitConfirm"]
+script = ExtResource("2_action")
+action_id = &"observe"
+insight = ExtResource("3_insight")
+revealed_text = "你比较触觉与视觉，确认在黑暗中必须依靠其他感官。"
+resolves_event = true
+requires_light = true
+
 [resource]
 script = ExtResource("1_event")
 id = &"event_level6_claw_marks"
 display_name = "地面的爪痕"
 display_text = "你摸到地面上数道深痕，细碎砂砾沿着痕迹散开。"
-action_results = Array[ExtResource("2_action")]([SubResource("Record"), SubResource("Confirm"), SubResource("Search"), SubResource("Inspect"), SubResource("SearchNearby")])
+action_results = Array[ExtResource("2_action")]([SubResource("Record"), SubResource("Confirm"), SubResource("Search"), SubResource("Inspect"), SubResource("SearchNearby"), SubResource("LitConfirm")])

@@ -7,6 +7,7 @@ signal action_resolved(result: ActionResult)
 
 @export var starter_deck: DeckData = preload("res://data/cards/starter_deck.tres")
 @export var floor_data: FloorData
+@export var starting_equipment: Array[EquipmentData] = []
 
 # 本节点与 CardSystem 始终绑定同一局状态；新一局应创建新的 TurnManager。
 var _run_state: RunState = RunState.new()
@@ -19,6 +20,10 @@ var card_system: CardSystem
 
 
 func _ready() -> void:
+	var equipment_error: StringName = EquipmentSystem.initialize(run_state, starting_equipment)
+	if not equipment_error.is_empty():
+		push_error("Cannot initialize carry slots: %s" % equipment_error)
+		return
 	card_system = CardSystem.new(run_state, starter_deck.cards)
 	if floor_data != null:
 		run_state.floor_state = FloorState.new(floor_data)
@@ -65,6 +70,14 @@ func request_play_card(card: CardInstance) -> ActionResult:
 	# 所有对外出牌请求统一经过这里，避免提交成功却漏发界面通知。
 	var result: ActionResult = RuleResolver.resolve(PlayCardCommand.new(card), run_state, card_system, floor_data)
 	# 完整提交后才通知；失败仅发布结果，不伪装成一次状态变化。
+	if result.success:
+		state_changed.emit()
+	action_resolved.emit(result)
+	return result
+
+
+func request_use_equipment(slot_index: int) -> ActionResult:
+	var result: ActionResult = RuleResolver.resolve_equipment(UseEquipmentCommand.new(slot_index), run_state, floor_data)
 	if result.success:
 		state_changed.emit()
 	action_resolved.emit(result)

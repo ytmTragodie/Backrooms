@@ -8,6 +8,9 @@ const ENTITY_STATES: Dictionary = {
 	&"WATCHING": "凝视", &"APPROACHING": "靠近", &"CHASING": "追击",
 	&"STAGGERED": "踉跄", &"DEFEATED": "已击败", &"DISENGAGED": "已脱离",
 }
+const EQUIPMENT_COUNTERS: Dictionary = {
+	&"battery": "电量", &"durability": "耐久", &"charges": "次数",
+}
 const FAILURE_MESSAGES: Dictionary = {
 	&"insufficient_ap": "行动点不足", &"card_not_in_hand": "这张牌已不在手牌中",
 	&"interaction_used": "本次事件中已完成此交互", &"event_resolved": "当前事件已解决",
@@ -28,6 +31,10 @@ const FAILURE_MESSAGES: Dictionary = {
 	&"invalid_entity_definition": "实体数据异常", &"invalid_entity_state": "实体状态异常",
 	&"invalid_entity_context": "实体与楼层数据不匹配", &"no_active_entity": "当前没有可攻击的实体",
 	&"run_ended": "生命耗尽，本局已结束",
+	&"invalid_equipment_definition": "装备数据异常", &"invalid_equipment_state": "携带装备状态异常",
+	&"invalid_equipment_slot": "携带槽位置无效", &"equipment_unavailable": "该携带槽为空",
+	&"equipment_depleted": "装备已耗尽或损坏", &"light_not_needed": "这里不需要额外照明",
+	&"light_already_active": "本回合照明已开启", &"nothing_to_restore": "当前没有可恢复的状态",
 }
 
 @onready var _turn_manager: TurnManager = $TurnManager
@@ -51,6 +58,7 @@ const FAILURE_MESSAGES: Dictionary = {
 @onready var _supply: Label = %Supply
 @onready var _entity_info: Label = %EntityInfo
 @onready var _block_info: Label = %BlockInfo
+@onready var _equipment_slots: VBoxContainer = %EquipmentSlots
 
 
 func _ready() -> void:
@@ -62,6 +70,7 @@ func _ready() -> void:
 	_floor_tabs.set_tab_title(0, "探索现场")
 	_floor_tabs.set_tab_title(1, "资源与切出")
 	_floor_tabs.set_tab_title(2, "实体意图")
+	_floor_tabs.set_tab_title(3, "携带装备")
 	_prepare_cutout.pressed.connect(_turn_manager.request_exploration.bind(&"prepare_cutout"))
 	_safe_cutout.pressed.connect(_turn_manager.request_exploration.bind(&"cutout_safe"))
 	_rushed_cutout.pressed.connect(_turn_manager.request_exploration.bind(&"cutout_rushed"))
@@ -77,6 +86,17 @@ func _on_action_resolved(result: ActionResult) -> void:
 		_status_label.text = "切出成功，抵达%s。压力：+%d。" % [result.destination.display_name, result.stress_delta] if result.cutout_attempt.succeeded else "仓促切出未成功，仍在当前楼层。压力：+%d；威胁：+%d。可继续准备或强行切出。" % [result.stress_delta, result.threat_delta]
 		if result.cutout_attempt.succeeded and _turn_manager.run_state.floor_state.entity != null:
 			_floor_tabs.current_tab = 2
+	elif result.success and result.equipment_used != null:
+		var item: EquipmentInstance = result.equipment_used
+		_status_label.text = "已使用%s；消耗行动点：%d；剩余%s：%d。" % [item.definition.display_name, result.ap_spent, EQUIPMENT_COUNTERS.get(item.definition.counter_kind, "次数"), item.remaining_uses]
+		if result.entity_damage > 0:
+			_status_label.text += "造成伤害：%d。" % result.entity_damage
+		if result.light_activated:
+			_status_label.text += "照明持续至回合结束。"
+		if result.stress_restored > 0:
+			_status_label.text += "压力降低：%d。" % result.stress_restored
+		if result.hp_restored > 0:
+			_status_label.text += "生命恢复：%d。" % result.hp_restored
 	elif result.success and result.card_played != null:
 		_status_label.text = "已打出%s；消耗行动点：%d；认知：+%d；威胁：+%d。" % [result.card_played.definition.display_name, result.ap_spent, result.cognition_delta, result.threat_delta]
 		if result.effect == &"damage":
@@ -125,6 +145,7 @@ func _refresh_state() -> void:
 	_refresh_floor(state.floor_state)
 	_refresh_resources_and_cutout(state)
 	_refresh_entity(state.floor_state)
+	_refresh_equipment(state)
 	if state.player_hp <= 0:
 		_inspect_action.disabled = true
 		_search_action.disabled = true
@@ -148,7 +169,10 @@ func _refresh_floor(floor: FloorState) -> void:
 		return
 	_floor_info.text = "当前楼层：%s\n楼层回合：%d\n威胁：%d／%d｜认知：%d／%d\n剩余新鲜事件：%d" % [data.display_name, floor.turn_count, floor.threat, FloorState.MAX_THREAT, floor.cognition, FloorState.MAX_COGNITION, floor.remaining_fresh_events.size()]
 	if floor.floor_flags.has(&"darkness"):
-		_floor_info.text += "\n黑暗：每回合首次观察额外消耗 %d 行动点%s。" % [data.dark_observe_surcharge, "（本回合已支付）" if floor.dark_observation_used else ""]
+		if floor.light_active:
+			_floor_info.text += "\n黑暗中照明已开启（本回合）：观察按普通费用，可直接验证事件线索。"
+		else:
+			_floor_info.text += "\n黑暗：每回合首次观察额外消耗 %d 行动点%s。" % [data.dark_observe_surcharge, "（本回合已支付）" if floor.dark_observation_used else ""]
 	var event: EventData = data.find_event(floor.current_event_id)
 	var instance: EventInstance = floor.current_event
 	if event != null and instance != null:
@@ -238,3 +262,32 @@ func _refresh_entity(floor: FloorState) -> void:
 		&"recover":
 			intent = "回合末重新观察，暂不攻击"
 	_entity_info.text = "%s\n生命：%d／%d\n状态：%s\n意图：%s\n当前格挡：%d" % [data.display_name, entity.hp, entity.max_hp, ENTITY_STATES.get(entity.state, "未知"), intent, floor.player_block]
+
+
+func _refresh_equipment(state: RunState) -> void:
+	for child: Node in _equipment_slots.get_children():
+		_equipment_slots.remove_child(child)
+		child.queue_free()
+	var active: bool = state.player_hp > 0 and state.floor_state != null and _turn_manager.floor_data != null and not _turn_manager.floor_data.is_placeholder
+	# 固定展示三格；只读取实例计数，按钮只转发槽位命令。
+	for index: int in range(RunState.CARRY_SLOT_COUNT):
+		var row: VBoxContainer = VBoxContainer.new()
+		row.name = "EquipmentSlot%d" % index
+		var label: Label = Label.new()
+		label.name = "Info"
+		var button: Button = Button.new()
+		button.name = "UseEquipment"
+		var item: EquipmentInstance = state.equipment_slots[index]
+		if item == null:
+			label.text = "携带槽 %d：空" % (index + 1)
+			button.text = "暂无装备"
+			button.disabled = true
+		else:
+			var data: EquipmentData = item.definition
+			label.text = "携带槽 %d：%s\n%s：%d／%d" % [index + 1, data.display_name, EQUIPMENT_COUNTERS.get(data.counter_kind, "次数"), item.remaining_uses, data.capacity]
+			button.text = "%s（%d 行动点）" % [data.action_name, data.ap_cost] if item.remaining_uses > 0 else ("已损坏" if data.counter_kind == &"durability" else "已耗尽")
+			button.disabled = not active or item.remaining_uses <= 0
+			button.pressed.connect(_turn_manager.request_use_equipment.bind(index))
+		row.add_child(label)
+		row.add_child(button)
+		_equipment_slots.add_child(row)

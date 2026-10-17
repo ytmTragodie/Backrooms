@@ -53,14 +53,20 @@ static func plan_card(result: ActionResult, definition: CardData, state: RunStat
 			if entity != null and entity.active:
 				_set_next_state(result, &"DISENGAGED" if entity.state == &"STAGGERED" else &"CHASING")
 		CardData.EffectType.ATTACK, CardData.EffectType.PLACEHOLDER_DAMAGE:
-			if entity == null or not entity.active:
-				return &"no_active_entity"
 			var damage: int = definition.effect_value if definition.effect_type == CardData.EffectType.ATTACK else definition.placeholder_damage
-			result.damage_requested = damage
-			result.entity_damage = mini(damage, entity.hp)
-			result.entity_hp_after = entity.hp - result.entity_damage
-			result.entity_defeated = result.entity_hp_after == 0
-			_set_next_state(result, &"DEFEATED" if result.entity_defeated else (&"APPROACHING" if entity.state == &"WATCHING" else entity.state))
+			return plan_attack(result, damage, state)
+	return &""
+
+
+static func plan_attack(result: ActionResult, damage: int, state: RunState) -> StringName:
+	var entity: EntityInstance = state.floor_state.entity
+	if entity == null or not entity.active:
+		return &"no_active_entity"
+	result.damage_requested = damage
+	result.entity_damage = mini(damage, entity.hp)
+	result.entity_hp_after = entity.hp - result.entity_damage
+	result.entity_defeated = result.entity_hp_after == 0
+	_set_next_state(result, &"DEFEATED" if result.entity_defeated else (&"APPROACHING" if entity.state == &"WATCHING" else entity.state))
 	return &""
 
 

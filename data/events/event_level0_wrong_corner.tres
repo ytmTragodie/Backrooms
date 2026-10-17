@@ -1,14 +1,13 @@
-[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://dik3o7hf4hljx"]
 
-[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/events/event_action_data.gd" id="2_action"]
+[ext_resource type="Script" uid="uid://cgqk5m5366nak" path="res://scripts/events/event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://kockijsg7m7d" path="res://scripts/events/event_action_data.gd" id="2_action"]
 [ext_resource type="Resource" path="res://data/insights/insight_level0_false_landmarks.tres" id="3_insight"]
 
 [sub_resource type="Resource" id="Record"]
 script = ExtResource("2_action")
 action_id = &"observe"
 granted_flags = Array[StringName]([&"corner_noted"])
-
 revealed_text = "你记录了转角附近的特征，但方向仍不可靠。"
 
 [sub_resource type="Resource" id="Confirm"]
