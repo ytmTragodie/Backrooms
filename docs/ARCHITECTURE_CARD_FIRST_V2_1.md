@@ -9,8 +9,8 @@ It is a **hard constraint for AI coding**. If generated code conflicts with this
 The current goal is a small, playable vertical slice, not a production-scale framework.
 
 **Authoritative direction: CARD-FIRST V2.1, 2026-10-17.** This revision defines the
-migration target. The current Phase 1-8 code is a legacy prototype; this document
-update does not implement BoardState, Explore, World Card rendering, or new APIs.
+migration target. REWORK A/B implement the limited Situation/Hound card-first slice;
+unmigrated Phase 1-8 paths remain legacy. See the migration plan for implemented scope.
 Read `GDD.md` for design and `MIGRATION_PLAN.md` for KEEP / ADAPT / DEPRECATE /
 REMOVE LATER classifications. The retained v0.4 DOCX and legacy README flows do
 not override these rules. Repository instruction priority remains as in AGENTS.md.
@@ -219,6 +219,13 @@ Responsibilities:
 9. Advance turn counter.
 
 It must not contain card-specific or floor-specific `if` chains.
+
+REWORK B implements one explicit end-turn order: plan all consequences, then commit
+Situation Pressure -> Entity intent -> floor overstay -> temporary Guard/light/observation
+cleanup. Pressure consumes Guard first; the entity uses only the remainder. Lethal
+Pressure skips the entity intent; cleanup still runs and no next turn starts. If alive,
+the same TurnManager discards the hand, advances counters/restores 3 AP, schedules Fresh,
+draws to five, then notifies observers. Scene-tree signal order never determines effects.
 
 ---
 

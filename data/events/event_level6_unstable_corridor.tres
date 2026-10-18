@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/insights/insight_level6_noise_pursuit.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"event_level6_unstable_corridor"
+display_name = "异常走廊"
+display_text = "黑暗中墙板缓缓挤压，另一侧传来爪声。调查环境与应对猎犬争用同一份行动点。"
+objective_text = "找到可供通过的稳定路线"
+explore_threshold = 9
+clue_threshold = 4
+clue_text = "每次重响过后，爪声都会变得急促；先防护也能抵挡挤压。"
+completion_insight = ExtResource("2")
+neglect_damage = 2

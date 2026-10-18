@@ -11,3 +11,6 @@ enum BehaviorType { PURSUIT, LIGHT_REACTIVE }
 @export var aggressive_damage: int = 5
 @export var behavior_type: BehaviorType = BehaviorType.PURSUIT
 @export var rule_insight: InsightData
+# 调查是知识路线，不折算伤害；阈值为零表示该旧内容尚未迁移。
+@export var analysis_threshold: int = 0
+@export_multiline var analysis_rule: String

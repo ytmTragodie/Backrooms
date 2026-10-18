@@ -1,7 +1,7 @@
 extends SceneTree
 
 const LEVEL_0: FloorData = preload("res://data/floors/floor_level_0_legacy.tres")
-const LEVEL_6: FloorData = preload("res://data/floors/floor_level_6.tres")
+const LEVEL_6: FloorData = preload("res://data/floors/floor_level_6_legacy.tres")
 const FLASHLIGHT: EquipmentData = preload("res://data/equipment/equip_flashlight.tres")
 const CROWBAR: EquipmentData = preload("res://data/equipment/equip_crowbar.tres")
 const WATER: EquipmentData = preload("res://data/equipment/equip_almond_water.tres")

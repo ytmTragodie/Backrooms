@@ -4,9 +4,17 @@ extends RefCounted
 
 static func card_ap_cost(definition: CardData, state: RunState, data: FloorData) -> int:
 	var cost: int = definition.ap_cost
-	if data != null and state.floor_state != null and state.floor_state.floor_flags.has(&"darkness") and not state.floor_state.light_active and not state.floor_state.dark_observation_used and definition.exploration_action == &"observe":
+	if _is_dark_observation(definition, state, data):
 		cost += data.dark_observe_surcharge
 	return cost
+
+
+static func _is_dark_observation(definition: CardData, state: RunState, data: FloorData) -> bool:
+	if data == null or state.floor_state == null:
+		return false
+	# 新路径按语义标签识别观察，不再借用旧独立动作名。
+	var observing: bool = definition.tags.has(&"OBSERVE") if data.card_first_exploration else definition.exploration_action == &"observe"
+	return observing and state.floor_state.floor_flags.has(&"darkness") and not state.floor_state.light_active and not state.floor_state.dark_observation_used
 
 
 static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem, floor_data: FloorData = null) -> ActionResult:
@@ -51,19 +59,20 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	if situation_play:
 		if state.floor_state == null:
 			return _fail(result, &"floor_required", card_id)
-		if definition.explore_amount <= 0 or definition.effect_type != CardData.EffectType.NO_OP:
-			return _fail(result, &"unsupported_effect", card_id)
-		var target_error: StringName = EventSystem.validate_target(command, state.floor_state)
+		var target_error: StringName = validate_card_target(command, state.floor_state, floor_data)
 		if not target_error.is_empty():
 			return _fail(result, target_error, card_id)
-	elif command.target_event != null or command.target_board != null:
+	elif command.target_event != null or command.target_board != null or command.target_entity != null:
 		return _fail(result, &"invalid_event_target", card_id)
 	var final_cost: int = card_ap_cost(definition, state, floor_data)
-	var dark_observation: bool = state.floor_state != null and state.floor_state.floor_flags.has(&"darkness") and not state.floor_state.light_active and not state.floor_state.dark_observation_used and definition.exploration_action == &"observe"
+	var dark_observation: bool = _is_dark_observation(definition, state, floor_data)
 	if state.ap < final_cost:
 		return _fail(result, &"insufficient_ap", card_id)
-	if situation_play:
-		EventSystem.plan_explore(result, definition, state.floor_state, floor_data)
+	if situation_play and definition.explore_amount > 0:
+		if command.target_entity != null:
+			EntitySystem.plan_analysis(result, definition, state.floor_state, floor_data)
+		else:
+			EventSystem.plan_explore(result, definition, state.floor_state, floor_data)
 	elif not definition.exploration_action.is_empty():
 		if definition.exploration_action != &"observe" and definition.exploration_action != &"deep_search":
 			return _fail(result, &"invalid_card_definition", card_id)
@@ -81,6 +90,13 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 		if not entity_error.is_empty():
 			return _fail(result, entity_error, card_id)
 		result.action_id = &"block" if definition.effect_type == CardData.EffectType.BLOCK else (&"run" if definition.effect_type == CardData.EffectType.RUN else &"attack")
+	if situation_play:
+		result.entity_target = command.target_entity
+		if definition.threat_cost > 0:
+			result.threat_delta = mini(definition.threat_cost, FloorState.MAX_THREAT - state.floor_state.threat)
+			result.threat_reason = &"card_risk"
+		# 成功效果的噪音才触发反应；任何失败都不会进入提交。
+		EntitySystem.plan_noise_reaction(result, definition, state.floor_state, floor_data)
 
 	# 先计算并构建完整结果；占位伤害只进入结果，不修改任何目标的 HP。
 	result.success = true
@@ -114,12 +130,50 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	return result
 
 
+static func validate_card_target(command: PlayCardCommand, floor: FloorState, data: FloorData) -> StringName:
+	# UI 可只读查询合法性；完整上下文、费用与手牌归属仍由 resolve 重新校验。
+	if command == null or command.card == null or command.card.definition == null:
+		return &"invalid_command"
+	var definition: CardData = command.card.definition
+	if command.target_event != null and command.target_entity != null:
+		return &"invalid_target_kind"
+	if definition.explore_amount > 0 and definition.effect_type == CardData.EffectType.NO_OP:
+		if command.target_entity == null:
+			return EventSystem.validate_target(command, floor)
+		var error: StringName = EntitySystem.validate_target(command, floor)
+		if not error.is_empty():
+			return error
+		var entity_data: EntityData = data.find_entity(command.target_entity.entity_id)
+		if entity_data == null or entity_data.analysis_threshold == 0:
+			return &"analysis_unavailable"
+		return &"analysis_complete" if command.target_entity.analysis_progress >= entity_data.analysis_threshold else &""
+	if definition.explore_amount != 0:
+		return &"unsupported_effect"
+	if definition.effect_type in [CardData.EffectType.ATTACK, CardData.EffectType.RUN]:
+		if command.target_event != null:
+			return &"invalid_target_kind"
+		return EntitySystem.validate_target(command, floor)
+	if definition.effect_type == CardData.EffectType.BLOCK:
+		# Guard 作用于玩家，不能把失效的显式目标悄悄当作无目标。
+		if command.target_event != null or command.target_entity != null:
+			return &"invalid_target_kind"
+		if command.target_board != floor.board_state:
+			return &"invalid_event_target"
+		var event: EventInstance = floor.board_state.active_event
+		var entity: EntityInstance = floor.board_state.entity
+		var pressure_exists: bool = event != null and not event.resolved and event.last_progress_turn != floor.turn_count and event.pressure_checked_turn != floor.turn_count and data.find_event(event.event_id).neglect_damage > 0
+		return &"" if pressure_exists or (entity != null and entity.active) else &"guard_unneeded"
+	return &"unsupported_effect"
+
+
 static func resolve_equipment(command: UseEquipmentCommand, state: RunState, data: FloorData) -> ActionResult:
 	var result: ActionResult = ActionResult.new()
 	var slot: int = command.slot_index if command != null else -1
 	result.debug_lines.append("[COMMAND] use_equipment slot=%d" % slot)
 	if command == null or state == null:
 		return _fail(result, &"invalid_command", &"use_equipment")
+	if data != null and data.card_first_exploration:
+		return _fail(result, &"card_required", &"use_equipment")
 	if state.player_hp <= 0:
 		return _fail(result, &"run_ended", &"use_equipment")
 	if state.floor_state == null:
@@ -170,7 +224,7 @@ static func resolve_exploration(command: ExplorationCommand, state: RunState, da
 		return _fail(result, &"invalid_command", action)
 	if state.player_hp <= 0:
 		return _fail(result, &"run_ended", action)
-	if data != null and data.card_first_exploration and action in [&"inspect", &"search_nearby", &"observe", &"deep_search", &"search", &"explore"]:
+	if data != null and data.card_first_exploration and action != &"end_turn":
 		return _fail(result, &"card_required", action)
 	var cost: int = 0
 	match action:
@@ -269,14 +323,15 @@ static func _prepare_floor_action(result: ActionResult, action: StringName, stat
 		return error
 	var floor: FloorState = state.floor_state
 	if data.card_first_exploration:
-		# REWORK A 的回合后果仍在原解析器内规划；不会启动事件专用回合。
+		# 完整计划先于写入：压力、意图与滞留共用一个回合结果。
 		if action != &"end_turn":
 			return &"card_required"
 		EventSystem.plan_pressure(result, floor, data)
+		result.pressure_damage = mini(result.pressure_damage, state.player_hp)
+		EntitySystem.plan_end_turn(result, state, data)
 		if floor.turn_count >= data.overstay_start_turn and (floor.turn_count - data.overstay_start_turn) % data.overstay_interval == 0:
 			result.threat_delta = mini(1, FloorState.MAX_THREAT - floor.threat)
 			result.threat_reason = &"overstay"
-		EntitySystem.plan_end_turn(result, state, data)
 		return &""
 	var event: EventData = data.find_event(floor.current_event_id)
 	if not floor.current_event_id.is_empty() and event == null:
@@ -354,11 +409,6 @@ static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
 	if result.dark_observation:
 		floor.dark_observation_used = true
 		result.debug_lines.append("[FLOOR] darkness first_observation surcharge_applied")
-	if result.action_id == &"end_turn":
-		floor.dark_observation_used = false
-		if floor.light_active:
-			floor.light_active = false
-			result.debug_lines.append("[LIGHT] expired reason=end_turn")
 	EventSystem.commit_situation(result, state)
 	if result.event_target == null and floor.current_event != null and result.action_id != &"end_turn":
 		var instance: EventInstance = floor.current_event
@@ -378,13 +428,22 @@ static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
 		InsightSystem.confirm(floor, insight_id)
 		result.debug_lines.append("[INSIGHT] discovered %s" % insight_id)
 		result.debug_lines.append("[COGNITION] %d -> %d" % [previous, floor.cognition])
+	# 固定次序：局势后果 -> 实体意图 -> 楼层滞留 -> 临时状态清理。
+	ResourceNodeSystem.commit(result, state)
+	EntitySystem.commit(result, state)
 	if not result.threat_reason.is_empty():
 		floor.threat += result.threat_delta
 		result.debug_lines.append("[THREAT] +%d reason=%s total=%d" % [result.threat_delta, result.threat_reason, floor.threat])
-	ResourceNodeSystem.commit(result, state)
-	EntitySystem.commit(result, state)
 	EquipmentSystem.commit(result, state)
 	CutOutSystem.commit(result, state)
+	if result.action_id == &"end_turn":
+		if result.expire_block:
+			EntitySystem.finish_turn(floor)
+		result.debug_lines.append("[TURN] cleanup")
+		floor.dark_observation_used = false
+		if floor.light_active:
+			floor.light_active = false
+			result.debug_lines.append("[LIGHT] expired reason=end_turn")
 
 
 static func _fail(result: ActionResult, reason: StringName, card_id: StringName) -> ActionResult:

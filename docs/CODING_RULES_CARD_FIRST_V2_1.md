@@ -17,8 +17,9 @@ before modifying gameplay code.
 Current authority: **CARD-FIRST V2.1 (2026-10-17)**. Read `MIGRATION_PLAN.md` as well
 when touching legacy Phase 1-8 behavior. The retained v0.4 DOCX is historical,
 including its old "canonical" sections. Existing code/tests do not override v2.
-The present design-direction task is documentation-only: do not change scripts,
-Resources, scenes, tests, engine settings or implement migration under this task.
+The original design-direction revision was documentation-only. Gameplay migration
+requires a subsequent user task; REWORK A/B are separately authorized limited slices,
+not blanket authorization for later migration or engine/dependency changes.
 
 ---
 

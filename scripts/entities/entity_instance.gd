@@ -9,6 +9,8 @@ var state: StringName
 var intent: StringName
 # 区分“主动攻击惹怒”与“实际观察到光照反应”，前者不能凭空验证避光 Insight。
 var light_exposed: bool = false
+var analysis_progress: int = 0
+var revealed_rules: Array[String] = []
 var alive: bool:
 	get:
 		return hp > 0

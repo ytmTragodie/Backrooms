@@ -1,7 +1,7 @@
 # CARD-FIRST V2.1 — Migration Plan
 
-日期：2026-10-18。状态：**REWORK A 零层 Card-First 探索核心已实现**；实体、装备、资源与切出卡牌化尚未迁移，未启动 REWORK B。V2.1 保留 Situation/Environment World Cards 与统一牌局。
-前次文档方向任务不修改玩法；本次 REWORK A 依据新的用户授权完成下列有限迁移，不构成后续阶段实现授权。
+日期：2026-10-18。状态：**REWORK A 与 REWORK B 已实现**；笑魇、装备、资源与切出卡牌化尚未迁移，未启动 REWORK C。V2.1 保留 Situation/Environment World Cards 与统一牌局。
+前次文档方向任务不修改玩法；REWORK A／B 依据各自用户授权完成下列有限迁移，不构成后续阶段实现授权。
 设计规范见 [GDD.md](GDD_CARD_FIRST_V2_1.md)，职责与状态归属见 [ARCHITECTURE.md](ARCHITECTURE_CARD_FIRST_V2_1.md)，
 实现约束见 [CODING_RULES.md](CODING_RULES_CARD_FIRST_V2_1.md)。优先级遵循 AGENTS.md。
 
@@ -26,6 +26,30 @@
 `card_first_exploration` 是 FloorData 的访问规则配置，不是事件／战斗模式切换；
 不存在另一套 AP、手牌或时钟。Legacy 配置只是迁移期间旧内容的隔离夹具，待相应后续任务删除。
 本节记录当前进度；下列旧基线与计划继续保留供逐项迁移参考，未完成项不能宣称已落地。
+
+### 0.1 REWORK B 已实现范围与选择
+
+- 同一个 Main 场景增加「新局：六层混合原型」系统入口，创建独立新局测试，不冒充零层切出。
+  六层入场同时实例化异常走廊与猎犬；无战斗场景、战斗模式或第二份 AP／手牌／回合。
+- 保留 BoardState 的单实体槽，直接持有现有 EntityInstance；实体牌只渲染 HP、状态、意图、知识。
+- PlayCardCommand 增加 target_entity，与 target_event 互斥，均要求相同访问的 Board 和实际实例引用。
+  Explore 可选局势或尚有知识进度的实体；Damage／Run 只选活跃实体；Guard 保护玩家、不选世界目标。
+  同定义 ID 的替换实例、移除、跨访问、失活／已解目标都不能静默重定向。
+- 猎犬保留 18 HP、4／5 伤害、完全格挡踉跄及奔跑脱离；成功 NOISE 行动触发追逐。
+  调查实体达到 4 揭示噪音规律并确认唯一 Insight；异常走廊完成提供相同 ID 的替代路线。
+- 异常走廊 4 调查揭示线索、9 调查完成；未推进时回合末造成 2 可格挡环境伤害。
+  原零层 Stress Pressure 保持原值，不把所有后果统一成一种数值。
+- 固定回合末提交：Situation Pressure → Entity Intent → 楼层滞留 → 清理 Guard／临时光照／观察标记。
+  Pressure 先消耗 Guard，意图只能使用余额；致命 Pressure 跳过意图，清理后不进入下一回合。
+  存活时由原 TurnManager 弃手牌、推进计数、恢复 3 AP、补符合条件的 Fresh、抽至五张，再通知 UI。
+- 保留六层每回合首次观察黑暗加费；新路径按 OBSERVE 标签查询同一最终费用函数。
+- 混合原型十张牌：4 调查／3 攻击／2 防御／1 奔跑。穷举完整五张手牌组合验证两类需求下有行动；
+  本步选择卡组比例而非新增换牌机制，不宣称解决最终牌池／残余手牌费用／离层防卡手问题。
+- 新楼层对所有非 End Turn 的独立探索命令及独立装备请求返回 card_required；不是只隐藏 UI。
+  Smiler、装备、资源、CutOut 未卡牌化；LegacyMain 及两个 legacy 楼层资源供旧 Phase 4–8 回归。
+  Phase 6–8 只迁移六层资源引用，原规则断言保留。REWORK A 测试继续运行。
+
+这些是本次用户明确授权的有限原型选择。§7 其余未决规则仍未批准，不启动 REWORK C。
 
 ## 1. 迁移前仓库审查基线（历史记录）
 
@@ -143,7 +167,7 @@ End Turn 等纯系统控制不在废弃范围；自动实体意图与楼层规�
 
 ## 6. 建议迁移顺序与每步退出条件
 
-这些是迁移建议边界；REWORK A 完成情况以 §0 为准，其余均需后续明确任务，不自动启动下一阶段。
+这些是迁移建议边界；REWORK A／B 完成情况以 §0／§0.1 为准，其余均需后续明确任务，不自动启动下一阶段。
 
 1. **先关闭设计缺口**：回答 §7 中首批阻塞问题，列出最小玩家牌、有效基线、Explore 接收与
    离层保障。不允许用隐藏按钮或无限免费牌替代设计。

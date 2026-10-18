@@ -19,6 +19,8 @@ extends Resource
 @export var explore_bonus: int = 0
 # 首轮只实现一种可读压力：未推进的未解局势在回合末增加压力。
 @export var neglect_stress: int = 0
+# 可格挡的环境伤害与旧 Stress 后果分开声明，不引入通用压力解释器。
+@export var neglect_damage: int = 0
 
 
 func has_action(action: StringName) -> bool:

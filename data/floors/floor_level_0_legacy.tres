@@ -9,7 +9,7 @@
 [ext_resource type="Resource" path="res://data/resources/resource_level0_supply.tres" id="7_supply"]
 [ext_resource type="Resource" path="res://data/resources/resource_level0_battery.tres" id="8_battery"]
 [ext_resource type="Resource" path="res://data/resources/resource_level0_scrap.tres" id="9_scrap"]
-[ext_resource type="Resource" path="res://data/floors/floor_level_6.tres" id="10_destination"]
+[ext_resource type="Resource" path="res://data/floors/floor_level_6_legacy.tres" id="10_destination"]
 
 [resource]
 script = ExtResource("1_floor")

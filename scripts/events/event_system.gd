@@ -5,7 +5,7 @@ extends RefCounted
 static func validate_situation(data: EventData) -> StringName:
 	if data == null or data.id.is_empty() or data.weight <= 0 or data.explore_threshold <= 0 or data.clue_threshold <= 0 or data.clue_threshold > data.explore_threshold:
 		return &"invalid_event_definition"
-	if data.clue_text.is_empty() or data.objective_text.is_empty() or data.explore_bonus < 0 or data.neglect_stress < 0:
+	if data.clue_text.is_empty() or data.objective_text.is_empty() or data.explore_bonus < 0 or data.neglect_stress < 0 or data.neglect_damage < 0:
 		return &"invalid_event_definition"
 	if data.explore_bonus > 0 and data.bonus_tag.is_empty():
 		return &"invalid_event_definition"
@@ -77,7 +77,10 @@ static func plan_pressure(result: ActionResult, floor: FloorState, data: FloorDa
 	result.event_target = event
 	result.pressure_checked = true
 	if event.last_progress_turn != floor.turn_count:
-		result.pressure_stress = data.find_event(event.event_id).neglect_stress
+		var definition: EventData = data.find_event(event.event_id)
+		result.pressure_stress = definition.neglect_stress
+		result.pressure_blocked = mini(floor.player_block, definition.neglect_damage)
+		result.pressure_damage = definition.neglect_damage - result.pressure_blocked
 
 
 static func commit_situation(result: ActionResult, state: RunState) -> void:
@@ -99,7 +102,10 @@ static func commit_situation(result: ActionResult, state: RunState) -> void:
 	if result.pressure_checked:
 		event.pressure_checked_turn = state.floor_state.turn_count
 		state.stress += result.pressure_stress
+		state.floor_state.player_block -= result.pressure_blocked
+		state.player_hp -= mini(state.player_hp, result.pressure_damage)
 		result.debug_lines.append("[PRESSURE] %s stress +%d reason=%s" % [event.event_id, result.pressure_stress, "progressed" if event.last_progress_turn == state.floor_state.turn_count else "neglected"])
+		result.debug_lines.append("[PRESSURE] damage=%d blocked=%d" % [result.pressure_damage, result.pressure_blocked])
 
 
 static func conditions_met(required: Array[StringName], blocked: Array[StringName], flags: Array[StringName]) -> bool:

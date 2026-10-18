@@ -27,6 +27,8 @@ var explore_after: int = -1
 var clue_revealed: bool = false
 var pressure_checked: bool = false
 var pressure_stress: int = 0
+var pressure_damage: int = 0
+var pressure_blocked: int = 0
 var resource_discovered_id: StringName
 var resource_looted_id: StringName
 var supply_delta: int = 0
@@ -40,6 +42,10 @@ var next_floor: FloorState
 var rng_state_after: int = 0
 var commit_rng: bool = false
 var entity_hp_after: int = -1
+var entity_target: EntityInstance
+var analysis_after: int = -1
+var analysis_applied: int = 0
+var entity_rule_revealed: String
 var entity_state_after: StringName
 var entity_intent_after: StringName
 var entity_damage: int = 0

@@ -5,9 +5,11 @@ extends RefCounted
 var card: CardInstance
 var target_event: EventInstance
 var target_board: BoardState
+var target_entity: EntityInstance
 
 
-func _init(requested_card: CardInstance = null, event: EventInstance = null, board: BoardState = null) -> void:
+func _init(requested_card: CardInstance = null, event: EventInstance = null, board: BoardState = null, entity: EntityInstance = null) -> void:
 	card = requested_card
 	target_event = event
 	target_board = board
+	target_entity = entity

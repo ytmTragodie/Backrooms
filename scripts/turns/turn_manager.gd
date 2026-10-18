@@ -39,7 +39,7 @@ func _ready() -> void:
 
 
 func end_turn() -> ActionResult:
-	# 滞留压力先经过规则结算；回合计数、弃牌、抽牌仍由本节点协调。
+	# 解析器固定结算局势 -> 实体 -> 滞留 -> 清理；本节点仅推进计数与抽弃牌。
 	var result: ActionResult = RuleResolver.resolve_exploration(ExplorationCommand.new(&"end_turn"), run_state, floor_data)
 	if not result.success:
 		action_resolved.emit(result)
@@ -66,9 +66,9 @@ func end_turn() -> ActionResult:
 	return result
 
 
-func request_play_card(card: CardInstance, event: EventInstance = null, board: BoardState = null) -> ActionResult:
+func request_play_card(card: CardInstance, event: EventInstance = null, board: BoardState = null, entity: EntityInstance = null) -> ActionResult:
 	# 所有对外出牌请求统一经过这里，避免提交成功却漏发界面通知。
-	var result: ActionResult = RuleResolver.resolve(PlayCardCommand.new(card, event, board), run_state, card_system, floor_data)
+	var result: ActionResult = RuleResolver.resolve(PlayCardCommand.new(card, event, board, entity), run_state, card_system, floor_data)
 	# 完整提交后才通知；失败仅发布结果，不伪装成一次状态变化。
 	if result.success:
 		state_changed.emit()

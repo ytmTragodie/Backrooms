@@ -22,6 +22,10 @@ static func validate_definition(data: EntityData) -> StringName:
 		return &"invalid_entity_definition"
 	if data.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE:
 		return InsightSystem.validate_definition(data.rule_insight)
+	if data.analysis_threshold < 0 or (data.analysis_threshold > 0 and data.analysis_rule.is_empty()):
+		return &"invalid_entity_definition"
+	if data.analysis_threshold > 0:
+		return InsightSystem.validate_definition(data.rule_insight)
 	return &""
 
 
@@ -51,7 +55,7 @@ static func validate(floor: FloorState, data: FloorData) -> StringName:
 	if data.entry_entity == null:
 		return &"" if entity == null else &"invalid_entity_context"
 	if entity == null:
-		return &"invalid_entity_context"
+		return &"" if data.card_first_exploration else &"invalid_entity_context"
 	var definition: EntityData = data.find_entity(entity.entity_id)
 	if definition == null or entity.max_hp != definition.max_hp:
 		return &"invalid_entity_context"
@@ -66,7 +70,41 @@ static func validate(floor: FloorState, data: FloorData) -> StringName:
 		return &"invalid_entity_context"
 	if (entity.hp == 0) != (entity.state == &"DEFEATED"):
 		return &"invalid_entity_state"
+	if entity.analysis_progress < 0 or entity.analysis_progress > definition.analysis_threshold:
+		return &"invalid_entity_state"
+	var revealed: bool = definition.analysis_threshold > 0 and entity.analysis_progress == definition.analysis_threshold
+	if entity.revealed_rules != ([definition.analysis_rule] if revealed else []):
+		return &"invalid_entity_state"
 	return &""
+
+
+static func validate_target(command: PlayCardCommand, floor: FloorState) -> StringName:
+	# 定义 ID 相同也不等于本次访问中仍然存活的同一个目标。
+	if command.target_board != floor.board_state or command.target_entity == null or command.target_entity != floor.board_state.entity:
+		return &"invalid_entity_target"
+	return &"" if command.target_entity.active else &"no_active_entity"
+
+
+static func plan_analysis(result: ActionResult, card: CardData, floor: FloorState, data: FloorData) -> void:
+	var entity: EntityInstance = floor.board_state.entity
+	var definition: EntityData = data.find_entity(entity.entity_id)
+	result.action_id = &"analyze"
+	result.entity_target = entity
+	result.explore_base = card.explore_amount
+	result.analysis_after = mini(definition.analysis_threshold, entity.analysis_progress + card.explore_amount)
+	result.analysis_applied = result.analysis_after - entity.analysis_progress
+	if result.analysis_after == definition.analysis_threshold:
+		result.entity_rule_revealed = definition.analysis_rule
+		InsightSystem.plan_confirmation(result, definition.rule_insight, floor)
+
+
+static func plan_noise_reaction(result: ActionResult, card: CardData, floor: FloorState, data: FloorData) -> void:
+	var entity: EntityInstance = floor.board_state.entity
+	if not card.tags.has(&"NOISE") or entity == null or not entity.active or result.entity_defeated:
+		return
+	if data.find_entity(entity.entity_id).behavior_type == EntityData.BehaviorType.PURSUIT:
+		_set_next_state(result, &"CHASING")
+		result.entity_state_reason = &"resolved_noise"
 
 
 static func plan_card(result: ActionResult, definition: CardData, state: RunState, data: FloorData) -> StringName:
@@ -135,7 +173,7 @@ static func plan_light_reaction(result: ActionResult, state: RunState, data: Flo
 static func plan_end_turn(result: ActionResult, state: RunState, data: FloorData) -> void:
 	var entity: EntityInstance = state.floor_state.entity
 	result.expire_block = true
-	if entity == null or not entity.active:
+	if entity == null or not entity.active or state.player_hp <= result.pressure_damage:
 		return
 	# 只执行界面已经公示的意图，每次 End Turn 一次；不用随机 AI 或第二套时钟。
 	result.intent_resolved = entity.intent
@@ -155,8 +193,9 @@ static func plan_end_turn(result: ActionResult, state: RunState, data: FloorData
 			damage = definition.aggressive_damage
 		&"recover":
 			next_state = &"WATCHING"
-	result.damage_blocked = mini(state.floor_state.player_block, damage)
-	result.player_damage = mini(state.player_hp, maxi(0, damage - result.damage_blocked))
+	# 局势先消耗同一份 Guard；实体只使用余额，避免一份防护抵挡两次。
+	result.damage_blocked = mini(state.floor_state.player_block - result.pressure_blocked, damage)
+	result.player_damage = mini(state.player_hp - result.pressure_damage, maxi(0, damage - result.damage_blocked))
 	if damage > 0 and result.damage_blocked == damage:
 		next_state = &"STAGGERED"
 	_set_next_state(result, next_state)
@@ -175,8 +214,8 @@ static func _plan_light_end_turn(result: ActionResult, state: RunState, data: En
 		_set_next_state(result, &"ATTACKING")
 		result.entity_state_reason = &"light_warning_ignored"
 	elif entity.state == &"ATTACKING":
-		result.damage_blocked = mini(state.floor_state.player_block, data.aggressive_damage)
-		result.player_damage = mini(state.player_hp, maxi(0, data.aggressive_damage - result.damage_blocked))
+		result.damage_blocked = mini(state.floor_state.player_block - result.pressure_blocked, data.aggressive_damage)
+		result.player_damage = mini(state.player_hp - result.pressure_damage, maxi(0, data.aggressive_damage - result.damage_blocked))
 		# 格挡仍然有效，但规则型实体不会套用猎犬的踉跄状态机。
 		_set_next_state(result, &"ATTACKING")
 		result.entity_state_reason = &"light_strike"
@@ -185,6 +224,11 @@ static func _plan_light_end_turn(result: ActionResult, state: RunState, data: En
 static func _set_next_state(result: ActionResult, next_state: StringName) -> void:
 	result.entity_state_after = next_state
 	result.entity_intent_after = INTENTS[next_state]
+
+
+static func finish_turn(floor: FloorState) -> void:
+	# 由解析器在所有回合后果提交后调用，共用一份临时防护。
+	floor.player_block = 0
 
 
 static func commit(result: ActionResult, state: RunState) -> void:
@@ -198,14 +242,17 @@ static func commit(result: ActionResult, state: RunState) -> void:
 	if result.player_damage > 0:
 		state.player_hp -= result.player_damage
 		result.debug_lines.append("[HP] player -%d remaining=%d" % [result.player_damage, state.player_hp])
-	if result.expire_block:
-		floor.player_block = 0
 	if result.entity_spawned != null:
 		floor.entity = result.entity_spawned
 		entity = floor.entity
 		result.debug_lines.append("[ENTITY] spawn %s hp=%d state=%s" % [entity.entity_id, entity.hp, entity.state])
 	if entity == null:
 		return
+	if result.analysis_after >= 0:
+		entity.analysis_progress = result.analysis_after
+		if not result.entity_rule_revealed.is_empty():
+			entity.revealed_rules.append(result.entity_rule_revealed)
+		result.debug_lines.append("[ENTITY] analysis %s +%d total=%d" % [entity.entity_id, result.analysis_applied, entity.analysis_progress])
 	if result.entity_light_exposed:
 		entity.light_exposed = true
 	if result.entity_hp_after >= 0:

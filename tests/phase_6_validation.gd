@@ -1,6 +1,6 @@
 extends SceneTree
 
-const LEVEL_6: FloorData = preload("res://data/floors/floor_level_6.tres")
+const LEVEL_6: FloorData = preload("res://data/floors/floor_level_6_legacy.tres")
 const HOUND: EntityData = preload("res://data/entities/entity_hound.tres")
 const ATTACK: CardData = preload("res://data/cards/card_attack.tres")
 const DEFEND: CardData = preload("res://data/cards/card_defend.tres")
