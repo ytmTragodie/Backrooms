@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EntityData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_data.gd" id="1_entity"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/insights/insight_level6_light_attracts.tres" id="2_insight"]
+
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/rewards/reward_cards.tres" id="reward"]
+
+[resource]
+script = ExtResource("1_entity")
+id = &"entity_smiler"
+display_name = "笑魇"
+max_hp = 120
+initial_state = &"HIDDEN"
+normal_damage = 0
+aggressive_damage = 6
+behavior_type = 1
+rule_insight = ExtResource("2_insight")
+resolution_reward = ExtResource("reward")
+reward_requires_light_exposure = true

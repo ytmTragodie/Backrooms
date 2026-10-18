@@ -6,7 +6,7 @@ var cards_rewarded: int = 0
 var cards_upgraded: int = 0
 var cards_removed: int = 0
 var cards_played: int = 0
-var situations: Array[Dictionary] = []
+var objectives: Array[Dictionary] = []
 var insights: Dictionary = {}
 var defeated: Array[String] = []
 var resolved_alive: Array[String] = []
@@ -28,10 +28,10 @@ func record_action(result: ActionResult, state: RunState, data: FloorData) -> vo
 	var floor: FloorState = state.floor_state
 	if result.card_played != null:
 		cards_played += 1
-	if result.event_resolved:
-		var turns: int = floor.turn_count - result.event_target.activated_turn + 1
-		situations.append({"id": result.event_id, "turns": turns})
-		result.debug_lines.append("[BALANCE] situation=%s turns=%d" % [result.event_id, turns])
+	if result.objective_resolved:
+		var turns: int = floor.turn_count - result.objective_target.activated_turn + 1
+		objectives.append({"id": result.objective_id, "turns": turns})
+		result.debug_lines.append("[BALANCE] situation=%s turns=%d" % [result.objective_id, turns])
 	for id: StringName in result.insight_ids:
 		insights[String(floor.floor_id) + "/" + String(id)] = data.find_insight(id).display_name
 	var entity: EntityInstance = result.entity_target

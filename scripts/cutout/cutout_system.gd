@@ -52,6 +52,9 @@ static func validate(state: CutOutState, data: FloorData) -> StringName:
 		if not destination.is_placeholder and (not destination.card_first_exploration or destination.cutout_destinations.is_empty()):
 			return &"invalid_destination"
 		if not destination.is_placeholder:
+			error = EventSystem.validate_definitions(destination)
+			if not error.is_empty():
+				return error
 			error = SafePointSystem.validate(destination.safe_point)
 			if not error.is_empty():
 				return error
@@ -62,15 +65,15 @@ static func validate(state: CutOutState, data: FloorData) -> StringName:
 				return error
 		if destination.entry_entity != null and destination.followup_entity != null and destination.entry_entity.id == destination.followup_entity.id:
 			return &"invalid_entity_definition"
-		var event_ids: Array[StringName] = []
-		for event: EventData in destination.fresh_events:
-			if event == null or event.id.is_empty() or event.weight <= 0 or event_ids.has(event.id):
-				return &"invalid_event_definition"
+		var objective_ids: Array[StringName] = []
+		for event: ObjectiveData in destination.fresh_objectives:
+			if event == null or event.id.is_empty() or event.weight <= 0 or objective_ids.has(event.id):
+				return &"invalid_objective_definition"
 			if destination.card_first_exploration:
-				error = EventSystem.validate_situation(event)
+				error = ObjectiveSystem.validate_definition(event)
 				if not error.is_empty():
 					return error
-			event_ids.append(event.id)
+			objective_ids.append(event.id)
 		var node_ids: Array[StringName] = []
 		for node: ResourceNodeData in destination.resource_nodes:
 			if not ResourceNodeSystem.valid_definition(node) or node_ids.has(node.id):
@@ -135,7 +138,8 @@ static func plan_attempt(result: ActionResult, state: RunState, data: FloorData,
 		result.next_floor = FloorState.new(result.destination)
 		# 新楼层只在私有计划对象上初始化；不改 AP、手牌、管理器或当前楼层。
 		if not result.destination.is_placeholder:
-			EventSystem.draw_fresh(result.destination, result.next_floor, rng, false)
+			ObjectiveSystem.draw_fresh(result.destination, result.next_floor, rng, false)
+			EventSystem.fill_slots(result.next_floor, result.destination)
 	result.cutout_attempt = attempt
 	result.rng_state_after = rng.state
 	result.commit_rng = true
@@ -158,8 +162,8 @@ static func commit(result: ActionResult, state: RunState) -> void:
 		# 目的地定义和新状态已在规划阶段创建；此处只切换权威状态引用。
 		state.floor_state = result.next_floor
 		result.debug_lines.append("[CUTOUT] success destination=%s" % result.cutout_attempt.destination_id)
-		if state.floor_state.current_event != null:
-			result.debug_lines.append("[EVENT] draw %s" % state.floor_state.current_event_id)
+		if state.floor_state.current_objective != null:
+			result.debug_lines.append("[EVENT] draw %s" % state.floor_state.current_objective_id)
 		if state.floor_state.entity != null:
 			result.debug_lines.append("[ENTITY] spawn %s hp=%d state=%s" % [state.floor_state.entity.entity_id, state.floor_state.entity.hp, state.floor_state.entity.state])
 	else:

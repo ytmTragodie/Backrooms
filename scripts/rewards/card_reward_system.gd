@@ -21,9 +21,9 @@ static func validate_definition(data: CardRewardData) -> StringName:
 
 
 static func plan(result: ActionResult, state: RunState, data: FloorData) -> void:
-	var definitions: Array[CardRewardData] = []
-	if result.event_resolved and result.event_target != null and not result.event_target.resolved:
-		definitions.append(data.find_event(result.event_target.event_id).completion_reward)
+	var definitions: Array[CardRewardData] = result.event_reward_definitions.duplicate()
+	if result.objective_resolved and result.objective_target != null and not result.objective_target.resolved:
+		definitions.append(data.find_objective(result.objective_target.objective_id).completion_reward)
 	var entity: EntityInstance = state.floor_state.board_state.entity
 	if entity != null and entity.active and (result.entity_defeated or result.entity_state_after in [&"DISENGAGED", &"WITHDRAWN"]):
 		var definition: EntityData = data.find_entity(entity.entity_id)

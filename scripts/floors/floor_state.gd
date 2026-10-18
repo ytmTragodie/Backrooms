@@ -10,22 +10,23 @@ var turn_count: int = 1
 var threat: int = 0
 var cognition: int = 0
 var discovered_insight_ids: Array[StringName] = []
-var remaining_fresh_events: Array[StringName] = []
+var remaining_fresh_objectives: Array[StringName] = []
+var seen_objective_ids: Array[StringName] = []
 var seen_event_ids: Array[StringName] = []
 var board_state: BoardState = BoardState.new()
 # 只保存遭遇已解决的事实，不保留第二个活动实体或 HP 所有者。
 var resolved_entity_ids: Array[StringName] = []
-var completed_situations: int = 0
+var completed_objectives: int = 0
 var total_explore: int = 0
 var safe_point: SafePointState
 # 旧领域读取暂保留只读转发；调度器只写 BoardState，不维护第二份事件引用。
-var current_event: EventInstance:
+var current_objective: ObjectiveInstance:
 	get:
-		return board_state.active_event
+		return board_state.active_objective
 # ID 从实例派生，避免两份可写的“当前事件”状态。
-var current_event_id: StringName:
+var current_objective_id: StringName:
 	get:
-		return current_event.event_id if current_event != null else &""
+		return current_objective.objective_id if current_objective != null else &""
 var floor_flags: Array[StringName] = []
 var resource_nodes: Array[ResourceNode] = []
 var cutout_state: CutOutState = CutOutState.new()
@@ -45,7 +46,7 @@ func _init(definition: FloorData) -> void:
 	if definition.safe_point != null:
 		safe_point = SafePointState.new(definition.safe_point)
 	floor_flags = definition.initial_flags.duplicate()
-	if definition.entry_entity != null:
+	if definition.entry_entity != null and definition.entry_entity_automatic:
 		entity = EntitySystem.spawn(definition.entry_entity)
 	for node: ResourceNodeData in definition.resource_nodes:
 		assert(node != null and not node.id.is_empty() and find_resource(node.id) == null, "Resource node needs a unique stable ID")
@@ -54,10 +55,10 @@ func _init(definition: FloorData) -> void:
 		var destination: FloorData = resource as FloorData
 		assert(destination != null and not destination.id.is_empty(), "Cut-out destination needs a stable ID")
 		cutout_state.destination_candidates.append(destination.id)
-	for event: EventData in definition.fresh_events:
+	for event: ObjectiveData in definition.fresh_objectives:
 		assert(event != null and not event.id.is_empty(), "Fresh event needs a stable ID")
-		assert(not remaining_fresh_events.has(event.id), "Duplicate Fresh Event ID")
-		remaining_fresh_events.append(event.id)
+		assert(not remaining_fresh_objectives.has(event.id), "Duplicate Fresh Event ID")
+		remaining_fresh_objectives.append(event.id)
 
 
 func find_resource(node_id: StringName) -> ResourceNode:

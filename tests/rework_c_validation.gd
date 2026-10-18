@@ -39,9 +39,9 @@ func _assert_zones(owner: TurnManager, normal_count: int) -> void:
 
 func _test_resource_cards() -> void:
 	var data: FloorData = fixture()
-	data.fresh_events = [data.fresh_events[0]]
-	data.fresh_events[0].explore_threshold = 100
-	data.fresh_events[0].clue_threshold = 90
+	data.fresh_objectives = [data.fresh_objectives[0]]
+	data.fresh_objectives[0].explore_threshold = 100
+	data.fresh_objectives[0].clue_threshold = 90
 	var owner: TurnManager = manager([SEARCH, SEARCH, SEARCH, SEARCH, SEARCH], data, false)
 	var state: RunState = owner.run_state
 	var node: ResourceNode = state.floor_state.resource_nodes[0]
@@ -49,7 +49,7 @@ func _test_resource_cards() -> void:
 	check(result.success and result.explore_applied == 3 and result.threat_delta == 1 and result.resource_looted_id == node.node_id and state.supply == 2 and node.status == ResourceNode.Status.LOOTED and state.ap == 2, "Single Search atomically grants Explore, finite reward, Threat, AP and normal discard")
 	play(owner, SEARCH)
 	play(owner, SEARCH)
-	check(state.supply == 3 and state.floor_state.current_event.explore_progress == 9, "Ordinary search collects visible caches once, then still meaningfully explores")
+	check(state.supply == 3 and state.floor_state.current_objective.explore_progress == 9, "Ordinary search collects visible caches once, then still meaningfully explores")
 	owner.end_turn()
 	check(node.status == ResourceNode.Status.DEPLETED, "Collected nodes deplete in existing turn lifecycle")
 	play(owner, SEARCH)
@@ -57,7 +57,7 @@ func _test_resource_cards() -> void:
 	_assert_zones(owner, 5)
 	owner.free()
 	data = fixture()
-	data.fresh_events = []
+	data.fresh_objectives = []
 	owner = manager([DEEP, DEEP, DEEP, DEEP, DEEP], data, false)
 	var total: int = 0
 	for definition: ResourceNodeData in data.resource_nodes:
@@ -132,7 +132,7 @@ func _test_equipment_cards() -> void:
 
 func _test_generation_rate() -> void:
 	var data: FloorData = fixture(LEVEL_6)
-	data.fresh_events = []
+	data.fresh_objectives = []
 	var owner: TurnManager = manager([], data)
 	var first: CardInstance = generated(owner, &"light")
 	check(first != null, "Round robin starts with first eligible carry slot")
@@ -154,7 +154,7 @@ func _test_generation_rate() -> void:
 
 func _test_smiler_cards() -> void:
 	var data: FloorData = fixture(LEVEL_6)
-	data.fresh_events = []
+	data.fresh_objectives = []
 	var owner: TurnManager = _equipment_fixture(data, [CROWBAR, FLASH], [ATTACK, ATTACK, ATTACK, OBSERVE, OBSERVE])
 	var state: RunState = owner.run_state
 	play_generated(owner, &"crowbar")
@@ -177,7 +177,7 @@ func _test_smiler_cards() -> void:
 	data = fixture(LEVEL_6)
 	data.entry_entity = data.followup_entity
 	data.followup_entity = null
-	data.fresh_events = []
+	data.fresh_objectives = []
 	owner = _equipment_fixture(data, [FLASH], [OBSERVE, OBSERVE, OBSERVE, GUARD, GUARD])
 	smiler = owner.run_state.floor_state.entity
 	for exposure: int in range(3):
@@ -198,7 +198,7 @@ func _test_smiler_cards() -> void:
 	owner = _equipment_fixture(data, [], [OBSERVE, OBSERVE, OBSERVE, OBSERVE, OBSERVE])
 	play(owner, OBSERVE)
 	result = play(owner, OBSERVE)
-	check(result.clue_revealed and owner.run_state.floor_state.discovered_insight_ids.has(data.fresh_events[0].clue_insight.id) and owner.run_state.cognition == 1, "Situation clue supplies same light Insight with no Smiler/pursuit/landmark input")
+	check(result.clue_revealed and owner.run_state.floor_state.discovered_insight_ids.has(data.fresh_objectives[0].clue_insight.id) and owner.run_state.cognition == 1, "Situation clue supplies same light Insight with no Smiler/pursuit/landmark input")
 	owner.end_turn()
 	play(owner, OBSERVE)
 	check(owner.run_state.cognition == 1, "Revisiting known clue cannot duplicate Insight")
@@ -218,7 +218,7 @@ func _test_cutout_cards() -> void:
 	var stale: PlayCardCommand = generated_request(owner, &"rushed")
 	var index: int = deck.hand.find(exit_card)
 	var result: ActionResult = play(owner, OBSERVE)
-	check(result.event_resolved and generated(owner, &"safe") == exit_card and generated(owner, &"rushed") == null and deck.hand.find(exit_card) == index and state.cognition == 1, "Normal investigation and Insight automatically upgrade same retained exit in place")
+	check(result.objective_resolved and generated(owner, &"safe") == exit_card and generated(owner, &"rushed") == null and deck.hand.find(exit_card) == index and state.cognition == 1, "Normal investigation and Insight automatically upgrade same retained exit in place")
 	reject(owner, stale, &"invalid_card_source")
 	state.floor_state.cutout_state.stability = 1
 	reject(owner, generated_request(owner, &"safe"), &"cutout_unprepared")
@@ -242,7 +242,7 @@ func _test_anti_soft_lock() -> void:
 		var zero: FloorData = fixture()
 		var six: FloorData = fixture(LEVEL_6)
 		for data: FloorData in [zero, six]:
-			data.fresh_events = []
+			data.fresh_objectives = []
 			data.resource_nodes = []
 			data.entry_entity = null
 			data.followup_entity = null
@@ -311,13 +311,13 @@ func _test_failure_matrix() -> void:
 				data.resource_nodes[0].supply_reward = -1
 				expected = &"invalid_resource_definition"
 			"bad_clue":
-				data.fresh_events[0].clue_stability = -1
-				expected = &"invalid_event_definition"
+				data.fresh_objectives[0].clue_stability = -1
+				expected = &"invalid_objective_definition"
 			"foreign_event":
-				request.target_event = EventInstance.new(request.target_event.event_id)
-				expected = &"invalid_event_target"
+				request.target_objective = ObjectiveInstance.new(request.target_objective.objective_id)
+				expected = &"invalid_objective_target"
 		reject(owner, request, expected)
-		check(owner.run_state.supply == 0 and owner.run_state.floor_state.current_event.explore_progress == 0, "Rejected Search cannot partially collect reward or advance its Situation")
+		check(owner.run_state.supply == 0 and owner.run_state.floor_state.current_objective.explore_progress == 0, "Rejected Search cannot partially collect reward or advance its Situation")
 		owner.free()
 	for failure: String in ["ap", "removed_item", "duplicate_item", "empty_item", "bad_item", "stale_board", "dead", "wrong_source"]:
 		var owner: TurnManager = _equipment_fixture(LEVEL_6, [CROWBAR])
@@ -343,7 +343,7 @@ func _test_failure_matrix() -> void:
 				expected = &"invalid_equipment_definition"
 			"stale_board":
 				request.target_board = FloorState.new(LEVEL_6).board_state
-				expected = &"invalid_event_target"
+				expected = &"invalid_objective_target"
 			"dead":
 				owner.run_state.player_hp = 0
 				expected = &"run_ended"
@@ -365,8 +365,8 @@ func _test_failure_matrix() -> void:
 				owner.run_state.floor_state.cutout_state.destination_candidates = [&"missing"]
 				expected = &"invalid_destination"
 			"bad_event":
-				destination.fresh_events[0].explore_threshold = -1
-				expected = &"invalid_event_definition"
+				destination.fresh_objectives[0].explore_threshold = -1
+				expected = &"invalid_objective_definition"
 			"bad_entity":
 				destination.followup_entity.id = destination.entry_entity.id
 				expected = &"invalid_entity_definition"
@@ -429,7 +429,7 @@ func _test_full_ui_run() -> void:
 				click_generated(main, &"crowbar")
 			elif hound.active and deck.hand.any(func(card: CardInstance) -> bool: return card.definition == ATTACK):
 				click_card(main, ATTACK, true)
-			elif state.floor_state.current_event != null and not state.floor_state.current_event.resolved and deck.hand.any(func(card: CardInstance) -> bool: return card.definition == SEARCH):
+			elif state.floor_state.current_objective != null and not state.floor_state.current_objective.resolved and deck.hand.any(func(card: CardInstance) -> bool: return card.definition == SEARCH):
 				click_card(main, SEARCH)
 			elif hound.active and deck.hand.any(func(card: CardInstance) -> bool: return card.definition == GUARD):
 				click_card(main, GUARD)

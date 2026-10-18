@@ -3,7 +3,10 @@ extends Resource
 
 @export var id: StringName
 @export var display_name: String
-@export var fresh_events: Array[EventData] = []
+@export var fresh_objectives: Array[ObjectiveData] = []
+@export var events: Array[EventData] = []
+@export var scene_rules: Array[SceneRuleData] = []
+@export var entry_entity_automatic: bool = true
 # 正式可玩楼层必须声明卡牌规则；旧配置由解析器拒绝，不再提供旁路。
 @export var card_first_exploration: bool = false
 @export var overstay_start_turn: int = 3
@@ -17,13 +20,13 @@ extends Resource
 @export var initial_flags: Array[StringName] = []
 @export var dark_observe_surcharge: int = 0
 @export var entry_entity: EntityData
-# 原型只容纳一个当前实体；后续遭遇必须在前一个失去活跃性后由命令进入。
+# 原型仅一个实体槽；后续遭遇由前兆或保留的自动世界条件调度。
 @export var followup_entity: EntityData
 @export var landmark_insight: InsightData
 @export var rushed_cutout_card: CardData = preload("res://data/cards/generated/card_cutout_rushed.tres")
 @export var safe_cutout_card: CardData = preload("res://data/cards/generated/card_cutout_safe.tres")
 @export var followup_on_light: bool = false
-@export var intro_event: EventData
+@export var intro_objective: ObjectiveData
 @export var safe_point: SafePointData
 @export var minimum_exit_turn: int = 1
 @export var minimum_exit_explore: int = 0
@@ -31,7 +34,7 @@ extends Resource
 @export var threat_damage_step: int = 0
 @export var max_threat_damage_bonus: int = 2
 # 旧测试夹具保留回合末退场；正式内容解决后立即清空，下一回合再补 Fresh。
-@export var retire_resolved_situations: bool = false
+@export var retire_resolved_objectives: bool = false
 
 
 func find_entity(entity_id: StringName) -> EntityData:
@@ -41,20 +44,23 @@ func find_entity(entity_id: StringName) -> EntityData:
 	return null
 
 
-func find_event(event_id: StringName) -> EventData:
-	for event: EventData in fresh_events:
-		if event.id == event_id:
+func find_objective(objective_id: StringName) -> ObjectiveData:
+	for event: ObjectiveData in fresh_objectives:
+		if event.id == objective_id:
 			return event
 	return null
 
 
 func find_insight(insight_id: StringName) -> InsightData:
+	for event: EventData in events:
+		if event.insight != null and event.insight.id == insight_id:
+			return event.insight
 	if landmark_insight != null and landmark_insight.id == insight_id:
 		return landmark_insight
 	for definition: EntityData in [entry_entity, followup_entity]:
 		if definition != null and definition.rule_insight != null and definition.rule_insight.id == insight_id:
 			return definition.rule_insight
-	for event: EventData in fresh_events:
+	for event: ObjectiveData in fresh_objectives:
 		if event.clue_insight != null and event.clue_insight.id == insight_id:
 			return event.clue_insight
 		if event.completion_insight != null and event.completion_insight.id == insight_id:

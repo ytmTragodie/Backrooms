@@ -2,174 +2,142 @@ class_name EventSystem
 extends RefCounted
 
 
-static func validate_situation(data: EventData) -> StringName:
-	if data == null or data.id.is_empty() or data.weight <= 0 or data.explore_threshold <= 0 or data.clue_threshold <= 0 or data.clue_threshold > data.explore_threshold:
-		return &"invalid_event_definition"
-	if data.clue_text.is_empty() or data.objective_text.is_empty() or data.explore_bonus < 0 or data.neglect_stress < 0 or data.neglect_damage < 0:
-		return &"invalid_event_definition"
-	if data.explore_bonus > 0 and data.bonus_tag.is_empty():
-		return &"invalid_event_definition"
-	if data.clue_stability < 0 or data.clue_knowledge < 0 or data.completion_supply < 0:
-		return &"invalid_event_definition"
-	var reward_error: StringName = CardRewardSystem.validate_definition(data.completion_reward)
-	if not reward_error.is_empty():
-		return reward_error
-	if data.clue_insight != null:
-		var error: StringName = InsightSystem.validate_definition(data.clue_insight)
-		if not error.is_empty():
-			return error
-	return InsightSystem.validate_definition(data.completion_insight)
+static func validate_definitions(data: FloorData) -> StringName:
+	var ids: Array[StringName] = []
+	for event: EventData in data.events:
+		if event == null or event.id.is_empty() or ids.has(event.id) or event.duration < 1 or event.stress_per_turn < 0 or event.damage_per_turn < 0 or event.ap_modifier < 0:
+			return &"invalid_event_definition"
+		ids.append(event.id)
+		if event.category not in [EventData.Category.DEBUFF, EventData.Category.OMEN, EventData.Category.OPPORTUNITY]:
+			return &"invalid_event_definition"
+		if event.ap_modifier > 0 and event.modifier_tag.is_empty():
+			return &"invalid_event_definition"
+		if event.category == EventData.Category.OMEN and (event.spawn_entity == null or data.find_entity(event.spawn_entity.id) != event.spawn_entity):
+			return &"invalid_event_definition"
+		if event.requires_resolved_entity != null and data.find_entity(event.requires_resolved_entity.id) != event.requires_resolved_entity:
+			return &"invalid_event_definition"
+		if event.spawn_entity != null and not EntitySystem.validate_definition(event.spawn_entity).is_empty():
+			return &"invalid_event_definition"
+		if event.category == EventData.Category.OPPORTUNITY and (event.required_actions < 1 or event.condition_tag.is_empty() or event.supply_reward < 0 or (event.supply_reward == 0 and event.insight == null and event.card_reward == null)):
+			return &"invalid_event_definition"
+		if (event.insight != null and not InsightSystem.validate_definition(event.insight).is_empty()) or not CardRewardSystem.validate_definition(event.card_reward).is_empty():
+			return &"invalid_event_definition"
+	return &""
 
 
 static func validate_board(floor: FloorState, data: FloorData) -> StringName:
-	if floor.board_state == null:
-		return &"invalid_event_context"
+	var error: StringName = validate_definitions(data)
+	if not error.is_empty(): return error
+	if floor.board_state.active_events.size() > BoardState.EVENT_CAPACITY:
+		return &"invalid_event_state"
 	var ids: Array[StringName] = []
-	for definition: EventData in data.fresh_events:
-		var error: StringName = validate_situation(definition)
-		if not error.is_empty():
-			return error
-		if ids.has(definition.id):
-			return &"invalid_event_definition"
-		ids.append(definition.id)
-	var event: EventInstance = floor.board_state.active_event
-	if event == null:
-		return &""
-	var definition: EventData = data.find_event(event.event_id)
-	if definition == null:
-		return &"invalid_event_context"
-	if event.explore_progress < 0 or event.explore_progress > definition.explore_threshold or event.resolved != (event.explore_progress == definition.explore_threshold):
-		return &"invalid_event_state"
-	if event.clue_revealed != (event.explore_progress >= definition.clue_threshold) or event.last_progress_turn < 0 or event.last_progress_turn > floor.turn_count or event.pressure_checked_turn < 0 or event.pressure_checked_turn > floor.turn_count:
-		return &"invalid_event_state"
+	for event: EventInstance in floor.board_state.active_events:
+		if event == null or not data.events.has(event.definition) or event.retired or event.remaining_turns < 0 or event.remaining_turns > event.definition.duration or event.matching_actions < 0 or event.checked_turn > floor.turn_count or ids.has(event.definition.id):
+			return &"invalid_event_state"
+		ids.append(event.definition.id)
 	return &""
 
 
-static func validate_target(command: PlayCardCommand, floor: FloorState) -> StringName:
-	# 对象身份加访问内 Board 身份共同校验；同 ID 的旧事件也不能重新命中。
-	if command.target_board != floor.board_state or command.target_event == null or command.target_event != floor.board_state.active_event:
-		return &"invalid_event_target"
-	if command.target_event.resolved:
-		return &"event_resolved"
-	return &""
+static func fill_slots(floor: FloorState, data: FloorData) -> void:
+	# 满额候选保留，按资源数组顺序延后补位；不随机覆盖、也不重洗已出现事件。
+	for definition: EventData in data.events:
+		if floor.board_state.active_events.size() >= BoardState.EVENT_CAPACITY: return
+		if floor.seen_event_ids.has(definition.id): continue
+		if definition.requires_resolved_entity != null and not floor.resolved_entity_ids.has(definition.requires_resolved_entity.id): continue
+		floor.board_state.active_events.append(EventInstance.new(definition))
+		floor.seen_event_ids.append(definition.id)
 
 
-static func explore_bonus(card: CardData, situation: EventData) -> int:
-	return situation.explore_bonus if not situation.bonus_tag.is_empty() and card.tags.has(situation.bonus_tag) else 0
+static func ap_modifier(card: CardData, floor: FloorState) -> int:
+	var amount: int = 0
+	for event: EventInstance in floor.board_state.active_events:
+		if not event.retired and card.tags.has(event.definition.modifier_tag):
+			amount += event.definition.ap_modifier
+	return amount
 
 
-static func plan_explore(result: ActionResult, card: CardData, floor: FloorState, data: FloorData) -> void:
-	var event: EventInstance = floor.board_state.active_event
-	var definition: EventData = data.find_event(event.event_id)
-	result.action_id = &"explore"
-	result.event_target = event
-	result.event_id = event.event_id
-	result.explore_base = card.explore_amount
-	result.explore_bonus = explore_bonus(card, definition) + card.contextual_bonus(floor.player_block, floor.threat)
-	result.explore_after = mini(definition.explore_threshold, event.explore_progress + result.explore_base + result.explore_bonus)
-	result.explore_applied = result.explore_after - event.explore_progress
-	result.clue_revealed = not event.clue_revealed and result.explore_after >= definition.clue_threshold
-	if result.clue_revealed:
-		result.light_activated = definition.clue_light_exposure
-		result.event_information.append(definition.clue_text)
-		if definition.clue_stability > 0 or definition.clue_knowledge > 0:
-			CutOutSystem.plan_gain(result, floor.cutout_state, definition.clue_stability, definition.clue_knowledge, &"situation_clue")
-		if definition.clue_insight != null:
-			InsightSystem.plan_confirmation(result, definition.clue_insight, floor)
-	result.event_resolved = result.explore_after == definition.explore_threshold
-	if result.event_resolved:
-		result.supply_delta += definition.completion_supply
-		InsightSystem.plan_confirmation(result, definition.completion_insight, floor)
-	if card.threat_cost > 0:
-		result.threat_delta = mini(card.threat_cost, FloorState.MAX_THREAT - floor.threat)
-		result.threat_reason = &"card_risk"
+static func has_damage(floor: FloorState) -> bool:
+	return floor.board_state.active_events.any(func(event: EventInstance) -> bool: return not event.retired and event.definition.damage_per_turn > 0)
 
 
-static func plan_pressure(result: ActionResult, floor: FloorState, data: FloorData) -> void:
-	var event: EventInstance = floor.board_state.active_event
-	if event == null or event.resolved or event.pressure_checked_turn == floor.turn_count:
+static func plan_card(result: ActionResult, card: CardData, state: RunState) -> void:
+	if result.destination != null: return
+	for event: EventInstance in state.floor_state.board_state.active_events:
+		var change: EventChange = EventChange.new(event)
+		var definition: EventData = event.definition
+		if definition.category == EventData.Category.OMEN:
+			for tag: StringName in definition.accelerate_tags:
+				# LIGHT 必须确实生效，印刷标签或失败开灯不算曝光。
+				if (tag == &"LIGHT" and result.light_activated) or (tag != &"LIGHT" and card.tags.has(tag)):
+					change.remaining_turns = maxi(0, change.remaining_turns - 1)
+			_trigger_omen(change, result, state)
+		elif definition.category == EventData.Category.OPPORTUNITY and card.tags.has(definition.condition_tag):
+			change.matching_actions += 1
+			if change.matching_actions >= definition.required_actions:
+				change.retired = true
+				change.reason = &"condition_met"
+				result.supply_delta += definition.supply_reward
+				if definition.insight != null: InsightSystem.plan_confirmation(result, definition.insight, state.floor_state)
+				if definition.card_reward != null: result.event_reward_definitions.append(definition.card_reward)
+		result.event_changes.append(change)
+
+
+static func plan_end_turn(result: ActionResult, state: RunState) -> void:
+	var floor: FloorState = state.floor_state
+	for event: EventInstance in floor.board_state.active_events:
+		if event.checked_turn == floor.turn_count: continue
+		var change: EventChange = EventChange.new(event)
+		change.checked_turn = floor.turn_count
+		change.remaining_turns = maxi(0, change.remaining_turns - 1)
+		var definition: EventData = event.definition
+		if definition.category == EventData.Category.DEBUFF:
+			result.pressure_stress += definition.stress_per_turn
+			var blocked: int = mini(floor.player_block - result.pressure_blocked, definition.damage_per_turn)
+			result.pressure_blocked += blocked
+			result.pressure_damage += definition.damage_per_turn - blocked
+		if definition.category == EventData.Category.OMEN:
+			_trigger_omen(change, result, state)
+		elif change.remaining_turns == 0:
+			change.retired = true
+			change.reason = &"expired"
+		result.event_changes.append(change)
+
+
+static func _trigger_omen(change: EventChange, result: ActionResult, state: RunState) -> void:
+	if change.remaining_turns > 0: return
+	var definition: EntityData = change.target.definition.spawn_entity
+	var floor: FloorState = state.floor_state
+	if floor.resolved_entity_ids.has(definition.id):
+		change.retired = true
+		change.reason = &"already_resolved"
 		return
-	result.event_target = event
-	result.pressure_checked = true
-	if event.last_progress_turn != floor.turn_count:
-		var definition: EventData = data.find_event(event.event_id)
-		result.pressure_stress = definition.neglect_stress
-		result.pressure_blocked = mini(floor.player_block, definition.neglect_damage)
-		result.pressure_damage = definition.neglect_damage - result.pressure_blocked
+	# 槽被占用时保持零倒计时等待，绝不覆盖实体或丢失预告。
+	var old_retiring: bool = result.entity_defeated or result.entity_state_after in [&"DISENGAGED", &"WITHDRAWN"]
+	if result.entity_spawned != null or (floor.entity != null and floor.entity.active and not old_retiring): return
+	result.entity_spawned = EntitySystem.spawn(definition)
+	result.entity_spawned.spawned_turn = floor.turn_count
+	if definition.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE and (floor.light_active or result.light_activated) and not result.light_extinguished:
+		result.entity_spawned.state = &"OBSERVING"
+		result.entity_spawned.intent = EntitySystem.INTENTS[&"OBSERVING"]
+		result.entity_spawned.light_exposed = true
+	change.retired = true
+	change.reason = &"omen_triggered"
 
 
-static func commit_situation(result: ActionResult, state: RunState) -> void:
-	var event: EventInstance = result.event_target
-	if event == null:
-		return
-	if result.explore_after >= 0:
-		# 阈值、线索与进度在同一次提交生效；没有 UI 事件链驱动奖励。
-		event.explore_progress = result.explore_after
-		state.floor_state.total_explore += result.explore_applied
-		event.last_progress_turn = state.floor_state.turn_count
-		event.clue_revealed = event.clue_revealed or result.clue_revealed
-		event.known_information.append_array(result.event_information)
-		event.resolved = result.event_resolved
-		result.debug_lines.append("[EXPLORE] %s base=%d bonus=%d applied=%d progress=%d" % [event.event_id, result.explore_base, result.explore_bonus, result.explore_applied, event.explore_progress])
-		if result.clue_revealed:
-			result.debug_lines.append("[SITUATION] clue %s" % event.event_id)
-		if event.resolved:
-			state.floor_state.completed_situations += 1
-			result.debug_lines.append("[SITUATION] resolved %s" % event.event_id)
-	if result.pressure_checked:
-		event.pressure_checked_turn = state.floor_state.turn_count
+static func commit(result: ActionResult, state: RunState) -> void:
+	var board: BoardState = state.floor_state.board_state
+	# 只提交仍归当前 Board 所有的实例；外部旧引用不能重新入场或发奖。
+	for change: EventChange in result.event_changes:
+		if not board.active_events.has(change.target) or change.target.retired: continue
+		change.target.remaining_turns = change.remaining_turns
+		change.target.matching_actions = change.matching_actions
+		change.target.checked_turn = change.checked_turn
+		change.target.retired = change.retired
+		result.debug_lines.append("[EVENT] %s timer=%d actions=%d reason=%s" % [change.target.definition.id, change.remaining_turns, change.matching_actions, change.reason])
+		if change.retired: board.active_events.erase(change.target)
+	# 环境总压力只提交一次；解析器协调顺序，不成为另一处 HP/Guard 写入者。
+	if result.action_id == &"end_turn":
 		state.stress += result.pressure_stress
 		state.floor_state.player_block -= result.pressure_blocked
 		state.player_hp -= mini(state.player_hp, result.pressure_damage)
-		result.debug_lines.append("[PRESSURE] %s stress +%d reason=%s" % [event.event_id, result.pressure_stress, "progressed" if event.last_progress_turn == state.floor_state.turn_count else "neglected"])
-		result.debug_lines.append("[PRESSURE] damage=%d blocked=%d" % [result.pressure_damage, result.pressure_blocked])
-
-
-static func conditions_met(required: Array[StringName], blocked: Array[StringName], flags: Array[StringName]) -> bool:
-	for flag: StringName in required:
-		if not flags.has(flag):
-			return false
-	for flag: StringName in blocked:
-		if flags.has(flag):
-			return false
-	return true
-
-
-static func draw_fresh(data: FloorData, state: FloorState, rng: RandomNumberGenerator, emit_log: bool = true) -> StringName:
-	assert(data.id == state.floor_id, "Event selection requires matching floor data/state")
-	# 未完成事件跨回合保留，不能靠结束回合跳过进度或刷新基础交互。
-	if state.current_event != null and not state.current_event.resolved:
-		return state.current_event_id
-	var candidates: Array[EventData] = []
-	var total_weight: int = 0
-	for event_id: StringName in state.remaining_fresh_events:
-		var event: EventData = data.find_event(event_id)
-		assert(event != null and event.weight > 0, "Invalid Fresh Event definition")
-		if event.once_per_instance and state.seen_event_ids.has(event.id):
-			continue
-		if not conditions_met(event.required_flags, event.blocked_flags, state.floor_flags):
-			continue
-		candidates.append(event)
-		total_weight += event.weight
-	state.board_state.active_event = null
-	if candidates.is_empty():
-		if emit_log and OS.is_debug_build():
-			print("[EVENT] no_eligible_fresh remaining=%d" % state.remaining_fresh_events.size())
-		return &""
-	# 先过滤条件，再用本局 RNG 加权选择；无候选时不消耗随机数。
-	var intro: EventData = data.intro_event if state.seen_event_ids.is_empty() and candidates.has(data.intro_event) else null
-	var roll: int = 1 if intro != null else rng.randi_range(1, total_weight)
-	for event: EventData in candidates:
-		if intro != null and event != intro:
-			continue
-		roll -= event.weight
-		if roll > 0:
-			continue
-		state.board_state.active_event = EventInstance.new(event.id)
-		state.board_state.active_event.activated_turn = state.turn_count
-		state.remaining_fresh_events.erase(event.id)
-		state.seen_event_ids.append(event.id)
-		if emit_log and OS.is_debug_build():
-			print("[EVENT] draw %s" % event.id)
-		return event.id
-	return &""
+		result.debug_lines.append("[PRESSURE] total stress=%d damage=%d blocked=%d" % [result.pressure_stress, result.pressure_damage, result.pressure_blocked])

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"card_heavy_strike"
+display_name = "有力打击"
+ap_cost = 1
+effect_type = 2
+effect_value = 6
+explore_amount = 0
+threat_cost = 0
+target_kinds = 2
+bonus_condition = 0
+conditional_bonus = 0

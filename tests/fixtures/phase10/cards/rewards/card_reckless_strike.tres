@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"card_reckless_strike"
+display_name = "鲁莽猛击"
+ap_cost = 2
+effect_type = 2
+effect_value = 9
+explore_amount = 0
+threat_cost = 2
+target_kinds = 2
+bonus_condition = 0
+conditional_bonus = 0
+tags = Array[StringName]([&"NOISE"])

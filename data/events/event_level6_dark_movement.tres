@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="script"]
+[ext_resource type="Resource" path="res://data/entities/entity_smiler.tres" id="entity"]
+[ext_resource type="Resource" path="res://data/entities/entity_hound.tres" id="prior"]
+
+[resource]
+script = ExtResource("script")
+id = &"event_level6_dark_movement"
+display_name = "黑暗中的动静"
+display_text = "猎犬退场后浮现的笑脸。两回合后出现笑魇；实际光照或噪音加速。"
+category = 1
+duration = 2
+accelerate_tags = Array[StringName]([&"LIGHT", &"NOISE"])
+spawn_entity = ExtResource("entity")
+requires_resolved_entity = ExtResource("prior")

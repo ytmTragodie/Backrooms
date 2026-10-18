@@ -47,8 +47,8 @@ static func current_action_card(item: EquipmentInstance, floor: FloorState) -> C
 static func validate_card(command: PlayCardCommand, state: RunState) -> StringName:
 	var floor: FloorState = state.floor_state
 	if command.target_board != floor.board_state:
-		return &"invalid_event_target"
-	if command.target_event != null:
+		return &"invalid_objective_target"
+	if command.target_objective != null:
 		return &"invalid_target_kind"
 	var error: StringName = validate_inventory(state)
 	if not error.is_empty():

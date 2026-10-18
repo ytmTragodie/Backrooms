@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="EventData" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ObjectiveData" load_steps=4 format=3]
 
-[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/objectives/objective_data.gd" id="1"]
 [ext_resource type="Resource" path="res://tests/fixtures/phase9/insights/insight_level6_noise_pursuit.tres" id="2"]
 
 [ext_resource type="Resource" path="res://tests/fixtures/phase9/insights/insight_level6_light_attracts.tres" id="light_insight"]

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ResourceNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/resource_node_data.gd" id="script"]
+
+[resource]
+script = ExtResource("script")
+id = &"resource_level6_crowbar"
+display_name = "工具补给箱"
+supply_reward = 0
+equipment_id = &"equip_crowbar"
+uses_reward = 1

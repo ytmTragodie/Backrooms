@@ -15,7 +15,7 @@ func tests() -> void:
 	var result: ActionResult = owner.end_turn()
 	check(result.pressure_blocked == 2 and result.damage_blocked == 4 and entity.state == &"STAGGERED" and run.player_hp == 30 and floor.player_block == 0, "Common defense handles Pressure first then fully blocks published bite")
 	check(play(owner, RUN, true).success and not entity.active and entity.alive, "Run resolves staggered Hound without fake HP zero")
-	check(run.ap == 2 and run.turn_number == 2 and floor.current_event != null and floor.cutout_state != null, "Combat preserves shared turn/floor/AP/CutOut")
+	check(run.ap == 2 and run.turn_number == 2 and floor.current_objective != null and floor.cutout_state != null, "Combat preserves shared turn/floor/AP/CutOut")
 	owner.free()
 	owner = manager([ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK], LEVEL_6)
 	entity = owner.run_state.floor_state.entity
@@ -31,7 +31,7 @@ func tests() -> void:
 	result = play(owner, OBSERVE)
 	check(result.ap_spent == 2 and owner.run_state.floor_state.dark_observation_used and owner.run_state.cognition == 0, "First dark Observe uses shared cost and gives no automatic Cognition")
 	result = play(owner, OBSERVE)
-	check(result.ap_spent == 1 and owner.run_state.floor_state.current_event.explore_progress == 4, "Following Observe costs baseline and preserves Explore")
+	check(result.ap_spent == 1 and owner.run_state.floor_state.current_objective.explore_progress == 4, "Following Observe costs baseline and preserves Explore")
 	owner.run_state.player_hp = 1
 	owner.end_turn()
 	check(owner.run_state.player_hp == 1, "Progress suppresses environmental Pressure while Hound approaches")

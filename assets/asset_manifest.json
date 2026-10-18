@@ -1,0 +1,652 @@
+{
+  "floor_level_0": {
+    "path": "res://assets/backgrounds/level_0/background.png",
+    "category": "背景",
+    "usage": "0层背景",
+    "required": true,
+    "dimensions": "1920×1080",
+    "format": "PNG/JPG",
+    "status": "PLACEHOLDER",
+    "notes": "静态空环境，无文字；中央低对比。"
+  },
+  "floor_level_6": {
+    "path": "res://assets/backgrounds/level_6/background.png",
+    "category": "背景",
+    "usage": "6层背景",
+    "required": true,
+    "dimensions": "1920×1080",
+    "format": "PNG/JPG",
+    "status": "PLACEHOLDER",
+    "notes": "静态空环境，无文字；中央低对比。"
+  },
+  "event_level0_humming": {
+    "path": "res://assets/cards/events/event_level0_humming.png",
+    "category": "事件",
+    "usage": "异常嗡鸣",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "event_level0_meg_signal": {
+    "path": "res://assets/cards/events/event_level0_meg_signal.png",
+    "category": "事件",
+    "usage": "M.E.G. 断续信号",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "event_level6_claw_marks": {
+    "path": "res://assets/cards/events/event_level6_claw_marks.png",
+    "category": "事件",
+    "usage": "远处抓挠声",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "event_level6_dark_movement": {
+    "path": "res://assets/cards/events/event_level6_dark_movement.png",
+    "category": "事件",
+    "usage": "黑暗中的动静",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "event_level6_fading_light": {
+    "path": "res://assets/cards/events/event_level6_fading_light.png",
+    "category": "事件",
+    "usage": "灯光衰减",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "event_level6_stable_broadcast": {
+    "path": "res://assets/cards/events/event_level6_stable_broadcast.png",
+    "category": "事件",
+    "usage": "临时稳定广播",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "objective_level0_damp_wall": {
+    "path": "res://assets/cards/objectives/objective_level0_damp_wall.png",
+    "category": "目标",
+    "usage": "受潮补给箱",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "objective_level0_wrong_corner": {
+    "path": "res://assets/cards/objectives/objective_level0_wrong_corner.png",
+    "category": "目标",
+    "usage": "空间裂隙",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "objective_level6_emergency_light": {
+    "path": "res://assets/cards/objectives/objective_level6_emergency_light.png",
+    "category": "目标",
+    "usage": "应急发电机",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "objective_level6_wall_seam": {
+    "path": "res://assets/cards/objectives/objective_level6_wall_seam.png",
+    "category": "目标",
+    "usage": "呼吸的墙缝",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "entity_hound": {
+    "path": "res://assets/cards/entities/entity_hound.png",
+    "category": "实体",
+    "usage": "猎犬",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "entity_smiler": {
+    "path": "res://assets/cards/entities/entity_smiler.png",
+    "category": "实体",
+    "usage": "笑魇",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "portrait_hound": {
+    "path": "res://assets/entities/hound.png",
+    "category": "实体立绘",
+    "usage": "hound独立立绘",
+    "required": false,
+    "dimensions": "1024×1024",
+    "format": "PNG",
+    "status": "MISSING",
+    "notes": "透明背景；不含文字。"
+  },
+  "portrait_smiler": {
+    "path": "res://assets/entities/smiler.png",
+    "category": "实体立绘",
+    "usage": "smiler独立立绘",
+    "required": false,
+    "dimensions": "1024×1024",
+    "format": "PNG",
+    "status": "MISSING",
+    "notes": "透明背景；不含文字。"
+  },
+  "frame_player": {
+    "path": "res://assets/ui/frames/player.png",
+    "category": "界面",
+    "usage": "玩家牌框",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明中心；边框保留安全距，用九宫格拉伸。"
+  },
+  "frame_event": {
+    "path": "res://assets/ui/frames/event.png",
+    "category": "界面",
+    "usage": "事件牌框",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明中心；边框保留安全距，用九宫格拉伸。"
+  },
+  "frame_entity": {
+    "path": "res://assets/ui/frames/entity.png",
+    "category": "界面",
+    "usage": "实体牌框",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明中心；边框保留安全距，用九宫格拉伸。"
+  },
+  "frame_objective": {
+    "path": "res://assets/ui/frames/objective.png",
+    "category": "界面",
+    "usage": "目标牌框",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明中心；边框保留安全距，用九宫格拉伸。"
+  },
+  "icon_hp": {
+    "path": "res://assets/ui/icons/hp.png",
+    "category": "图标",
+    "usage": "生命",
+    "required": true,
+    "dimensions": "64×64",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+  },
+  "icon_stress": {
+    "path": "res://assets/ui/icons/stress.png",
+    "category": "图标",
+    "usage": "压力",
+    "required": true,
+    "dimensions": "64×64",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+  },
+  "icon_threat": {
+    "path": "res://assets/ui/icons/threat.png",
+    "category": "图标",
+    "usage": "威胁",
+    "required": true,
+    "dimensions": "64×64",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+  },
+  "icon_cognition": {
+    "path": "res://assets/ui/icons/cognition.png",
+    "category": "图标",
+    "usage": "认知",
+    "required": true,
+    "dimensions": "64×64",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+  },
+  "icon_ap": {
+    "path": "res://assets/ui/icons/ap.png",
+    "category": "图标",
+    "usage": "行动点",
+    "required": true,
+    "dimensions": "64×64",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+  },
+  "icon_guard": {
+    "path": "res://assets/ui/icons/guard.png",
+    "category": "图标",
+    "usage": "防护",
+    "required": true,
+    "dimensions": "64×64",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+  },
+  "icon_light": {
+    "path": "res://assets/ui/icons/light.png",
+    "category": "图标",
+    "usage": "光照",
+    "required": true,
+    "dimensions": "64×64",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+  },
+  "icon_noise": {
+    "path": "res://assets/ui/icons/noise.png",
+    "category": "图标",
+    "usage": "噪音",
+    "required": true,
+    "dimensions": "64×64",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+  },
+  "icon_retain": {
+    "path": "res://assets/ui/icons/retain.png",
+    "category": "图标",
+    "usage": "保留",
+    "required": true,
+    "dimensions": "64×64",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+  },
+  "icon_exhaust": {
+    "path": "res://assets/ui/icons/exhaust.png",
+    "category": "图标",
+    "usage": "消耗",
+    "required": true,
+    "dimensions": "64×64",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+  },
+  "button_primary": {
+    "path": "res://assets/ui/buttons/primary.png",
+    "category": "界面",
+    "usage": "主要按钮",
+    "required": false,
+    "dimensions": "320×80",
+    "format": "PNG",
+    "status": "MISSING",
+    "notes": "透明圆角，可拉伸。"
+  },
+  "fx_vhs_noise": {
+    "path": "res://assets/ui/overlays/vhs_noise.png",
+    "category": "特效",
+    "usage": "录像噪点",
+    "required": false,
+    "dimensions": "1920×1080",
+    "format": "PNG",
+    "status": "MISSING",
+    "notes": "透明叠加，无最终 shader/动画。"
+  },
+  "fx_damage_flash": {
+    "path": "res://assets/fx/damage_flash.png",
+    "category": "特效",
+    "usage": "受伤闪光",
+    "required": false,
+    "dimensions": "1920×1080",
+    "format": "PNG",
+    "status": "MISSING",
+    "notes": "透明叠加，无最终 shader/动画。"
+  },
+  "fx_card_highlight": {
+    "path": "res://assets/fx/card_highlight.png",
+    "category": "特效",
+    "usage": "手牌高亮",
+    "required": false,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "MISSING",
+    "notes": "透明叠加，无最终 shader/动画。"
+  },
+  "fx_target_highlight": {
+    "path": "res://assets/fx/target_highlight.png",
+    "category": "特效",
+    "usage": "目标高亮",
+    "required": false,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "MISSING",
+    "notes": "透明叠加，无最终 shader/动画。"
+  },
+  "ambience_level_0": {
+    "path": "res://assets/audio/ambience/level_0.ogg",
+    "category": "音频",
+    "usage": "0层循环环境",
+    "required": false,
+    "dimensions": "30–60秒",
+    "format": "OGG",
+    "status": "MISSING",
+    "notes": "可循环，无首尾爆音；低音量。"
+  },
+  "ambience_level_6": {
+    "path": "res://assets/audio/ambience/level_6.ogg",
+    "category": "音频",
+    "usage": "6层循环环境",
+    "required": false,
+    "dimensions": "30–60秒",
+    "format": "OGG",
+    "status": "MISSING",
+    "notes": "可循环，无首尾爆音；低音量。"
+  },
+  "audio_card_play": {
+    "path": "res://assets/audio/sfx/card_play.ogg",
+    "category": "音频",
+    "usage": "出牌",
+    "required": false,
+    "dimensions": "0.2–3秒",
+    "format": "OGG/WAV",
+    "status": "MISSING",
+    "notes": "短音效，峰值留余量。"
+  },
+  "audio_hound": {
+    "path": "res://assets/audio/sfx/hound.ogg",
+    "category": "音频",
+    "usage": "猎犬预警",
+    "required": false,
+    "dimensions": "0.2–3秒",
+    "format": "OGG/WAV",
+    "status": "MISSING",
+    "notes": "短音效，峰值留余量。"
+  },
+  "audio_smiler": {
+    "path": "res://assets/audio/sfx/smiler.ogg",
+    "category": "音频",
+    "usage": "笑魇预警",
+    "required": false,
+    "dimensions": "0.2–3秒",
+    "format": "OGG/WAV",
+    "status": "MISSING",
+    "notes": "短音效，峰值留余量。"
+  },
+  "audio_cutout": {
+    "path": "res://assets/audio/sfx/cutout.ogg",
+    "category": "音频",
+    "usage": "切出",
+    "required": false,
+    "dimensions": "0.2–3秒",
+    "format": "OGG/WAV",
+    "status": "MISSING",
+    "notes": "短音效，峰值留余量。"
+  },
+  "audio_event": {
+    "path": "res://assets/audio/sfx/event.ogg",
+    "category": "音频",
+    "usage": "事件入场",
+    "required": false,
+    "dimensions": "0.2–3秒",
+    "format": "OGG/WAV",
+    "status": "MISSING",
+    "notes": "短音效，峰值留余量。"
+  },
+  "audio_omen": {
+    "path": "res://assets/audio/sfx/omen.ogg",
+    "category": "音频",
+    "usage": "前兆倒计时",
+    "required": false,
+    "dimensions": "0.2–3秒",
+    "format": "OGG/WAV",
+    "status": "MISSING",
+    "notes": "短音效，峰值留余量。"
+  },
+  "audio_button_click": {
+    "path": "res://assets/audio/ui/button_click.ogg",
+    "category": "音频",
+    "usage": "按钮点击",
+    "required": false,
+    "dimensions": "0.2–3秒",
+    "format": "OGG/WAV",
+    "status": "MISSING",
+    "notes": "短音效，峰值留余量。"
+  },
+  "card_attack": {
+    "path": "res://assets/cards/player/card_attack.png",
+    "category": "玩家牌",
+    "usage": "攻击",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_deep_search": {
+    "path": "res://assets/cards/player/card_deep_search.png",
+    "category": "玩家牌",
+    "usage": "深入搜索",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_defend": {
+    "path": "res://assets/cards/player/card_defend.png",
+    "category": "玩家牌",
+    "usage": "防御",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_observe": {
+    "path": "res://assets/cards/player/card_observe.png",
+    "category": "玩家牌",
+    "usage": "观察",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_run": {
+    "path": "res://assets/cards/player/card_run.png",
+    "category": "玩家牌",
+    "usage": "奔跑",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_search": {
+    "path": "res://assets/cards/player/card_search.png",
+    "category": "玩家牌",
+    "usage": "搜索",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_equipment_crowbar": {
+    "path": "res://assets/cards/player/card_crowbar.png",
+    "category": "玩家牌",
+    "usage": "撬棍猛击",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_floor_cutout_rushed": {
+    "path": "res://assets/cards/player/card_cutout_rushed.png",
+    "category": "玩家牌",
+    "usage": "仓促切出",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_floor_cutout_safe": {
+    "path": "res://assets/cards/player/card_cutout_safe.png",
+    "category": "玩家牌",
+    "usage": "安全切出",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_equipment_extinguish": {
+    "path": "res://assets/cards/player/card_extinguish.png",
+    "category": "玩家牌",
+    "usage": "熄灯",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_equipment_light": {
+    "path": "res://assets/cards/player/card_light.png",
+    "category": "玩家牌",
+    "usage": "照明",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_equipment_water": {
+    "path": "res://assets/cards/player/card_water.png",
+    "category": "玩家牌",
+    "usage": "饮用杏仁水",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_careful_observe": {
+    "path": "res://assets/cards/player/card_careful_observe.png",
+    "category": "玩家牌",
+    "usage": "仔细观察",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_counter_strike": {
+    "path": "res://assets/cards/player/card_counter_strike.png",
+    "category": "玩家牌",
+    "usage": "防守反击",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_crisis_observe": {
+    "path": "res://assets/cards/player/card_crisis_observe.png",
+    "category": "玩家牌",
+    "usage": "临危调查",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_exploit_weakness": {
+    "path": "res://assets/cards/player/card_exploit_weakness.png",
+    "category": "玩家牌",
+    "usage": "洞悉弱点",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_heavy_strike": {
+    "path": "res://assets/cards/player/card_heavy_strike.png",
+    "category": "玩家牌",
+    "usage": "有力打击",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_reckless_strike": {
+    "path": "res://assets/cards/player/card_reckless_strike.png",
+    "category": "玩家牌",
+    "usage": "鲁莽猛击",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_risky_search": {
+    "path": "res://assets/cards/player/card_risky_search.png",
+    "category": "玩家牌",
+    "usage": "冒险搜寻",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_steady_guard": {
+    "path": "res://assets/cards/player/card_steady_guard.png",
+    "category": "玩家牌",
+    "usage": "稳固防御",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  },
+  "card_thorough_search": {
+    "path": "res://assets/cards/player/card_thorough_search.png",
+    "category": "玩家牌",
+    "usage": "严密搜索",
+    "required": true,
+    "dimensions": "512×768",
+    "format": "PNG",
+    "status": "PLACEHOLDER",
+    "notes": "保持文字区域干净；文字由界面绘制。"
+  }
+}

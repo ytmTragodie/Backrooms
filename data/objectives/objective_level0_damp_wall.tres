@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ObjectiveData" format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_data.gd" id="script"]
+[ext_resource type="Resource" path="res://data/insights/insight_level0_damp_air.tres" id="insight"]
+
+[resource]
+script = ExtResource("script")
+asset_id = &"objective_level0_damp_wall"
+id = &"event_level0_damp_wall"
+display_name = "受潮补给箱"
+display_text = "湿气汇向通风缝，附近可能有遗留补给。这里暂时没有额外压力，适合规划下一步。"
+objective_text = "打开补给箱并辨识渗水来源"
+explore_threshold = 12
+clue_threshold = 4
+clue_text = "水渍沿墙缝连续延伸；搜索能更快确认物资位置。"
+completion_insight = ExtResource("insight")
+neglect_stress = 0
+neglect_damage = 0
+completion_supply = 2
+clue_light_exposure = false
+bonus_tag = &"SEARCH"
+explore_bonus = 1

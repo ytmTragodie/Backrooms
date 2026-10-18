@@ -38,14 +38,14 @@ func tests() -> void:
 
 func fixture(source: FloorData = LEVEL_0) -> FloorData:
 	var data: FloorData = source.duplicate(false) as FloorData
-	data.fresh_events = []
-	for original: EventData in source.fresh_events:
-		var event: EventData = original.duplicate(false) as EventData
+	data.fresh_objectives = []
+	for original: ObjectiveData in source.fresh_objectives:
+		var event: ObjectiveData = original.duplicate(false) as ObjectiveData
 		event.completion_reward = null
 		event.completion_insight = original.completion_insight.duplicate(false) as InsightData
 		if original.clue_insight != null:
 			event.clue_insight = original.clue_insight.duplicate(false) as InsightData
-		data.fresh_events.append(event)
+		data.fresh_objectives.append(event)
 	data.resource_nodes = []
 	for original: ResourceNodeData in source.resource_nodes:
 		data.resource_nodes.append(original.duplicate(false) as ResourceNodeData)
@@ -85,7 +85,7 @@ func hand_card(owner: TurnManager, definition: CardData) -> CardInstance:
 
 func command(owner: TurnManager, definition: CardData, target_entity: bool = false) -> PlayCardCommand:
 	var board: BoardState = owner.run_state.floor_state.board_state
-	var event: EventInstance = board.active_event if not target_entity and definition.explore_amount > 0 else null
+	var event: ObjectiveInstance = board.active_objective if not target_entity and definition.explore_amount > 0 else null
 	return PlayCardCommand.new(hand_card(owner, definition), event, board, board.entity if target_entity else null)
 
 
@@ -100,7 +100,7 @@ func play(owner: TurnManager, definition: CardData, target_entity: bool = false)
 func snapshot(owner: TurnManager) -> Dictionary:
 	var run: RunState = owner.run_state
 	var floor: FloorState = run.floor_state
-	var event: EventInstance = floor.current_event
+	var event: ObjectiveInstance = floor.current_objective
 	var entity: EntityInstance = floor.entity
 	var piles: Array = []
 	for pile: Array[CardInstance] in [run.deck_state.hand, run.deck_state.draw_pile, run.deck_state.discard_pile]:
@@ -121,7 +121,7 @@ func snapshot(owner: TurnManager) -> Dictionary:
 		"generation": [run.deck_state.equipment_generation_turn, run.deck_state.next_equipment_slot],
 		"card_sources": run.deck_state.hand.map(func(card: CardInstance) -> Array: return [card.definition.get_instance_id(), card.source_equipment.get_instance_id() if card.source_equipment != null else 0, card.source_board.get_instance_id() if card.source_board != null else 0]),
 		"floor": floor.get_instance_id(), "floor_data": owner.floor_data.get_instance_id(), "board": floor.board_state.get_instance_id(), "deck": run.deck_state.get_instance_id(), "piles": piles, "equipment": equipment, "nodes": nodes,
-		"state": [floor.turn_count, floor.threat, floor.cognition, floor.player_block, floor.dark_observation_used, floor.light_active, floor.discovered_insight_ids.duplicate(), floor.remaining_fresh_events.duplicate(), floor.seen_event_ids.duplicate(), floor.floor_flags.duplicate()],
+		"state": [floor.turn_count, floor.threat, floor.cognition, floor.player_block, floor.dark_observation_used, floor.light_active, floor.discovered_insight_ids.duplicate(), floor.remaining_fresh_objectives.duplicate(), floor.seen_objective_ids.duplicate(), floor.floor_flags.duplicate()],
 		"event": [event.get_instance_id(), event.explore_progress, event.resolved, event.clue_revealed, event.known_information.duplicate(), event.last_progress_turn, event.pressure_checked_turn] if event != null else [],
 		"entity": [entity.get_instance_id(), entity.hp, entity.max_hp, entity.state, entity.intent, entity.analysis_progress, entity.revealed_rules.duplicate(), entity.light_exposed] if entity != null else [],
 		"cutout": [floor.cutout_state.get_instance_id(), floor.cutout_state.stability, floor.cutout_state.destination_knowledge, floor.cutout_state.destination_candidates.duplicate()],

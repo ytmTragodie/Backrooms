@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveData" format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_data.gd" id="script"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/insights/insight_level6_emergency_cycle.tres" id="insight"]
+
+[resource]
+script = ExtResource("script")
+id = &"event_level6_emergency_light"
+display_name = "应急灯放电"
+display_text = "失效灯箱偶尔放电。探索会触发短暂强光；解决猎犬后，此处也可能暴露黑暗中的笑脸。"
+objective_text = "调查环境，确认规律与路线"
+explore_threshold = 14
+clue_threshold = 6
+clue_text = "灯箱突然闪亮！这是真实光照；保持黑暗能让注视退去。"
+completion_insight = ExtResource("insight")
+neglect_stress = 1
+neglect_damage = 0
+completion_supply = 0
+clue_light_exposure = true
+bonus_tag = &"OBSERVE"
+explore_bonus = 1

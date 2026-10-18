@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveData" format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_data.gd" id="script"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/insights/insight_level6_noise_pursuit.tres" id="insight"]
+
+[resource]
+script = ExtResource("script")
+id = &"event_level6_claw_marks"
+display_name = "墙后的爪痕"
+display_text = "爪痕围绕松动墙板延伸。噪音与追逐存在联系；猎犬分析也是理解它的另一条路线。"
+objective_text = "调查环境，确认规律与路线"
+explore_threshold = 14
+clue_threshold = 6
+clue_text = "猛烈重响后爪声加快；完全防护能令追逐者踉跄。"
+completion_insight = ExtResource("insight")
+neglect_stress = 0
+neglect_damage = 2
+completion_supply = 1
+clue_light_exposure = false
+bonus_tag = &"OBSERVE"
+explore_bonus = 1

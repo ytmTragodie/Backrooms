@@ -6,6 +6,8 @@ static func card_ap_cost(definition: CardData, state: RunState, data: FloorData)
 	var cost: int = definition.ap_cost
 	if _is_dark_observation(definition, state, data):
 		cost += data.dark_observe_surcharge
+	if state.floor_state != null:
+		cost += EventSystem.ap_modifier(definition, state.floor_state)
 	return cost
 
 
@@ -75,8 +77,8 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 		var target_error: StringName = validate_card_target(command, state.floor_state, floor_data, state)
 		if not target_error.is_empty():
 			return _fail(result, target_error, card_id)
-	elif command.target_event != null or command.target_board != null or command.target_entity != null:
-		return _fail(result, &"invalid_event_target", card_id)
+	elif command.target_objective != null or command.target_board != null or command.target_entity != null:
+		return _fail(result, &"invalid_objective_target", card_id)
 	var final_cost: int = command_ap_cost(command, state, floor_data)
 	var dark_observation: bool = _is_dark_observation(definition, state, floor_data)
 	if state.ap < final_cost:
@@ -98,8 +100,8 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	elif situation_play and definition.explore_amount > 0:
 		if command.target_entity != null:
 			EntitySystem.plan_analysis(draft, definition, state.floor_state, floor_data)
-		elif command.target_event != null:
-			EventSystem.plan_explore(draft, definition, state.floor_state, floor_data)
+		elif command.target_objective != null:
+			ObjectiveSystem.plan_explore(draft, definition, state.floor_state, floor_data)
 		if definition.collects_resources:
 			var inventory_error: StringName = EquipmentSystem.validate_inventory(state)
 			if not inventory_error.is_empty():
@@ -127,6 +129,7 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 			EntitySystem.plan_light_reaction(result, state, floor_data)
 
 		EntitySystem.plan_world_followup(result, state, floor_data)
+		EventSystem.plan_card(result, definition, state)
 		CardRewardSystem.plan(result, state, floor_data)
 
 	# 先计算并构建完整结果；占位伤害只进入结果，不修改任何目标的 HP。
@@ -178,15 +181,15 @@ static func validate_card_target(command: PlayCardCommand, floor: FloorState, da
 	if command == null or command.card == null or command.card.definition == null:
 		return &"invalid_command"
 	var definition: CardData = command.card.definition
-	if command.target_event != null and command.target_entity != null:
+	if command.target_objective != null and command.target_entity != null:
 		return &"invalid_target_kind"
-	if command.target_event != null and (definition.target_kinds & CardData.TargetKind.SITUATION) == 0:
+	if command.target_objective != null and (definition.target_kinds & CardData.TargetKind.OBJECTIVE) == 0:
 		return &"invalid_target_kind"
 	if command.target_entity != null and (definition.target_kinds & CardData.TargetKind.ENTITY) == 0:
 		return &"invalid_target_kind"
 	if definition.requires_active_target and command.target_board == floor.board_state:
-		if command.target_event != null and command.target_event == floor.board_state.active_event and command.target_event.resolved:
-			return &"event_resolved"
+		if command.target_objective != null and command.target_objective == floor.board_state.active_objective and command.target_objective.resolved:
+			return &"objective_resolved"
 		if command.target_entity != null and command.target_entity == floor.board_state.entity and not command.target_entity.active:
 			return &"no_active_entity"
 	if command.target_entity != null and not definition.target_entity_states.is_empty():
@@ -199,8 +202,8 @@ static func validate_card_target(command: PlayCardCommand, floor: FloorState, da
 		return &"invalid_state_context" if state == null else EquipmentSystem.validate_card(command, state)
 	if definition.source == CardData.Source.FLOOR_TEMPORARY:
 		if command.target_board != floor.board_state:
-			return &"invalid_event_target"
-		if command.target_event != null or command.target_entity != null:
+			return &"invalid_objective_target"
+		if command.target_objective != null or command.target_entity != null:
 			return &"invalid_target_kind"
 		var error: StringName = CutOutSystem.validate(floor.cutout_state, data)
 		if not error.is_empty():
@@ -208,15 +211,15 @@ static func validate_card_target(command: PlayCardCommand, floor: FloorState, da
 		if definition.effect_type == CardData.EffectType.CUTOUT_SAFE:
 			return &"" if CutOutSystem.is_prepared(floor.cutout_state) else &"cutout_unprepared"
 		return &"" if CutOutSystem.is_available(floor, data) else &"cutout_unavailable"
-	if command.target_event != null and command.target_entity != null:
+	if command.target_objective != null and command.target_entity != null:
 		return &"invalid_target_kind"
 	if definition.explore_amount > 0 and definition.effect_type == CardData.EffectType.NO_OP:
 		if command.target_entity == null:
-			if command.target_event == null and definition.collects_resources and (floor.board_state.active_event == null or floor.board_state.active_event.resolved):
+			if command.target_objective == null and definition.collects_resources and (floor.board_state.active_objective == null or floor.board_state.active_objective.resolved):
 				if command.target_board != floor.board_state:
-					return &"invalid_event_target"
+					return &"invalid_objective_target"
 				return &"" if ResourceNodeSystem.find_search_reward(floor, data, definition.search_hidden_first, state) != null else &"resources_exhausted"
-			return EventSystem.validate_target(command, floor)
+			return ObjectiveSystem.validate_target(command, floor)
 		if not definition.analyzes_entities:
 			return &"invalid_target_kind"
 		var error: StringName = EntitySystem.validate_target(command, floor)
@@ -229,19 +232,19 @@ static func validate_card_target(command: PlayCardCommand, floor: FloorState, da
 	if definition.explore_amount != 0:
 		return &"unsupported_effect"
 	if definition.effect_type in [CardData.EffectType.ATTACK, CardData.EffectType.RUN]:
-		if command.target_event != null:
+		if command.target_objective != null:
 			return &"invalid_target_kind"
 		return EntitySystem.validate_target(command, floor)
 	if definition.effect_type == CardData.EffectType.BLOCK:
 		# Guard 作用于玩家，不能把失效的显式目标悄悄当作无目标。
-		if command.target_event != null or command.target_entity != null:
+		if command.target_objective != null or command.target_entity != null:
 			return &"invalid_target_kind"
 		if command.target_board != floor.board_state:
-			return &"invalid_event_target"
-		var event: EventInstance = floor.board_state.active_event
+			return &"invalid_objective_target"
+		var event: ObjectiveInstance = floor.board_state.active_objective
 		var entity: EntityInstance = floor.board_state.entity
-		var pressure_exists: bool = event != null and not event.resolved and event.last_progress_turn != floor.turn_count and event.pressure_checked_turn != floor.turn_count and data.find_event(event.event_id).neglect_damage > 0
-		return &"" if pressure_exists or (entity != null and entity.active) else &"guard_unneeded"
+		var pressure_exists: bool = event != null and not event.resolved and event.last_progress_turn != floor.turn_count and event.pressure_checked_turn != floor.turn_count and data.find_objective(event.objective_id).neglect_damage > 0
+		return &"" if pressure_exists or EventSystem.has_damage(floor) or (entity != null and entity.active) else &"guard_unneeded"
 	return &"unsupported_effect"
 
 
@@ -259,8 +262,9 @@ static func resolve_end_turn(state: RunState, data: FloorData = null) -> ActionR
 		if not error.is_empty():
 			return _fail(result, error, &"end_turn")
 		var floor: FloorState = state.floor_state
-		# 完整计划先于写入：压力消耗的 Guard / HP 供后续意图读取。
-		EventSystem.plan_pressure(result, floor, data)
+		# 固定顺序而非信号链：事件先用 Guard，目标后果再用，实体只读余额。
+		EventSystem.plan_end_turn(result, state)
+		ObjectiveSystem.plan_pressure(result, floor, data)
 		result.pressure_damage = mini(result.pressure_damage, state.player_hp)
 		EntitySystem.plan_end_turn(result, state, data)
 		if floor.turn_count >= data.overstay_start_turn and (floor.turn_count - data.overstay_start_turn) % data.overstay_interval == 0:
@@ -286,7 +290,7 @@ static func _validate_floor_context(state: RunState, data: FloorData) -> StringN
 	if floor == null or data == null or floor.floor_id != data.id:
 		return &"invalid_floor_context"
 	if floor.board_state == null:
-		return &"invalid_event_context"
+		return &"invalid_objective_context"
 	if data.is_placeholder:
 		return &"floor_inactive"
 	if not data.card_first_exploration:
@@ -303,11 +307,14 @@ static func _validate_floor_context(state: RunState, data: FloorData) -> StringN
 	var error: StringName = CutOutSystem.validate_state(floor.cutout_state)
 	if not error.is_empty():
 		return error
+	error = EventSystem.validate_board(floor, data)
+	if not error.is_empty():
+		return error
 	error = CutOutSystem.validate_card_definitions(data)
 	if not error.is_empty():
 		return error
 	if data.card_first_exploration:
-		error = EventSystem.validate_board(floor, data)
+		error = ObjectiveSystem.validate_board(floor, data)
 		if not error.is_empty():
 			return error
 	error = ResourceNodeSystem.validate(floor, data)
@@ -327,7 +334,8 @@ static func _commit_floor_result(result: ActionResult, state: RunState, data: Fl
 	if result.dark_observation:
 		floor.dark_observation_used = true
 		result.debug_lines.append("[FLOOR] darkness first_observation surcharge_applied")
-	EventSystem.commit_situation(result, state)
+	ObjectiveSystem.commit(result, state)
+	EventSystem.commit(result, state)
 	for flag: StringName in result.floor_flags_added:
 		floor.floor_flags.append(flag)
 		result.debug_lines.append("[FLOOR] flag %s" % flag)
@@ -336,7 +344,7 @@ static func _commit_floor_result(result: ActionResult, state: RunState, data: Fl
 		InsightSystem.confirm(floor, insight_id)
 		result.debug_lines.append("[INSIGHT] discovered %s" % insight_id)
 		result.debug_lines.append("[COGNITION] %d -> %d" % [previous, floor.cognition])
-	# 固定次序：局势后果 -> 实体意图 -> 楼层滞留 -> 临时状态清理。
+	# 完整环境计划已提交；之后才提交实体、滞留与临时状态清理。
 	ResourceNodeSystem.commit(result, state)
 	CardRewardSystem.commit(result, state)
 	EntitySystem.commit(result, state)
@@ -348,8 +356,8 @@ static func _commit_floor_result(result: ActionResult, state: RunState, data: Fl
 		floor.light_active = true
 	SafePointSystem.reach(state, result)
 	state.metrics.record_action(result, state, data)
-	if data.retire_resolved_situations and floor.board_state.active_event != null and floor.board_state.active_event.resolved:
-		floor.board_state.active_event = null
+	if data.retire_resolved_objectives and floor.board_state.active_objective != null and floor.board_state.active_objective.resolved:
+		floor.board_state.active_objective = null
 	CutOutSystem.commit(result, state)
 	if result.action_id == &"end_turn":
 		if result.expire_block:
@@ -392,8 +400,8 @@ static func legal_hand_options(state: RunState, data: FloorData) -> int:
 		if card_ap_cost(card.definition, state, data) > state.ap:
 			continue
 		var candidates: Array[PlayCardCommand] = [PlayCardCommand.new(card, null, board)]
-		if board.active_event != null:
-			candidates.append(PlayCardCommand.new(card, board.active_event, board))
+		if board.active_objective != null:
+			candidates.append(PlayCardCommand.new(card, board.active_objective, board))
 		if board.entity != null:
 			candidates.append(PlayCardCommand.new(card, null, board, board.entity))
 		if candidates.any(func(command: PlayCardCommand) -> bool: return validate_card_target(command, state.floor_state, data, state).is_empty()):

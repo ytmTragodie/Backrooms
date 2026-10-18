@@ -28,7 +28,7 @@ func _test_default_entry() -> void:
 	for value: String in ["手电筒", "撬棍", "杏仁水"]:
 		check((main.get_node("%EquipmentStatus") as Label).text.contains(value), "Compact equipment status retains %s" % value)
 	check((main.get_node("%EquipmentStatus") as Label).mouse_filter == Control.MOUSE_FILTER_IGNORE, "Carried equipment status is display only")
-	check((main.get_node("%SituationName") as Label).text.contains("局势牌") and not (main.get_node("%EntityCard") as Button).visible, "Default board renders real Situation and hides empty Entity slot")
+	check((main.get_node("%SituationName") as Label).text.contains("目标牌") and not (main.get_node("%EntityCard") as Button).visible, "Default board renders real Situation and hides empty Entity slot")
 	check(not (main.get_node("%DebugPanel") as Control).visible and (main.get_node("%DebugPanel") as Control).get_parent() == main, "Debug panel is hidden and outside the normal layout")
 	_check_default_controls(main)
 	var before: Dictionary = snapshot(owner)
@@ -39,7 +39,7 @@ func _test_default_entry() -> void:
 	await _mouse_click(hand.get_child(0) as Control, MOUSE_BUTTON_RIGHT)
 	check(snapshot(owner) == before and main.find_children("*", "PopupMenu", true, false).is_empty(), "Right-click shows no verb menu and changes no gameplay state")
 	await _mouse_click(hand.get_child(0) as Control)
-	check(owner.run_state.floor_state.current_event.explore_progress == 3 and owner.run_state.ap == 2, "One real mouse click directly investigates without action selection")
+	check(owner.run_state.floor_state.current_objective.explore_progress == 3 and owner.run_state.ap == 2, "One real mouse click directly investigates without action selection")
 	check(main.find_children("*", "PopupMenu", true, false).is_empty(), "Playing a card creates no gameplay-action list")
 	await process_frame
 	await process_frame
@@ -68,6 +68,9 @@ func _test_debug_panel() -> void:
 		(panel.get_node("Padding/Layout/StartLevel6") as Button).pressed.emit()
 		var mixed: TurnManager = main.get_node("TurnManager") as TurnManager
 		check(mixed != owner and mixed.floor_data.id == LEVEL_6.id and not panel.visible, "Explicit debug test-run request closes panel and creates a separate new run")
+		check(not (main.get_node("%EntityCard") as Button).visible and mixed.run_state.floor_state.board_state.active_events.size() == 2, "Production Level 6 foreshadows Hound through an Omen")
+		for turn: int in range(3):
+			mixed.end_turn()
 		check((main.get_node("%EntityCard") as Button).visible and (main.get_node("%EntityInformation") as Label).text.contains("猎犬"), "Normal board renders Situation + Hound with no testing action bar")
 		await process_frame
 		await process_frame

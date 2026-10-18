@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="FloorData" format=3]
 
 [ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="1_floor"]
-[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="2_event"]
+[ext_resource type="Script" path="res://scripts/objectives/objective_data.gd" id="2_event"]
 [ext_resource type="Resource" path="res://tests/fixtures/phase9/events/event_level0_humming.tres" id="3_humming"]
 [ext_resource type="Resource" path="res://tests/fixtures/phase9/events/event_level0_wall_marks.tres" id="4_marks"]
 [ext_resource type="Resource" path="res://tests/fixtures/phase9/events/event_level0_wrong_corner.tres" id="5_corner"]
@@ -15,7 +15,7 @@
 script = ExtResource("1_floor")
 id = &"floor_level_0"
 display_name = "零层"
-fresh_events = Array[ExtResource("2_event")]([ExtResource("3_humming"), ExtResource("4_marks"), ExtResource("5_corner")])
+fresh_objectives = Array[ExtResource("2_event")]([ExtResource("3_humming"), ExtResource("4_marks"), ExtResource("5_corner")])
 resource_nodes = Array[ExtResource("6_node")]([ExtResource("7_supply"), ExtResource("8_battery"), ExtResource("9_scrap")])
 cutout_destinations = Array[Resource]([ExtResource("10_destination")])
 card_first_exploration = true

@@ -1,5 +1,7 @@
 # CODING_RULES.md
 
+> **Phase 11 当前覆盖规则（2026-10-18）**：Scene Rule／临时 Event／可调查 Objective 已分离。Board 为最多 2 Event＋1 Objective＋现有单 Entity；Event 不再使用 Explore 进度。后文 Phase 10 及更早的单 Situation 记录属于历史，不能恢复旧分类。当前完整分类与验证见 [PHASE_11_VALIDATION.md](PHASE_11_VALIDATION.md)。
+
 ## 0. Purpose
 
 These rules constrain AI-generated code for the Backrooms card-roguelike project.
@@ -835,3 +837,11 @@ quoted history never authorizes restoring those paths.
 - Run summary/debug metrics record committed facts before transitions, never scene signal chains.
 - Preserve earlier coverage using explicit historical balance fixtures and verify current production
   separately. A windowless run is not evidence of rendered-window/manual visual validation.
+
+## Phase 11 current constraints (supersedes progress-Event passages)
+
+- EventData/Instance are temporary category/timer/condition models. Explore/milestones belong to ObjectiveData/Instance/System, never Event HP.
+- Board uniquely owns up to two Events, one Objective and the existing single Entity. Target commands accept only actual Objective/Entity instances; Event row and Scene Rules are read-only.
+- EventChange planning must not mutate state; failed card resolution cannot change timers, condition counts or rewards. Aggregate environmental damage spends shared Guard before existing entity intent.
+- Omen spawning must use EntitySystem and defer occupied slots. Current six-layer production uses Omen; historical scheduling fixtures are not a second player input.
+- Assets use stable manifest IDs and res:// paths. Missing textures fall back, missing audio is silent. No UI asset loader may mutate domain state or require gameplay edits to swap art.

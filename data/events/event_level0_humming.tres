@@ -1,21 +1,11 @@
 [gd_resource type="Resource" script_class="EventData" format=3]
 
 [ext_resource type="Script" path="res://scripts/events/event_data.gd" id="script"]
-[ext_resource type="Resource" path="res://data/insights/insight_level0_hum_changes.tres" id="insight"]
 
 [resource]
 script = ExtResource("script")
 id = &"event_level0_humming"
 display_name = "异常嗡鸣"
-display_text = "灯管的嗡鸣随站位改变。先观察其变化，谨慎决定是否冒险搜索。"
-objective_text = "调查环境，确认规律与路线"
-explore_threshold = 12
-clue_threshold = 4
-clue_text = "脚步停下，声音仍随站位改变；观察比制造噪音更有效。"
-completion_insight = ExtResource("insight")
-neglect_stress = 1
-neglect_damage = 0
-completion_supply = 0
-clue_light_exposure = false
-bonus_tag = &"OBSERVE"
-explore_bonus = 1
+display_text = "嗡鸣扰乱判断：持续三回合，每回合末压力加一。"
+duration = 3
+stress_per_turn = 1

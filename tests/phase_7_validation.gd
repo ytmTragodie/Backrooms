@@ -15,7 +15,7 @@ func tests() -> void:
 	var data: FloorData = fixture(LEVEL_6)
 	data.entry_entity = null
 	data.followup_entity = null
-	data.fresh_events = []
+	data.fresh_objectives = []
 	var owner: TurnManager = _equipment_fixture(data, [FLASH])
 	var battery: EquipmentInstance = owner.run_state.equipment_slots[0]
 	for index: int in range(3):

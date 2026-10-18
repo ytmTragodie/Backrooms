@@ -1,5 +1,7 @@
 # GDD — CARD-FIRST V2.1
 
+> **Phase 11 当前覆盖规则（2026-10-18）**：Scene Rule／临时 Event／可调查 Objective 已分离。Board 为最多 2 Event＋1 Objective＋现有单 Entity；Event 不再使用 Explore 进度。后文 Phase 10 及更早的单 Situation 记录属于历史，不能恢复旧分类。当前完整分类与验证见 [PHASE_11_VALIDATION.md](PHASE_11_VALIDATION.md)。
+
 版本：2026-10-17，Card-First 方向继续收束：**保留环境事件，但取消“事件小游戏”概念；环境事件与实体共享同一牌局、同一手牌和同一回合。** 实现状态更新于 2026-10-18。
 
 最初方向任务只修改文档；后续已授权的 REWORK A／B／C 实现零层调查、六层混合遭遇及 Phase 5–8 输入卡牌化。
@@ -8,7 +10,7 @@
 ## 1. 文档地位与历史资料
 
 冲突优先级：当前用户任务 > AGENTS.md > ARCHITECTURE.md > CODING_RULES.md >
-本 GDD > 现有实现假设。迁移分类、分步验收与未决设计见 [MIGRATION_PLAN.md](MIGRATION_PLAN.md)。
+本 GDD > 现有实现假设。迁移分类、分步验收与未决设计见 [MIGRATION_PLAN.md](MIGRATION_PLAN_CARD_FIRST_V2_1.md)。
 
 旧版 [GDD v0.4 DOCX](Backrooms_Card_Roguelike_GDD_v0.4_Demo_Baseline.docx) 完整保留，
 作为历史设计资料。它的 §31“已锁定”、§41“唯一规则源”和 §43“Canonical”均不再具有
@@ -85,63 +87,30 @@ Threat 是风险代价，不是正常牌的收益。Draw／Discard 只改变玩�
 如果某类遭遇会让大量卡牌暂时失效，应通过遭遇构成、卡组比例、弃抽／换牌或单语义牌组合解决，
 不能为保持“全牌可用”而制造不符合语义的假效果。
 
-## 4. World Cards、Board 与遭遇结构
+## 4. 世界内容分类（Phase 11，取代旧 Situation 合并模型）
 
-World Cards 是世界内容的卡牌化呈现，**不属于玩家牌组**。
-它们永远不进入玩家手牌、抽牌堆、弃牌堆，也不参加玩家牌组洗牌或计数。
-首轮仅有 EVENT 与 ENTITY 两类领域对象。玩家界面中 EVENT 优先称为**环境牌／局势牌（Situation）**，
-强调“当前空间正在发生什么”，而不是弹窗式剧情小游戏；代码稳定 ID 暂可继续使用 EVENT。
+Scene Rule 是楼层持续规则，不是牌桌目标。零层的重复空间与滞留、六层黑暗加费与 Threat 伤害继续由 FloorData/FloorState 负责；SceneRuleData 只承载规则展示，不复制运行时数值。
 
-BoardState 随本次楼层访问存在，首轮规模为：
+BoardState 唯一持有最多两张临时 Event、一张活动 Objective 和现有零至一张 Entity。三种领域各有 Data/Instance，不继承万能 CardData，也不进入玩家牌区。同一手牌、3 AP、TurnManager、装备和切出继续工作。
 
-- 一个活动 Situation/Event 槽；未解决时可跨回合持续，内容耗尽或无合法候选时允许为空。
-- 零至两个活动 Entity 槽；这是设计容量，本轮迁移先验证 0–1 个实体。
-- 将来可能有 Exit／Objective；本轮不建立 RESOURCE、EXIT、ANOMALY、OBJECTIVE 通用框架。
+Objective 是空间裂隙、补给箱、墙缝、应急发电机等可调查对象。Explore、线索与完成阈值归 ObjectiveInstance；无放回补入下一目标，未完成进度跨回合保留。普通牌可作用于 Objective、实体、自身或绑定装备。
 
-核心原则是：**融合交互层，不融合内容语义。** Event 与 Entity 使用同一副玩家手牌、同一 3 AP、
-同一 TurnManager，但仍保留各自领域模型：Situation 主要提供环境规则、Objective 与 Pressure；
-Entity 主要提供 HP／状态／Intent 与行为解法。
+## 5. 临时 Event Cards
 
-允许三种遭遇构成：
+- DEBUFF：活动期间施加声明的回合末压力/可格挡伤害；引擎另支持按牌标签增加 AP。到期后立即失效。
+- OMEN：倒计时预告指定实体；实际 LIGHT、成功牌的 NOISE 可按数据加速。零计时且实体槽空闲时生成一次并退场；占槽时等待，不覆盖实体。
+- OPPORTUNITY：有效期内，真实出牌的标签满足次数后给予声明的补给、唯一 Insight 或既有三选一奖励，然后退场；未满足则到期消失。
 
-1. **纯环境**：只有 Situation，重点是探索、资源、Insight 与风险管理。
-2. **纯实体**：只有 Entity，接近传统卡牌战斗，但仍处于同一个楼层回合。
-3. **环境 + 实体**：Situation 与 Entity 同桌存在，是 Demo 的核心高压场景；玩家必须在有限 AP 中
-   平衡推进环境 Objective、处理 Event Pressure 与应对 Entity Intent。
+Events 没有 Explore HP，不接受普通牌直接调查。机会条件监听成功卡牌，卡牌仍作用于正常目标，不需要点事件执行。事件行是只读信息。
 
-EventData/EventInstance 与 EntityData/EntityInstance 继续分开；不把它们塞进万能 CardData。
-世界牌面上的进度、HP、状态和意图直接来自领域实例，UI 不保存第二份状态。
+事件最多两张；按 FloorData.events 顺序检查条件、补满空位。满额候选留待下次，已出现 ID 不重入；无随机淘汰、无无限积累。初次进层和新回合补位；行动中退场不立即补位。
 
-## 5. Situation / Event Cards
+零层：异常嗡鸣（3 回合，末压力 +1）；M.E.G. 断续信号（4 回合，2 张 SEARCH 后补给 +1、唯一认知与一次牌奖励）。
+六层：灯光衰减（3 回合，末伤害 1 可格挡）；远处抓挠声（3 回合，NOISE 加速猎犬）；临时稳定广播（4 回合，2 张 OBSERVE 后补给 +2 与避光认知）；黑暗中的动静（猎犬解决后可入场，2 回合，LIGHT/NOISE 加速笑魇）。
 
-事件机制保留，但其职责改为**环境牌／局势牌**：它代表当前空间异常、环境危险或探索机会，
-而不是“读一段文字然后点 A/B/C”的独立事件小游戏。
+前兆不是所有实体的强制前置框架。当前正式六层用前兆；旧回归夹具保留已授权的直接入口/光照接续调度，均无玩家旁路。
 
-静态 EventData 一般包括：稳定 ID、显示名、描述、标签、Objective（首轮通常为 Explore 阈值）、
-Pressure／回合后果、规则修正、线索里程碑与奖励／Insight。EventInstance 保存当前进度、已触发阶段、
-已知线索、Pressure 状态和 resolved 状态。
-
-玩家通过普通手牌推进 Objective 或抵御 Pressure。Situation 不生成 Inspect／Search／Defend 等独立按钮。
-Pressure 由统一回合自动结算，例如 Stress、Threat、环境伤害、AP 干扰或实体前兆；它不是新的玩家输入。
-标签修正读取玩家牌标签，而不是中文牌名或特定 card_id。
-
-Situation 未解决时原则上持续留在桌面，并允许随后出现的 Entity 与其共存；解决后才由楼层调度补入下一张。
-因此不存在独立“事件阶段”和“战斗阶段”，只有 BoardState 的不同组合。
-
-示例（数值为原型）：
-
-```text
-异常嗡鸣 / Abnormal Hum
-Objective — Explore: 0 / 6
-规则：OBSERVE 牌额外 +1 Explore。
-Pressure：若本回合完全忽视该局势，回合末累积 Stress／Threat 压力（具体值待平衡）。
-首次到达 3：揭示线索。
-首次到达 6：确认 Insight，Cognition +1，Situation resolved。
-```
-
-一次行动跨越多个阈值时，每项阶段结果只触发一次；已知 Insight 不重复增加 Cognition。
-Fresh 无放回、条件过滤、已完成事件不刷奖、Residual 不重洗 Fresh 的方向保留。
-未解决 Situation 的进度由唯一 EventInstance 承载，具体补牌节奏见迁移计划。
+统一回合末：Event 入场顺序的压力/计时/到期 → Objective 后果 → 当前实体意图 → 滞留 → Guard/光照清理 → 计数/AP/手牌与候选补位。新生成实体下次回合末才执行意图。压力致命则跳过现有实体伤害。
 
 ## 6. Entity Cards
 
@@ -260,7 +229,7 @@ Explore 溢出／分配、事件替换节奏、后续装备扩展、
 - 保持单语义、统一手牌／3 AP／回合，装备与 Retain 切出生命周期不变。不实现商店、货币、稀有度经济、
   遗物、元进度或新楼层／Boss；当时未启动 Phase 10。
 
-### 9.3 Phase 10：当前 Demo 内容与平衡（取代 §9.2 的奖励时机）
+### 9.3 Phase 10：历史 Demo 内容与平衡（分类与时机由 Phase 11 覆盖）
 
 - 普通局势不再提供加牌／升级／删牌。零层只有「M.E.G. 断续信号」完成给三选一；六层猎犬击败／脱离、
   笑魇有实际光照经历后解决各给一次。完整探索预算为 1＋2＝3 张新 NORMAL；提前离层可放弃价值。
@@ -289,4 +258,4 @@ Explore 溢出／分配、事件替换节奏、后续装备扩展、
 - 正式局势解决后立即离开活动槽，下一回合补 Fresh；旧引用不能作用于空槽或新实例。实体仍在完成结果后退场。
 - 最终中文结算记录总回合、完成楼层、新牌／升级／删牌、认知、击败／非击杀、HP／压力／离层 Threat 与种子。
   完成后可开始新局，无原型场景切换。调试仅有本地指标与日志，不引入网络统计或元进度。
-- 10–20 分钟是待真人计时确认的体验目标，不用强制等待或最低游玩时间锁出口。Phase 11 不在本任务范围。
+- 10–20 分钟是待真人计时确认的体验目标，不用强制等待或最低游玩时间锁出口。这是 Phase 10 当时的范围记录；Phase 11 当前规则见前文。

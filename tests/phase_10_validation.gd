@@ -1,8 +1,8 @@
 extends "res://tests/ui_validation.gd"
 
-const LIVE_0: FloorData = preload("res://data/floors/floor_level_0.tres")
-const LIVE_6: FloorData = preload("res://data/floors/floor_level_6.tres")
-const LIVE_DECK: DeckData = preload("res://data/cards/run_deck.tres")
+const LIVE_0: FloorData = preload("res://tests/fixtures/phase10/floors/floor_level_0.tres")
+const LIVE_6: FloorData = preload("res://tests/fixtures/phase10/floors/floor_level_6.tres")
+const LIVE_DECK: DeckData = preload("res://tests/fixtures/phase10/cards/run_deck.tres")
 var graphical: bool = false
 
 
@@ -26,7 +26,7 @@ func live_owner(data: FloorData = LIVE_0, definitions: Array[CardData] = [], gea
 
 func live_copy(source: FloorData) -> FloorData:
 	var data: FloorData = source.duplicate(false) as FloorData
-	data.fresh_events = source.fresh_events.duplicate()
+	data.fresh_objectives = source.fresh_objectives.duplicate()
 	data.resource_nodes = source.resource_nodes.duplicate()
 	return data
 
@@ -42,9 +42,9 @@ func full_snapshot(owner: TurnManager) -> Dictionary:
 	var floor: FloorState = owner.run_state.floor_state
 	var point: SafePointState = floor.safe_point
 	record["point"] = [point.get_instance_id(), point.reached, point.consumed] if point != null else []
-	record["progress"] = [floor.total_explore, floor.completed_situations]
+	record["progress"] = [floor.total_explore, floor.completed_objectives]
 	var metrics: RunMetrics = owner.run_state.metrics
-	record["metrics"] = [metrics.cards_rewarded, metrics.cards_upgraded, metrics.cards_removed, metrics.cards_played, metrics.insights.duplicate(), metrics.situations.duplicate(true), metrics.floor_exits.duplicate(true)]
+	record["metrics"] = [metrics.cards_rewarded, metrics.cards_upgraded, metrics.cards_removed, metrics.cards_played, metrics.insights.duplicate(), metrics.objectives.duplicate(true), metrics.floor_exits.duplicate(true)]
 	return record
 
 
@@ -62,17 +62,17 @@ func reject_safe(owner: TurnManager, command_value: SafePointCommand, reason: St
 func _test_content_and_economy() -> void:
 	var budget: int = 0
 	for source: FloorData in [LIVE_0, LIVE_6]:
-		check(source.fresh_events.size() == 5 and source.safe_point != null, "Each floor has five declared Situations and at most one Safe Point")
-		for event: EventData in source.fresh_events:
-			check(EventSystem.validate_situation(event).is_empty(), "Production Situation validates")
+		check(source.fresh_objectives.size() == 5 and source.safe_point != null, "Each floor has five declared Situations and at most one Safe Point")
+		for event: ObjectiveData in source.fresh_objectives:
+			check(ObjectiveSystem.validate_definition(event).is_empty(), "Production Situation validates")
 			var data: FloorData = live_copy(source)
-			data.fresh_events = [event]
-			data.intro_event = event
+			data.fresh_objectives = [event]
+			data.intro_objective = event
 			var big: CardData = powerful()
 			var owner: TurnManager = live_owner(data, [big, OBSERVE, ATTACK, GUARD, SEARCH])
-			var old: EventInstance = owner.run_state.floor_state.current_event
+			var old: ObjectiveInstance = owner.run_state.floor_state.current_objective
 			var result: ActionResult = play(owner, big)
-			check(result.success and result.event_resolved and owner.run_state.floor_state.board_state.active_event == null, "Completed Situation leaves active slot after result commit")
+			check(result.success and result.objective_resolved and owner.run_state.floor_state.board_state.active_objective == null, "Completed Situation leaves active slot after result commit")
 			if event.completion_reward != null:
 				budget += 1
 				check(event.completion_reward.kind == CardRewardData.Kind.ADD_CARD and owner.run_state.pending_rewards.size() == 1, "Only selected major Situation gives three-card reward")
@@ -92,8 +92,8 @@ func _test_content_and_economy() -> void:
 	var smiler_floor: FloorData = live_copy(LIVE_6)
 	smiler_floor.entry_entity = smiler_floor.followup_entity
 	smiler_floor.followup_entity = null
-	smiler_floor.fresh_events = []
-	smiler_floor.intro_event = null
+	smiler_floor.fresh_objectives = []
+	smiler_floor.intro_objective = null
 	var owner: TurnManager = live_owner(smiler_floor, [], false)
 	owner.end_turn()
 	check(owner.run_state.pending_rewards.is_empty(), "Unobserved hidden Smiler withdrawal gives no trivial card reward")
@@ -112,7 +112,7 @@ func _test_content_and_economy() -> void:
 
 func safe_fixture(source: FloorData = LIVE_0) -> TurnManager:
 	var data: FloorData = live_copy(source)
-	data.fresh_events = [source.fresh_events[0], source.fresh_events[1]]
+	data.fresh_objectives = [source.fresh_objectives[0], source.fresh_objectives[1]]
 	data.entry_entity = null
 	data.followup_entity = null
 	var big: CardData = powerful()
@@ -181,8 +181,8 @@ func _test_resource_feedback() -> void:
 	var data: FloorData = live_copy(LIVE_6)
 	data.entry_entity = null
 	data.followup_entity = null
-	data.fresh_events = []
-	data.intro_event = null
+	data.fresh_objectives = []
+	data.intro_objective = null
 	data.resource_nodes = [LIVE_6.resource_nodes[0]]
 	var owner: TurnManager = live_owner(data, [SEARCH, SEARCH, SEARCH, SEARCH, SEARCH])
 	var state: RunState = owner.run_state
@@ -215,8 +215,8 @@ func _test_exit_guarantee() -> void:
 		var source: FloorData = live_copy(LIVE_0)
 		var destination: FloorData = live_copy(LIVE_6)
 		for data: FloorData in [source, destination]:
-			data.fresh_events = []
-			data.intro_event = null
+			data.fresh_objectives = []
+			data.intro_objective = null
 			data.resource_nodes = []
 			data.safe_point = null
 			data.entry_entity = null
@@ -261,7 +261,7 @@ func ui_button(main: Control, card: CardInstance) -> Button:
 
 func request_for(owner: TurnManager, card: CardInstance, entity: bool = false) -> PlayCardCommand:
 	var board: BoardState = owner.run_state.floor_state.board_state
-	return PlayCardCommand.new(card, null if entity or card.definition.target_kinds == 0 else board.active_event, board, board.entity if entity else null)
+	return PlayCardCommand.new(card, null if entity or card.definition.target_kinds == 0 else board.active_objective, board, board.entity if entity else null)
 
 
 func candidates(owner: TurnManager, effect: int, explore: bool = false) -> Array[CardInstance]:
@@ -319,6 +319,8 @@ func full_run(seed_value: int = 1) -> void:
 	root.size = Vector2i(1152, 648)
 	var main: Control = MAIN.instantiate() as Control
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
+	owner.floor_data = LIVE_0
+	owner.starter_deck = LIVE_DECK
 	owner.run_state.rng_seed = seed_value
 	owner.run_state.rng.seed = seed_value
 	root.add_child(main)
@@ -349,7 +351,7 @@ func full_run(seed_value: int = 1) -> void:
 				break
 			var floor: FloorState = state.floor_state
 			var entity: EntityInstance = floor.entity
-			var event: EventInstance = floor.current_event
+			var event: ObjectiveInstance = floor.current_objective
 			var chosen: CardInstance
 			if entity != null and entity.entity_id == LIVE_6.followup_entity.id:
 				await checkpoint(main, "smiler")
@@ -389,7 +391,7 @@ func full_run(seed_value: int = 1) -> void:
 			if old_entity != null and not old_entity.active and old_entity.entity_id == LIVE_6.entry_entity.id:
 				await checkpoint(main, "hound_removed")
 		var floor: FloorState = state.floor_state
-		var all_done: bool = floor.remaining_fresh_events.is_empty() and floor.current_event == null and floor.entity == null
+		var all_done: bool = floor.remaining_fresh_objectives.is_empty() and floor.current_objective == null and floor.entity == null
 		if all_done:
 			await _use_safe(main, SafePointCommand.Choice.UPGRADE if owner.floor_data.id == LIVE_0.id else SafePointCommand.Choice.REMOVE)
 			var exits: Array[CardInstance] = candidates(owner, CardData.EffectType.CUTOUT_SAFE)

@@ -5,7 +5,7 @@ extends Resource
 # 在解析结果中是实际的 explore 效果，不会作为成功 no-op 提交。
 enum EffectType { NO_OP, PLACEHOLDER_DAMAGE, ATTACK, BLOCK, RUN, LIGHT, EXTINGUISH, CUTOUT_RUSHED, CUTOUT_SAFE, RECOVER }
 enum Source { NORMAL, EQUIPMENT, FLOOR_TEMPORARY }
-enum TargetKind { NONE = 0, SITUATION = 1, ENTITY = 2 }
+enum TargetKind { NONE = 0, OBJECTIVE = 1, ENTITY = 2 }
 enum BonusCondition { NONE, GUARDED, HIGH_THREAT, ANALYZED_TARGET }
 
 # 多张运行时卡牌共享这份定义；可变的局内状态不能写入 Resource。

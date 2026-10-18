@@ -26,8 +26,8 @@ func tests() -> void:
 
 func production_floor(source: FloorData = LEVEL_0) -> FloorData:
 	var data: FloorData = fixture(source)
-	for index: int in range(source.fresh_events.size()):
-		data.fresh_events[index].completion_reward = source.fresh_events[index].completion_reward
+	for index: int in range(source.fresh_objectives.size()):
+		data.fresh_objectives[index].completion_reward = source.fresh_objectives[index].completion_reward
 	if data.entry_entity != null:
 		data.entry_entity.resolution_reward = source.entry_entity.resolution_reward
 	return data
@@ -56,9 +56,9 @@ func _test_declared_targets() -> void:
 	var board: BoardState = owner.run_state.floor_state.board_state
 	reject(owner, PlayCardCommand.new(hand_card(owner, SEARCH), null, board, board.entity), &"invalid_target_kind")
 	reject(owner, PlayCardCommand.new(hand_card(owner, DEEP), null, board, board.entity), &"invalid_target_kind")
-	reject(owner, PlayCardCommand.new(hand_card(owner, ATTACK), board.active_event, board), &"invalid_target_kind")
+	reject(owner, PlayCardCommand.new(hand_card(owner, ATTACK), board.active_objective, board), &"invalid_target_kind")
 	var observe: CardInstance = hand_card(owner, OBSERVE)
-	check(RuleResolver.validate_card_target(PlayCardCommand.new(observe, board.active_event, board), owner.run_state.floor_state, owner.floor_data, owner.run_state).is_empty(), "Observe declares a live Situation route")
+	check(RuleResolver.validate_card_target(PlayCardCommand.new(observe, board.active_objective, board), owner.run_state.floor_state, owner.floor_data, owner.run_state).is_empty(), "Observe declares a live Situation route")
 	check(RuleResolver.validate_card_target(PlayCardCommand.new(observe, null, board, board.entity), owner.run_state.floor_state, owner.floor_data, owner.run_state).is_empty(), "Observe declares an analyzable live Entity route")
 	check(play(owner, OBSERVE, true).analysis_applied == 2 and play(owner, OBSERVE).explore_applied == 2, "Declared Observe routes share AP and preserve separate knowledge/Explore consumers")
 	owner.free()
@@ -97,7 +97,7 @@ func _test_retirement_and_reward() -> void:
 
 func _event_reward_manager(seed_value: int = 1) -> TurnManager:
 	var data: FloorData = production_floor()
-	data.fresh_events = [data.fresh_events[0]]
+	data.fresh_objectives = [data.fresh_objectives[0]]
 	return manager([OBSERVE, OBSERVE, SEARCH, ATTACK, GUARD, OBSERVE, SEARCH], data, false, seed_value)
 
 
@@ -155,7 +155,7 @@ func _test_rewards_and_rng() -> void:
 		bad.pool = [REWARDS.pool[0], REWARDS.pool[1], bad_card]
 		check(CardRewardSystem.validate_definition(bad) == &"invalid_reward_definition", "Generated cards cannot contaminate reward pool")
 		var data: FloorData = production_floor()
-		data.fresh_events[0].completion_reward = bad
+		data.fresh_objectives[0].completion_reward = bad
 		var owner: TurnManager = manager([OBSERVE, OBSERVE, OBSERVE, OBSERVE, OBSERVE], data)
 		reject(owner, command(owner, OBSERVE), &"invalid_reward_definition")
 		owner.free()
@@ -163,7 +163,7 @@ func _test_rewards_and_rng() -> void:
 
 func _test_upgrade() -> void:
 	var data: FloorData = production_floor()
-	data.fresh_events = [data.fresh_events[1]]
+	data.fresh_objectives = [data.fresh_objectives[1]]
 	var owner: TurnManager = manager([OBSERVE, OBSERVE, OBSERVE, ATTACK, ATTACK, SEARCH], data, false)
 	for index: int in range(3):
 		play(owner, OBSERVE)
@@ -186,7 +186,7 @@ func _test_upgrade() -> void:
 func _test_removal() -> void:
 	var data: FloorData = production_floor(LEVEL_6)
 	data.entry_entity.resolution_reward = null
-	var event: EventData = data.fresh_events[0]
+	var event: ObjectiveData = data.fresh_objectives[0]
 	event.explore_threshold = 2
 	event.clue_threshold = 2
 	event.completion_reward = REMOVE
@@ -258,7 +258,7 @@ func _test_target_ui() -> void:
 		var card: CardInstance = owner.run_state.deck_state.hand[index]
 		if card.source != CardData.Source.NORMAL:
 			continue
-		var error: StringName = RuleResolver.validate_card_target(PlayCardCommand.new(card, board.active_event, board) if card.definition.target_kinds != 0 else PlayCardCommand.new(card, null, board), owner.run_state.floor_state, owner.floor_data, owner.run_state)
+		var error: StringName = RuleResolver.validate_card_target(PlayCardCommand.new(card, board.active_objective, board) if card.definition.target_kinds != 0 else PlayCardCommand.new(card, null, board), owner.run_state.floor_state, owner.floor_data, owner.run_state)
 		check((hand.get_child(index) as Button).disabled == not error.is_empty(), "Situation selection UI agrees with domain target legality")
 	var attack: Button = hand.get_child(owner.run_state.deck_state.hand.find(hand_card(owner, ATTACK))) as Button
 	check(attack.disabled and attack.tooltip_text.contains("需要实体目标"), "Selected Situation disables Attack with Chinese reason")
@@ -305,7 +305,7 @@ func _test_production_ui_run() -> void:
 	for turn: int in range(20):
 		for action: int in range(4):
 			await claim_ui(main, kinds)
-			var event: EventInstance = state.floor_state.current_event
+			var event: ObjectiveInstance = state.floor_state.current_objective
 			if event == null or event.resolved:
 				break
 			var chosen: CardData
@@ -317,7 +317,7 @@ func _test_production_ui_run() -> void:
 				break
 			click_card(main, chosen)
 		await claim_ui(main, kinds)
-		if state.floor_state.remaining_fresh_events.is_empty() and (state.floor_state.current_event == null or state.floor_state.current_event.resolved):
+		if state.floor_state.remaining_fresh_objectives.is_empty() and (state.floor_state.current_objective == null or state.floor_state.current_objective.resolved):
 			break
 		(main.get_node("%EndTurn") as Button).pressed.emit()
 	check(kinds.count(0) == 1 and kinds.count(1) == 1 and kinds.count(2) == 1, "Normal production Level 0 route receives add/upgrade/remove through three declared Situations")
@@ -334,7 +334,7 @@ func _test_production_ui_run() -> void:
 		for action: int in range(4):
 			var chosen: CardInstance
 			var target_entity: bool = false
-			var event: EventInstance = state.floor_state.current_event
+			var event: ObjectiveInstance = state.floor_state.current_objective
 			# 先抑制环境压力，再用同一手牌防御／攻击；没有 AP 或牌区注入。
 			if event != null and not event.resolved and event.last_progress_turn != state.floor_state.turn_count:
 				for card: CardInstance in deck.hand:

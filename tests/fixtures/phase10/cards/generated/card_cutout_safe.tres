@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"card_floor_cutout_safe"
+display_name = "安全切出"
+ap_cost = 1
+source = 2
+retain = true
+effect_type = 8
+
+target_kinds = 0

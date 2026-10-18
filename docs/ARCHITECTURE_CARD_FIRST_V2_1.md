@@ -1,5 +1,7 @@
 # ARCHITECTURE.md
 
+> **Phase 11 当前覆盖规则（2026-10-18）**：Scene Rule／临时 Event／可调查 Objective 已分离。Board 为最多 2 Event＋1 Objective＋现有单 Entity；Event 不再使用 Explore 进度。后文 Phase 10 及更早的单 Situation 记录属于历史，不能恢复旧分类。当前完整分类与验证见 [PHASE_11_VALIDATION.md](PHASE_11_VALIDATION.md)。
+
 ## 0. Purpose
 
 This document defines the technical architecture for the Backrooms card-roguelike demo.
@@ -387,45 +389,19 @@ board of active instances. Resource and cut-out state remain in their domains.
 
 ---
 
-### 4.7 EventSystem
+### 4.7 EventSystem / ObjectiveSystem / Scene Rules (Phase 11)
 
-Events are conditional content presented as **Situation / Environment World Cards**, not popup minigames. Internally the EVENT kind may remain for stable IDs.
+These three domains replace the old progress-Situation contract. EventData defines a temporary DEBUFF, OMEN or OPPORTUNITY. EventInstance owns remaining_turns, matching_actions, checked_turn and retired only: no Explore HP or target actions. EventChange is a private typed mutation plan in ActionResult.
 
-Every event must be able to define:
+EventSystem validates definitions/board, sums active tag AP modifiers, plans successful-card conditions and actual LIGHT/NOISE reactions, plans end-turn pressure/countdown/expiration, then commits current-instance changes. Rewards/Insight use existing systems and the same private RNG/result. No UI-driven effect chains. Invalid cards do not tick or satisfy Events.
 
-```text
-id
-conditions
-weight
-once_per_instance
-repeatable
-effects
-tags
-```
+FloorData.events is an ordered finite candidate list. BoardState.active_events holds at most two instances in insertion order. fill_slots runs on entry/start turn, defers overflow without overwriting, and uses floor-local seen_event_ids to prevent repeats. A ready Omen waits for the single Entity slot; it cannot replace an active entity. Spawning is planned into the existing ActionResult and committed by EntitySystem. Newly spawned entities do not execute an immediate intent.
 
-Event Cards occupy the active Event board slot and retain their own domain types:
+The former progress engine is ObjectiveData/ObjectiveInstance/ObjectiveSystem, with one active_objective on Board. Exact visit/instance identity is required for targeting; Explore/milestones/Insight/finite search rewards remain atomic. Objective pressure fields remain for historical content and explicitly declared future objectives, not for ordinary Event HP. Production Objectives currently declare no neglect pressure.
 
-- EventData: stable ID, name, description, tags, eligibility, Objective definition
-  (Explore threshold first), Pressure/end-turn consequences, clue milestones,
-  card-tag modifiers and rewards / Insight outcomes.
-- EventInstance: progress, reached milestones, known clues, Pressure state and resolved state.
-- EventSystem plans Objective progress, modifiers, Pressure and threshold rewards in response
-  to Player Card effects / turn lifecycle; it does not expose standalone Inspect/Search/Defend actions.
-- An unresolved Situation normally persists across turns and may coexist with active Entities.
-  Resolving it retires the instance before the scheduler supplies a replacement.
-- Crossing a clue or completion threshold triggers that result at most once.
-  Unique Insight rewards still deduplicate across all discovery routes.
+SceneRuleData holds compact display declarations. Persistent darkness/Threat/overstay mechanics stay in FloorData and FloorState, with no duplicate mutable rule owner. Scene Rules cannot be targeted.
 
-Fresh Events remain no-repeat within a visit; Fresh exhaustion must not reshuffle
-one-time rewards. Residual content may repeat under state conditions and should
-not restore depleted resources. The v0.4 six-candidate/five-selected budget is a
-historical content target, not this documentation task's implementation scope.
-The current code has three events per floor and no Residual pool. Event replacement
-and overflow rules must be settled as described in MIGRATION_PLAN.md before migration.
-
-An event whose conditions are false must not be selectable.
-
----
+End-turn planning order is Event insertion order → Objective pressure → current Entity intent → overstay. Aggregate pressure spends Guard first; Entity receives the remainder. Commit synchronously, retire completed instances, then cleanup; TurnManager advances the existing lifecycle and fills slots. No new AP, deck or combat mode.
 
 ### 4.8 Insight / Cognition System
 
@@ -574,47 +550,19 @@ control remains. Availability does not promise survival or zero-AP escape.
 
 ---
 
-### 4.12 BoardState and minimal World Card targeting
+### 4.12 BoardState and targeting (Phase 11)
 
-BoardState is a small runtime container owned by FloorState for one floor visit.
-It is not an Autoload, combat mode, scene tree, or universal card database.
-Conceptual capacity: one active Situation/Event slot (nullable when empty), zero to two
-active Entities. A later Exit/Objective is a design possibility only.
+FloorState owns BoardState for one visit. Board owns `active_events: Array[EventInstance]` (capacity two), nullable `active_objective: ObjectiveInstance`, and the existing nullable `entity: EntityInstance`. No shadow world-card state is introduced.
 
-Supported encounter compositions are: (1) Situation only, (2) Entity only, and
-(3) Situation + Entity. These are BoardState compositions, not different gameplay modes.
-The mixed composition is the primary high-pressure signature encounter, not a mandatory every-turn state.
-Do not implement RESOURCE/EXIT/ANOMALY/OBJECTIVE board frameworks in this migration
-without a specific follow-up scope.
+RunState owns HP/Stress/AP, DeckState, three physical equipment instances, current floor and RNG. FloorState owns Threat/Cognition, seen/candidate scheduling facts, finite resources, cut-out and temporary Guard/LIGHT. UI owns only selection/presentation references.
 
-| Owner | Sole authoritative runtime state |
-| --- | --- |
-| RunState | Player HP/Stress/AP, DeckState, three EquipmentInstance slots, current FloorState reference, run RNG |
-| FloorState | Threat/Cognition/knowledge, pools/flags/resources/cut-out, floor-local temporary defense/light, BoardState |
-| BoardState | Active EventInstance and active EntityInstance references; no duplicate HP/progress/intent |
-| DeckState | Player CardInstances in their mutually exclusive player zones |
-| UI | Presentation and transient selection only; no domain-owned progress or costs |
+PlayCardCommand identifies the actual hand card, captured definition, visit Board and optional Objective/Entity instance. `TargetKind.OBJECTIVE` retains the previous numeric mask value. Events and Scene Rules are not legal targets. Stale/resolved/removed/foreign references fail before spending; no silent redirection.
 
-The existing player_block can remain a floor-local temporary Guard value during
-migration; do not create a competing combat defense pool. Exact expiry must be
-explicit in the card rules and cannot serve as a substitute for useful empty-board
-baseline design.
+SceneRule/Event/Objective/Entity are separate concepts. CardData remains Player-only. This task authorizes neither multiple simultaneous entities nor a generic board framework.
 
-Keep EventData/EventInstance and EntityData/EntityInstance. CardData is only for
-Player Cards; there is no giant universal CardData with nullable HP/event/equipment
-fields. Share only the presentation/target information actually needed: kind
-(EVENT or ENTITY), runtime instance key scoped to the floor visit, display data,
-and a domain instance reference for read-only rendering. Reuse domain state,
-not shadow WorldCard HP/progress objects.
-A target names a runtime instance, not only a content-definition ID: two instances
-of the same definition or a later floor visit must not satisfy a stale reference.
+### 4.13 Replaceable assets
 
-A click/drag target selection conveys intent for the card in hand and commits
-nothing by itself. RuleResolver validates target existence, kind, active/resolved
-state and visit before producing a plan. Entity intent ordering for two targets
-is a future implementation gate; this documentation task creates no board code.
-
----
+`assets/asset_manifest.json` maps stable IDs to project-relative paths; `docs/ASSET_MANIFEST.md` documents usage/status/dimensions. AssetCatalog validates the res://assets/ prefix, probes existence before load, provides imported SVG fallbacks for textures and null/silence for audio. ObjectiveData.asset_id explicitly separates retained historical content IDs from art IDs. UI consumes textures/frames and AssetAudio consumes ambience/cues; neither changes gameplay. No external plugin or absolute machine path is used. Export packaging has not yet been validated.
 
 ## 5. Floor Network and Run Progression
 
@@ -856,7 +804,7 @@ separate CardData definitions. Right-click may show read-only details only.
 CardData.effect_type plus declared numeric/tag fields define the card's one semantic.
 CardData.actions, CardActionData/CardActionSystem and mode-selection resources are removed.
 PlayCardCommand contains the actual hand instance, its definition identity at request
-creation, current Board and optional Event/Entity target. It cannot choose equipment,
+creation, current Board and optional Objective/Entity target. It cannot choose equipment,
 resource nodes or action modes. Equipment source is fixed by CardInstance.source_equipment.
 Definition replacement invalidates pending requests with a different captured semantic.
 RuleResolver validates and plans, domain systems commit, CardSystem performs source
@@ -895,7 +843,7 @@ declare legal World Card routes. RuleResolver validates kind, visit, exact insta
 state restrictions; UI forwards explicit selection unchanged and queries the same validator.
 Self/player effects ignore world selection. No UI-only legality or automatic incompatible retargeting.
 
-EventData.completion_reward and EntityData.resolution_reward reference small CardRewardData Resources.
+ObjectiveData.completion_reward and EntityData.resolution_reward reference small CardRewardData Resources.
 CardRewardSystem plans opportunities from newly completed/resolved facts in the same action draft,
 using a private copy of RunState RNG. RuleResolver commits RNG, rewards and original costs/effects
 before notifying. EntitySystem commits final HP/state and retires inactive instances; FloorState retains
@@ -921,7 +869,7 @@ The prototype uses three base-to-upgrade Resource references and three simple nu
 is introduced. Phase 9 tests exercise production reward content; fixed-inventory legacy suites use
 explicit no-reward fixtures without mutating production Resources.
 
-## Phase 10: content, safe points and run facts
+## Phase 10: historical content, preserved safe points and run facts
 
 Production FloorData declares five fresh candidates, optional intro Event, one SafePointData,
 exit timing/progress fallback, overstay pacing and Threat damage scaling. Compatibility defaults
@@ -941,9 +889,9 @@ selects a finite useful cache and plans the exact instance/capped amount; Equipm
 physical use-counter mutation. Full/missing equipment does not consume a cache with no benefit.
 Search progress, reward, uses, AP/card movement and RNG remain one synchronous transaction.
 
-EventSystem commits real applied Explore into floor-local total_explore and increments the visit
+ObjectiveSystem commits real applied Explore into floor-local total_explore and increments the visit
 completion count once. Production clears the resolved active reference after its rewards/facts
-are committed; Fresh replacement remains at next turn start. EventData clue_light_exposure is a
+are committed; Fresh replacement remains at next turn start. ObjectiveData clue_light_exposure is a
 declared automatic world consequence of the card milestone, using the same actual LIGHT reaction
 and follow-up path as equipment. It does not create a free light/encounter command.
 

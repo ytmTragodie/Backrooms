@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1_card"]
+
+
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/rewards/card_steady_guard.tres" id="upgrade"]
+
+[resource]
+script = ExtResource("1_card")
+id = &"card_defend"
+display_name = "防御"
+ap_cost = 1
+effect_type = 3
+effect_value = 4
+
+target_kinds = 0
+upgrade_to = ExtResource("upgrade")

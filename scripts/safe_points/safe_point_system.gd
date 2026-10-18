@@ -15,7 +15,7 @@ static func available(state: RunState) -> bool:
 
 static func reach(state: RunState, result: ActionResult) -> void:
 	var floor: FloorState = state.floor_state
-	if floor.safe_point != null and not floor.safe_point.reached and floor.completed_situations >= floor.safe_point.definition.required_situations:
+	if floor.safe_point != null and not floor.safe_point.reached and floor.completed_objectives >= floor.safe_point.definition.required_situations:
 		floor.safe_point.reached = true
 		result.debug_lines.append("[SAFE_POINT] reached floor=%s" % floor.floor_id)
 

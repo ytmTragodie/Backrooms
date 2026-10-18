@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"card_crisis_observe"
+display_name = "临危调查"
+ap_cost = 1
+effect_type = 0
+effect_value = 0
+explore_amount = 2
+threat_cost = 0
+target_kinds = 1
+bonus_condition = 2
+conditional_bonus = 3

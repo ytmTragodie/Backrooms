@@ -31,7 +31,8 @@ func _ready() -> void:
 			print("[FLOOR] enter %s" % floor_data.id)
 			if run_state.floor_state.entity != null:
 				print("[ENTITY] spawn %s hp=%d state=%s" % [run_state.floor_state.entity.entity_id, run_state.floor_state.entity.hp, run_state.floor_state.entity.state])
-		EventSystem.draw_fresh(floor_data, run_state.floor_state, run_state.rng)
+		ObjectiveSystem.draw_fresh(floor_data, run_state.floor_state, run_state.rng)
+		EventSystem.fill_slots(run_state.floor_state, floor_data)
 	card_system.begin_hand(floor_data)
 	if OS.is_debug_build():
 		print("[RUN] seed=%d" % run_state.rng_seed)
@@ -59,15 +60,16 @@ func end_turn() -> ActionResult:
 		ResourceNodeSystem.finish_turn(run_state.floor_state)
 		run_state.floor_state.turn_count += 1
 		# 仅已解决事件在新回合推进；未完成事件及其交互记录继续保留。
-		EventSystem.draw_fresh(floor_data, run_state.floor_state, run_state.rng)
+		ObjectiveSystem.draw_fresh(floor_data, run_state.floor_state, run_state.rng)
+		EventSystem.fill_slots(run_state.floor_state, floor_data)
 	card_system.begin_hand(floor_data)
 	_announce_turn_start()
 	action_resolved.emit(result)
 	return result
 
 
-func request_play_card(card: CardInstance, event: EventInstance = null, board: BoardState = null, entity: EntityInstance = null) -> ActionResult:
-	return submit_card_command(PlayCardCommand.new(card, event, board, entity))
+func request_play_card(card: CardInstance, objective: ObjectiveInstance = null, board: BoardState = null, entity: EntityInstance = null) -> ActionResult:
+	return submit_card_command(PlayCardCommand.new(card, objective, board, entity))
 
 
 func submit_card_command(command: PlayCardCommand) -> ActionResult:

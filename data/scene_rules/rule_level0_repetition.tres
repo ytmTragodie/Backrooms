@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SceneRuleData" format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/scene_rule_data.gd" id="script"]
+
+[resource]
+script = ExtResource("script")
+id = &"rule_level0_repetition"
+display_name = "重复空间"
+description = "墙痕反复出现；危险来自搜索与长期滞留。零层第六回合起，每三回合威胁加一。"

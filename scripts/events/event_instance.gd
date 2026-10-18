@@ -1,27 +1,14 @@
 class_name EventInstance
 extends RefCounted
 
-# 每次激活事件都创建独立实例；共享 EventData 不保存已检查等局内进度。
-var event_id: StringName
-var completed_interactions: Array[StringName] = []
-var known_information: Array[String] = []
-var resolved: bool = false
-var explore_progress: int = 0
-var clue_revealed: bool = false
-var last_progress_turn: int = 0
-var pressure_checked_turn: int = 0
-var activated_turn: int = 1
-
-var phase: StringName:
-	get:
-		if resolved:
-			return &"resolved"
-		return &"unresolved" if explore_progress == 0 and completed_interactions.is_empty() and known_information.is_empty() else &"partially_explored"
+# 临时事件没有 Explore；计时与机会条件计数不与 Objective 进度混用。
+var definition: EventData
+var remaining_turns: int
+var matching_actions: int = 0
+var checked_turn: int = 0
+var retired: bool = false
 
 
-func _init(id: StringName) -> void:
-	event_id = id
-
-
-func can_interact(action: StringName) -> bool:
-	return not resolved and not completed_interactions.has(action)
+func _init(data: EventData) -> void:
+	definition = data
+	remaining_turns = data.duration

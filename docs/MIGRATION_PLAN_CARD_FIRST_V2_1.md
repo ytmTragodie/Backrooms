@@ -1,6 +1,8 @@
 # CARD-FIRST V2.1 — Migration Plan
 
-日期：2026-10-18。状态：**REWORK A／B／C、Phase 9 构筑与 Phase 10 Demo 内容已实现**；Phase 11 不在范围内。V2.1 保留 Situation/Environment World Cards 与统一牌局。
+> **Phase 11 当前覆盖规则（2026-10-18）**：Scene Rule／临时 Event／可调查 Objective 已分离。Board 为最多 2 Event＋1 Objective＋现有单 Entity；Event 不再使用 Explore 进度。后文 Phase 10 及更早的单 Situation 记录属于历史，不能恢复旧分类。当前完整分类与验证见 [PHASE_11_VALIDATION.md](PHASE_11_VALIDATION.md)。
+
+日期：2026-10-18。状态：**REWORK A／B／C、Phase 9–10 及 Phase 11 事件重分类／素材管线已实现**。当前分类与规则见 §0.8；以下保留迁移历史。
 前次文档方向任务不修改玩法；REWORK A／B／C 依据各自用户授权完成下列有限迁移，不构成后续阶段实现授权。
 设计规范见 [GDD.md](GDD_CARD_FIRST_V2_1.md)，职责与状态归属见 [ARCHITECTURE.md](ARCHITECTURE_CARD_FIRST_V2_1.md)，
 实现约束见 [CODING_RULES.md](CODING_RULES_CARD_FIRST_V2_1.md)。优先级遵循 AGENTS.md。
@@ -325,3 +327,12 @@ End Turn 等纯系统控制不在废弃范围；自动实体意图与楼层规�
 - 保留：完整 v0.4 DOCX；旧代码、数据、场景、测试、配置与 UID 均不改。
 - 检查文档链接、规则一致性与 git diff；对比审查前后的文件内容哈希确认修改范围。
 - 本任务不运行或修改玩法测试，不声称 v2 运行时已经实现；后续迁移按 §6 验收。
+
+## 0.8 Phase 11：事件重分类与素材管线（当前）
+
+- 原进度模型/引用机械迁入 Objective；零层与六层各两明确对象。所有旧目标身份、阶段、奖励、失败事务测试仍通过同一 ObjectiveSystem。
+- EventSystem 重建为 DEBUFF/OMEN/OPPORTUNITY，最多两张、顺序候选、满额延后、到期退场；实体只复用既有实例/状态机。
+- Phase 10 数据冻结于 tests/fixtures/phase10，旧测试的 Event 目标命名改为 Objective；不删除断言，生产新内容另由 Phase 11 完整路线覆盖。
+- 原 Situation 独立按钮不恢复；事件只读，普通牌仍作用于 Objective/Entity/自身/装备。
+- 素材清单、占位与音频容错是展示层；不扩卡池、楼层、敌人、构筑或经济。
+- 完整迁移分类、顺序、测试与边界见 PHASE_11_VALIDATION.md。

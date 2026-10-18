@@ -10,17 +10,17 @@ var card_definition: CardData
 var effect: StringName
 var damage_requested: int = 0
 var action_id: StringName
-var event_id: StringName
+var objective_id: StringName
 var floor_flags_added: Array[StringName] = []
 var insight_ids: Array[StringName] = []
 var cognition_delta: int = 0
 var threat_delta: int = 0
 var threat_reason: StringName
 # 事件变更计划与 AP、牌区变更一并提交，失败不留下半次交互。
-var event_interaction: StringName
-var event_information: Array[String] = []
-var event_resolved: bool = false
-var event_target: EventInstance
+var objective_interaction: StringName
+var objective_information: Array[String] = []
+var objective_resolved: bool = false
+var objective_target: ObjectiveInstance
 var explore_base: int = 0
 var explore_bonus: int = 0
 var explore_applied: int = 0
@@ -75,3 +75,5 @@ var deck_change_kind: StringName
 var safe_point_used: SafePointState
 var resource_equipment: EquipmentInstance
 var resource_uses_gained: int = 0
+var event_changes: Array[EventChange] = []
+var event_reward_definitions: Array[CardRewardData] = []

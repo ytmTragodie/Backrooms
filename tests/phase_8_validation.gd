@@ -10,7 +10,7 @@ func tests() -> void:
 	var data: FloorData = fixture(LEVEL_6)
 	data.entry_entity = data.followup_entity
 	data.followup_entity = null
-	data.fresh_events = []
+	data.fresh_objectives = []
 	var owner: TurnManager = _equipment_fixture(data, [FLASH], [OBSERVE, OBSERVE, OBSERVE, OBSERVE, OBSERVE])
 	var entity: EntityInstance = owner.run_state.floor_state.entity
 	owner.end_turn()
@@ -19,7 +19,7 @@ func tests() -> void:
 	var clues: FloorData = fixture(LEVEL_6)
 	clues.entry_entity = clues.followup_entity
 	clues.followup_entity = null
-	clues.fresh_events[0].clue_threshold = 2
+	clues.fresh_objectives[0].clue_threshold = 2
 	owner = _equipment_fixture(clues, [FLASH], [OBSERVE, OBSERVE, OBSERVE, OBSERVE, OBSERVE])
 	play(owner, OBSERVE)
 	check(owner.run_state.cognition == 1, "Situation clue replaces manual landmark investigation with same unique Insight")

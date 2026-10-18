@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="EventData" format=3]
+[gd_resource type="Resource" script_class="ObjectiveData" format=3]
 
-[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/objectives/objective_data.gd" id="1_event"]
 [ext_resource type="Script" path="res://scripts/events/event_action_data.gd" id="2_action"]
 [ext_resource type="Resource" path="res://tests/fixtures/phase9/insights/insight_level0_layout_repeats.tres" id="3_insight"]
 

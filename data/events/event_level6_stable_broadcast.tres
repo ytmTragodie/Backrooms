@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="script"]
+[ext_resource type="Resource" path="res://data/insights/insight_level6_light_attracts.tres" id="insight"]
+
+[resource]
+script = ExtResource("script")
+id = &"event_level6_stable_broadcast"
+display_name = "临时稳定广播"
+display_text = "四回合内打出两张观察标签牌，可记住广播提示并取得两份补给。"
+category = 2
+duration = 4
+condition_tag = &"OBSERVE"
+required_actions = 2
+supply_reward = 2
+insight = ExtResource("insight")

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EventData" format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="script"]
+
+[resource]
+script = ExtResource("script")
+id = &"event_level6_fading_light"
+display_name = "灯光衰减"
+display_text = "失控电流划过地面：三回合内，每回合末受到一伤害，可格挡。"
+duration = 3
+damage_per_turn = 1

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"card_careful_observe"
+display_name = "仔细观察"
+ap_cost = 1
+effect_type = 0
+effect_value = 0
+explore_amount = 3
+threat_cost = 0
+target_kinds = 3
+bonus_condition = 0
+conditional_bonus = 0
+tags = Array[StringName]([&"OBSERVE"])
+analyzes_entities = true

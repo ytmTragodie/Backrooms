@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SafePointData" format=3]
+
+[ext_resource type="Script" path="res://scripts/safe_points/safe_point_data.gd" id="script"]
+
+[resource]
+script = ExtResource("script")
+id = &"safe_level0"
+heal = 6
+stress_relief = 3

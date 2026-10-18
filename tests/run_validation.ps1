@@ -29,7 +29,7 @@ function Invoke-GodotCheck([string]$Name, [string[]]$Arguments, [bool]$RequiresP
 
 # --quit 是首帧退出；--import 明确等待资源导入结束，避免扫描未完成时退出。
 Invoke-GodotCheck 'import' @('--import')
-foreach ($suite in @('phase_1', 'phase_2', 'phase_3', 'phase_4', 'phase_5', 'phase_6', 'phase_7', 'phase_8', 'rework_a', 'rework_b', 'rework_c', 'ui', 'phase_9', 'phase_10')) {
+foreach ($suite in @('phase_1', 'phase_2', 'phase_3', 'phase_4', 'phase_5', 'phase_6', 'phase_7', 'phase_8', 'rework_a', 'rework_b', 'rework_c', 'ui', 'phase_9', 'phase_10', 'phase_11')) {
     Invoke-GodotCheck $suite @('--script', "res://tests/${suite}_validation.gd") $true
 }
 Invoke-GodotCheck 'main' @('--quit-after', '5')

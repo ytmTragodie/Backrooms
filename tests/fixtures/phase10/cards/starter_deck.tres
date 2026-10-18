@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DeckData" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/deck_data.gd" id="1_deck"]
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="2_card"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/card_observe.tres" id="3_observe"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/card_wait.tres" id="4_wait"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/card_struggle.tres" id="5_struggle"]
+
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/card_deep_search.tres" id="6_deep_search"]
+
+[resource]
+script = ExtResource("1_deck")
+cards = Array[ExtResource("2_card")]([ExtResource("3_observe"), ExtResource("5_struggle"), ExtResource("3_observe"), ExtResource("6_deep_search"), ExtResource("4_wait"), ExtResource("3_observe"), ExtResource("4_wait"), ExtResource("6_deep_search"), ExtResource("4_wait")])

@@ -4,7 +4,7 @@
 
 This repository contains a Godot 4.x card-roguelike game prototype set in the Backrooms.
 
-**Current authoritative direction: CARD-FIRST V2 (2026-10-17).**
+**Current authoritative direction: CARD-FIRST V2.1, Phase 11 event reframe (2026-10-18).**
 Phase 1-8 is the existing legacy prototype, not proof that v2 is implemented.
 The design-direction task changes documentation only. Do not migrate gameplay,
 content Resources, scenes, tests, or project settings without a subsequent task.
@@ -39,9 +39,10 @@ Level 0
   turn a normal card into a dead card or a successful no-op.
 - Events and Entities are World Cards in a separate board zone. They never enter
   the player's hand, draw pile or discard pile.
-- Introduce a small, floor-local BoardState concept: one active Event slot and
-  zero to two active Entities. This is a design capacity, not authorization to
-  implement multi-entity combat or a universal board framework in this task.
+- Phase 11 BoardState owns up to two temporary EventInstances, one active
+  ObjectiveInstance and the existing single EntityInstance. Scene Rules are
+  persistent floor definitions, never targets. Events have timers/conditions,
+  not Explore HP; Objective owns Explore/milestones. No multi-entity combat.
 - Keep EventData/EventInstance and EntityData/EntityInstance. CardData describes
   Player Cards; do not merge all domains into one universal CardData hierarchy.
 - Three physical equipment slots remain run-persistent and outside the deck.
@@ -78,10 +79,10 @@ Level 0
 
 Before modifying gameplay code, read:
 
-- `docs/GDD.md`
-- `docs/ARCHITECTURE.md`
-- `docs/CODING_RULES.md`
-- `docs/MIGRATION_PLAN.md` when assessing or migrating the legacy implementation
+- `docs/GDD_CARD_FIRST_V2_1.md`
+- `docs/ARCHITECTURE_CARD_FIRST_V2_1.md`
+- `docs/CODING_RULES_CARD_FIRST_V2_1.md`
+- `docs/MIGRATION_PLAN_CARD_FIRST_V2_1.md` when assessing or migrating the legacy implementation
 
 These documents are authoritative.
 
@@ -89,12 +90,12 @@ Priority when instructions conflict:
 
 1. Current user task
 2. `AGENTS.md`
-3. `docs/ARCHITECTURE.md`
-4. `docs/CODING_RULES.md`
-5. `docs/GDD.md`
+3. `docs/ARCHITECTURE_CARD_FIRST_V2_1.md`
+4. `docs/CODING_RULES_CARD_FIRST_V2_1.md`
+5. `docs/GDD_CARD_FIRST_V2_1.md`
 6. Existing implementation assumptions
 
-`docs/GDD.md` is the current Card-First v2 design source. The retained
+`docs/GDD_CARD_FIRST_V2_1.md` is the current Card-First v2 design source. The retained
 `docs/Backrooms_Card_Roguelike_GDD_v0.4_Demo_Baseline.docx` is historical reference;
 its old claims of being canonical do not override these Markdown documents.
 Readme.md describes the legacy build and does not authorize deprecated mechanics.

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DeckData" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/deck_data.gd" id="1_deck"]
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="2_card"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/card_observe.tres" id="3_observe"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/card_struggle.tres" id="4_struggle"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/card_deep_search.tres" id="5_deep"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/card_wait.tres" id="6_wait"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/card_attack.tres" id="7_attack"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/card_defend.tres" id="8_defend"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/card_run.tres" id="9_run"]
+
+[resource]
+script = ExtResource("1_deck")
+cards = Array[ExtResource("2_card")]([ExtResource("3_observe"), ExtResource("4_struggle"), ExtResource("3_observe"), ExtResource("5_deep"), ExtResource("6_wait"), ExtResource("7_attack"), ExtResource("8_defend"), ExtResource("9_run"), ExtResource("7_attack"), ExtResource("8_defend")])

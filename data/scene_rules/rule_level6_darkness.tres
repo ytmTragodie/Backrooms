@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SceneRuleData" format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/scene_rule_data.gd" id="script"]
+
+[resource]
+script = ExtResource("script")
+id = &"rule_level6_darkness"
+display_name = "黑暗与挤压"
+description = "黑暗中每回合首次观察多花一行动点；光照可消除该加费，也会暴露注视。第四六八…回合滞留加威胁；威胁会强化实体伤害。"

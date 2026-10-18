@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveData" format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_data.gd" id="script"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/insights/insight_level0_layout_repeats.tres" id="insight"]
+
+[resource]
+script = ExtResource("script")
+id = &"event_level0_wall_marks"
+display_name = "重复的墙痕"
+display_text = "墙上的箭头出现第二次。搜索墙角能比空想更快确认路径，但会提升威胁。"
+objective_text = "调查环境，确认规律与路线"
+explore_threshold = 14
+clue_threshold = 6
+clue_text = "墙角的碎屑位置完全相同，走廊正在折返。"
+completion_insight = ExtResource("insight")
+neglect_stress = 1
+neglect_damage = 0
+completion_supply = 0
+clue_light_exposure = false
+bonus_tag = &"SEARCH"
+explore_bonus = 1

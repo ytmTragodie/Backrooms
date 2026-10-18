@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1_card"]
+
+
+[ext_resource type="Resource" path="res://tests/fixtures/phase10/cards/rewards/card_careful_observe.tres" id="upgrade"]
+
+[resource]
+script = ExtResource("1_card")
+id = &"card_observe"
+display_name = "观察"
+ap_cost = 1
+exploration_action = &"observe"
+explore_amount = 2
+threat_cost = 0
+tags = Array[StringName]([&"OBSERVE"])
+analyzes_entities = true
+
+target_kinds = 3
+upgrade_to = ExtResource("upgrade")

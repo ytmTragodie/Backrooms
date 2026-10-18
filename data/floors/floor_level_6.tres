@@ -1,15 +1,10 @@
 [gd_resource type="Resource" script_class="FloorData" format=3]
 
 [ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="script"]
-[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="event_type"]
+[ext_resource type="Script" path="res://scripts/objectives/objective_data.gd" id="event_type"]
 [ext_resource type="Script" path="res://scripts/floors/resource_node_data.gd" id="node_type"]
 [ext_resource type="Resource" path="res://data/safe_points/safe_level6.tres" id="safe"]
 [ext_resource type="Resource" path="res://data/floors/floor_phase6_exit.tres" id="destination"]
-[ext_resource type="Resource" path="res://data/events/event_level6_unstable_corridor.tres" id="e0"]
-[ext_resource type="Resource" path="res://data/events/event_level6_dark_corridor.tres" id="e1"]
-[ext_resource type="Resource" path="res://data/events/event_level6_claw_marks.tres" id="e2"]
-[ext_resource type="Resource" path="res://data/events/event_level6_wall_seam.tres" id="e3"]
-[ext_resource type="Resource" path="res://data/events/event_level6_emergency_light.tres" id="e4"]
 [ext_resource type="Resource" path="res://data/resources/resource_level6_battery.tres" id="n0"]
 [ext_resource type="Resource" path="res://data/resources/resource_level6_crowbar.tres" id="n1"]
 [ext_resource type="Resource" path="res://data/resources/resource_level6_water.tres" id="n2"]
@@ -17,14 +12,24 @@
 [ext_resource type="Resource" path="res://data/entities/entity_smiler.tres" id="smiler"]
 [ext_resource type="Resource" path="res://data/insights/insight_level6_light_attracts.tres" id="light_insight"]
 
+[ext_resource type="Resource" path="res://data/objectives/objective_level6_wall_seam.tres" id="o0"]
+[ext_resource type="Resource" path="res://data/objectives/objective_level6_emergency_light.tres" id="o1"]
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="new_event_type"]
+[ext_resource type="Script" path="res://scripts/floors/scene_rule_data.gd" id="rule_type"]
+[ext_resource type="Resource" path="res://data/events/event_level6_fading_light.tres" id="t0"]
+[ext_resource type="Resource" path="res://data/events/event_level6_claw_marks.tres" id="t1"]
+[ext_resource type="Resource" path="res://data/events/event_level6_stable_broadcast.tres" id="t2"]
+[ext_resource type="Resource" path="res://data/events/event_level6_dark_movement.tres" id="t3"]
+[ext_resource type="Resource" path="res://data/scene_rules/rule_level6_darkness.tres" id="scene_rule"]
+
 [resource]
 script = ExtResource("script")
 id = &"floor_level_6"
 display_name = "六层"
 card_first_exploration = true
-retire_resolved_situations = true
-intro_event = ExtResource("e0")
-fresh_events = Array[ExtResource("event_type")]([ExtResource("e0"), ExtResource("e1"), ExtResource("e2"), ExtResource("e3"), ExtResource("e4")])
+retire_resolved_objectives = true
+intro_objective = ExtResource("o0")
+fresh_objectives = Array[ExtResource("event_type")]([ExtResource("o0"), ExtResource("o1")])
 resource_nodes = Array[ExtResource("node_type")]([ExtResource("n0"), ExtResource("n1"), ExtResource("n2")])
 safe_point = ExtResource("safe")
 cutout_destinations = Array[Resource]([ExtResource("destination")])
@@ -36,7 +41,10 @@ overstay_interval = 2
 entry_entity = ExtResource("hound")
 followup_entity = ExtResource("smiler")
 landmark_insight = ExtResource("light_insight")
-followup_on_light = true
+followup_on_light = false
 initial_flags = Array[StringName]([&"darkness"])
 dark_observe_surcharge = 1
 threat_damage_step = 4
+events = Array[ExtResource("new_event_type")]([ExtResource("t0"), ExtResource("t1"), ExtResource("t2"), ExtResource("t3")])
+scene_rules = Array[ExtResource("rule_type")]([ExtResource("scene_rule")])
+entry_entity_automatic = false

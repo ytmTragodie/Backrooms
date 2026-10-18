@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ObjectiveData" format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_data.gd" id="script"]
+[ext_resource type="Resource" path="res://data/insights/insight_level0_false_landmarks.tres" id="insight"]
+
+[resource]
+script = ExtResource("script")
+asset_id = &"objective_level0_wrong_corner"
+id = &"event_level0_wrong_corner"
+display_name = "空间裂隙"
+display_text = "向左后的回声从右方传来。此处令人不安；仔细观察可以减少逗留。"
+objective_text = "定位裂隙并确认安全方向"
+explore_threshold = 14
+clue_threshold = 5
+clue_text = "反射方向与视线不符；切勿仅凭路标前进。"
+completion_insight = ExtResource("insight")
+neglect_stress = 0
+neglect_damage = 0
+completion_supply = 0
+clue_light_exposure = false
+bonus_tag = &"OBSERVE"
+explore_bonus = 2
