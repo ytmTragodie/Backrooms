@@ -14,7 +14,7 @@ When asked to implement a feature, the AI must read:
 
 before modifying gameplay code.
 
-Current authority: **CARD-FIRST V2 (2026-10-17)**. Read `MIGRATION_PLAN.md` as well
+Current authority: **CARD-FIRST V2.1 (2026-10-17)**. Read `MIGRATION_PLAN.md` as well
 when touching legacy Phase 1-8 behavior. The retained v0.4 DOCX is historical,
 including its old "canonical" sections. Existing code/tests do not override v2.
 The present design-direction task is documentation-only: do not change scripts,
@@ -269,12 +269,13 @@ Cards do not directly search the scene tree for player/entity/floor nodes.
 
 CardData / CardInstance describe Player Cards only. Use reusable Explore, Damage,
 Guard, Threat, Draw, Discard effects and add Retain/Exhaust only as needed.
-Normal cards need useful baseline behavior without a particular Event/Entity or
-optional gear; contextual tags/conditions/modifiers must enhance or vary it rather
-than provide its only use. Neither an unused placeholder damage number nor an
-Explore counter with no gameplay consumer satisfies that requirement.
-Unsettled empty-board baselines are migration design gates, not license to keep
-normal dead cards. Explicit burden/curse cards must be distinguished in design.
+Normal cards must be broadly reusable across recurring situations and must not be
+keys whose only purpose is one named Event/Entity. This does **not** mean every card
+must resolve meaningfully on every BoardState. Attack cards may lack a valid target in
+a pure-environment encounter; investigation cards may be weak in a pure-entity turn.
+Do not invent nonsensical fallback effects or successful no-ops to hide this. Control
+dead-hand rate through explicit deck composition, draw/discard/secondary modes and
+encounter composition. Explicit burden/curse cards must be distinguished in design.
 
 Persistent physical equipment and World Cards must not be mixed into normal
 player draw/discard behavior. World Cards keep EventData/EventInstance or
@@ -316,14 +317,16 @@ they do not create a new active-use control.
 
 ## 11. Events
 
-Events must support conditions and render as EVENT World Cards in BoardState.
+Events must support conditions and render as EVENT World Cards in BoardState; player-facing UI should treat them as **环境牌／局势牌 (Situation)** rather than popup event minigames.
 
-Static EventData defines ID, name/description/tags, Explore threshold, clue
-milestones, tag-based modifiers and reward/Insight outcomes. Runtime EventInstance
-owns progress, reached milestones, known clues and resolved state. Normal Player
-Cards advance them via reusable Explore effects; no Event-owned Inspect/Search
-execution buttons. Rewards/milestones trigger once even if one action crosses
-multiple thresholds. Never store runtime progress in EventData or a UI copy.
+Static EventData defines ID, name/description/tags, Objective (Explore threshold first),
+Pressure/end-turn consequences, clue milestones, tag-based modifiers and reward/Insight
+outcomes. Runtime EventInstance owns progress, reached milestones, known clues, Pressure
+state and resolved state. Normal Player Cards advance/mitigate them through reusable
+effects; no Event-owned Inspect/Search/Defend execution buttons. Rewards/milestones trigger
+once even if one action crosses multiple thresholds. Never store runtime progress in
+EventData or a UI copy. Unresolved Situation cards may coexist with Entities and normally
+persist until resolved or invalidated by declared world rules.
 
 Do not assume every event can always happen.
 
@@ -392,6 +395,10 @@ Combat remains inside the exploration turn loop.
 Do not create a separate battle scene/state that disables floor systems unless explicitly redesigned later.
 
 The same AP, hand, equipment, Threat, Stress, and floor modifiers continue to apply.
+
+A Situation/Event may remain active while an Entity is present. Event Pressure and Entity
+Intent must resolve in the same deterministic TurnManager lifecycle. Do not add an Event
+Mode, Combat Mode, second hand, second AP pool, or UI action bar for either case.
 
 Entity behavior must be based on:
 
@@ -605,8 +612,10 @@ When fixing a gameplay bug, add a regression test if feasible.
 
 For future v2 migration, add or adapt tests for:
 
-- useful baseline behavior with the specific Event/Entity absent and optional gear empty;
-- card tags modifying Event Explore and thresholds/rewards firing once;
+- cards are not single-named-content keys; temporary missing targets are handled honestly rather than through fake no-op success;
+- card tags modifying Situation/Event Objective progress and thresholds/rewards firing once;
+- Situation Pressure resolving through the same TurnManager as Entity Intents;
+- Situation-only, Entity-only and mixed boards using the same AP/hand pipeline;
 - Event/Entity World Cards never entering player piles;
 - one authoritative BoardState owner and no UI/runtime shadow state;
 - stale, foreign-visit, resolved and removed target rejection without any spending;
@@ -727,8 +736,9 @@ If a proposed abstraction or feature does not help this loop, defer it.
 
 ## 30. Board ownership and World Card presentation
 
-Use the minimum floor-local BoardState in ARCHITECTURE.md: one active Event slot
-and zero to two active Entities as design capacity. BoardState owns the active
+Use the minimum floor-local BoardState in ARCHITECTURE.md: one active Situation/Event slot
+and zero to two active Entities as design capacity. Support Situation-only, Entity-only,
+and mixed Situation+Entity board compositions without mode switching. BoardState owns the active
 EventInstance/EntityInstance references. FloorState keeps pools, flags, resources,
 cut-out and floor-local temporary defense/light. DeckState owns Player Cards only.
 A temporary legacy alias must return the same board instances, never a second

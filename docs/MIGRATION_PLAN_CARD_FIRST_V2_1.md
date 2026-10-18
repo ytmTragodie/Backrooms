@@ -1,6 +1,6 @@
-# CARD-FIRST V2 — Migration Plan
+# CARD-FIRST V2.1 — Migration Plan
 
-日期：2026-10-17。状态：文档方向已更新；下面所有玩法迁移步骤均 **NOT STARTED**。
+日期：2026-10-17。状态：文档方向已更新；下面所有玩法迁移步骤均 **NOT STARTED**。V2.1 明确保留环境事件，并把它们收束为 Situation/Environment World Cards：事件与实体共享同一牌局、同一手牌、同一回合。
 本任务不修改任何玩法脚本、场景、内容 Resource、测试或项目设置，也不构成下一阶段实现授权。
 设计规范见 [GDD.md](GDD.md)，职责与状态归属见 [ARCHITECTURE.md](ARCHITECTURE.md)，
 实现约束见 [CODING_RULES.md](CODING_RULES.md)。优先级遵循 AGENTS.md。
@@ -64,14 +64,14 @@ AGENTS.md、架构／编码规则，以及完整 v0.4 DOCX。初始工作区干�
 | --- | --- | --- |
 | Player Card 定义与实例 | `scripts/cards/card_data.gd`、`card_instance.gd`、`data/cards/*.tres` | 通用基线效果、标签、目标／条件与增强；先定稿空场用途，不造巨型万能卡 |
 | 探索输出 | RuleResolver、ActionResult | 引入有实际消费者的 Explore，区分基础值、修正、实际进度与奖励；不把 Explore 当 Cognition |
-| 事件定义／实例／规则 | `scripts/events/*.gd`、`data/events/*.tres` | 数值 Explore 进度、阶段阈值与一次性结果；标签加减成取代以固定动作名作为唯一用途 |
+| 事件定义／实例／规则 | `scripts/events/*.gd`、`data/events/*.tres` | 迁移为 Situation：Objective（先用 Explore）、Pressure／回合后果、阶段阈值与一次性结果；标签修正取代固定动作名，不再是独立事件小游戏 |
 | 活动世界内容所有权 | FloorState、FloorData、新的最小 BoardState | 一个 Event 槽和 0–2 Entity 的设计容量；活动实例迁移一次，不保留第二份可写列表 |
 | 目标引用 | PlayCardCommand、RuleResolver、ActionResult | 当前手牌 + 世界种类 + 楼层访问内的实例键；不只按 definition ID 寻找目标 |
 | 实体反应 | EntitySystem、EntityData、Hound／Smiler `.tres` | 响应实际生效的 LIGHT／NOISE 等标签，复用领域状态机；多实体顺序先定稿 |
 | 装备主动效果 | EquipmentSystem、RuleResolver、EquipmentData | 由牌的声明效果调用；保留物品和次数，统一 AP 计算，缺少可选装备不使普通牌失效 |
 | 资源、地标、切出准备与尝试 | ResourceNodeSystem、InsightSystem、CutOutSystem | 以牌效果触达；保留有限奖励和安全／仓促／强行语义，不提前实现 Exit／Resource 世界卡类型 |
 | 笑魇遭遇及替代规律发现 | EntitySystem、FloorData、InsightData | 牌／已声明世界规则触发遭遇与行为，替代路线仍用同一 Insight ID，无独立追查／地标按钮 |
-| 牌桌展示与选目标 | `scripts/ui/main.gd`、`scenes/main/Main.tscn` | 单独 World Card 区展示 Event 进度、Entity HP／意图；玩家牌操作是唯一主动执行入口 |
+| 牌桌展示与选目标 | `scripts/ui/main.gd`、`scenes/main/Main.tscn` | World Card 区展示 Situation 的 Objective／Pressure 与 Entity 的 HP／Intent；支持纯环境、纯实体、混合遭遇，玩家牌仍是唯一主动执行入口 |
 | 测试与 README | `tests/phase_1_validation.gd` 至 `phase_8_validation.gd`、Readme | 保留不变量，迁移调用者和断言；每个退休断言记录原因和替代覆盖 |
 
 ### 3.1 各阶段测试的迁移重点
@@ -125,14 +125,14 @@ End Turn 等纯系统控制不在废弃范围；自动实体意图与楼层规�
 
 1. **先关闭设计缺口**：回答 §7 中首批阻塞问题，列出最小玩家牌、有效基线、Explore 接收与
    离层保障。不允许用隐藏按钮或无限免费牌替代设计。
-2. **最小 Player Card／事件垂直切片**：在统一解析路径加入 Explore／标签，迁移一个旧事件
-   为阈值问题；验证基础 2 Explore 与 OBSERVE +1 修正、线索／完成跨阈值去重、失败不写入。
-3. **唯一 BoardState 与 World Card 展示**：迁移活动实例所有权，展示一个 Event 与当前实体，
-   支持运行时目标身份。两实体容量不强迫本步就实现同时双敌人；先证明单实体不复制状态。
-4. **迁移所有主动路径**：资源、装备、地标、照明、遭遇、切出逐项改为牌效果，移除对应 UI 旁路。
-   每步验证消耗、缺少可选装备时基线与失败事务。End Turn 继续统一驱动原生命周期。
-5. **实体规则与离层验收**：用牌处理 Hound 与 Smiler；验证 WITHDRAWN、高 HP 公共模型、
-   多路线 Insight 去重，测试无事件／资源全空／坏抽牌仍可离层。两实体同时结算只在单独授权后加入。
+2. **最小 Player Card／Situation 垂直切片**：在统一解析路径加入 Explore／标签，把一个旧事件迁移为
+   Objective + Pressure；验证基础 Explore、OBSERVE 修正、阶段奖励去重，以及 Pressure 由 TurnManager 自动结算。
+3. **唯一 BoardState 与三种遭遇构成**：迁移活动实例所有权，先展示一个 Situation 和至多一个 Entity，
+   证明 Situation-only、Entity-only、Situation+Entity 三种 BoardState 都不切换模式、不复制状态。双实体容量暂不实现。
+4. **混合遭遇垂直切片**：让一个未解决 Situation 与 Hound 同桌存在；验证 3 AP 同时竞争环境 Objective、
+   Event Pressure 与 Entity Intent。这一步通过后，才继续迁移资源、装备、地标、照明、切出等主动路径。
+5. **迁移其余主动路径并验收实体规则／离层**：逐项改为牌效果，移除对应 UI 旁路；用牌处理 Hound 与
+   Smiler，验证 WITHDRAWN、多路线 Insight、防软锁与失败事务。两实体同时结算只在单独授权后加入。
 6. **清理旧契约**：按 §5 逐项退休入口、只读兼容别名与旧断言；更新运行说明。
    增加“直接调用旧命令也无法绕过手牌”的测试，不能只隐藏按钮。
 
@@ -143,8 +143,9 @@ End Turn 等纯系统控制不在废弃范围；自动实体意图与楼层规�
 
 - 从玩家牌组抽牌，在手牌内选择牌和合法世界目标；只点击世界牌不会执行额外动作。
 - 玩家牌／世界牌／装备三个集合不混用，UI 没有玩法状态副本。
-- 正常牌在特定 Event、Entity、可选装备缺席时仍有真实有用的基线效果。
-- 异常嗡鸣的 3／6 阈值、OBSERVE 修正、一次跨多阈值与重复奖励均有确定性验证。
+- 正常牌不以某个具名 Event/Entity 作为唯一用途；暂时无合法目标时不会伪造 no-op／荒谬效果，整手死牌由明确的牌序与遭遇设计控制。
+- 异常嗡鸣的 Objective 阈值、OBSERVE 修正、Pressure、一次跨多阈值与重复奖励均有确定性验证。
+- Situation-only、Entity-only、Situation+Entity 使用同一 3 AP／手牌／TurnManager，不存在事件／战斗模式切换。
 - 换层／被移除／已解决目标的旧引用被拒绝，且 AP、牌区、装备次数、世界状态和 RNG 不变。
 - 整个牌动作成功才扣成本；观察者只能看到完整结果，不出现重复 AP／电量收费。
 - Hound 可战斗／规避，Smiler 可通过正确出牌存活退去；两者使用同一回合与实体模型。
@@ -158,18 +159,19 @@ End Turn 等纯系统控制不在废弃范围；自动实体意图与楼层规�
 
 | 问题 | 需要决定的内容 | 为何阻塞 |
 | --- | --- | --- |
-| 正常 Damage／Guard 牌在空场怎样有用？ | 数据声明的探索／抽弃等替代基线，还是其他真实通用用途；缺敌人不应只拒绝或无效格挡 | 直接关系“每张正常牌有用”的核心规则 |
-| 没有活动 Event 时 Explore 去哪里？ | 楼层有限机会、切出准备或其他目标；进度归属、上限与消耗方式 | 不能用无消费者的 Explore 数值掩盖死牌，也不能无限刷资源 |
+| 如何控制不同遭遇下的死牌率？ | Guard 可抵御 Situation Pressure；Damage 不强行作用于所有环境。需选择有限换牌、次级模式、卡池比例／遭遇共存中的主要保险 | 保持语义可信的同时，避免纯环境或纯实体局面频繁形成整手废牌 |
+| 没有活动 Situation/Event 时 Explore 去哪里？ | 优先通过遭遇调度保证探索回合存在 Objective；是否还需要有限楼层探索／离层准备接收者 | 不能用无消费者的 Explore 数值掩盖死牌，也不能无限刷资源 |
 | Explore 的目标、溢出和阶段顺序 | 是否选目标／分配；超过阈值是否保留；一牌解决事件后是否继续作用下一个 | 影响成本、奖励去重与事务计划 |
 | 玩家牌的装备操作结构 | 通用工具／照明牌还是其他方案，缺装备时的基础用途、增强分支、AP／次数成本 | 避免纯装备钥匙死牌与 AP 重复收取 |
 | 杏仁水最终形态 | 保留携带消耗物由牌使用，还是改为一次性玩家牌；不能同一物资两处各存一份次数 | v0.4 与 Phase 7 现状不同，本次没有指定新选择 |
 | 熄灯与避光应对如何可达？ | 主动熄灯牌、低噪牌或牌的模式；如何防止抽不到应对而只能点旁路 | 保留规则型实体的公平提示与可操作性 |
 | 离层牌如何防卡手／耗尽？ | 获取、抽取、Retain／Exhaust 限制、回收保证，以及零 AP 情况的代价 | 防软锁和全卡牌入口必须同时成立；不能只靠等随机牌 |
-| 事件什么时候替换？ | 未解决事件跨回合、完成后补牌时机、Fresh／Residual 最小池 | 不得丢进度或重复一次性奖励，也不要求本次补完整内容池 |
+| Situation 什么时候替换？ | 未解决局势跨回合持续；完成后补牌时机、Fresh／Residual 最小池 | 不得丢进度或重复一次性奖励，也不要求本次补完整内容池 |
+| 纯环境／纯实体／混合遭遇的节奏 | Threat、Situation 规则或回合条件何时生成 Entity，各类遭遇比例 | 直接决定事件与战斗融合感、卡牌有效率和 AP 竞争强度 |
 | 最多两实体时的目标与意图顺序 | 单／多目标、确定性顺序、目标失活后的结果；本步是否仍只使用一个实体 | 防隐藏耦合与非确定性，避免提前扩成多敌人系统 |
 | 首轮卡组与数值 | Deep Search Threat +1 还是 +2，Struggle Damage、Guard 值、卡组数量及离层牌比例 | 用户示例锚点不是对所有旧数值的批量修改授权 |
 
-本次文档方向已确定：所有上述方案必须满足 Player Card 入口、正常牌有用、世界牌隔离、
+本次文档方向已确定：所有上述方案必须满足 Player Card 入口、卡牌不绑定单一具名内容、世界牌隔离、
 统一回合、唯一 Insight 和防软锁。待决项不能被解释为恢复旧场景按钮的例外。
 
 ## 8. 本次文档变更与验证边界

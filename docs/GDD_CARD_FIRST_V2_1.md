@@ -1,6 +1,6 @@
-# GDD — CARD-FIRST V2
+# GDD — CARD-FIRST V2.1
 
-版本：2026-10-17，设计方向已确定，玩法迁移尚未实施。
+版本：2026-10-17，Card-First 方向继续收束：**保留环境事件，但取消“事件小游戏”概念；环境事件与实体共享同一牌局、同一手牌和同一回合。** 玩法迁移尚未实施。
 
 本轮只修改文档。当前可运行程序仍是 Phase 1–8 原型；本文件描述后续实现必须
 遵循的目标，不能据此宣称 BoardState、Explore 或世界卡牌 UI 已存在。
@@ -46,78 +46,91 @@ End Turn、Pause、只读牌组查看、设置、查看已公开说明、选择�
 ## 3. Player Cards 与通用效果
 
 玩家牌拥有静态定义和独立运行时实例，属于玩家 DeckState 的抽牌／手牌／弃牌循环。
-普通牌应由少量可复用效果表达：Explore、Damage、Guard、Threat、Draw、Discard；
+普通牌优先由少量可复用效果表达：Explore、Damage、Guard、Threat、Draw、Discard；
 需要时再加入 Retain、Exhaust，不因这份设计文档提前实现复杂组合或完整效果 DSL。
 
-每张正常牌必须有真实、有用的基线，不能仅因为某个指定 Event、Entity 或装备不在场
-就失去全部用途。事件和实体通过标签、条件、加减成、目标反应、额外效果改变其效率，
-不能独占它的全部用途。异常／诅咒等明确设计为负担的牌不冒充普通牌。
+正常牌必须服务于**一类反复出现的通用局面**，不能只为某一个指定 Event 或某一个指定 Entity
+设计成剧情钥匙。但“通用”不等于“任何时刻都必须有效”：攻击牌在没有可受击目标时可以暂时低价值，
+调查牌面对纯战斗局面也可以不是最优。设计目标是避免长期／整手废牌，而不是强行让【重击】也能调查嗡鸣。
+事件、实体和装备通过标签、条件、加减成、目标反应、额外效果改变牌的效率；不得把无消费者的占位数值
+或成功 no-op 当作“通用用途”。必要的坏手处理应由牌序／弃抽／次级模式等正式机制解决，而不是伪造效果。
+异常／诅咒等明确设计为负担的牌不冒充普通牌。
 
-以下为用户给出的首轮数值锚点，不构成新增完整卡池的授权：
+以下为首轮数值锚点，不构成完整卡池授权：
 
 | 玩家牌 | AP | 基础机制 | 标签示意 |
 | --- | --- | --- | --- |
 | 观察 Observe | 1 | +2 Explore | OBSERVE |
 | 搜索 Search | 1 | +3 Explore，Threat +1 | SEARCH |
-| 深搜 Deep Search | 2 | +5 Explore，Threat +1 或 +2，待平衡选择 | SEARCH、NOISE |
-| 挣扎 Struggle | 1 | Damage；空场的有效基线分支需先定稿 | ATTACK |
-| 格挡 Block | 1 | Guard；无攻击压力时的有效基线方案需先定稿 | GUARD |
+| 深搜 Deep Search | 2 | +5 Explore，Threat +1 或 +2，待平衡 | SEARCH、NOISE |
+| 挣扎 Struggle | 1 | Damage | ATTACK |
+| 格挡 Block | 1 | Guard | GUARD |
 
-Explore 是行动产生的探索量，既不是 Cognition，也不是“每打一次观察就给一个 Insight”。
-Damage 用于目标生命，Guard 用于玩家防护；Threat 表示风险代价，单纯增加 Threat
-不算正常牌的有用收益。Draw／Discard 改变玩家牌区，不接触世界牌区。
+Explore 是行动产生的探索量，不等于 Cognition；只有确认唯一 Insight 才增加 Cognition。
+Damage 面向可受击实体或明确可破坏环境；Guard 面向玩家防护与可声明抵御的 Situation Pressure。
+Threat 是风险代价，不是正常牌的收益。Draw／Discard 只改变玩家牌区。
 
-普通牌在没有特定对象时，可以由数据声明不同的基线分支；也可以通过普遍存在的合法
-探索用途保持价值。具体空场 Damage／Guard、无事件 Explore 的接收方式尚未定稿。
-在定稿前不能把“成功但只扣 AP／移牌”、无人承受的占位伤害或无消费者的数字累加当成解决方案。
-不能仅把拒绝码 no_active_entity 改成 success 来满足这一要求。
+同一张牌不保证处处最优，也不要求处处都能打；但不能只依赖一个具名事件才第一次拥有玩法价值。
+如果某类遭遇会让大量卡牌暂时失效，应通过遭遇构成、卡组比例、弃抽／换牌或次级模式解决，
+不能为保持“全牌可用”而制造不符合语义的假效果。
 
-“没有该类目标时使用已声明基线”与“提交过期／错误目标”不同：后者必须失败且不消耗。
-同一张牌不保证处处最优，但不能依靠一个指定事件才第一次拥有玩法价值。
-装备条件不满足时，正常牌仍应保留已声明的基础用途；如何选择增强分支须在牌面清楚表达。
-
-## 4. World Cards 与 Board
+## 4. World Cards、Board 与遭遇结构
 
 World Cards 是世界内容的卡牌化呈现，**不属于玩家牌组**。
 它们永远不进入玩家手牌、抽牌堆、弃牌堆，也不参加玩家牌组洗牌或计数。
-首轮仅有两类：EVENT 与 ENTITY。
+首轮仅有 EVENT 与 ENTITY 两类领域对象。玩家界面中 EVENT 优先称为**环境牌／局势牌（Situation）**，
+强调“当前空间正在发生什么”，而不是弹窗式剧情小游戏；代码稳定 ID 暂可继续使用 EVENT。
 
-概念上的 BoardState 随本次楼层访问存在，规模为：
+BoardState 随本次楼层访问存在，首轮规模为：
 
-- 一个活动 Event 槽；内容耗尽或无合法候选时允许为空。
-- 零至两个活动 Entity 槽；这是设计容量，不表示本轮实现了双实体战斗。
-- 将来可能有一个 Exit／Objective；本轮不建立 RESOURCE、EXIT、ANOMALY、OBJECTIVE 通用框架。
+- 一个活动 Situation/Event 槽；未解决时可跨回合持续，内容耗尽或无合法候选时允许为空。
+- 零至两个活动 Entity 槽；这是设计容量，本轮迁移先验证 0–1 个实体。
+- 将来可能有 Exit／Objective；本轮不建立 RESOURCE、EXIT、ANOMALY、OBJECTIVE 通用框架。
 
-EventData/EventInstance 与 EntityData/EntityInstance 继续分开；不把它们继承或塞进
-巨型万能 CardData。共享的只有必要的标题、说明、牌种、运行时目标引用等展示／选目标信息。
-世界牌面上的进度、HP、状态和意图直接来自领域实例，不能另存一份 UI 状态。
+核心原则是：**融合交互层，不融合内容语义。** Event 与 Entity 使用同一副玩家手牌、同一 3 AP、
+同一 TurnManager，但仍保留各自领域模型：Situation 主要提供环境规则、Objective 与 Pressure；
+Entity 主要提供 HP／状态／Intent 与行为解法。
 
-## 5. Event Cards
+允许三种遭遇构成：
 
-事件代表探索问题与临时楼层规则。静态定义一般包括稳定 ID、显示名、描述、标签、
-Explore 阈值、规则修正、线索阈值与奖励／Insight 定义；运行时实例保存当前 Explore
-进度、已触发的阶段、已知线索和 resolved 状态。
+1. **纯环境**：只有 Situation，重点是探索、资源、Insight 与风险管理。
+2. **纯实体**：只有 Entity，接近传统卡牌战斗，但仍处于同一个楼层回合。
+3. **环境 + 实体**：Situation 与 Entity 同桌存在，是 Demo 的核心高压场景；玩家必须在有限 AP 中
+   平衡推进环境 Objective、处理 Event Pressure 与应对 Entity Intent。
 
-玩家通过普通手牌推进事件。事件牌不得生成自己的 Inspect／Search 执行按钮。
-标签修正读取玩家牌的玩法标签，而不是玩家牌的中文名称或特定 card_id。
+EventData/EventInstance 与 EntityData/EntityInstance 继续分开；不把它们塞进万能 CardData。
+世界牌面上的进度、HP、状态和意图直接来自领域实例，UI 不保存第二份状态。
 
-示例（内容与阈值为原型）：
+## 5. Situation / Event Cards
+
+事件机制保留，但其职责改为**环境牌／局势牌**：它代表当前空间异常、环境危险或探索机会，
+而不是“读一段文字然后点 A/B/C”的独立事件小游戏。
+
+静态 EventData 一般包括：稳定 ID、显示名、描述、标签、Objective（首轮通常为 Explore 阈值）、
+Pressure／回合后果、规则修正、线索里程碑与奖励／Insight。EventInstance 保存当前进度、已触发阶段、
+已知线索、Pressure 状态和 resolved 状态。
+
+玩家通过普通手牌推进 Objective 或抵御 Pressure。Situation 不生成 Inspect／Search／Defend 等独立按钮。
+Pressure 由统一回合自动结算，例如 Stress、Threat、环境伤害、AP 干扰或实体前兆；它不是新的玩家输入。
+标签修正读取玩家牌标签，而不是中文牌名或特定 card_id。
+
+Situation 未解决时原则上持续留在桌面，并允许随后出现的 Entity 与其共存；解决后才由楼层调度补入下一张。
+因此不存在独立“事件阶段”和“战斗阶段”，只有 BoardState 的不同组合。
+
+示例（数值为原型）：
 
 ```text
 异常嗡鸣 / Abnormal Hum
-Explore: 0 / 6
-规则：OBSERVE 牌额外获得 +1 Explore。
+Objective — Explore: 0 / 6
+规则：OBSERVE 牌额外 +1 Explore。
+Pressure：若本回合完全忽视该局势，回合末累积 Stress／Threat 压力（具体值待平衡）。
 首次到达 3：揭示线索。
-首次到达 6：确认该事件的 Insight，Cognition +1，事件已解决。
+首次到达 6：确认 Insight，Cognition +1，Situation resolved。
 ```
 
-观察在这里产生 2 + 1 Explore；搜索产生 3 Explore 并承担自己的风险。
 一次行动跨越多个阈值时，每项阶段结果只触发一次；已知 Insight 不重复增加 Cognition。
-线索揭示、奖励、卡牌移动和 AP 必须一起完成结算。溢出 Explore 如何分配是待决项。
-
 Fresh 无放回、条件过滤、已完成事件不刷奖、Residual 不重洗 Fresh 的方向保留。
-当前 Phase 8 每层三事件且未实现 Residual；旧稿“六选五”是历史内容目标，不作为本次文档任务
-新增事件的要求。未解决事件的进度必须有唯一实例承载；具体替换时机见迁移待决项。
+未解决 Situation 的进度由唯一 EventInstance 承载，具体补牌节奏见迁移计划。
 
 ## 6. Entity Cards
 
@@ -132,6 +145,10 @@ Observe／Explore 可通过规则验证实体知识。实体不能为这些普�
 其主要解法是理解规则：实际 LIGHT 暴露使其躁动，避免 LIGHT／适当低噪行为可避免升级或令其退去。
 状态与公开意图应可读、可验证，不能以随机攻击代替核心机制。
 WITHDRAWN 表示仍可能存活但已解决本次遭遇，不应伪装为 HP=0 或击杀。
+
+Entity 可以在 Situation 未解决时进入 Board。此时不切换模式：Event Pressure 与 Entity Intent
+都由同一 TurnManager 结算，玩家使用同一手牌决定把 AP 投向环境 Objective、实体处理或防护。
+混合遭遇应主要出现在 Threat 较高或楼层中后段，而不是每个普通回合都强制双目标。
 
 卡牌印刷标签可用于匹配修正；实体反应必须依据本次实际执行的效果／标签。
 装备耗尽而未产生照明时，不能仅凭“这张牌本来可能开灯”制造 LIGHT 反应。
@@ -156,7 +173,9 @@ Phase 7 的手电 3、撬棍耐久 3、杏仁水 1 次是现状锚点，并不�
 
 ## 8. 保留的循环、不变量与边界
 
-- 统一探索／战斗回合，3 AP、抽至 5 张为迁移基线；不另建战斗场景、战斗 AP 或战斗牌组。
+- 统一探索／战斗回合，3 AP、抽至 5 张为迁移基线；不另建事件模式、战斗场景、战斗 AP 或战斗牌组。
+- 楼层通过 Situation 描述环境，通过 Entity 描述生物威胁；二者可单独出现，也可同桌共存。
+- Situation 负责 Objective + Pressure，Entity 负责 HP／行为解法 + Intent；二者都只接受玩家手牌和自动规则的统一结算。
 - 玩家 HP 30、初始压力／补给 0；保留单一状态源及死亡停止行动边界。
 - Threat 楼层内 0–10，以行为风险为主，滞留为辅；现有第 3／5／7…回合末 +1 可保留为原型。
 - Cognition 楼层内 0–5，只由首次确认唯一 Insight 增加；同一事实的替代路径共用 ID。

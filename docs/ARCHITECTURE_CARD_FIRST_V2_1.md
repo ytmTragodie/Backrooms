@@ -8,7 +8,7 @@ It is a **hard constraint for AI coding**. If generated code conflicts with this
 
 The current goal is a small, playable vertical slice, not a production-scale framework.
 
-**Authoritative direction: CARD-FIRST V2, 2026-10-17.** This revision defines the
+**Authoritative direction: CARD-FIRST V2.1, 2026-10-17.** This revision defines the
 migration target. The current Phase 1-8 code is a legacy prototype; this document
 update does not implement BoardState, Explore, World Card rendering, or new APIs.
 Read `GDD.md` for design and `MIGRATION_PLAN.md` for KEEP / ADAPT / DEPRECATE /
@@ -282,10 +282,12 @@ and other draw-based opportunities. CardSystem owns pile operations, not Event
 or Entity resolution. RuleResolver performs authoritative play/cost validation.
 
 Use small reusable effects: Explore, Damage, Guard, Threat, Draw, Discard;
-Retain/Exhaust only as needed. Normal cards require a useful baseline that does
-not depend solely on a particular Event, Entity or carried item. Data declares
-contextual bonuses/penalties and baseline alternatives; successful no-ops and
-unconsumed placeholder values do not satisfy the baseline rule.
+Retain/Exhaust only as needed. Normal cards must serve a recurring class of situations
+and must not be single-event/single-entity keys. They do **not** need to be effective
+against every BoardState: an attack may legitimately have no target during a pure
+environment turn. Do not fake universality with successful no-ops, placeholder values
+or nonsensical target conversions. Dead-hand mitigation belongs to explicit deck
+composition, draw/discard/secondary-mode rules and encounter composition.
 
 World Cards never enter or count toward the player's draw/hand/discard/exhaust
 zones. Do not generalize CardSystem to shuffle EventInstances or EntityInstances.
@@ -365,7 +367,7 @@ board of active instances. Resource and cut-out state remain in their domains.
 
 ### 4.7 EventSystem
 
-Events are conditional content, not unconditional scripts.
+Events are conditional content presented as **Situation / Environment World Cards**, not popup minigames. Internally the EVENT kind may remain for stable IDs.
 
 Every event must be able to define:
 
@@ -381,11 +383,14 @@ tags
 
 Event Cards occupy the active Event board slot and retain their own domain types:
 
-- EventData: stable ID, name, description, tags, eligibility, Explore threshold,
-  clue milestones, card-tag modifiers and rewards / Insight outcomes.
-- EventInstance: progress, reached milestones, known clues and resolved state.
-- EventSystem plans progress/modifiers and threshold rewards in response to
-  Player Card effects; it does not expose standalone Inspect/Search actions.
+- EventData: stable ID, name, description, tags, eligibility, Objective definition
+  (Explore threshold first), Pressure/end-turn consequences, clue milestones,
+  card-tag modifiers and rewards / Insight outcomes.
+- EventInstance: progress, reached milestones, known clues, Pressure state and resolved state.
+- EventSystem plans Objective progress, modifiers, Pressure and threshold rewards in response
+  to Player Card effects / turn lifecycle; it does not expose standalone Inspect/Search/Defend actions.
+- An unresolved Situation normally persists across turns and may coexist with active Entities.
+  Resolving it retires the instance before the scheduler supplies a replacement.
 - Crossing a clue or completion threshold triggers that result at most once.
   Unique Insight rewards still deduplicate across all discovery routes.
 
@@ -479,6 +484,9 @@ The player continues to use the same:
 - cut-out system
 
 The presence of an entity changes action priorities but does not freeze exploration systems.
+A Situation/Event and one or more Entities may coexist on BoardState. Event Pressure and
+Entity Intents resolve through the same TurnManager lifecycle. No `event_mode` / `combat_mode`
+flag may fork the game into separate action economies.
 
 Demo numeric anchors:
 
@@ -544,8 +552,12 @@ restore an independent exit button. Floor transition commits only on success.
 
 BoardState is a small runtime container owned by FloorState for one floor visit.
 It is not an Autoload, combat mode, scene tree, or universal card database.
-Conceptual capacity: one active Event slot (nullable when empty), zero to two
+Conceptual capacity: one active Situation/Event slot (nullable when empty), zero to two
 active Entities. A later Exit/Objective is a design possibility only.
+
+Supported encounter compositions are: (1) Situation only, (2) Entity only, and
+(3) Situation + Entity. These are BoardState compositions, not different gameplay modes.
+The mixed composition is the primary high-pressure signature encounter, not a mandatory every-turn state.
 Do not implement RESOURCE/EXIT/ANOMALY/OBJECTIVE board frameworks in this migration
 without a specific follow-up scope.
 
@@ -739,8 +751,9 @@ High-priority tests:
 - entity conditions invalidate impossible events.
 - HP reaching 0 ends the run.
 - seeded RNG reproduces the same result.
-- every normal Player Card has a useful baseline without a specific Event/Entity.
-- Event modifiers match tags and threshold rewards trigger exactly once.
+- normal Player Cards are not keyed exclusively to one named Event/Entity; temporary target absence is allowed without fabricated effects.
+- Event modifiers match tags, Situation Objective thresholds/rewards trigger exactly once, and Pressure resolves through TurnManager.
+- Situation-only, Entity-only and mixed Situation+Entity boards all use the same AP/hand/turn pipeline.
 - World Cards never enter player zones; instances have one authoritative owner.
 - stale/removed/foreign-visit targets fail without spending AP, cards or equipment.
 - direct legacy gameplay commands/buttons cannot bypass the hand-card requirement.
