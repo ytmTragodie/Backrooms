@@ -15,6 +15,9 @@ extends Resource
 @export var clue_threshold: int = 0
 @export_multiline var clue_text: String
 @export var completion_insight: InsightData
+@export var clue_insight: InsightData
+@export var clue_stability: int = 0
+@export var clue_knowledge: int = 0
 @export var bonus_tag: StringName
 @export var explore_bonus: int = 0
 # 首轮只实现一种可读压力：未推进的未解局势在回合末增加压力。

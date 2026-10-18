@@ -3,7 +3,8 @@ extends Resource
 
 # 保留旧战斗效果枚举以兼容 Phase 1–8；REWORK A 的 Explore 由下方数值字段规划，
 # 在解析结果中是实际的 explore 效果，不会作为成功 no-op 提交。
-enum EffectType { NO_OP, PLACEHOLDER_DAMAGE, ATTACK, BLOCK, RUN }
+enum EffectType { NO_OP, PLACEHOLDER_DAMAGE, ATTACK, BLOCK, RUN, LIGHT, EXTINGUISH, CUTOUT_RUSHED, CUTOUT_SAFE, RECOVER }
+enum Source { NORMAL, EQUIPMENT, FLOOR_TEMPORARY }
 
 # 多张运行时卡牌共享这份定义；可变的局内状态不能写入 Resource。
 @export var id: StringName
@@ -18,3 +19,9 @@ enum EffectType { NO_OP, PLACEHOLDER_DAMAGE, ATTACK, BLOCK, RUN }
 @export var explore_amount: int = 0
 @export var threat_cost: int = 0
 @export var tags: Array[StringName] = []
+@export var collects_resources: bool = false
+@export var search_hidden_first: bool = false
+@export var analyzes_entities: bool = false
+# 来源决定牌区生命周期；具体电量／准备值仍只保存在原领域实例中。
+@export var source: Source = Source.NORMAL
+@export var retain: bool = false

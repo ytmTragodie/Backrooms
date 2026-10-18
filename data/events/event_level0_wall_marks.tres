@@ -50,3 +50,4 @@ clue_threshold = 3
 clue_text = "相似的划痕在不同走廊反复出现。"
 completion_insight = ExtResource("3_insight")
 neglect_stress = 1
+clue_stability = 1

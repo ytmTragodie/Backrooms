@@ -119,7 +119,7 @@ func _test_card_risk() -> void:
 	result = _play(manager, DEEP)
 	_check(result.explore_base == 5 and result.explore_applied == 5 and result.ap_spent == 2 and result.threat_delta == 1, "Deep Search has its own five Explore, two AP and one Threat")
 	_check(manager.run_state.ap == 0 and manager.run_state.threat == 2 and manager.run_state.floor_state.current_event.explore_progress == 8, "Risk and investigation progress commit in the same normal action economy")
-	_check(manager.run_state.supply == 0 and manager.run_state.floor_state.resource_nodes.all(func(node: ResourceNode) -> bool: return node.status == ResourceNode.Status.UNDISCOVERED), "Migrated Deep Search does not secretly execute the old resource-loot action")
+	_check(manager.run_state.supply == 4 and manager.run_state.floor_state.resource_nodes.filter(func(node: ResourceNode) -> bool: return node.status == ResourceNode.Status.LOOTED).size() == 2, "Declared Search outcomes collect two distinct finite rewards in the same exploration transactions")
 	manager.free()
 	manager = _manager()
 	manager.run_state.floor_state.threat = FloorState.MAX_THREAT
@@ -145,9 +145,9 @@ func _test_pressure_and_persistence() -> void:
 	_check(manager.run_state.player_hp == 30 and manager.run_state.deck_state.hand.size() == 5, "Simple Stress Pressure does not invent environmental damage or a second hand")
 	manager.free()
 	manager = _manager()
-	result = RuleResolver.resolve_exploration(ExplorationCommand.new(&"end_turn"), manager.run_state, LEVEL_0)
+	result = RuleResolver.resolve_end_turn(manager.run_state, LEVEL_0)
 	_check(result.pressure_stress == 1 and manager.run_state.stress == 1, "Pressure is a domain result, not a UI-side action")
-	result = RuleResolver.resolve_exploration(ExplorationCommand.new(&"end_turn"), manager.run_state, LEVEL_0)
+	result = RuleResolver.resolve_end_turn(manager.run_state, LEVEL_0)
 	_check(result.pressure_stress == 0 and manager.run_state.stress == 1, "Repeated resolution of the same floor turn cannot charge Pressure twice")
 	manager.free()
 
@@ -166,7 +166,7 @@ func _test_milestones_and_replacement() -> void:
 	_check(result.event_resolved and not result.clue_revealed and event.resolved and event.explore_progress == 6, "Completion is a separate once-only threshold")
 	_check(result.explore_base == 5 and result.explore_applied == 3 and state.ap == 0, "Explore is clamped to the current Objective; overflow does not affect another Event")
 	_check(event.known_information.size() == 1 and state.cognition == 1 and floor.discovered_insight_ids.size() == 1, "Clue and unique Insight are not duplicated at completion")
-	_check(floor.cutout_state.stability == 1 and floor.cutout_state.destination_knowledge == 1 and state.rng.state == rng_before, "Existing Insight preparation gains are preserved without hidden play RNG")
+	_check(floor.cutout_state.stability == 2 and floor.cutout_state.destination_knowledge == 1 and state.rng.state == rng_before, "Declared clue plus unique Insight improve preparation without consuming RNG")
 	_check(notifications.size() == 2 and notifications[1] == _snapshot(manager), "UI notification sees complete AP/card/Explore/Threat/Insight/preparation commit")
 	var before: Dictionary = _snapshot(manager)
 	_reject(_play(manager), &"event_resolved", manager, before)
@@ -174,7 +174,7 @@ func _test_milestones_and_replacement() -> void:
 	result = manager.end_turn()
 	_check(result.pressure_stress == 0 and floor.current_event != event and not floor.current_event.resolved and floor.current_event.explore_progress == 0, "Resolved Situation causes no Pressure and next Fresh activates at next turn start")
 	_check(floor.seen_event_ids.size() == 2 and floor.remaining_fresh_events.size() == 1 and state.turn_number == 2, "Fresh replacement advances only once and does not replay the old Event")
-	var new_card: CardInstance = state.deck_state.hand[0]
+	var new_card: CardInstance = state.deck_state.hand.filter(func(card: CardInstance) -> bool: return card.source == CardData.Source.NORMAL)[0]
 	before = _snapshot(manager)
 	_reject(manager.request_play_card(new_card, event, floor.board_state), &"invalid_event_target", manager, before)
 	_check(event.explore_progress == 6 and event.known_information.size() == 1 and state.cognition == 1, "Old resolved instance cannot receive more Explore after replacement")
@@ -206,7 +206,7 @@ func _test_unique_insights_and_fresh_conditions() -> void:
 		_check(floor.current_event.resolved and manager.run_state.cognition == 1, "Multiple Events referencing the same Insight award Cognition only once")
 		manager.end_turn()
 	_check(floor.current_event == null and floor.remaining_fresh_events.is_empty() and floor.seen_event_ids.size() == 3, "Fresh pool exhausts without reintroducing old rewards or fake Residual content")
-	_check(floor.cutout_state.stability == 1 and floor.cutout_state.destination_knowledge == 1 and manager.run_state.deck_state == deck and deck.get_card_count() == 10, "Insight reward deduplication also preserves preparation and the original deck")
+	_check(floor.cutout_state.stability == CutOutState.MAX_STABILITY and floor.cutout_state.destination_knowledge == 1 and manager.run_state.deck_state == deck and deck.get_card_count() == 10, "Distinct clue milestones add bounded preparation while shared Insight reward remains unique")
 	var result: ActionResult = manager.end_turn()
 	_check(result.pressure_stress == 0 and floor.current_event == null, "An empty board produces no phantom Situation Pressure")
 	_check(EventSystem.draw_fresh(data, floor, manager.run_state.rng).is_empty(), "Repeated empty Fresh scheduling cannot create a World Card")
@@ -294,15 +294,14 @@ func _test_transactional_failures() -> void:
 
 func _test_old_command_rejection() -> void:
 	var manager: TurnManager = _manager()
-	for action: StringName in [&"inspect", &"search_nearby", &"observe", &"deep_search", &"search", &"explore"]:
-		var before: Dictionary = _snapshot(manager)
-		_reject(manager.request_exploration(action), &"card_required", manager, before)
-	_check(manager.run_state.ap == 3 and manager.run_state.floor_state.current_event.explore_progress == 0, "Standalone old exploration APIs cannot bypass Player Cards")
+	_check(not manager.has_method("request_exploration") and not manager.has_method("request_use_equipment"), "Deprecated player gameplay entry points have been removed, not merely hidden")
 	manager.free()
 
 
 func _test_main_ui() -> void:
 	var main: Control = MAIN.instantiate() as Control
+	# 十张纯调查夹具继续证明 A 的不变量；正式主屏使用完整 run_deck。
+	(main.get_node("TurnManager") as TurnManager).starter_deck = DECK
 	root.add_child(main)
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
 	var hand: HBoxContainer = main.get_node("%Hand") as HBoxContainer
@@ -340,7 +339,7 @@ func _test_main_ui() -> void:
 				break
 			var playable: int = -1
 			for index: int in range(deck.hand.size()):
-				if deck.hand[index].definition.ap_cost <= state.ap:
+				if deck.hand[index].source == CardData.Source.NORMAL and deck.hand[index].definition.ap_cost <= state.ap:
 					playable = index
 					break
 			if playable < 0:
@@ -349,7 +348,10 @@ func _test_main_ui() -> void:
 		(main.get_node("%EndTurn") as Button).pressed.emit()
 	_check(floor.current_event == null and floor.seen_event_ids.size() == 3 and state.cognition == 3, "Real main-screen hand/turn controls can finish all three unique Situations")
 	_check(manager.run_state == state and state.floor_state == floor and state.deck_state == deck and deck.get_card_count() == 10, "Complete exploration preserves one Run, Floor, deck and card inventory")
-	_check((main.get_node("%SituationName") as Label).text.contains("调查完毕") and hand.get_children().all(func(node: Node) -> bool: return (node as Button).disabled), "Fresh exhaustion is explicit rather than allowing successful Explore no-ops")
+	_check((main.get_node("%SituationName") as Label).text.contains("调查完毕"), "Fresh exhaustion stays explicit; floor exit remains a separate legal action")
+	for index: int in range(deck.hand.size()):
+		if deck.hand[index].source == CardData.Source.NORMAL and not deck.hand[index].definition.collects_resources:
+			_check((hand.get_child(index) as Button).disabled, "Normal Explore cannot succeed as an empty no-op after Fresh exhaustion")
 	await process_frame
 	main.free()
 

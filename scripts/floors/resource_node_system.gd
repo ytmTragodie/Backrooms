@@ -16,36 +16,37 @@ static func validate(floor: FloorState, data: FloorData) -> StringName:
 	return &""
 
 
-static func plan_discovery(result: ActionResult, state: RunState, data: FloorData, deep: bool) -> void:
+static func find_discoverable(floor: FloorState, data: FloorData, deep: bool) -> ResourceNodeData:
 	# 深搜优先隐藏节点；每次最多处理一个节点，永远不从已搜刮节点生成奖励。
 	var selected: ResourceNodeData
 	for definition: ResourceNodeData in data.resource_nodes:
-		if state.floor_state.find_resource(definition.id).status != ResourceNode.Status.UNDISCOVERED:
+		if floor.find_resource(definition.id).status != ResourceNode.Status.UNDISCOVERED:
 			continue
 		if not deep and definition.hidden:
 			continue
 		if selected == null or (deep and definition.hidden and not selected.hidden):
 			selected = definition
+	return selected
+
+
+static func find_search_reward(floor: FloorState, data: FloorData, deep: bool) -> ResourceNodeData:
+	# 旧访问中已发现但未领取的节点也可由同一搜索语义领取，无需第二个动词。
+	for definition: ResourceNodeData in data.resource_nodes:
+		if floor.find_resource(definition.id).status == ResourceNode.Status.DISCOVERED:
+			return definition
+	return find_discoverable(floor, data, deep)
+
+
+static func plan_search_reward(result: ActionResult, state: RunState, data: FloorData, deep: bool) -> void:
+	var selected: ResourceNodeData = find_search_reward(state.floor_state, data, deep)
 	if selected == null:
 		return
-	result.resource_discovered_id = selected.id
-	if deep:
-		result.resource_looted_id = selected.id
-		result.supply_delta = selected.supply_reward
-
-
-static func plan_loot(result: ActionResult, state: RunState, data: FloorData, node_id: StringName) -> StringName:
-	var node: ResourceNode = state.floor_state.find_resource(node_id)
-	var definition: ResourceNodeData = data.find_resource(node_id)
-	if node == null or definition == null:
-		return &"resource_not_found"
-	if node.status == ResourceNode.Status.LOOTED or node.status == ResourceNode.Status.DEPLETED:
-		return &"resource_depleted"
-	if node.status != ResourceNode.Status.DISCOVERED:
-		return &"resource_undiscovered"
-	result.resource_looted_id = node_id
-	result.supply_delta = definition.supply_reward
-	return &""
+	if state.floor_state.find_resource(selected.id).status == ResourceNode.Status.UNDISCOVERED:
+		result.resource_discovered_id = selected.id
+	result.resource_looted_id = selected.id
+	result.supply_delta = selected.supply_reward
+	if result.action_id.is_empty():
+		result.action_id = &"search_environment"
 
 
 static func commit(result: ActionResult, state: RunState) -> void:

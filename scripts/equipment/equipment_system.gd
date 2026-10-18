@@ -15,6 +15,84 @@ static func validate_definition(data: EquipmentData) -> StringName:
 		return &"invalid_equipment_definition"
 	if data.effect_type == EquipmentData.EffectType.ATTACK and data.conditional_heal != 0:
 		return &"invalid_equipment_definition"
+	if data.action_card == null and data.active_action_card != null:
+		return &"invalid_equipment_definition"
+	if data.action_card != null:
+		var expected: CardData.EffectType = CardData.EffectType.LIGHT if data.effect_type == EquipmentData.EffectType.LIGHT else (CardData.EffectType.ATTACK if data.effect_type == EquipmentData.EffectType.ATTACK else CardData.EffectType.RECOVER)
+		if not _valid_action_card(data.action_card, expected):
+			return &"invalid_equipment_definition"
+		if expected == CardData.EffectType.LIGHT and not _valid_action_card(data.active_action_card, CardData.EffectType.EXTINGUISH):
+			return &"invalid_equipment_definition"
+	if data.effect_type != EquipmentData.EffectType.LIGHT and data.active_action_card != null:
+		return &"invalid_equipment_definition"
+	return &""
+
+
+static func _valid_action_card(card: CardData, effect: CardData.EffectType) -> bool:
+	return card != null and not card.id.is_empty() and not card.display_name.is_empty() and card.source == CardData.Source.EQUIPMENT and not card.retain and card.ap_cost >= 1 and card.effect_type == effect and (card.effect_value > 0 if effect == CardData.EffectType.ATTACK else card.effect_value == 0)
+
+
+static func current_action_card(item: EquipmentInstance, floor: FloorState) -> CardData:
+	if item == null or item.definition == null or floor == null:
+		return null
+	if item.definition.effect_type == EquipmentData.EffectType.LIGHT:
+		if not floor.floor_flags.has(&"darkness"):
+			return null
+		if floor.light_active:
+			# 电量已经耗尽时，仍须允许关闭实际已开启的光源。
+			return item.definition.active_action_card
+	return item.definition.action_card if item.remaining_uses > 0 else null
+
+
+static func validate_card(command: PlayCardCommand, state: RunState) -> StringName:
+	var floor: FloorState = state.floor_state
+	if command.target_board != floor.board_state:
+		return &"invalid_event_target"
+	if command.target_event != null:
+		return &"invalid_target_kind"
+	var error: StringName = validate_inventory(state)
+	if not error.is_empty():
+		return error
+	var item: EquipmentInstance = command.card.source_equipment
+	if item == null or not state.equipment_slots.has(item):
+		return &"invalid_equipment_target"
+	var effect: CardData.EffectType = command.card.definition.effect_type
+	if command.card.definition not in [item.definition.action_card, item.definition.active_action_card]:
+		return &"invalid_card_source"
+	if effect == CardData.EffectType.ATTACK:
+		error = EntitySystem.validate_target(command, floor)
+		if not error.is_empty():
+			return error
+	elif command.target_entity != null:
+		return &"invalid_target_kind"
+	if effect == CardData.EffectType.EXTINGUISH:
+		return &"" if item.definition.effect_type == EquipmentData.EffectType.LIGHT and floor.light_active else &"light_not_active"
+	if item.remaining_uses == 0:
+		return &"equipment_depleted"
+	if effect == CardData.EffectType.LIGHT:
+		if not floor.floor_flags.has(&"darkness"):
+			return &"light_not_needed"
+		if floor.light_active:
+			return &"light_already_active"
+	if effect == CardData.EffectType.RECOVER and state.stress == 0 and (state.stress < item.definition.heal_stress_threshold or item.definition.conditional_heal == 0 or state.player_hp >= RunState.MAX_PLAYER_HP):
+		return &"nothing_to_restore"
+	return &""
+
+
+static func plan_card(result: ActionResult, command: PlayCardCommand, state: RunState, floor_data: FloorData) -> StringName:
+	var item: EquipmentInstance = command.card.source_equipment
+	result.action_id = command.card.definition.id
+	if command.card.definition.effect_type == CardData.EffectType.EXTINGUISH:
+		result.light_extinguished = true
+	else:
+		var error: StringName = plan_use(result, item, state, floor_data, command.card.definition.effect_value)
+		if not error.is_empty():
+			return error
+		result.equipment_uses_spent = 1
+	result.equipment_used = item
+	result.equipment_slot = state.equipment_slots.find(item)
+	if result.light_activated:
+		EntitySystem.plan_light_reaction(result, state, floor_data)
 	return &""
 
 
@@ -60,7 +138,7 @@ static func validate_inventory(state: RunState) -> StringName:
 	return &""
 
 
-static func plan_use(result: ActionResult, item: EquipmentInstance, state: RunState, floor_data: FloorData) -> StringName:
+static func plan_use(result: ActionResult, item: EquipmentInstance, state: RunState, floor_data: FloorData, attack_damage: int = 0) -> StringName:
 	var data: EquipmentData = item.definition
 	match data.effect_type:
 		EquipmentData.EffectType.LIGHT:
@@ -70,10 +148,10 @@ static func plan_use(result: ActionResult, item: EquipmentInstance, state: RunSt
 				return &"light_already_active"
 			result.light_activated = true
 		EquipmentData.EffectType.ATTACK:
-			# 装备直接使用通用伤害入口，不构造假卡，也不接触任何牌区。
+			# 专用攻击牌声明总伤害；物品仅提供来源与耐久，不再选择增强分支。
 			var entity: EntityInstance = state.floor_state.entity
 			var target: EntityData = floor_data.find_entity(entity.entity_id) if entity != null else null
-			var error: StringName = EntitySystem.plan_attack(result, data.effect_value, state, target)
+			var error: StringName = EntitySystem.plan_attack(result, attack_damage if attack_damage > 0 else data.effect_value, state, target)
 			if not error.is_empty():
 				return error
 		EquipmentData.EffectType.RECOVER:

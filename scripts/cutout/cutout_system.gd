@@ -3,6 +3,22 @@ extends RefCounted
 
 const SAFE_STABILITY: int = 2
 const SAFE_KNOWLEDGE: int = 1
+const MINIMUM_EXIT_TURN: int = 2
+
+
+static func is_available(floor: FloorState, data: FloorData) -> bool:
+	# 有准备可提前出现；无事件／资源／认知时，第二个驻留回合也必有仓促出口。
+	return not data.is_placeholder and not floor.cutout_state.destination_candidates.is_empty() and (floor.cutout_state.stability > 0 or floor.turn_count >= MINIMUM_EXIT_TURN)
+
+
+static func validate_card_definitions(data: FloorData) -> StringName:
+	var definitions: Array[CardData] = [data.rushed_cutout_card, data.safe_cutout_card]
+	var effects: Array[CardData.EffectType] = [CardData.EffectType.CUTOUT_RUSHED, CardData.EffectType.CUTOUT_SAFE]
+	for index: int in range(definitions.size()):
+		var definition: CardData = definitions[index]
+		if definition == null or definition.id.is_empty() or definition.source != CardData.Source.FLOOR_TEMPORARY or definition.effect_type != effects[index] or not definition.retain or definition.ap_cost != 1:
+			return &"invalid_cutout_card"
+	return &""
 
 
 static func is_prepared(state: CutOutState) -> bool:
@@ -19,6 +35,9 @@ static func validate(state: CutOutState, data: FloorData) -> StringName:
 	var error: StringName = validate_state(state)
 	if not error.is_empty():
 		return error
+	error = validate_card_definitions(data)
+	if not error.is_empty():
+		return error
 	if state.destination_candidates.is_empty():
 		return &"destination_unavailable"
 	var ids: Array[StringName] = []
@@ -26,6 +45,37 @@ static func validate(state: CutOutState, data: FloorData) -> StringName:
 		var destination: FloorData = data.find_destination(id)
 		if destination == null or id.is_empty() or ids.has(id):
 			return &"invalid_destination"
+		# 在创建任何下一层实例／消耗 RNG 之前验证完整落地内容。
+		if destination.overstay_start_turn < 3 or destination.overstay_interval < 1 or destination.dark_observe_surcharge < 0:
+			return &"invalid_floor_definition"
+		if not destination.is_placeholder and (not destination.card_first_exploration or destination.cutout_destinations.is_empty()):
+			return &"invalid_destination"
+		if not destination.is_placeholder:
+			error = validate_card_definitions(destination)
+			if not error.is_empty():
+				return error
+		if destination.entry_entity != null and destination.followup_entity != null and destination.entry_entity.id == destination.followup_entity.id:
+			return &"invalid_entity_definition"
+		var event_ids: Array[StringName] = []
+		for event: EventData in destination.fresh_events:
+			if event == null or event.id.is_empty() or event.weight <= 0 or event_ids.has(event.id):
+				return &"invalid_event_definition"
+			if destination.card_first_exploration:
+				error = EventSystem.validate_situation(event)
+				if not error.is_empty():
+					return error
+			event_ids.append(event.id)
+		var node_ids: Array[StringName] = []
+		for node: ResourceNodeData in destination.resource_nodes:
+			if node == null or node.id.is_empty() or node.supply_reward < 0 or node_ids.has(node.id):
+				return &"invalid_resource_definition"
+			node_ids.append(node.id)
+		var destination_ids: Array[StringName] = []
+		for resource: Resource in destination.cutout_destinations:
+			var next: FloorData = resource as FloorData
+			if next == null or next.id.is_empty() or destination_ids.has(next.id):
+				return &"invalid_destination"
+			destination_ids.append(next.id)
 		if destination.entry_entity != null:
 			error = EntitySystem.validate_definition(destination.entry_entity)
 			if not error.is_empty():
@@ -34,6 +84,9 @@ static func validate(state: CutOutState, data: FloorData) -> StringName:
 			error = EntitySystem.validate_definition(destination.followup_entity)
 			if not error.is_empty():
 				return error
+		for entity: EntityData in [destination.entry_entity, destination.followup_entity]:
+			if entity != null and entity.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE and not destination.initial_flags.has(&"darkness"):
+				return &"invalid_entity_context"
 		if destination.landmark_insight != null:
 			error = InsightSystem.validate_definition(destination.landmark_insight)
 			if not error.is_empty():
@@ -42,25 +95,16 @@ static func validate(state: CutOutState, data: FloorData) -> StringName:
 	return &""
 
 
-static func plan_preparation(result: ActionResult, state: RunState) -> StringName:
-	var cutout: CutOutState = state.floor_state.cutout_state
-	if state.supply < 1:
-		return &"insufficient_supply"
-	if cutout.stability == CutOutState.MAX_STABILITY and cutout.destination_knowledge == CutOutState.MAX_KNOWLEDGE:
-		return &"preparation_complete"
-	result.supply_delta = -1
-	plan_gain(result, cutout, 1, 1, &"supply_preparation")
-	return &""
-
-
 static func plan_gain(result: ActionResult, state: CutOutState, stability: int, knowledge: int, reason: StringName) -> void:
-	result.stability_delta = mini(stability, CutOutState.MAX_STABILITY - state.stability)
-	result.knowledge_delta = mini(knowledge, CutOutState.MAX_KNOWLEDGE - state.destination_knowledge)
+	result.stability_delta = mini(result.stability_delta + stability, CutOutState.MAX_STABILITY - state.stability)
+	result.knowledge_delta = mini(result.knowledge_delta + knowledge, CutOutState.MAX_KNOWLEDGE - state.destination_knowledge)
 	result.preparation_reason = reason
 
 
 static func plan_attempt(result: ActionResult, state: RunState, data: FloorData, attempt_type: StringName) -> StringName:
 	var cutout: CutOutState = state.floor_state.cutout_state
+	if attempt_type not in [&"safe", &"rushed"]:
+		return &"invalid_cutout_attempt"
 	if attempt_type == &"safe" and not is_prepared(cutout):
 		return &"cutout_unprepared"
 	var attempt: CutOutAttemptResult = CutOutAttemptResult.new()
@@ -78,9 +122,6 @@ static func plan_attempt(result: ActionResult, state: RunState, data: FloorData,
 		if not attempt.succeeded:
 			result.threat_delta = mini(1, FloorState.MAX_THREAT - state.floor_state.threat)
 			result.threat_reason = &"rushed_cutout_failed"
-	elif attempt_type == &"forced":
-		# 无 AP、事件、资源、Insight 或生命门槛；保证任何合法驻留状态都有出口。
-		result.stress_delta = 2
 	if attempt.succeeded:
 		var index: int = 0 if attempt_type == &"safe" else rng.randi_range(0, cutout.destination_candidates.size() - 1)
 		attempt.destination_id = cutout.destination_candidates[index]

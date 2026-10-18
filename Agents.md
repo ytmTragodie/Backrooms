@@ -24,12 +24,14 @@ Level 0
 
 ## Card-First v2 constraints
 
-- Player-initiated gameplay actions must originate from Player Cards drawn from
-  the player's deck. Only pure system controls such as End Turn, Pause, read-only
+- Player-initiated gameplay actions must originate from actual Player Cards in
+  the unified hand: NORMAL cards drawn from the deck, EQUIPMENT-generated action
+  cards, or FLOOR_TEMPORARY cards. Only pure system controls such as End Turn, Pause, read-only
   deck inspection, and settings may remain independent controls.
 - Inspect, Search, Deep Search, Attack, Guard, Run, Stealth, active equipment use,
-  light switching, looting, landmark investigation, encounter interaction,
-  cut-out preparation and cut-out attempts are gameplay actions, even at zero AP.
+  light switching and cut-out attempts are gameplay effects, even at zero AP.
+  Search grants finite resources in its resolution; world rules trigger encounters
+  and exploration milestones improve cut-out preparation automatically.
   They must not gain a parallel standalone gameplay-button path.
 - Every normal deck card needs useful baseline behavior using reusable mechanics
   such as Explore, Damage, Guard, Threat, Draw and Discard. Retain/Exhaust may be
@@ -43,8 +45,20 @@ Level 0
 - Keep EventData/EventInstance and EntityData/EntityInstance. CardData describes
   Player Cards; do not merge all domains into one universal CardData hierarchy.
 - Three physical equipment slots remain run-persistent and outside the deck.
-  Cards express how equipment is used; owning equipment does not grant an
-  independent active-use button. Failed resolution cannot consume its uses.
+  Equipment generates real action cards; physical items never enter normal piles.
+  At most one equipment action is generated per global turn, beyond the five-card
+  base target. Failed resolution cannot consume its uses.
+- Floor-generated cut-out cards occupy base hand slots and Retain across turns.
+  Rushed upgrades in place to Safe; failed attempts retain the exit, and successful
+  transition removes old-floor cards. Equipment/cut-out are no longer normal-card
+  menu branches. UI never generates cards or grants gameplay through selection.
+- Single-Semantic Card Rule: one card has one clear gameplay semantic. Target
+  selection and conditional numeric modifiers are allowed; verb/mode menus are
+  forbidden. Different verbs require separate CardData definitions.
+- Lighting and Extinguish are separate equipment definitions, replaced in the
+  same flashlight opportunity according to actual LIGHT state. Search collects
+  finite rewards directly. Smiler is world-triggered; no pursue/landmark/prepare
+  command or preparation card remains.
 - Keep one exploration/combat turn loop, unique Insight rewards, finite resources,
   common entity HP with behavioral solutions, and an anti-soft-lock exit route.
   Exit availability must be solved within the card rules, not by restoring a

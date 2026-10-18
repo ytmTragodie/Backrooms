@@ -18,7 +18,7 @@ Current authority: **CARD-FIRST V2.1 (2026-10-17)**. Read `MIGRATION_PLAN.md` as
 when touching legacy Phase 1-8 behavior. The retained v0.4 DOCX is historical,
 including its old "canonical" sections. Existing code/tests do not override v2.
 The original design-direction revision was documentation-only. Gameplay migration
-requires a subsequent user task; REWORK A/B are separately authorized limited slices,
+requires a subsequent user task; REWORK A/B/C are separately authorized slices,
 not blanket authorization for later migration or engine/dependency changes.
 
 ---
@@ -124,9 +124,9 @@ UI may format values, animate changes, and display descriptions.
 
 Independent controls may only perform pure system operations: End Turn, Pause,
 read-only deck inspection, settings, viewing already-public details, selecting/cancelling targets.
-Inspect/Search/loot, attacks, defense, Run/Stealth, equipment activation, light
-switching, landmark/encounter interactions, preparation and cut-out attempts must
-be effects of a Player Card drawn from the deck. A zero-AP gameplay action still
+Investigate/Search, attacks, defense, Run/Stealth, equipment activation, light
+switching and cut-out attempts must
+be effects of a real NORMAL, EQUIPMENT or FLOOR_TEMPORARY Player Card in the unified hand. A zero-AP gameplay action still
 needs a Player Card. A card-styled persistent button is not such a card.
 Clicking a World Card may inspect/select it; it must not resolve its own action.
 Inspect here means viewing already-revealed information, not revealing a new clue or Insight.
@@ -234,13 +234,13 @@ Do not partially mutate state before discovering that an action is invalid.
 
 Calculate a complete plan before committing nontrivial actions. Validate the
 Player Card's actual hand membership, current floor visit, runtime target kind /
-identity / availability, chosen baseline branch, equipment and final AP cost.
+identity / availability, captured card semantic, fixed equipment source and final AP cost.
 AP, card movement, Explore progress, milestones, HP/Guard, Threat, equipment uses,
 unique Insight/preparation rewards, board changes and RNG must commit together.
 Notify observers only after the complete commit. An invalid command cannot
 consume any of those resources or leave partial effects in ActionResult.
 
-A card's normal absent-context baseline must be declared in content. This is
+A card's single semantic and contextual legality must be declared in content. This is
 not permission to silently retarget stale/removed targets or to mark no-op
 placeholder effects as successful gameplay. Avoid parallel UI and resolver cost
 formulas. Domain systems own their plan/commit work; RuleResolver owns order.
@@ -275,7 +275,7 @@ keys whose only purpose is one named Event/Entity. This does **not** mean every 
 must resolve meaningfully on every BoardState. Attack cards may lack a valid target in
 a pure-environment encounter; investigation cards may be weak in a pure-entity turn.
 Do not invent nonsensical fallback effects or successful no-ops to hide this. Control
-dead-hand rate through explicit deck composition, draw/discard/secondary modes and
+dead-hand rate through explicit deck composition, draw/discard, single-semantic card combinations and
 encounter composition. Explicit burden/curse cards must be distinguished in design.
 
 Persistent physical equipment and World Cards must not be mixed into normal
@@ -307,7 +307,7 @@ Do not mutate a shared `EquipmentData` Resource to store per-run durability.
 Keep three run-persistent physical slots outside the deck. Active use is requested
 by a Player Card effect through RuleResolver/EquipmentSystem; the carry UI only
 reads or selects an item for that card. Missing/empty gear must leave a normal
-card's declared useful baseline available; invalid requested enhanced branches
+card's declared semantic independent; invalid generated-card requests
 fail without spending. Card/equipment cost is calculated once in the final cost,
 not by independently charging both old and new input paths.
 Only complete successful resolution consumes battery/durability/charges.
@@ -412,7 +412,7 @@ Avoid purely random attack selection where readable intent is part of the design
 All entities keep the common runtime HP/state/intent model. Smiler may have high
 HP/mitigation and resolve alive as WITHDRAWN through actual LIGHT/no-LIGHT rule
 interactions. Keep this inside EntitySystem and the shared turn pipeline.
-Do not infer actual LIGHT from an optional equipment branch that did not execute.
+Do not infer actual LIGHT from a printed tag or failed Lighting card.
 Card-mediated evasion/control/observation must not require a separate combat mode.
 
 ---
@@ -772,3 +772,38 @@ Examples:
 - player-facing name: `观察`
 
 Do not use internal IDs directly as visible UI text.
+
+## Single-Semantic Card Rule
+
+One playable card has one clear primary gameplay semantic. Contextual numeric modifiers,
+conditional rewards and legal target selection are allowed; unrelated action/mode lists
+are not. Different verbs require separate CardData definitions. UI never presents a verb
+selector or reinterprets a card into a different subsystem. Right-click is read-only.
+
+## Current interaction constraints
+
+- Remove CardData.actions and generic mode/branch interpreters. PlayCardCommand may identify
+  a real card, captured definition, visit Board and Event/Entity target; it cannot select
+  a mode, arbitrary equipment item or resource node. Reject stale definition replacements.
+- Search integrates finite collection into its normal resolution, without discovery/loot
+  mode inputs. Preserve once-only node rewards and failure atomicity with Explore/Threat/AP.
+- Smiler spawns through declared world conditions in EntitySystem, not pursuit input.
+  Commit old target damage/state before follow-up slot replacement. Shared HP and alive
+  withdrawal behavior remain unchanged; Situation clue is an alternate unique Insight route.
+- Lighting and Extinguish are distinct equipment definitions. Replace the same opportunity
+  according to actual LIGHT, never open a toggle menu or add another hand slot. Lighting
+  success spends one battery; Extinguish spends none, including after the last battery.
+- Crowbar and Water remain dedicated generated cards. Physical counters stay exclusively
+  on EquipmentInstance. At most one new equipment opportunity per global turn; a flashlight
+  definition replacement is not another generated instance. No normal pile pollution.
+- Remove preparation card/template/generator and player-selected Prepare. Declared clue and
+  unique Insight rewards improve CutOutState automatically, capped and triggered once.
+- Retained rushed exit appears at minimum availability, upgrades in place to safe, survives
+  failure and is removed only after successful transition. Next floor creates its own visit
+  opportunity. Preserve one AP pool, hand, RNG and lifecycle throughout.
+- Every validation/planning failure preserves all gameplay state, card definition/position,
+  source budgets, equipment uses and RNG; failure result contains no partial effects.
+
+Old menu, loot/pursuit/landmark/preparation and forced-branch contracts are retired.
+Snapshot positions and exact old sentences are recorded in CARD_INTERACTION_CLEANUP_AUDIT.md;
+quoted history never authorizes restoring those paths.

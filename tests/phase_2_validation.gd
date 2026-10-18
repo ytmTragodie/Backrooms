@@ -160,6 +160,7 @@ func _test_turn_integration() -> void:
 
 func _test_debug_ui() -> void:
 	var main: Control = MAIN_SCENE.instantiate() as Control
+	(main.get_node("TurnManager") as TurnManager).starter_deck = preload("res://data/cards/exploration_deck.tres")
 	root.add_child(main)
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
 	var hand: HBoxContainer = main.get_node("%Hand") as HBoxContainer
@@ -171,10 +172,10 @@ func _test_debug_ui() -> void:
 	for expected_ap: int in [2, 1]:
 		(hand.get_child(0) as Button).pressed.emit()
 		_check(manager.run_state.ap == expected_ap and stats.text.contains("行动点：%d" % expected_ap), "Real card commands deduct AP exactly once and refresh UI")
-	_check(hand.get_child_count() == 3 and counts.text == "抽牌堆：5｜弃牌堆：2", "Successful commands refresh hand/discard without moving the World Card")
+	_check(hand.get_child_count() == 4 and counts.text == "抽牌堆：5｜弃牌堆：2", "Normal plays enter discard; first Insight also generates a retained exit")
 	var card_count: int = manager.run_state.deck_state.get_card_count()
 	(hand.get_child(0) as Button).pressed.emit()
-	_check(hand.get_child_count() == 3 and manager.run_state.ap == 1 and card_count == 10, "Resolved-target rejection preserves AP and the ten-card inventory")
+	_check(hand.get_child_count() == 4 and manager.run_state.ap == 1 and card_count == 10, "Resolved-target rejection preserves AP and the ten-card normal inventory")
 	end_turn.pressed.emit()
 	_check(manager.run_state.turn_number == 2 and manager.run_state.ap == 3, "UI End Turn preserves Phase 1 lifecycle")
 	_check(hand.get_child_count() == 5 and stats.text.contains("回合：2"), "Same deck redraws five cards for the next Situation")

@@ -9,8 +9,8 @@ It is a **hard constraint for AI coding**. If generated code conflicts with this
 The current goal is a small, playable vertical slice, not a production-scale framework.
 
 **Authoritative direction: CARD-FIRST V2.1, 2026-10-17.** This revision defines the
-migration target. REWORK A/B implement the limited Situation/Hound card-first slice;
-unmigrated Phase 1-8 paths remain legacy. See the migration plan for implemented scope.
+migration target. REWORK A/B/C implement the existing demo input migration, including resources,
+carried equipment, Smiler and cut-out. See the migration plan for exact scope and remaining unused legacy data.
 Read `GDD.md` for design and `MIGRATION_PLAN.md` for KEEP / ADAPT / DEPRECATE /
 REMOVE LATER classifications. The retained v0.4 DOCX and legacy README flows do
 not override these rules. Repository instruction priority remains as in AGENTS.md.
@@ -90,8 +90,9 @@ Preferred flow:
 Player gameplay commands originate from an actual Player Card in the current hand,
 with optional world-target and carried-equipment references. Inspect, Search,
 Deep Search, Attack, Guard, Run, Stealth, loot, equipment activation, light switching,
-landmark investigation, encounter interaction, cut-out preparation and attempts
-are card effects, not independent gameplay commands exposed by UI.
+and cut-out attempts are fixed card semantics. Finite resource collection belongs
+to Search outcomes; encounter scheduling and preparation gains are automatic world
+rules, not player-selected verbs or independent UI commands.
 
 End Turn remains a lifecycle command. Pause, read-only deck inspection, settings,
 viewing already-public card details, and choosing/cancelling targets are pure system controls.
@@ -99,9 +100,9 @@ They must not grant gameplay effects. Automatic entity/floor/turn triggers are
 rule resolution, not additional player inputs. Zero AP is not a system-control exemption.
 Revealing new clues/Insight is a gameplay effect, not a free details-view operation.
 
-Legacy ExplorationCommand / UseEquipmentCommand may temporarily remain in the
-unmigrated build. They are not a second approved v2 gameplay input boundary;
-internal domain planning helpers may survive after their public entry points retire.
+REWORK C removes ExplorationCommand / UseEquipmentCommand and their public
+TurnManager/RuleResolver entry points. Internal domain plan/commit helpers remain;
+only PlayCardCommand initiates gameplay, while resolve_end_turn handles the lifecycle.
 
 Examples of `EffectResult`:
 
@@ -224,8 +225,10 @@ REWORK B implements one explicit end-turn order: plan all consequences, then com
 Situation Pressure -> Entity intent -> floor overstay -> temporary Guard/light/observation
 cleanup. Pressure consumes Guard first; the entity uses only the remainder. Lethal
 Pressure skips the entity intent; cleanup still runs and no next turn starts. If alive,
-the same TurnManager discards the hand, advances counters/restores 3 AP, schedules Fresh,
-draws to five, then notifies observers. Scene-tree signal order never determines effects.
+the same TurnManager discards NORMAL cards, removes unretained generated cards,
+keeps Retain, advances counters/restores 3 AP and schedules Fresh. CardSystem reserves
+floor-card slots, fills the base hand to five and appends at most one eligible equipment
+action for that global turn, then observers are notified. Scene-tree signal order never determines effects.
 
 ---
 
@@ -246,7 +249,7 @@ Responsibilities:
 Example resolution order:
 
 ```text
-Player Card baseline + declared target/branch
+Player Card fixed semantic + declared target
 -> player modifiers
 -> selected equipment requirements/modifiers
 -> floor and active Event tag/condition modifiers
@@ -261,8 +264,8 @@ When a new rule can be represented through existing conditions/effects, add data
 
 Validate card ownership/hand membership, floor visit, target identity and lifecycle,
 selected equipment, final costs and complete effect legality before any gameplay
-write. A missing optional context uses a card's declared useful baseline; an
-explicit stale/invalid target is rejected, never silently redirected.
+write. Context may modify the same semantic, never choose an unrelated action.
+An explicit stale/invalid target is rejected, never silently redirected.
 AP, card movement, Explore, HP/Guard, equipment uses, Insight rewards, entity
 transitions and RNG advancement commit together. Failure changes none of them.
 Domain systems plan/commit their own effects; RuleResolver coordinates order.
@@ -284,8 +287,9 @@ Responsibilities:
 - reshuffle
 - play validation
 
-CardData / CardInstance represent Player Cards: actions, techniques, memories,
-and other draw-based opportunities. CardSystem owns pile operations, not Event
+CardData / CardInstance represent Player Cards with NORMAL / EQUIPMENT / FLOOR_TEMPORARY sources.
+DeckState.hand is their single authoritative hand collection. Only NORMAL participates
+in draw/discard/reshuffle and permanent deck counts. CardSystem owns pile operations, not Event
 or Entity resolution. RuleResolver performs authoritative play/cost validation.
 
 Use small reusable effects: Explore, Damage, Guard, Threat, Draw, Discard;
@@ -294,12 +298,23 @@ and must not be single-event/single-entity keys. They do **not** need to be effe
 against every BoardState: an attack may legitimately have no target during a pure
 environment turn. Do not fake universality with successful no-ops, placeholder values
 or nonsensical target conversions. Dead-hand mitigation belongs to explicit deck
-composition, draw/discard/secondary-mode rules and encounter composition.
+composition, draw/discard rules, single-semantic card combinations and encounter composition.
 
 World Cards never enter or count toward the player's draw/hand/discard/exhaust
 zones. Do not generalize CardSystem to shuffle EventInstances or EntityInstances.
 
-Persistent equipment does **not** belong in the normal draw pile.
+Persistent equipment does **not** belong in the normal draw pile. EquipmentData.action_card
+declares a generated CardData; its CardInstance references the actual EquipmentInstance.
+CardSystem rotates eligible carry slots deterministically, at most one generation per
+global turn (start of turn, or floor entry if the budget is unused). It is an explicit
+extra slot beyond the five-card base target, so the current hand maximum is six.
+Unplayed equipment actions expire at end turn; Crowbar/Water are removed after use without discard.
+Flashlight uses two separate definitions in one opportunity: LIGHT off exposes Lighting,
+LIGHT on replaces it with Extinguish. Neither replacement adds an instance or generation
+budget. Extinguish uses AP and no battery; last-battery Lighting still exposes Extinguish.
+The same equipment may generate a new instance on a later turn while usable.
+Floor-generated retained exit cards occupy the five base slots; temporary shortages
+defer generation until space is available. Start-of-turn reserves them before normal draw.
 
 ---
 
@@ -312,7 +327,7 @@ Demo baseline:
 - 3 carry slots
 - equipment may use durability, charges, battery, or consumable count
 - active equipment use is requested by a Player Card effect
-- equipment can modify a card or enable an enhanced branch of a useful normal card
+- equipment generates an action CardInstance in the same visible hand; no normal-card equipment menu branch remains
 - the final card cost includes declared equipment-related cost; do not blindly
   add the old standalone-use AP charge a second time
 
@@ -331,7 +346,7 @@ uses during card resolution; it has no independent UI active-use pathway.
 Only a fully successful action decrements uses. Missing or empty optional gear
 cannot invalidate a normal card's entire baseline.
 The carry-slot UI may inspect/select gear for the current card; rendering an item
-as a card-like tile does not make it a Player Card drawn from the deck.
+as a card-like tile does not make it an actual generated CardInstance in DeckState.hand.
 
 ---
 
@@ -466,7 +481,7 @@ EntityData / EntityInstance remain domain types; an Entity World Card is their
 board presentation. HP/state/intent are read from the instance, not a UI copy.
 Player Cards apply Damage/Guard or interact via tags, conditions and additional
 effects. NOISE may affect Hound behavior, LIGHT may escalate Smiler behavior.
-Read actual resolved exposure, not just a printed tag whose equipment branch failed.
+Read actual resolved exposure, not merely a printed LIGHT tag on a failed action.
 High HP/mitigation is compatible with behavioral WITHDRAWN outcomes. Do not route
 Smiler through a separate system outside EntitySystem.
 
@@ -539,8 +554,9 @@ Examples:
 - destination partially identified
 - destination confirmed
 
-Cut-out preparation and attempts are Player Card effects. Resource/landmark data
-can supply targets and alternative paths, not independent gameplay buttons.
+Cut-out attempts use dedicated floor-temporary cards. Preparation derives automatically
+from declared Situation clues and unique Insight rewards; no Prepare card/command remains.
+Search collection is part of the same search resolution; no separate loot input remains.
 The old zero-AP forced-cut button is deprecated; a later Exit World Card, if ever
 introduced, would be a target/presentation, not a free command exception.
 
@@ -548,10 +564,13 @@ Critical anti-soft-lock rule:
 
 > The player must always retain some possible route to leave a normal floor, even if safe preparation failed. A rushed or forced cut-out may be dangerous, but the run must not become permanently stuck because one event did not appear.
 
-This guarantee must hold within the Player Card economy, including bad draws,
-exhaustion and depleted gear/resources. The exact exit-card access/retention or
-recovery guarantee is unresolved; it is a migration gate, not permission to
-restore an independent exit button. Floor transition commits only on success.
+This guarantee holds through a retained FLOOR_TEMPORARY card, independent of normal
+draw/reshuffle. It appears when stability is positive or the visit reaches turn two,
+without requiring any specific Event/Insight/resource. Safe conditions replace the
+existing instance's definition in place. Rushed failure keeps that instance in hand
+with the original paid risk semantics; success removes it and all old-floor temporary
+cards. Next floor creates its own opportunity. No forced branch or independent exit
+control remains. Availability does not promise survival or zero-AP escape.
 
 ---
 
@@ -821,6 +840,50 @@ The pre-v2 architecture listed use equipment, inspect, search, loot, retreat and
 attempt cut-out as independent PlayerCommands. That input model is deprecated.
 Those domain effects remain useful internally, but their player-facing execution
 must come from Player Cards. The old rule "equipment unlocks actions" now means
-card enhancements/branches, never a permanent active-use button.
+equipment-generated hand actions, never a permanent active-use button.
 The old single FloorState.current_event / entity fields describe Phase 1-8 only;
 they are not an alternative authority beside BoardState.
+
+## Single-Semantic Card Rule
+
+Every playable card has one clear primary semantic. Conditional modifiers and legal
+world-target selection are allowed. Unrelated verb lists, generic branch selectors,
+per-card action popups and mode parameters are forbidden. Different verbs require
+separate CardData definitions. Right-click may show read-only details only.
+
+## Current interaction implementation
+
+CardData.effect_type plus declared numeric/tag fields define the card's one semantic.
+CardData.actions, CardActionData/CardActionSystem and mode-selection resources are removed.
+PlayCardCommand contains the actual hand instance, its definition identity at request
+creation, current Board and optional Event/Entity target. It cannot choose equipment,
+resource nodes or action modes. Equipment source is fixed by CardInstance.source_equipment.
+Definition replacement invalidates pending requests with a different captured semantic.
+RuleResolver validates and plans, domain systems commit, CardSystem performs source
+lifecycle changes, TurnManager notifies only after the complete result and destination
+are synchronized. No UI rule engine or additional turn loop exists.
+
+Search/Deep Search declare finite resource collection and resolve it alongside Explore
+and Threat. Discovered rewards are collected in the same atomic action. An empty/resolved
+Situation permits environment search only while an eligible finite reward exists; explicit
+resolved/stale targets are rejected. Observe remains investigation/analysis only.
+
+EventData declares one-time clue preparation gains and optional clue Insight. InsightSystem
+merges unique rewards in the same draft, capped by CutOutState. No supply-spending Prepare
+card/template/generator/API remains. Only rushed/safe templates are floor-owned.
+
+FloorData.followup_on_light declares the prototype follow-up condition: resolved entry
+entity plus actual LIGHT. EntitySystem plans replacement automatically. Old entity damage,
+state and defeat commit before replacing the board slot, so Hound's lethal damage cannot
+be written to a newly spawned Smiler. The existing Smiler state machine is reused.
+The Level 6 Situation clue confirms the same light Insight as behavioral withdrawal,
+providing a non-Smiler route without a manual landmark action.
+
+Source-specific normal/equipment/floor lifecycles remain in CardSystem. Retained exits
+occupy a base slot, upgrade in place and survive failed attempts; successful transition
+cleans old-visit cards. Floor opportunity fallback at visit turn two remains independent
+of event/Insight/resource draws. Run/deck/equipment/AP persist through transitions.
+
+LegacyMain, direct gameplay commands and generic card-mode interpreters are removed.
+Early floorless NO_OP/PLACEHOLDER tests and unused legacy event fields remain test/data debt,
+not a player action boundary. See the migration plan §0.5 and cleanup audit for retired rules.

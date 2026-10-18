@@ -50,6 +50,8 @@ static func validate(floor: FloorState, data: FloorData) -> StringName:
 			var error: StringName = validate_definition(definition)
 			if not error.is_empty():
 				return error
+			if definition.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE and not floor.floor_flags.has(&"darkness"):
+				return &"invalid_entity_context"
 	if data.entry_entity != null and data.followup_entity != null and data.entry_entity.id == data.followup_entity.id:
 		return &"invalid_entity_definition"
 	if data.entry_entity == null:
@@ -98,9 +100,9 @@ static func plan_analysis(result: ActionResult, card: CardData, floor: FloorStat
 		InsightSystem.plan_confirmation(result, definition.rule_insight, floor)
 
 
-static func plan_noise_reaction(result: ActionResult, card: CardData, floor: FloorState, data: FloorData) -> void:
+static func plan_noise_reaction(result: ActionResult, tags: Array[StringName], floor: FloorState, data: FloorData) -> void:
 	var entity: EntityInstance = floor.board_state.entity
-	if not card.tags.has(&"NOISE") or entity == null or not entity.active or result.entity_defeated:
+	if not tags.has(&"NOISE") or entity == null or not entity.active or result.entity_defeated:
 		return
 	if data.find_entity(entity.entity_id).behavior_type == EntityData.BehaviorType.PURSUIT:
 		_set_next_state(result, &"CHASING")
@@ -138,22 +140,20 @@ static func plan_attack(result: ActionResult, damage: int, state: RunState, data
 	return &""
 
 
-static func can_enter_followup(floor: FloorState, data: FloorData) -> bool:
-	return floor != null and data != null and data.entry_entity != null and data.followup_entity != null and floor.entity != null and floor.entity.entity_id == data.entry_entity.id and not floor.entity.active
-
-
-static func plan_followup(result: ActionResult, state: RunState, data: FloorData) -> StringName:
-	if not can_enter_followup(state.floor_state, data):
-		return &"encounter_unavailable"
-	if data.followup_entity.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE and not state.floor_state.floor_flags.has(&"darkness"):
-		return &"invalid_entity_context"
+static func plan_world_followup(result: ActionResult, state: RunState, data: FloorData) -> void:
+	var floor: FloorState = state.floor_state
+	var entity: EntityInstance = floor.entity
+	if result.destination != null or not data.followup_on_light or data.entry_entity == null or data.followup_entity == null or entity == null or entity.entity_id != data.entry_entity.id:
+		return
+	var resolved: bool = not entity.active or result.entity_defeated or result.entity_state_after == &"DISENGAGED"
+	if not resolved or result.light_extinguished or not (floor.light_active or result.light_activated):
+		return
 	result.entity_spawned = spawn(data.followup_entity)
-	# 已经开启的光源也算一次暴露；只规划新实例，不修改原有实体。
-	if state.floor_state.light_active and data.followup_entity.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE:
+	# 声明式世界条件在当前动作的计划上判断，击败／脱离与 LIGHT 可同次触发。
+	if data.followup_entity.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE:
 		result.entity_spawned.state = &"OBSERVING"
 		result.entity_spawned.intent = INTENTS[&"OBSERVING"]
 		result.entity_spawned.light_exposed = true
-	return &""
 
 
 static func plan_light_reaction(result: ActionResult, state: RunState, data: FloorData) -> void:
@@ -242,10 +242,6 @@ static func commit(result: ActionResult, state: RunState) -> void:
 	if result.player_damage > 0:
 		state.player_hp -= result.player_damage
 		result.debug_lines.append("[HP] player -%d remaining=%d" % [result.player_damage, state.player_hp])
-	if result.entity_spawned != null:
-		floor.entity = result.entity_spawned
-		entity = floor.entity
-		result.debug_lines.append("[ENTITY] spawn %s hp=%d state=%s" % [entity.entity_id, entity.hp, entity.state])
 	if entity == null:
 		return
 	if result.analysis_after >= 0:
@@ -265,3 +261,7 @@ static func commit(result: ActionResult, state: RunState) -> void:
 		entity.intent = result.entity_intent_after
 	if result.entity_defeated:
 		result.debug_lines.append("[ENTITY] defeated %s" % entity.entity_id)
+	if result.entity_spawned != null:
+		# 先把旧目标的 HP／状态完整提交，再替换槽位，避免把猎犬的致命伤写入笑魇。
+		floor.entity = result.entity_spawned
+		result.debug_lines.append("[ENTITY] spawn %s hp=%d state=%s reason=resolved_entry_and_light" % [floor.entity.entity_id, floor.entity.hp, floor.entity.state])

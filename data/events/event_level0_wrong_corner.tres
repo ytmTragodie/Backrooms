@@ -50,3 +50,4 @@ clue_threshold = 3
 clue_text = "地毯接缝与记忆中的转角不吻合。"
 completion_insight = ExtResource("3_insight")
 neglect_stress = 1
+clue_stability = 1

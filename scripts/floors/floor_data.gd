@@ -4,7 +4,7 @@ extends Resource
 @export var id: StringName
 @export var display_name: String
 @export var fresh_events: Array[EventData] = []
-# 声明当前访问使用局势调查规则；未迁移楼层保留旧领域行为。
+# 正式可玩楼层必须声明卡牌规则；旧配置由解析器拒绝，不再提供旁路。
 @export var card_first_exploration: bool = false
 @export var overstay_start_turn: int = 3
 @export var overstay_interval: int = 2
@@ -20,6 +20,9 @@ extends Resource
 # 原型只容纳一个当前实体；后续遭遇必须在前一个失去活跃性后由命令进入。
 @export var followup_entity: EntityData
 @export var landmark_insight: InsightData
+@export var rushed_cutout_card: CardData = preload("res://data/cards/generated/card_cutout_rushed.tres")
+@export var safe_cutout_card: CardData = preload("res://data/cards/generated/card_cutout_safe.tres")
+@export var followup_on_light: bool = false
 
 
 func find_entity(entity_id: StringName) -> EntityData:
@@ -43,6 +46,8 @@ func find_insight(insight_id: StringName) -> InsightData:
 		if definition != null and definition.rule_insight != null and definition.rule_insight.id == insight_id:
 			return definition.rule_insight
 	for event: EventData in fresh_events:
+		if event.clue_insight != null and event.clue_insight.id == insight_id:
+			return event.clue_insight
 		if event.completion_insight != null and event.completion_insight.id == insight_id:
 			return event.completion_insight
 		for rule: EventActionData in event.action_results:

@@ -259,7 +259,7 @@ func _test_debug_ui() -> void:
 	_check(status.text.contains("已打出搜索") and status.text.contains("认知：+1") and manager.run_state.ap == 1, "Completion commits real Insight and AP before UI refresh")
 	var before_failure: Dictionary = _snapshot(manager.run_state)
 	(hand.get_child(0) as Button).pressed.emit()
-	_check(status.text.contains("该局势已解决") and _snapshot(manager.run_state) == before_failure, "Resolved-target UI request has no partial card/AP commit")
+	_check(status.text.contains("行动失败") and _snapshot(manager.run_state) == before_failure, "Unavailable investigation UI request has no partial card/AP commit")
 	end_turn.pressed.emit()
 	_check(manager.run_state.turn_number == 2 and manager.run_state.ap == 3 and hand.get_child_count() == 5, "Resolver integration preserves End Turn and redraw")
 	manager.run_state.ap = 0

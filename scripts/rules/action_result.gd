@@ -6,6 +6,7 @@ var success: bool = false
 var failure_reason: StringName
 var ap_spent: int = 0
 var card_played: CardInstance
+var card_definition: CardData
 var effect: StringName
 var damage_requested: int = 0
 var action_id: StringName

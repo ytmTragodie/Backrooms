@@ -9,6 +9,12 @@ static func validate_situation(data: EventData) -> StringName:
 		return &"invalid_event_definition"
 	if data.explore_bonus > 0 and data.bonus_tag.is_empty():
 		return &"invalid_event_definition"
+	if data.clue_stability < 0 or data.clue_knowledge < 0:
+		return &"invalid_event_definition"
+	if data.clue_insight != null:
+		var error: StringName = InsightSystem.validate_definition(data.clue_insight)
+		if not error.is_empty():
+			return error
 	return InsightSystem.validate_definition(data.completion_insight)
 
 
@@ -62,6 +68,10 @@ static func plan_explore(result: ActionResult, card: CardData, floor: FloorState
 	result.clue_revealed = not event.clue_revealed and result.explore_after >= definition.clue_threshold
 	if result.clue_revealed:
 		result.event_information.append(definition.clue_text)
+		if definition.clue_stability > 0 or definition.clue_knowledge > 0:
+			CutOutSystem.plan_gain(result, floor.cutout_state, definition.clue_stability, definition.clue_knowledge, &"situation_clue")
+		if definition.clue_insight != null:
+			InsightSystem.plan_confirmation(result, definition.clue_insight, floor)
 	result.event_resolved = result.explore_after == definition.explore_threshold
 	if result.event_resolved:
 		InsightSystem.plan_confirmation(result, definition.completion_insight, floor)

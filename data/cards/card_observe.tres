@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="CardData" format=3]
 
 [ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1_card"]
+
 
 [resource]
 script = ExtResource("1_card")
@@ -11,3 +12,4 @@ exploration_action = &"observe"
 explore_amount = 2
 threat_cost = 0
 tags = Array[StringName]([&"OBSERVE"])
+analyzes_entities = true

@@ -14,3 +14,5 @@ enum EffectType { LIGHT, ATTACK, RECOVER }
 @export var effect_value: int = 0
 @export var conditional_heal: int = 0
 @export var heal_stress_threshold: int = 7
+@export var action_card: CardData
+@export var active_action_card: CardData

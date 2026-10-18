@@ -6,6 +6,7 @@ var card: CardInstance
 var target_event: EventInstance
 var target_board: BoardState
 var target_entity: EntityInstance
+var definition: CardData
 
 
 func _init(requested_card: CardInstance = null, event: EventInstance = null, board: BoardState = null, entity: EntityInstance = null) -> void:
@@ -13,3 +14,5 @@ func _init(requested_card: CardInstance = null, event: EventInstance = null, boa
 	target_event = event
 	target_board = board
 	target_entity = entity
+	# 保存出牌时的静态定义身份，照明替换／切出升级后的旧请求不能改变语义重放。
+	definition = requested_card.definition if requested_card != null else null

@@ -11,15 +11,21 @@ const FAILURE_MESSAGES: Dictionary = {
 	&"invalid_entity_target": "实体目标已经变化，请重新选择", &"invalid_target_kind": "这张牌不能作用于所选目标",
 	&"no_active_entity": "该实体已不再活跃", &"analysis_complete": "该实体的规律已调查清楚",
 	&"analysis_unavailable": "该实体暂无可调查规律", &"guard_unneeded": "当前没有需要防护的危险",
+	&"invalid_equipment_target": "携带物已变化，请重新选择",
+	&"invalid_resource_target": "资源目标已变化，请重新选择", &"resources_exhausted": "没有可发现的资源",
+	&"resource_undiscovered": "尚未发现该资源", &"resource_depleted": "资源已取走，不能再次领取",
+	&"equipment_depleted": "装备次数已耗尽", &"equipment_incompatible": "此模式与所选装备不兼容",
+	&"light_not_needed": "当前不需要照明", &"light_already_active": "照明已经开启", &"light_not_active": "照明尚未开启",
+	&"encounter_unavailable": "当前不能追查后续遭遇", &"landmark_unavailable": "此处没有可调查的地标",
+	&"insight_known": "该规律已经确认", &"nothing_to_restore": "当前没有可恢复的状态",
+	&"insufficient_supply": "补给不足", &"preparation_complete": "切出准备已达上限", &"cutout_unprepared": "尚不满足安全切出条件",
+	&"floor_inactive": "本次探索已结束", &"invalid_equipment_state": "装备状态异常",
+	&"invalid_card_source": "这张牌的来源已失效，请重新选择", &"cutout_unavailable": "尚未出现切出机会",
+	&"invalid_cutout_card": "切出牌定义异常",
 }
 const TAG_NAMES: Dictionary = {&"OBSERVE": "观察", &"SEARCH": "搜索", &"NOISE": "噪音"}
-const ENTITY_STATES: Dictionary = {&"WATCHING": "窥视", &"APPROACHING": "靠近", &"CHASING": "追逐", &"STAGGERED": "踉跄", &"DEFEATED": "击败", &"DISENGAGED": "已脱离"}
-const ENTITY_INTENTS: Dictionary = {&"approach": "继续靠近（无伤害）", &"bite": "撕咬", &"lunge": "扑击", &"recover": "恢复警戒（无伤害）", &"none": "无"}
-const MIXED_FLOOR: FloorData = preload("res://data/floors/floor_level_6.tres")
-const MIXED_DECK: DeckData = preload("res://data/cards/mixed_deck.tres")
-const EXPLORE_FLOOR: FloorData = preload("res://data/floors/floor_level_0.tres")
-const EXPLORE_DECK: DeckData = preload("res://data/cards/exploration_deck.tres")
-
+const ENTITY_STATES: Dictionary = {&"WATCHING": "窥视", &"APPROACHING": "靠近", &"CHASING": "追逐", &"STAGGERED": "踉跄", &"DEFEATED": "击败", &"DISENGAGED": "已脱离", &"HIDDEN": "隐藏", &"OBSERVING": "注视", &"AGITATED": "躁动", &"ATTACKING": "攻击", &"WITHDRAWN": "退去（仍存活）"}
+const ENTITY_INTENTS: Dictionary = {&"approach": "继续靠近（无伤害）", &"bite": "撕咬", &"lunge": "扑击", &"recover": "恢复警戒（无伤害）", &"none": "无", &"remain_hidden": "保持隐藏", &"watch_light": "注视光源", &"warn_light": "警告：继续照明将发动攻击", &"light_strike": "袭击光源"}
 # 仅保存临时选择引用，不保存第二份 HP、调查、意图或费用。
 var _selected_event: EventInstance
 var _selected_entity: EntityInstance
@@ -41,14 +47,15 @@ var _selected_board: BoardState
 @onready var _state: Label = %SituationState
 @onready var _entity_card: Button = %EntityCard
 @onready var _entity_information: Label = %EntityInformation
+@onready var _equipment_status: Label = %EquipmentStatus
+@onready var _debug_panel: PanelContainer = %DebugPanel
 
 
 func _ready() -> void:
 	_connect_manager()
 	_world_card.pressed.connect(_select_world_card)
 	_entity_card.pressed.connect(_select_entity)
-	(%NewLevel0 as Button).pressed.connect(_start_run.bind(EXPLORE_FLOOR, EXPLORE_DECK))
-	(%NewLevel6 as Button).pressed.connect(_start_run.bind(MIXED_FLOOR, MIXED_DECK))
+	_debug_panel.test_run_requested.connect(_start_debug_run)
 	_refresh_state()
 	print("[APP] Project initialized")
 
@@ -59,8 +66,10 @@ func _connect_manager() -> void:
 	_end_turn.pressed.connect(_manager.end_turn)
 
 
-func _start_run(floor: FloorData, deck: DeckData) -> void:
-	# 新局是系统控制：创建全新生命周期，而非进战斗时替换当前局的 AP／手牌。
+func _start_debug_run(floor: FloorData, deck: DeckData) -> void:
+	# 只接受隐藏开发面板的测试请求，正常入口仍由 Main 自动开局。
+	if not OS.is_debug_build():
+		return
 	var equipment: Array[EquipmentData] = _manager.starting_equipment.duplicate()
 	_manager.free()
 	_manager = TurnManager.new()
@@ -73,7 +82,7 @@ func _start_run(floor: FloorData, deck: DeckData) -> void:
 	_selected_entity = null
 	_connect_manager()
 	add_child(_manager)
-	_status.text = "新局：%s。先选择世界牌，再打出手牌；防御直接保护玩家。" % floor.display_name
+	_status.text = "请选择世界牌目标，再打出手牌。"
 
 
 func _select_world_card() -> void:
@@ -97,6 +106,7 @@ func _refresh_state() -> void:
 	var run: RunState = _manager.run_state
 	var floor: FloorState = run.floor_state
 	var board: BoardState = floor.board_state
+	_refresh_equipment_status(run)
 	var event: EventInstance = board.active_event
 	var data: EventData = _manager.floor_data.find_event(event.event_id) if event != null else null
 	var entity: EntityInstance = board.entity
@@ -107,11 +117,13 @@ func _refresh_state() -> void:
 		_selected_entity = entity if event == null else null
 	_entity_card.visible = entity != null
 	if entity != null:
-		var damage: int = entity_data.aggressive_damage if entity.intent == &"lunge" else (entity_data.normal_damage if entity.intent == &"bite" else 0)
+		var damage: int = entity_data.aggressive_damage if entity.intent in [&"lunge", &"light_strike"] else (entity_data.normal_damage if entity.intent == &"bite" else 0)
 		_entity_information.text = "实体牌　｜　%s%s\n生命：%d／%d\n状态：%s\n意图：%s%s\n调查规律：%d／%d\n已揭示规律：%s" % [entity_data.display_name, "（已选）" if _selected_entity == entity else "", entity.hp, entity.max_hp, ENTITY_STATES.get(entity.state, "未知"), ENTITY_INTENTS.get(entity.intent, "未知"), "（伤害 %d）" % damage if damage > 0 else "", entity.analysis_progress, entity_data.analysis_threshold, "；".join(entity.revealed_rules) if not entity.revealed_rules.is_empty() else "尚未调查清楚"]
+		if entity_data.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE:
+			_entity_information.text = "实体牌　｜　%s\n生命：%d／%d\n状态：%s\n意图：%s\n公开警示：反复强光会激怒注视；无光时退去。\n已知规律：%s" % [entity_data.display_name, entity.hp, entity.max_hp, ENTITY_STATES.get(entity.state, "未知"), ENTITY_INTENTS.get(entity.intent, "未知") if floor.light_active else "若保持黑暗，回合末退去", "避光可令其存活退去" if floor.discovered_insight_ids.has(entity_data.rule_insight.id) else "可以通过实际行为或调查局势线索确认"]
 	_stats.text = "生命：%d　｜　压力：%d　｜　威胁：%d　｜　认知：%d　｜　行动点：%d　｜　回合：%d　｜　防护：%d" % [run.player_hp, run.stress, run.threat, run.cognition, run.ap, run.turn_number, floor.player_block]
 	_counts.text = "抽牌堆：%d｜弃牌堆：%d" % [run.deck_state.draw_pile.size(), run.deck_state.discard_pile.size()]
-	_end_turn.disabled = run.player_hp <= 0
+	_end_turn.disabled = run.player_hp <= 0 or _manager.floor_data.is_placeholder
 	_world_card.disabled = event == null
 	if event == null:
 		_name.text = "本轮局势已调查完毕" if floor.remaining_fresh_events.is_empty() else "暂无符合条件的局势"
@@ -120,9 +132,13 @@ func _refresh_state() -> void:
 		_pressure.text = "局势后果：无；楼层滞留规则仍会继续结算。"
 		_rule.text = ""
 		_clues.text = "已确认认知：%d。" % floor.cognition
-		_state.text = "本次调查已结束，可重新开始新局。" if floor.remaining_fresh_events.is_empty() else "当前没有符合条件的调查目标。"
+		_state.text = "局势已调查完毕，仍可通过手牌继续探索或离层。" if floor.remaining_fresh_events.is_empty() else "当前没有符合条件的调查目标。"
 		if entity != null and entity.active:
 			_state.text = "局势调查结束；实体仍在场，请选择实体继续应对。"
+		if _manager.floor_data.is_placeholder:
+			_name.text = "已离层：本次探索完成"
+			_description.text = _manager.floor_data.placeholder_description
+			_state.text = "本局结果：生命 %d，压力 %d，经历 %d 回合。本次探索已结束。" % [run.player_hp, run.stress, run.turn_number]
 	else:
 		_name.text = "局势牌　｜　%s%s" % [data.display_name, "（已选）" if _selected_event == event else ""]
 		_description.text = data.display_text
@@ -144,32 +160,66 @@ func _refresh_state() -> void:
 		var definition: CardData = card.definition
 		var final_cost: int = RuleResolver.card_ap_cost(definition, run, _manager.floor_data)
 		var button: Button = Button.new()
-		button.custom_minimum_size = Vector2(0, 116)
+		button.custom_minimum_size = Vector2(0, 96)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var bonus: int = EventSystem.explore_bonus(definition, data) if data != null and _selected_event != null else 0
 		var tags: PackedStringArray = []
 		for tag: StringName in definition.tags:
 			tags.append(TAG_NAMES.get(tag, "其他"))
-		button.text = "%s
-行动点：%d
-调查 +%d%s
-%s
-%s" % [definition.display_name, final_cost, definition.explore_amount, "（当前 +%d）" % (definition.explore_amount + bonus) if bonus > 0 else "", "威胁 +%d" % definition.threat_cost if definition.threat_cost > 0 else "低风险调查", "、".join(tags)]
-		var target_event: EventInstance = _selected_event
-		var target_entity: EntityInstance = _selected_entity
+		button.text = "%s\n行动点：%d · 调查 +%d%s\n%s" % [definition.display_name, final_cost, definition.explore_amount, "（当前 +%d）" % (definition.explore_amount + bonus) if bonus > 0 else "", "威胁 +%d" % definition.threat_cost if definition.threat_cost > 0 else "低风险调查"]
+		var target_event: EventInstance
+		var target_entity: EntityInstance
+		if definition.explore_amount > 0:
+			if definition.analyzes_entities and _selected_entity != null:
+				target_entity = _selected_entity
+			elif event != null and not event.resolved:
+				target_event = event
+			elif definition.analyzes_entities and entity != null and entity.active:
+				target_entity = entity
+			button.text += "\n目标：局势或可分析实体" if definition.analyzes_entities else "\n目标：当前环境\n有限资源随搜索领取"
 		match definition.effect_type:
 			CardData.EffectType.ATTACK:
+				target_entity = entity
 				button.text = "%s\n行动点：%d\n伤害：%d\n目标：实体" % [definition.display_name, final_cost, definition.effect_value]
 			CardData.EffectType.BLOCK:
 				button.text = "%s\n行动点：%d\n防护：%d\n抵挡环境及实体\n回合末清除" % [definition.display_name, final_cost, definition.effect_value]
-				target_event = null
-				target_entity = null
 			CardData.EffectType.RUN:
+				target_entity = entity
 				button.text = "%s\n行动点：%d\n踉跄时脱离\n否则引发追逐\n威胁增加一" % [definition.display_name, final_cost]
-		button.disabled = run.player_hp <= 0 or run.ap < final_cost or not RuleResolver.validate_card_target(PlayCardCommand.new(card, target_event, board, target_entity), floor, _manager.floor_data).is_empty()
-		# 绑定刷新时的真实实例。旧按钮即便被重放，也必须由解析器拒绝过期目标。
-		button.pressed.connect(_manager.request_play_card.bind(card, target_event, board, target_entity))
+			CardData.EffectType.LIGHT:
+				button.text = "照明\n行动点：%d\n本回合产生光照\n成功消耗一电量" % final_cost
+			CardData.EffectType.EXTINGUISH:
+				button.text = "熄灯\n行动点：%d\n关闭当前光照\n不消耗电量" % final_cost
+			CardData.EffectType.RECOVER:
+				button.text = "饮用杏仁水\n行动点：%d\n压力减二\n高压力时恢复生命" % final_cost
+			CardData.EffectType.CUTOUT_RUSHED:
+				button.text = "仓促切出\n行动点：%d\n保留 · 占手牌位\n压力加一 · 有失败风险\n失败保留此牌" % final_cost
+			CardData.EffectType.CUTOUT_SAFE:
+				button.text = "安全切出\n行动点：%d\n保留 · 占手牌位\n准备充分 · 安全离层" % final_cost
+		if card.source == CardData.Source.EQUIPMENT:
+			button.text += "\n%s · 剩余%d" % [card.source_equipment.definition.display_name, card.source_equipment.remaining_uses]
+		button.text += "\n%s" % {CardData.Source.NORMAL: "普通牌", CardData.Source.EQUIPMENT: "装备牌", CardData.Source.FLOOR_TEMPORARY: "楼层临时牌"}.get(card.source, "")
+		var command: PlayCardCommand = PlayCardCommand.new(card, target_event, board, target_entity)
+		var error: StringName = RuleResolver.validate_card_target(command, floor, _manager.floor_data, run)
+		button.disabled = run.player_hp <= 0 or _manager.floor_data.is_placeholder or run.ap < final_cost or not error.is_empty()
+		# 详情仅为牌面文字和失败原因，不提供第二种动词或任何执行控件。
+		button.tooltip_text = button.text + ("\n暂不可用：%s" % FAILURE_MESSAGES.get(error, "目标不适用") if not error.is_empty() else "\n点击打出；只有一个合法目标时直接作用于该目标。")
+		button.pressed.connect(_submit_card_command.bind(command))
 		_hand.add_child(button)
+
+
+func _submit_card_command(command: PlayCardCommand) -> void:
+	_manager.submit_card_command(command)
+
+
+func _refresh_equipment_status(run: RunState) -> void:
+	var equipment: PackedStringArray = []
+	var counters: Dictionary = {&"battery": "电量", &"durability": "耐久", &"charges": "次数"}
+	for item: EquipmentInstance in run.equipment_slots:
+		equipment.append("%s（%s%d）" % [item.definition.display_name, counters.get(item.definition.counter_kind, "次数"), item.remaining_uses] if item != null else "空携带槽")
+	_equipment_status.text = "　｜　".join(equipment)
+	var floor: FloorState = run.floor_state
+	_debug_panel.update_context("%s\n补给：%d　稳定：%d　目的地认知：%d　照明：%s" % [_manager.floor_data.display_name, run.supply, floor.cutout_state.stability, floor.cutout_state.destination_knowledge, "开启" if floor.light_active else "关闭"])
 
 
 func _show_result(result: ActionResult) -> void:
@@ -177,7 +227,7 @@ func _show_result(result: ActionResult) -> void:
 		_status.text = "行动失败：%s。" % FAILURE_MESSAGES.get(result.failure_reason, "操作未完成")
 		return
 	if result.card_played != null:
-		_status.text = "已打出%s；消耗行动点：%d。" % [result.card_played.definition.display_name, result.ap_spent]
+		_status.text = "已打出%s；消耗行动点：%d。" % [result.card_definition.display_name, result.ap_spent]
 		if result.explore_applied > 0:
 			_status.text += "调查：+%d。" % result.explore_applied
 		if result.threat_delta > 0:
@@ -194,6 +244,14 @@ func _show_result(result: ActionResult) -> void:
 			_status.text += "造成伤害：%d。" % result.entity_damage
 		if result.block_gained > 0:
 			_status.text += "防护：+%d。" % result.block_gained
+		if not result.resource_looted_id.is_empty():
+			_status.text += "已领取有限补给：%d。" % result.supply_delta
+		if result.equipment_used != null:
+			_status.text += "%s剩余次数：%d。" % [result.equipment_used.definition.display_name, result.equipment_used.remaining_uses]
+		if result.cutout_attempt != null:
+			_status.text += "切出成功。" if result.cutout_attempt.succeeded else "仓促切出未成功；此牌已保留，可再次尝试或继续准备。"
+		if result.destination != null and result.destination.is_placeholder:
+			_status.text = "已成功离开六层，本局完成。"
 	else:
 		_status.text = "回合已推进；局势压力：+%d；环境伤害：%d；实体伤害：%d；抵挡：%d；滞留威胁：+%d。" % [result.pressure_stress, result.pressure_damage, result.player_damage, result.pressure_blocked + result.damage_blocked, result.threat_delta]
 		if _manager.run_state.player_hp <= 0:

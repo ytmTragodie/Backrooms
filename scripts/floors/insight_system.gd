@@ -20,7 +20,7 @@ static func plan_confirmation(result: ActionResult, data: InsightData, floor: Fl
 	result.stability_delta = mini(result.stability_delta + data.cutout_stability, CutOutState.MAX_STABILITY - floor.cutout_state.stability)
 	result.knowledge_delta = mini(result.knowledge_delta + data.cutout_knowledge, CutOutState.MAX_KNOWLEDGE - floor.cutout_state.destination_knowledge)
 	if data.cutout_stability > 0 or data.cutout_knowledge > 0:
-		result.preparation_reason = &"unique_insight"
+		result.preparation_reason = &"exploration_rewards" if not result.preparation_reason.is_empty() else &"unique_insight"
 	return &""
 
 

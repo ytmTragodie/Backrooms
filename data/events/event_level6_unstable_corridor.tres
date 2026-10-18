@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="EventData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="EventData" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
 [ext_resource type="Resource" path="res://data/insights/insight_level6_noise_pursuit.tres" id="2"]
+
+[ext_resource type="Resource" path="res://data/insights/insight_level6_light_attracts.tres" id="light_insight"]
 
 [resource]
 script = ExtResource("1")
@@ -14,3 +16,4 @@ clue_threshold = 4
 clue_text = "每次重响过后，爪声都会变得急促；先防护也能抵挡挤压。"
 completion_insight = ExtResource("2")
 neglect_damage = 2
+clue_insight = ExtResource("light_insight")

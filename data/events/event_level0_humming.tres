@@ -52,3 +52,4 @@ completion_insight = ExtResource("3_insight")
 neglect_stress = 1
 bonus_tag = &"OBSERVE"
 explore_bonus = 1
+clue_stability = 1

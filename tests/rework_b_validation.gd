@@ -160,7 +160,7 @@ func _test_entity_knowledge() -> void:
 	_fail_unchanged(manager, PlayCardCommand.new(_card(manager, OBSERVE), null, manager.run_state.floor_state.board_state, entity), &"analysis_complete", before)
 	_play(manager, OBSERVE)
 	var resolved: ActionResult = _play(manager, OBSERVE)
-	_check(resolved.event_resolved and resolved.cognition_delta == 0 and manager.run_state.cognition == 1 and entity.revealed_rules.size() == 1, "Situation alternate route confirms same Insight once, never repeats entity knowledge reward")
+	_check(resolved.event_resolved and resolved.cognition_delta == 1 and manager.run_state.cognition == 2 and entity.revealed_rules.size() == 1, "Situation clue adds distinct light Insight while shared completion fact does not repeat entity knowledge")
 	_check(FLOOR.entry_entity.analysis_threshold == 4 and FLOOR.entry_entity.max_hp == 18, "Shared EntityData remains static")
 	manager.free()
 
@@ -241,12 +241,7 @@ func _test_target_failures() -> void:
 
 func _test_legacy_rejection() -> void:
 	var manager: TurnManager = _manager()
-	var before: Dictionary = _snapshot(manager)
-	for action: StringName in [&"inspect", &"search_nearby", &"encounter", &"study_landmark", &"extinguish_light", &"loot", &"prepare_cutout", &"cutout_forced", &"attack", &"defend"]:
-		var result: ActionResult = manager.request_exploration(action)
-		_check(not result.success and result.failure_reason == &"card_required" and _snapshot(manager) == before, "No legacy direct gameplay bypass: %s" % action)
-	var equipment: ActionResult = manager.request_use_equipment(0)
-	_check(not equipment.success and equipment.failure_reason == &"card_required" and _snapshot(manager) == before, "Active equipment cannot bypass Player Cards on migrated floors")
+	_check(not manager.has_method("request_exploration") and not manager.has_method("request_use_equipment"), "No deprecated gameplay method survives as a parallel input path")
 	manager.free()
 
 
@@ -273,15 +268,16 @@ func _test_deck_composition() -> void:
 
 func _test_ui() -> void:
 	var main: Control = MAIN.instantiate() as Control
+	(main.get_node("TurnManager") as TurnManager).floor_data = FLOOR
+	(main.get_node("TurnManager") as TurnManager).starter_deck = DECK
 	root.add_child(main)
-	(main.get_node("%NewLevel6") as Button).pressed.emit()
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
 	var hand: HBoxContainer = main.get_node("%Hand") as HBoxContainer
 	var world: Button = main.get_node("%WorldCard") as Button
 	var creature: Button = main.get_node("%EntityCard") as Button
 	var information: Label = main.get_node("%EntityInformation") as Label
-	_check(manager.floor_data == FLOOR and creature.visible and information.text.contains("猎犬") and information.text.contains("18／18") and hand.get_child_count() == 5, "Same playable screen starts mixed prototype with two World Cards and one hand")
-	_check((hand.get_child(1) as Button).disabled, "Attack requires legal explicit Entity target, not auto redirect from selected Situation")
+	_check(manager.floor_data == FLOOR and creature.visible and information.text.contains("猎犬") and information.text.contains("18／18") and hand.get_child_count() == 6, "Same screen starts mixed board, five normal cards and one generated equipment action")
+	_check(not (hand.get_child(1) as Button).disabled, "Single legal Entity target permits direct Attack without an unnecessary selector")
 	var before: Dictionary = _snapshot(manager)
 	creature.pressed.emit()
 	_check(_snapshot(manager) == before and not (hand.get_child(1) as Button).disabled and information.text.contains("已选"), "Entity selection changes only presentation")
@@ -293,7 +289,7 @@ func _test_ui() -> void:
 	world.pressed.emit()
 	_check(_snapshot(manager) == before, "Situation selection also commits no gameplay")
 	(main.get_node("%EndTurn") as Button).pressed.emit()
-	_check(manager.run_state.player_hp == 24 and manager.run_state.turn_number == 2 and hand.get_child_count() == 5, "Actual End Turn resolves environment and bite without another scene/loop")
+	_check(manager.run_state.player_hp == 24 and manager.run_state.turn_number == 2 and hand.get_child_count() == 6, "Actual End Turn resolves environment and bite; one generated equipment card supplements the five-slot hand")
 	await process_frame
 	await process_frame
 	_check(main.get_viewport_rect().encloses(world.get_global_rect()) and main.get_viewport_rect().encloses(creature.get_global_rect()) and world.get_global_rect().end.x <= creature.get_global_rect().position.x, "Both World Cards fit side by side in viewport")
@@ -301,15 +297,15 @@ func _test_ui() -> void:
 	for name: String in ["AttackAction", "DefendAction", "EncounterAction", "InspectAction", "SearchNearbyAction"]:
 		_check(main.find_child(name, true, false) == null, "No standalone gameplay button: %s" % name)
 	_check_chinese(main)
-	(main.get_node("%NewLevel0") as Button).pressed.emit()
-	_check((main.get_node("TurnManager") as TurnManager).floor_data.id == &"floor_level_0" and not creature.visible and hand.get_child_count() == 5, "System New Run can return to REWORK A; it is not a gameplay floor transition")
+	_check(not (main.get_node("%DebugPanel") as Control).visible, "Mixed fixture renders through the same normal screen with developer tools hidden")
 	main.free()
 
 
 func _test_ui_full_encounter() -> void:
 	var main: Control = MAIN.instantiate() as Control
+	(main.get_node("TurnManager") as TurnManager).floor_data = FLOOR
+	(main.get_node("TurnManager") as TurnManager).starter_deck = DECK
 	root.add_child(main)
-	(main.get_node("%NewLevel6") as Button).pressed.emit()
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
 	var run: RunState = manager.run_state
 	var floor: FloorState = run.floor_state
@@ -350,7 +346,7 @@ func _test_ui_full_encounter() -> void:
 		(main.get_node("%EndTurn") as Button).pressed.emit()
 	_check(run.player_hp > 0 and floor.current_event == null and not floor.entity.active, "Real hand/target/End Turn controls can finish both demands alive")
 	_check(manager.run_state == run and run.floor_state == floor and run.deck_state == deck and deck.get_card_count() == 10, "Entire mixed playthrough preserves one Run/Floor/deck/ten-card inventory")
-	_check(floor.discovered_insight_ids == [FLOOR.entry_entity.rule_insight.id] and floor.cognition == 1, "Playable Situation route independently confirms Hound knowledge without requiring entity analysis")
+	_check(floor.discovered_insight_ids.has(FLOOR.entry_entity.rule_insight.id) and floor.discovered_insight_ids.has(FLOOR.fresh_events[0].clue_insight.id) and floor.cognition == 2, "Playable Situation provides Hound knowledge plus alternate light clue without manual pursuit/landmark actions")
 	await process_frame
 	main.free()
 
