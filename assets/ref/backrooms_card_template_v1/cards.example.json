@@ -1,0 +1,117 @@
+[
+  {
+    "id": "flashlight",
+    "kind": "item",
+    "name": "应急手电",
+    "cost": 1,
+    "type": "道具",
+    "art": "art_flashlight.png",
+    "description": "使用：照亮所在区域，清除 1 层黑暗。\n本回合探索范围 +1。",
+    "stats": [
+      {
+        "icon": "flashlight",
+        "value": "+1"
+      },
+      {
+        "icon": "gear",
+        "value": "0"
+      },
+      {
+        "icon": "stack",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "id": "stealth",
+    "kind": "skill",
+    "name": "屏息潜行",
+    "cost": 2,
+    "type": "技能",
+    "art": "art_hallway.png",
+    "description": "获得 5 点防御。\n若本回合未攻击，额外获得 2 点。",
+    "stats": [
+      {
+        "icon": "shield",
+        "value": "5"
+      },
+      {
+        "icon": "heart",
+        "value": "+2"
+      },
+      {
+        "icon": "search",
+        "value": "0"
+      }
+    ]
+  },
+  {
+    "id": "listener",
+    "kind": "entity",
+    "name": "窃听者",
+    "cost": 4,
+    "type": "实体",
+    "art": "art_listener.png",
+    "description": "遭遇：你发出的声音会吸引它。\n本回合使用第 3 张牌时，威胁 +1。",
+    "stats": [
+      {
+        "icon": "alert",
+        "value": "3"
+      },
+      {
+        "icon": "search",
+        "value": "4"
+      },
+      {
+        "icon": "arrow",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "id": "flicker",
+    "kind": "event",
+    "name": "灯光闪烁",
+    "cost": 0,
+    "type": "事件",
+    "art": "art_flicker.png",
+    "description": "环境：本回合视野 -1。\n如果你持有照明道具，可忽略此效果。",
+    "stats": [
+      {
+        "icon": "alert",
+        "value": "2"
+      },
+      {
+        "icon": "gear",
+        "value": "3"
+      },
+      {
+        "icon": "stack",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "id": "level0",
+    "kind": "location",
+    "name": "泛黄走廊",
+    "cost": 0,
+    "type": "场景",
+    "art": "art_level0.png",
+    "description": "区域：旧地毯吸收了所有脚步声。\n探索时，有机会发现补给。",
+    "stats": [
+      {
+        "icon": "search",
+        "value": "1"
+      },
+      {
+        "icon": "shield",
+        "value": "2"
+      },
+      {
+        "icon": "stack",
+        "value": "1"
+      }
+    ]
+  }
+]

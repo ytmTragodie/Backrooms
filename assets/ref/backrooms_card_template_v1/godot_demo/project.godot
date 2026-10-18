@@ -1,0 +1,16 @@
+; Godot 4 reusable Backrooms card prototype
+config_version=5
+
+[application]
+config/name="Backrooms Card Kit - Universal Demo"
+run/main_scene="res://main.tscn"
+
+[display]
+window/size/viewport_width=1200
+window/size/viewport_height=970
+window/stretch/mode="canvas_items"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false

@@ -1,0 +1,139 @@
+{
+  "design_size": [
+    750,
+    1050
+  ],
+  "artwork": [
+    45,
+    86,
+    660,
+    540
+  ],
+  "background": [
+    0,
+    0,
+    750,
+    1050
+  ],
+  "frame": [
+    0,
+    0,
+    750,
+    1050
+  ],
+  "cost_medallion": [
+    46,
+    34,
+    116,
+    116
+  ],
+  "archive_id": [
+    495,
+    41,
+    175,
+    40
+  ],
+  "name_panel": [
+    63,
+    624,
+    624,
+    106
+  ],
+  "name_text": [
+    101,
+    640,
+    460,
+    65
+  ],
+  "type_panel": [
+    536,
+    645,
+    145,
+    69
+  ],
+  "description_panel": [
+    63,
+    746,
+    624,
+    180
+  ],
+  "description_text": [
+    104,
+    769,
+    535,
+    139
+  ],
+  "stat_panels": [
+    [
+      66,
+      936,
+      194,
+      95
+    ],
+    [
+      278,
+      936,
+      194,
+      95
+    ],
+    [
+      490,
+      936,
+      194,
+      95
+    ]
+  ],
+  "stat_icons": [
+    [
+      84,
+      950,
+      64,
+      64
+    ],
+    [
+      296,
+      950,
+      64,
+      64
+    ],
+    [
+      508,
+      950,
+      64,
+      64
+    ]
+  ],
+  "stat_values": [
+    [
+      154,
+      954,
+      88,
+      56
+    ],
+    [
+      366,
+      954,
+      88,
+      56
+    ],
+    [
+      578,
+      954,
+      88,
+      56
+    ]
+  ],
+  "layer_order": [
+    "background",
+    "artwork",
+    "frame",
+    "name_panel",
+    "description_panel",
+    "stat_panels",
+    "cost_medallion",
+    "type_panel",
+    "icons",
+    "dynamic_text"
+  ],
+  "note": "No text is baked into shared UI assets; original AI illustration samples may include camera noise."
+}
