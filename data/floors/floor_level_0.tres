@@ -18,3 +18,4 @@ display_name = "零层"
 fresh_events = Array[ExtResource("2_event")]([ExtResource("3_humming"), ExtResource("4_marks"), ExtResource("5_corner")])
 resource_nodes = Array[ExtResource("6_node")]([ExtResource("7_supply"), ExtResource("8_battery"), ExtResource("9_scrap")])
 cutout_destinations = Array[Resource]([ExtResource("10_destination")])
+card_first_exploration = true

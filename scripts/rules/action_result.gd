@@ -19,6 +19,14 @@ var threat_reason: StringName
 var event_interaction: StringName
 var event_information: Array[String] = []
 var event_resolved: bool = false
+var event_target: EventInstance
+var explore_base: int = 0
+var explore_bonus: int = 0
+var explore_applied: int = 0
+var explore_after: int = -1
+var clue_revealed: bool = false
+var pressure_checked: bool = false
+var pressure_stress: int = 0
 var resource_discovered_id: StringName
 var resource_looted_id: StringName
 var supply_delta: int = 0

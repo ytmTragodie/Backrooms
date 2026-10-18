@@ -66,9 +66,9 @@ func end_turn() -> ActionResult:
 	return result
 
 
-func request_play_card(card: CardInstance) -> ActionResult:
+func request_play_card(card: CardInstance, event: EventInstance = null, board: BoardState = null) -> ActionResult:
 	# 所有对外出牌请求统一经过这里，避免提交成功却漏发界面通知。
-	var result: ActionResult = RuleResolver.resolve(PlayCardCommand.new(card), run_state, card_system, floor_data)
+	var result: ActionResult = RuleResolver.resolve(PlayCardCommand.new(card, event, board), run_state, card_system, floor_data)
 	# 完整提交后才通知；失败仅发布结果，不伪装成一次状态变化。
 	if result.success:
 		state_changed.emit()

@@ -1,20 +1,98 @@
 # 后室：切出 Demo
 
-> **迁移状态：CARD-FIRST V2 已成为权威设计，玩法代码尚未迁移。**
-> 下文描述 Phase 1–8 旧构建，保留用于复现与回归；其中独立检查、搜刮、装备、
-> 地标、开关灯和切出按钮已被新方向废弃，不是后续实现规范。
-> 当前设计见 [GDD.md](docs/GDD.md)，迁移分类见 [MIGRATION_PLAN.md](docs/MIGRATION_PLAN.md)。
+当前主场景已完成 **REWORK A：Card-First V2.1 零层探索核心**。
+打开 project.godot，按 F5：上方状态、中央局势世界牌、下方五张玩家手牌。
+同一个 RunState、TurnManager、3 AP、抽弃洗牌循环继续工作。未启动 REWORK B。
 
-Godot 4.x、Compatibility、类型化 GDScript。打开 `project.godot`，按 F5 运行。
-当前实现 Phase 1–8：零层探索与有限搜刮 → 切出 → 六层猎犬／笑魇遭遇 → 再次切出到测试终点。
-三格携带装备在本局中持续保留，独立于抽弃牌循环；没有独立战斗场景或第二套战斗 AP。
+## 权威文档与实际文件名
 
-## 权威文档
+遵循 Agents.md 和用户更新后的四份 V2.1 文档：
 
-遵循 AGENTS.md、docs/ARCHITECTURE.md、docs/CODING_RULES.md 与新建的 docs/GDD.md。
-`docs/Backrooms_Card_Roguelike_GDD_v0.4_Demo_Baseline.docx` 仅保留为历史设计资料，
-不再是当前规则源。当前用户任务优先；下文数值、卡组、按钮流程和测试结果是旧原型说明。
-本轮仅更新文档，没有实现 BoardState、Explore 进度或世界卡牌界面。
+- [GDD](docs/GDD_CARD_FIRST_V2_1.md)
+- [Architecture](docs/ARCHITECTURE_CARD_FIRST_V2_1.md)
+- [Coding Rules](docs/CODING_RULES_CARD_FIRST_V2_1.md)
+- [Migration Plan](docs/MIGRATION_PLAN_CARD_FIRST_V2_1.md)
+
+本仓库当前四份文档带版本后缀，未擅自改名或补入另一份权威文本。
+其中尚未迁移的实体、装备、资源、切出规则仍为旧原型，不能据此宣称全部 v2 已完成。
+
+## REWORK A：实际玩法与原型选择
+
+- BoardState 持有唯一 active_event。FloorState.current_event 是只读转发；UI 不保存进度副本。
+- 玩家牌与 Event 世界牌仍是不同的领域类型；Event 从不进入玩家牌区。
+- 主场景使用 exploration_deck.tres：十张观察／搜索／深入搜索，开局抽五张。
+- 观察：1 AP、2 Explore、OBSERVE。搜索：1 AP、3 Explore、Threat +1、SEARCH。
+- 深入搜索：2 AP、5 Explore、Threat +1、SEARCH/NOISE；不会暗中调用旧资源搜刮逻辑。
+- 三张零层局势均为 6 调查完成、3 调查揭示线索；异常嗡鸣对 OBSERVE 额外 +1。
+- 未解局势本回合完全未推进时，结束回合压力 +1；推进过则免于该局势压力。
+  此后果与既有楼层滞留／实体意图在同一个解析结果内规划，不另建事件回合。
+- 进度和线索跨回合保留。解决后留在桌面显示结果，结束回合恢复 3 AP、抽至五张时补入下一张。
+- 溢出调查只截到当前阈值，不转移到下一事件；里程碑与唯一 Insight 只领奖一次。
+- 点击世界牌只选择／查看，不能执行玩法；零层旧 inspect/search_nearby/observe/deep_search
+  等独立探索命令返回 card_required，直接绕过 UI 调用也不会扣 AP 或推进调查。
+- 目标同时携带事件实例与 Board 引用；缺少、过期、其他访问或已解决目标不消耗牌、AP、风险或 RNG。
+- 手电／撬棍／杏仁水依旧开局装入 RunState；本界面没有它们的主动按钮，也没有制作／升级／奖励。
+
+所有玩家文字为简体中文；Explore、OBSERVE 等英文只用于数据和技术日志。
+新效果以 CardData.explore_amount/threat_cost/tags 表达；旧效果枚举与 exploration_action
+留给未迁移兼容路径，REWORK A 的结算结果是实际 explore，不是成功占位 no-op。
+
+## REWORK A：手动验证
+
+1. F5：生命 30、压力 0、威胁 0、认知 0、行动点 3、回合 1；中央为异常嗡鸣 0/6，手牌五张。
+2. 点击中央世界牌：只有选择提示，AP、牌区、调查进度均不变。
+3. 打出第一张观察：花 1 AP，调查 0 → 3，揭示线索；认知仍为 0。
+4. 打出搜索：再花 1 AP，调查 3 → 6，威胁 +1、认知 +1，显示已解决。
+   其余手牌不能继续调查这个已解决目标；不会通过移牌伪造成功。
+5. 结束回合：同一局恢复 3 AP、抽至五张，下一张局势从 0/6 开始；旧已解局势不再施加压力。
+6. 不打牌直接结束回合：压力 +1，当前局势不换；再调查一次并结束回合，进度保留且当回合免于压力。
+7. 对无 OBSERVE 加成的局势打观察，只增加 2；深入搜索增加 5、花 2 AP、威胁 +1。
+8. 用同一副牌解决三张局势，确认各出现一次、认知最终 3、牌组总数始终 10。
+   Fresh 耗尽后明确显示本次调查结束；没有伪造 Residual、无限奖励或自动离层。
+
+## 验证命令与覆盖
+
+从项目目录执行，将 godot 换成本机控制台路径：
+
+```powershell
+godot --headless --path . --editor --quit
+godot --headless --path . --script res://tests/rework_a_validation.gd
+godot --headless --path . --script res://tests/phase_1_validation.gd
+godot --headless --path . --script res://tests/phase_2_validation.gd
+godot --headless --path . --script res://tests/phase_3_validation.gd
+godot --headless --path . --script res://tests/phase_4_validation.gd
+godot --headless --path . --script res://tests/phase_5_validation.gd
+godot --headless --path . --script res://tests/phase_6_validation.gd
+godot --headless --path . --script res://tests/phase_7_validation.gd
+godot --headless --path . --script res://tests/phase_8_validation.gd
+godot --headless --path . --quit-after 3
+git diff --check
+```
+
+REWORK A 检查覆盖实例所有权、基础与标签调查、卡牌风险、跨回合进度与压力、同回合压力去重、
+跨越两阈值、唯一 Insight 与上限、Fresh 条件／耗尽、过期／跨访问目标、坏数据与失败快照、
+完整提交后的通知、旧 API 拒绝、真实 UI 按钮完整流程、中文和视口布局。
+Phase 1–3 的状态、费用、守恒、RNG、失败事务与通知顺序覆盖继续保留；UI 断言适配新主屏幕。
+零 AP Wait 和占位伤害只留在早期无楼层夹具，不是新探索牌组内容。
+检查日志中的 SCRIPT ERROR 与泄漏，不能只看退出码；本环境仍有系统证书存储读取错误。
+
+## 保留的旧路径与限制
+
+旧 Main 场景／UI 移为 scenes/main/LegacyMain.tscn 与 scripts/ui/legacy_main.gd，
+使用 floor_level_0_legacy.tres（同领域定义、关闭本次调查规则）。它不在新主屏幕提供入口，
+仅用于尚未迁移的 Phase 4–8 回归与独立打开的历史验证。测试只修改这两类资源引用；不削弱原断言。
+
+旧实体、装备、切出、资源领域系统和直接命令仍保留。原项目的固定 starter_deck／demo_deck
+未改内容；旧界面仍可验证猎犬、笑魇、物资与切出。这些路径不代表符合全套 Card-First 规范。
+完整资源、装备动作牌、实体世界牌 UI、离层牌与防卡手保障都属于后续工作，本次不实施。
+
+三个 Fresh 局势调查完后，新主界面停在有限探索结果；暂不能通过该界面切入六层。
+未增加 Residual、卡牌奖励、升级、最终平衡或更多 Pressure 类型。忽视压力可通过任意一次
+真实推进避免，这是本轮最小原型，尚未验证长期风险节奏。几何布局经过无窗口测试，未做图形窗口目视验收。
+
+## Phase 1–8 历史构建说明（仅兼容场景）
+
+> 以下保留旧原型信息与手动流程，只适用于 LegacyMain 场景，不能当作新主场景的玩法说明。
 
 ## 状态与结算
 
@@ -255,33 +333,52 @@ Phase 8 覆盖通用 HP、照明跨回合升级、熄灯纠正、不照明规避
 笑魇采用明确的可选后续遭遇，不实现完整实体刷新池、危险阈值随机生成、弱光／红光分类。
 压力尚不执行精神崩溃后果。参数仍为原型，尚未做图形窗口人工目视验收。
 
-## Phase 8 变更文件清单
-
-以下为本次 Phase 8 增量；未修改 Phase 1–7 测试或项目配置。
+## REWORK A 变更文件清单
 
 ### 新增
 
-- `data/entities/entity_smiler.tres`
-- `data/insights/insight_level6_light_attracts.tres`
-- `tests/phase_8_validation.gd`
-- `tests/phase_8_validation.gd.uid`
+- `data/cards/card_search.tres`
+- `data/cards/exploration_deck.tres`
+- `data/floors/floor_level_0_legacy.tres`
+- `scenes/main/LegacyMain.tscn`
+- `scripts/floors/board_state.gd`
+- `scripts/floors/board_state.gd.uid`
+- `scripts/ui/legacy_main.gd`
+- `scripts/ui/legacy_main.gd.uid`
+- `tests/rework_a_validation.gd`
+- `tests/rework_a_validation.gd.uid`
 
 ### 修改
 
 - `Readme.md`
-- `data/floors/floor_level_6.tres`
+- `data/cards/card_deep_search.tres`
+- `data/cards/card_observe.tres`
+- `data/events/event_level0_humming.tres`
+- `data/events/event_level0_wall_marks.tres`
+- `data/events/event_level0_wrong_corner.tres`
+- `data/floors/floor_level_0.tres`
+- `docs/MIGRATION_PLAN_CARD_FIRST_V2_1.md`
 - `scenes/main/Main.tscn`
-- `scripts/cutout/cutout_system.gd`
-- `scripts/entities/entity_data.gd`
-- `scripts/entities/entity_instance.gd`
-- `scripts/entities/entity_system.gd`
-- `scripts/equipment/equipment_system.gd`
+- `scripts/cards/card_data.gd`
+- `scripts/events/event_data.gd`
+- `scripts/events/event_instance.gd`
+- `scripts/events/event_system.gd`
 - `scripts/floors/floor_data.gd`
-- `scripts/floors/insight_system.gd`
+- `scripts/floors/floor_state.gd`
 - `scripts/rules/action_result.gd`
+- `scripts/rules/play_card_command.gd`
 - `scripts/rules/rule_resolver.gd`
+- `scripts/turns/turn_manager.gd`
 - `scripts/ui/main.gd`
+- `tests/phase_1_validation.gd`
+- `tests/phase_2_validation.gd`
+- `tests/phase_3_validation.gd`
+- `tests/phase_4_validation.gd`
+- `tests/phase_5_validation.gd`
+- `tests/phase_6_validation.gd`
+- `tests/phase_7_validation.gd`
+- `tests/phase_8_validation.gd`
 
 ### 删除
 
-无。
+无。旧 UI 保留为显式隔离的 LegacyMain，而非新主屏幕的并行入口。

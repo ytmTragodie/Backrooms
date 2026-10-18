@@ -1,13 +1,13 @@
 extends SceneTree
 
-const LEVEL_0: FloorData = preload("res://data/floors/floor_level_0.tres")
+const LEVEL_0: FloorData = preload("res://data/floors/floor_level_0_legacy.tres")
 const LEVEL_6: FloorData = preload("res://data/floors/floor_level_6.tres")
 const FLASHLIGHT: EquipmentData = preload("res://data/equipment/equip_flashlight.tres")
 const CROWBAR: EquipmentData = preload("res://data/equipment/equip_crowbar.tres")
 const WATER: EquipmentData = preload("res://data/equipment/equip_almond_water.tres")
 const OBSERVE: CardData = preload("res://data/cards/card_observe.tres")
 const WAIT: CardData = preload("res://data/cards/card_wait.tres")
-const MAIN: PackedScene = preload("res://scenes/main/Main.tscn")
+const MAIN: PackedScene = preload("res://scenes/main/LegacyMain.tscn")
 
 var _checks: int = 0
 var _failures: int = 0

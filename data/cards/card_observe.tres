@@ -8,3 +8,6 @@ id = &"card_observe"
 display_name = "观察"
 ap_cost = 1
 exploration_action = &"observe"
+explore_amount = 2
+threat_cost = 0
+tags = Array[StringName]([&"OBSERVE"])

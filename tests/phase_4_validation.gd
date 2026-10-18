@@ -1,7 +1,7 @@
 extends SceneTree
 
-const LEVEL_0: FloorData = preload("res://data/floors/floor_level_0.tres")
-const MAIN_SCENE: PackedScene = preload("res://scenes/main/Main.tscn")
+const LEVEL_0: FloorData = preload("res://data/floors/floor_level_0_legacy.tres")
+const MAIN_SCENE: PackedScene = preload("res://scenes/main/LegacyMain.tscn")
 const OBSERVE: CardData = preload("res://data/cards/card_observe.tres")
 const DEEP_SEARCH: CardData = preload("res://data/cards/card_deep_search.tres")
 const WAIT: CardData = preload("res://data/cards/card_wait.tres")

@@ -220,6 +220,8 @@ func _test_snapshot_detects_internal_mutation() -> void:
 		"ap_cost": 2,
 		"effect_type": CardData.EffectType.PLACEHOLDER_DAMAGE,
 		"placeholder_damage": 2,
+		"explore_amount": 4,
+		"threat_cost": 1,
 	}
 	for property_name: String in changed_values:
 		var original_value: Variant = definition.get(property_name)
@@ -246,29 +248,26 @@ func _test_debug_ui() -> void:
 	var main: Control = MAIN_SCENE.instantiate() as Control
 	root.add_child(main)
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
-	var hand: VBoxContainer = main.get_node("CenterContainer/Messages/Hand") as VBoxContainer
-	var status: Label = main.get_node("CenterContainer/Messages/Status") as Label
-	var stats: Label = main.get_node("CenterContainer/Messages/RunStats") as Label
-	var end_turn: Button = main.get_node("CenterContainer/Messages/EndTurn") as Button
-	var observe_button: Button = hand.get_child(0) as Button
-	observe_button.pressed.emit()
-	_check(status.text == "已打出观察；消耗行动点：1；认知：+0；威胁：+0。", "UI presents the Observe result")
-	_check(manager.run_state.ap == 2 and manager.run_state.cognition == 0, "UI Observe request uses domain AP without granting Cognition")
-	var struggle_button: Button = hand.get_child(0) as Button
-	struggle_button.pressed.emit()
-	_check(status.text == "已打出挣扎；消耗行动点：1；认知：+0；威胁：+0。预期伤害：2（尚未结算）。", "UI presents the placeholder damage result")
-	var second_observe: Button = hand.get_child(0) as Button
-	second_observe.pressed.emit()
+	var hand: HBoxContainer = main.get_node("%Hand") as HBoxContainer
+	var status: Label = main.get_node("%Status") as Label
+	var stats: Label = main.get_node("%RunStats") as Label
+	var end_turn: Button = main.get_node("%EndTurn") as Button
+	(hand.get_child(0) as Button).pressed.emit()
+	_check(status.text.contains("已打出观察") and status.text.contains("调查：+3") and manager.run_state.ap == 2, "UI presents the actual Explore result and cost")
+	_check(manager.run_state.cognition == 0, "Clue progress is not automatic Cognition")
+	(hand.get_child(0) as Button).pressed.emit()
+	_check(status.text.contains("已打出搜索") and status.text.contains("认知：+1") and manager.run_state.ap == 1, "Completion commits real Insight and AP before UI refresh")
 	var before_failure: Dictionary = _snapshot(manager.run_state)
-	var rejected_button: Button = hand.get_child(0) as Button
-	rejected_button.pressed.emit()
-	_check(status.text == "行动失败：行动点不足。" and _snapshot(manager.run_state) == before_failure, "UI rejection reports the reason with zero gameplay mutation")
-	var wait_button: Button = hand.get_child(1) as Button
-	wait_button.pressed.emit()
-	_check(status.text == "已打出等待；消耗行动点：0；认知：+0；威胁：+0。", "UI Wait request works at zero AP")
+	(hand.get_child(0) as Button).pressed.emit()
+	_check(status.text.contains("该局势已解决") and _snapshot(manager.run_state) == before_failure, "Resolved-target UI request has no partial card/AP commit")
 	end_turn.pressed.emit()
 	_check(manager.run_state.turn_number == 2 and manager.run_state.ap == 3 and hand.get_child_count() == 5, "Resolver integration preserves End Turn and redraw")
-	_check(stats.text.contains("回合：2") and stats.text.contains("行动点：3"), "UI refresh remains synchronized with RunState")
+	manager.run_state.ap = 0
+	before_failure = _snapshot(manager.run_state)
+	(hand.get_child(0) as Button).pressed.emit()
+	_check(status.text == "行动失败：行动点不足。" and _snapshot(manager.run_state) == before_failure, "Unaffordable Player Card reports rejection without gameplay mutation")
+	end_turn.pressed.emit()
+	_check(stats.text.contains("回合：3") and stats.text.contains("行动点：3"), "UI refresh remains synchronized with the same RunState")
 	main.free()
 
 
@@ -304,6 +303,9 @@ func _snapshot_cards(pile: Array[CardInstance]) -> Array[Dictionary]:
 			record["effect_value"] = definition.effect_value
 			record["exploration_action"] = definition.exploration_action
 			record["placeholder_damage"] = definition.placeholder_damage
+			record["explore_amount"] = definition.explore_amount
+			record["threat_cost"] = definition.threat_cost
+			record["tags"] = definition.tags.duplicate()
 		snapshots.append(record)
 	return snapshots
 

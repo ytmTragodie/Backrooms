@@ -12,7 +12,11 @@ var cognition: int = 0
 var discovered_insight_ids: Array[StringName] = []
 var remaining_fresh_events: Array[StringName] = []
 var seen_event_ids: Array[StringName] = []
-var current_event: EventInstance
+var board_state: BoardState = BoardState.new()
+# 旧领域读取暂保留只读转发；调度器只写 BoardState，不维护第二份事件引用。
+var current_event: EventInstance:
+	get:
+		return board_state.active_event
 # ID 从实例派生，避免两份可写的“当前事件”状态。
 var current_event_id: StringName:
 	get:
@@ -20,7 +24,11 @@ var current_event_id: StringName:
 var floor_flags: Array[StringName] = []
 var resource_nodes: Array[ResourceNode] = []
 var cutout_state: CutOutState = CutOutState.new()
-var entity: EntityInstance
+var entity: EntityInstance:
+	get:
+		return board_state.entity
+	set(value):
+		board_state.entity = value
 var player_block: int = 0
 var dark_observation_used: bool = false
 var light_active: bool = false

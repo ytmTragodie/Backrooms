@@ -74,13 +74,13 @@ func _test_main_scene() -> void:
 	var main: Control = MAIN_SCENE.instantiate() as Control
 	root.add_child(main)
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
-	var stats: Label = main.get_node("CenterContainer/Messages/RunStats") as Label
-	var end_turn: Button = main.get_node("CenterContainer/Messages/EndTurn") as Button
-	_check(stats.text == "生命：30\n压力：0\n威胁：0\n认知：0\n回合：1\n行动点：3", "UI reads the initial domain state")
+	var stats: Label = main.get_node("%RunStats") as Label
+	var end_turn: Button = main.get_node("%EndTurn") as Button
+	_check(stats.text.contains("生命：30") and stats.text.contains("压力：0") and stats.text.contains("回合：1") and stats.text.contains("行动点：3"), "UI reads the initial domain state")
 	manager.run_state.ap = 0
 	end_turn.pressed.emit()
 	_check(manager.run_state.turn_number == 2 and manager.run_state.ap == 3, "Button forwards End Turn to the manager")
-	_check(stats.text == "生命：30\n压力：0\n威胁：0\n认知：0\n回合：2\n行动点：3", "UI refreshes from state after the command")
+	_check(stats.text.contains("回合：2") and stats.text.contains("行动点：3") and stats.text.contains("压力：1"), "UI refreshes from state after the command")
 	end_turn.pressed.emit()
 	_check(manager.run_state.turn_number == 3, "A second button press advances once")
 	_check(stats.text.contains("回合：3"), "UI stays synchronized on repeated commands")

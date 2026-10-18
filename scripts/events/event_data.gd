@@ -9,6 +9,16 @@ extends Resource
 @export var once_per_instance: bool = true
 @export_range(1, 100, 1, "or_greater") var weight: int = 1
 @export var action_results: Array[EventActionData] = []
+@export var tags: Array[StringName] = []
+@export_multiline var objective_text: String
+@export var explore_threshold: int = 0
+@export var clue_threshold: int = 0
+@export_multiline var clue_text: String
+@export var completion_insight: InsightData
+@export var bonus_tag: StringName
+@export var explore_bonus: int = 0
+# 首轮只实现一种可读压力：未推进的未解局势在回合末增加压力。
+@export var neglect_stress: int = 0
 
 
 func has_action(action: StringName) -> bool:

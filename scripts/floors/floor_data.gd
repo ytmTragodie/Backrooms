@@ -4,6 +4,8 @@ extends Resource
 @export var id: StringName
 @export var display_name: String
 @export var fresh_events: Array[EventData] = []
+# 声明当前访问使用局势调查规则；未迁移楼层保留旧领域行为。
+@export var card_first_exploration: bool = false
 @export var overstay_start_turn: int = 3
 @export var overstay_interval: int = 2
 @export var resource_nodes: Array[ResourceNodeData] = []
@@ -41,6 +43,8 @@ func find_insight(insight_id: StringName) -> InsightData:
 		if definition != null and definition.rule_insight != null and definition.rule_insight.id == insight_id:
 			return definition.rule_insight
 	for event: EventData in fresh_events:
+		if event.completion_insight != null and event.completion_insight.id == insight_id:
+			return event.completion_insight
 		for rule: EventActionData in event.action_results:
 			if rule.insight != null and rule.insight.id == insight_id:
 				return rule.insight

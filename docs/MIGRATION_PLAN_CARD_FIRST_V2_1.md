@@ -1,11 +1,33 @@
 # CARD-FIRST V2.1 — Migration Plan
 
-日期：2026-10-17。状态：文档方向已更新；下面所有玩法迁移步骤均 **NOT STARTED**。V2.1 明确保留环境事件，并把它们收束为 Situation/Environment World Cards：事件与实体共享同一牌局、同一手牌、同一回合。
-本任务不修改任何玩法脚本、场景、内容 Resource、测试或项目设置，也不构成下一阶段实现授权。
-设计规范见 [GDD.md](GDD.md)，职责与状态归属见 [ARCHITECTURE.md](ARCHITECTURE.md)，
-实现约束见 [CODING_RULES.md](CODING_RULES.md)。优先级遵循 AGENTS.md。
+日期：2026-10-18。状态：**REWORK A 零层 Card-First 探索核心已实现**；实体、装备、资源与切出卡牌化尚未迁移，未启动 REWORK B。V2.1 保留 Situation/Environment World Cards 与统一牌局。
+前次文档方向任务不修改玩法；本次 REWORK A 依据新的用户授权完成下列有限迁移，不构成后续阶段实现授权。
+设计规范见 [GDD.md](GDD_CARD_FIRST_V2_1.md)，职责与状态归属见 [ARCHITECTURE.md](ARCHITECTURE_CARD_FIRST_V2_1.md)，
+实现约束见 [CODING_RULES.md](CODING_RULES_CARD_FIRST_V2_1.md)。优先级遵循 AGENTS.md。
 
-## 1. 仓库审查基线
+## 0. REWORK A 已实现范围与选择
+
+- 主场景：状态栏、局势世界牌、五张玩家手牌、抽弃牌计数、结束回合。
+- BoardState 唯一持有 active_event；FloorState.current_event 为只读兼容读取。
+  现有单实体引用也经 BoardState 转发，不改实体算法、不实现双实体。
+- CardData 使用 explore_amount、threat_cost、tags 输出真实 Explore；观察 2、搜索 3／风险 1、
+  深搜 5／风险 1，费用 1／1／2。异常嗡鸣按 OBSERVE 标签额外 +1。
+- 三张零层局势：3 调查线索、6 调查完成与唯一 Insight；已知 Insight 不重复认知或准备收益。
+- 未解进度跨回合保留；同回合完全没有推进则回合末 Stress +1。
+  已推进或已解决不收该压力，同一楼层回合不重复结算。
+- 解决结果保留到结束回合，随后同一 TurnManager 补入下一符合条件的 Fresh；不立即跨牌转移溢出。
+- PlayCardCommand 携带实际手牌、事件实例与访问内 Board 引用，旧目标／已解决目标失败不消耗。
+- 新零层拒绝独立 inspect/search_nearby/observe/deep_search 等探索命令；新主屏幕没有旧主动按钮。
+- Phase 1–3 的领域不变量继续回归，UI 断言迁移到新屏幕；Phase 4–8 使用明确隔离的
+  LegacyMain 和 legacy 楼层配置继续验证，不修改它们的规则断言。
+- 玩家初始携带物、CutOut／资源／实体领域能力保留，未进入新主屏幕的主动玩法。
+- 三张 Fresh 耗尽后明确结束本次调查；没有 Residual、离层牌、完整资源／实体／装备迁移。
+
+`card_first_exploration` 是 FloorData 的访问规则配置，不是事件／战斗模式切换；
+不存在另一套 AP、手牌或时钟。Legacy 配置只是迁移期间旧内容的隔离夹具，待相应后续任务删除。
+本节记录当前进度；下列旧基线与计划继续保留供逐项迁移参考，未完成项不能宣称已落地。
+
+## 1. 迁移前仓库审查基线（历史记录）
 
 审查覆盖仓库已跟踪文件：Phase 1–8 脚本、数据、主场景、配置、测试、README、
 AGENTS.md、架构／编码规则，以及完整 v0.4 DOCX。初始工作区干净。
@@ -21,7 +43,7 @@ AGENTS.md、架构／编码规则，以及完整 v0.4 DOCX。初始工作区干�
 | v0.4 §31／§41／§43 | 旧锁定参数、唯一规则源、Canonical 字样仍可能覆盖新设计 | 仅历史资料；当前 Markdown 明确承接的规则才有权威性 |
 | 旧 README 与 Phase 测试 | 按钮流程、两次 Observe 旗标推进、占位效果是当前玩法合同 | 旧构建复现资料；逐项迁移，不作为 v2 设计依据 |
 
-### 1.2 当前代码事实（不是 v2 规则）
+### 1.2 REWORK A 之前的代码事实（历史，不是当前实现）
 
 - `scripts/cards/card_data.gd` 只有固定 EffectType、exploration_action 与 effect_value，
   没有通用 Explore、玩家牌标签或目标描述；NO_OP／PLACEHOLDER_DAMAGE 仍存在。
@@ -121,7 +143,7 @@ End Turn 等纯系统控制不在废弃范围；自动实体意图与楼层规�
 
 ## 6. 建议迁移顺序与每步退出条件
 
-这些是后续小步任务的建议边界，均需后续明确任务；不自动叫作 Phase 9 或一次性实施。
+这些是迁移建议边界；REWORK A 完成情况以 §0 为准，其余均需后续明确任务，不自动启动下一阶段。
 
 1. **先关闭设计缺口**：回答 §7 中首批阻塞问题，列出最小玩家牌、有效基线、Explore 接收与
    离层保障。不允许用隐藏按钮或无限免费牌替代设计。

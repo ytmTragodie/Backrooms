@@ -35,7 +35,7 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	var definition: CardData = card.definition
 	if definition == null or definition.id.is_empty():
 		return _fail(result, &"invalid_card_definition", card_id)
-	if definition.ap_cost < 0 or definition.placeholder_damage < 0 or definition.effect_value < 0:
+	if definition.ap_cost < 0 or definition.placeholder_damage < 0 or definition.effect_value < 0 or definition.explore_amount < 0 or definition.threat_cost < 0:
 		return _fail(result, &"invalid_card_definition", card_id)
 	if definition.effect_type not in [CardData.EffectType.NO_OP, CardData.EffectType.PLACEHOLDER_DAMAGE, CardData.EffectType.ATTACK, CardData.EffectType.BLOCK, CardData.EffectType.RUN]:
 		return _fail(result, &"unsupported_effect", card_id)
@@ -47,11 +47,24 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 		return _fail(result, &"invalid_card_definition", card_id)
 	if not definition.exploration_action.is_empty() and definition.effect_type != CardData.EffectType.NO_OP:
 		return _fail(result, &"invalid_card_definition", card_id)
+	var situation_play: bool = floor_data != null and floor_data.card_first_exploration
+	if situation_play:
+		if state.floor_state == null:
+			return _fail(result, &"floor_required", card_id)
+		if definition.explore_amount <= 0 or definition.effect_type != CardData.EffectType.NO_OP:
+			return _fail(result, &"unsupported_effect", card_id)
+		var target_error: StringName = EventSystem.validate_target(command, state.floor_state)
+		if not target_error.is_empty():
+			return _fail(result, target_error, card_id)
+	elif command.target_event != null or command.target_board != null:
+		return _fail(result, &"invalid_event_target", card_id)
 	var final_cost: int = card_ap_cost(definition, state, floor_data)
 	var dark_observation: bool = state.floor_state != null and state.floor_state.floor_flags.has(&"darkness") and not state.floor_state.light_active and not state.floor_state.dark_observation_used and definition.exploration_action == &"observe"
 	if state.ap < final_cost:
 		return _fail(result, &"insufficient_ap", card_id)
-	if not definition.exploration_action.is_empty():
+	if situation_play:
+		EventSystem.plan_explore(result, definition, state.floor_state, floor_data)
+	elif not definition.exploration_action.is_empty():
 		if definition.exploration_action != &"observe" and definition.exploration_action != &"deep_search":
 			return _fail(result, &"invalid_card_definition", card_id)
 		# 无楼层的早期测试夹具仍保留原型 no-op；有楼层时按事件条件解析。
@@ -76,7 +89,7 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	result.dark_observation = dark_observation
 	match definition.effect_type:
 		CardData.EffectType.NO_OP:
-			result.effect = &"no_op"
+			result.effect = &"explore" if situation_play else &"no_op"
 		CardData.EffectType.PLACEHOLDER_DAMAGE:
 			result.effect = &"damage" if contextual_attack else &"placeholder_damage"
 			result.damage_requested = definition.placeholder_damage
@@ -157,6 +170,8 @@ static func resolve_exploration(command: ExplorationCommand, state: RunState, da
 		return _fail(result, &"invalid_command", action)
 	if state.player_hp <= 0:
 		return _fail(result, &"run_ended", action)
+	if data != null and data.card_first_exploration and action in [&"inspect", &"search_nearby", &"observe", &"deep_search", &"search", &"explore"]:
+		return _fail(result, &"card_required", action)
 	var cost: int = 0
 	match action:
 		&"inspect", &"search_nearby", &"loot", &"prepare_cutout", &"cutout_safe", &"cutout_rushed", &"encounter", &"study_landmark":
@@ -197,6 +212,8 @@ static func _validate_floor_context(state: RunState, data: FloorData) -> StringN
 	var floor: FloorState = state.floor_state
 	if floor == null or data == null or floor.floor_id != data.id:
 		return &"invalid_floor_context"
+	if floor.board_state == null:
+		return &"invalid_event_context"
 	if data.is_placeholder:
 		return &"floor_inactive"
 	if floor.cognition < 0 or floor.cognition > FloorState.MAX_COGNITION or floor.threat < 0 or floor.threat > FloorState.MAX_THREAT or floor.turn_count < 1:
@@ -206,6 +223,10 @@ static func _validate_floor_context(state: RunState, data: FloorData) -> StringN
 	var error: StringName = CutOutSystem.validate_state(floor.cutout_state)
 	if not error.is_empty():
 		return error
+	if data.card_first_exploration:
+		error = EventSystem.validate_board(floor, data)
+		if not error.is_empty():
+			return error
 	error = ResourceNodeSystem.validate(floor, data)
 	return error if not error.is_empty() else EntitySystem.validate(floor, data)
 
@@ -247,6 +268,16 @@ static func _prepare_floor_action(result: ActionResult, action: StringName, stat
 	if not error.is_empty():
 		return error
 	var floor: FloorState = state.floor_state
+	if data.card_first_exploration:
+		# REWORK A 的回合后果仍在原解析器内规划；不会启动事件专用回合。
+		if action != &"end_turn":
+			return &"card_required"
+		EventSystem.plan_pressure(result, floor, data)
+		if floor.turn_count >= data.overstay_start_turn and (floor.turn_count - data.overstay_start_turn) % data.overstay_interval == 0:
+			result.threat_delta = mini(1, FloorState.MAX_THREAT - floor.threat)
+			result.threat_reason = &"overstay"
+		EntitySystem.plan_end_turn(result, state, data)
+		return &""
 	var event: EventData = data.find_event(floor.current_event_id)
 	if not floor.current_event_id.is_empty() and event == null:
 		return &"invalid_event_context"
@@ -328,7 +359,8 @@ static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
 		if floor.light_active:
 			floor.light_active = false
 			result.debug_lines.append("[LIGHT] expired reason=end_turn")
-	if floor.current_event != null and result.action_id != &"end_turn":
+	EventSystem.commit_situation(result, state)
+	if result.event_target == null and floor.current_event != null and result.action_id != &"end_turn":
 		var instance: EventInstance = floor.current_event
 		var previous_phase: StringName = instance.phase
 		if not result.event_interaction.is_empty():

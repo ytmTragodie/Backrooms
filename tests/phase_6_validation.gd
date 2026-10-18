@@ -8,7 +8,7 @@ const RUN: CardData = preload("res://data/cards/card_run.tres")
 const OBSERVE: CardData = preload("res://data/cards/card_observe.tres")
 const WAIT: CardData = preload("res://data/cards/card_wait.tres")
 const DEEP_SEARCH: CardData = preload("res://data/cards/card_deep_search.tres")
-const MAIN: PackedScene = preload("res://scenes/main/Main.tscn")
+const MAIN: PackedScene = preload("res://scenes/main/LegacyMain.tscn")
 
 var _checks: int = 0
 var _failures: int = 0
@@ -258,7 +258,7 @@ func _test_transactional_failures() -> void:
 	before = _snapshot(manager)
 	_reject(_play(manager, bad), &"invalid_card_definition", manager, before)
 	manager.free()
-	var source: FloorData = preload("res://data/floors/floor_level_0.tres").duplicate(false) as FloorData
+	var source: FloorData = preload("res://data/floors/floor_level_0_legacy.tres").duplicate(false) as FloorData
 	data = LEVEL_6.duplicate(false) as FloorData
 	data.entry_entity = HOUND.duplicate(false) as EntityData
 	data.entry_entity.max_hp = 0

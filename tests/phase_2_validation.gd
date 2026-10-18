@@ -162,27 +162,22 @@ func _test_debug_ui() -> void:
 	var main: Control = MAIN_SCENE.instantiate() as Control
 	root.add_child(main)
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
-	var hand: VBoxContainer = main.get_node("CenterContainer/Messages/Hand") as VBoxContainer
-	var counts: Label = main.get_node("CenterContainer/Messages/PileCounts") as Label
-	var stats: Label = main.get_node("CenterContainer/Messages/RunStats") as Label
-	var end_turn: Button = main.get_node("CenterContainer/Messages/EndTurn") as Button
-	_check(hand.get_child_count() == 5 and counts.text == "抽牌堆：5｜弃牌堆：0", "Debug UI displays the hand and pile counts")
-	var first_button: Button = hand.get_child(0) as Button
-	_check(first_button.text == "观察｜行动点：1｜打出", "Each card button presents its name, AP cost and Play command")
-	for expected_ap: int in [2, 1, 0]:
-		var button: Button = hand.get_child(0) as Button
-		button.pressed.emit()
-		_check(manager.run_state.ap == expected_ap and stats.text.contains("行动点：%d" % expected_ap), "Play button refreshes AP from domain state")
-	_check(hand.get_child_count() == 2 and counts.text == "抽牌堆：5｜弃牌堆：3", "Successful commands refresh the hand and discard count")
-	var rejected_button: Button = hand.get_child(0) as Button
-	rejected_button.pressed.emit()
-	_check(hand.get_child_count() == 2 and manager.run_state.ap == 0, "Unaffordable button command preserves hand and AP")
-	var wait_button: Button = hand.get_child(1) as Button
-	wait_button.pressed.emit()
-	_check(hand.get_child_count() == 1 and manager.run_state.ap == 0, "Wait button succeeds at zero AP")
+	var hand: HBoxContainer = main.get_node("%Hand") as HBoxContainer
+	var counts: Label = main.get_node("%PileCounts") as Label
+	var stats: Label = main.get_node("%RunStats") as Label
+	var end_turn: Button = main.get_node("%EndTurn") as Button
+	_check(hand.get_child_count() == 5 and counts.text == "抽牌堆：5｜弃牌堆：0", "Card UI displays five real Player Cards and pile counts")
+	_check((hand.get_child(0) as Button).text.contains("观察") and (hand.get_child(0) as Button).text.contains("行动点：1"), "Player Card shows its name and cost")
+	for expected_ap: int in [2, 1]:
+		(hand.get_child(0) as Button).pressed.emit()
+		_check(manager.run_state.ap == expected_ap and stats.text.contains("行动点：%d" % expected_ap), "Real card commands deduct AP exactly once and refresh UI")
+	_check(hand.get_child_count() == 3 and counts.text == "抽牌堆：5｜弃牌堆：2", "Successful commands refresh hand/discard without moving the World Card")
+	var card_count: int = manager.run_state.deck_state.get_card_count()
+	(hand.get_child(0) as Button).pressed.emit()
+	_check(hand.get_child_count() == 3 and manager.run_state.ap == 1 and card_count == 10, "Resolved-target rejection preserves AP and the ten-card inventory")
 	end_turn.pressed.emit()
-	_check(manager.run_state.turn_number == 2 and manager.run_state.ap == 3, "UI End Turn preserves Phase 1 behavior")
-	_check(hand.get_child_count() == 5 and stats.text.contains("回合：2"), "UI displays the newly drawn hand and turn")
+	_check(manager.run_state.turn_number == 2 and manager.run_state.ap == 3, "UI End Turn preserves Phase 1 lifecycle")
+	_check(hand.get_child_count() == 5 and stats.text.contains("回合：2"), "Same deck redraws five cards for the next Situation")
 	main.free()
 
 
