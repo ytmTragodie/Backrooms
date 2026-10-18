@@ -68,3 +68,6 @@ var light_extinguished: bool = false
 var stress_restored: int = 0
 var hp_restored: int = 0
 var debug_lines: Array[String] = []
+var rewards_created: Array[CardReward] = []
+var reward_claimed: CardReward
+var deck_card_changed: CardInstance

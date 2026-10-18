@@ -62,5 +62,5 @@ func tests() -> void:
 	reject(owner, generated_request(owner, &"light"), &"equipment_depleted")
 	check(owner.run_state.floor_state.entity.state == &"HIDDEN" and not owner.run_state.floor_state.entity.light_exposed, "Failed generated LIGHT cannot expose Smiler")
 	owner.end_turn()
-	check(generated(owner, &"light") == null and owner.run_state.floor_state.entity.alive and owner.run_state.cognition == 0, "Empty source prevents regenerated LIGHT and fake Insight")
+	check(generated(owner, &"light") == null and owner.run_state.floor_state.entity == null and owner.run_state.floor_state.resolved_entity_ids.has(data.entry_entity.id) and owner.run_state.cognition == 0, "Empty source prevents regenerated LIGHT and fake Insight")
 	owner.free()

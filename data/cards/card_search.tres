@@ -12,3 +12,5 @@ explore_amount = 3
 threat_cost = 1
 tags = Array[StringName]([&"SEARCH"])
 collects_resources = true
+
+target_kinds = 1

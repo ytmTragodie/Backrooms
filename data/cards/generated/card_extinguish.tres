@@ -9,3 +9,5 @@ display_name = "熄灯"
 ap_cost = 1
 source = 1
 effect_type = 6
+
+target_kinds = 0

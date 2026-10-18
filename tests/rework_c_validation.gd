@@ -172,7 +172,7 @@ func _test_smiler_cards() -> void:
 	owner.end_turn()
 	check(smiler.alive and not smiler.active and smiler.state == &"WITHDRAWN" and state.cognition == 1, "Correct explicit Extinguish resolves Smiler alive and confirms unique behavior Insight")
 	owner.end_turn()
-	check(state.floor_state.entity == smiler and state.cognition == 1, "World follow-up cannot repeatedly respawn or repeat unique reward")
+	check(state.floor_state.entity == null and state.floor_state.resolved_entity_ids.has(smiler.entity_id) and state.cognition == 1, "World follow-up cannot repeatedly respawn or repeat unique reward")
 	owner.free()
 	data = fixture(LEVEL_6)
 	data.entry_entity = data.followup_entity
@@ -396,6 +396,9 @@ func _test_retired_inputs() -> void:
 
 func _test_full_ui_run() -> void:
 	var main: Control = MAIN.instantiate() as Control
+	var legacy: FloorData = fixture(LEVEL_0)
+	legacy.cutout_destinations = [fixture(LEVEL_6)]
+	(main.get_node("TurnManager") as TurnManager).floor_data = legacy
 	root.add_child(main)
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
 	var state: RunState = owner.run_state
@@ -435,7 +438,7 @@ func _test_full_ui_run() -> void:
 		(main.get_node("%EndTurn") as Button).pressed.emit()
 	check(state.player_hp > 0 and not hound.active, "One-semantic normal/equipment cards defeat Hound using common AP/turn loop")
 	for turn: int in range(8):
-		if state.floor_state.entity.entity_id == LEVEL_6.followup_entity.id:
+		if state.floor_state.entity != null and state.floor_state.entity.entity_id == LEVEL_6.followup_entity.id:
 			break
 		if generated(owner, &"light") != null and state.ap >= 1:
 			click_generated(main, &"light")

@@ -146,8 +146,7 @@ static func commit(result: ActionResult, state: RunState) -> void:
 		return
 	state.last_cutout_attempt = result.cutout_attempt
 	state.stress += result.stress_delta
-	if result.commit_rng:
-		state.rng.state = result.rng_state_after
+	# RNG 由 RuleResolver 与奖励草案一起提交，避免两个系统分别写同一随机状态。
 	result.debug_lines.append("[CUTOUT] attempt type=%s roll=%d stress=+%d" % [result.cutout_attempt.attempt_type, result.cutout_attempt.roll, result.stress_delta])
 	if result.cutout_attempt.succeeded:
 		# 目的地定义和新状态已在规划阶段创建；此处只切换权威状态引用。

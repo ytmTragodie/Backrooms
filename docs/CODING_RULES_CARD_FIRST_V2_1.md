@@ -807,3 +807,17 @@ selector or reinterprets a card into a different subsystem. Right-click is read-
 Old menu, loot/pursuit/landmark/preparation and forced-branch contracts are retired.
 Snapshot positions and exact old sentences are recorded in CARD_INTERACTION_CLEANUP_AUDIT.md;
 quoted history never authorizes restoring those paths.
+
+## Phase 9 earned rewards
+
+- All active world targets remain exact visit-scoped references. Card target kinds/states are data;
+  incompatible explicit selections must be disabled and rejected, never redirected.
+- Retire inactive entities only after final state/reward commit; keep resolved IDs for scheduling,
+  not a second HP owner or dead selectable board card.
+- Reward opportunities are data-triggered and run-owned. Plan deterministic choices before mutation.
+  The reward UI sends CardRewardCommand to consume an actual pending opportunity, not a free deck editor.
+- Only validated NORMAL definitions/instances enter add/upgrade/remove flows. Add to existing discard;
+  upgrade the selected instance by definition replacement; remove from its existing zone. Never mutate
+  shared CardData or rebuild the deck. Invalid/stale/double claims preserve state/RNG/notifications.
+- Pending choice pauses normal lifecycle. Empty upgrade/removal candidates can continue; removal keeps
+  at least five normal cards. No shop, currency or Phase 10 content is implied by this foundation.

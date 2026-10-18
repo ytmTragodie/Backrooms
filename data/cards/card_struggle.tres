@@ -9,3 +9,5 @@ display_name = "挣扎"
 ap_cost = 1
 effect_type = 1
 placeholder_damage = 2
+
+target_kinds = 0

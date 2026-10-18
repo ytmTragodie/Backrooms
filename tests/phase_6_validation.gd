@@ -25,7 +25,7 @@ func tests() -> void:
 	play(owner, ATTACK, true)
 	result = play(owner, ATTACK, true)
 	check(result.entity_defeated and entity.hp == 0 and entity.state == &"DEFEATED" and not entity.active, "HP clamp and defeat preserve common entity model")
-	reject(owner, command(owner, ATTACK, true), &"no_active_entity")
+	reject(owner, command(owner, ATTACK, true), &"invalid_entity_target")
 	owner.free()
 	owner = manager([OBSERVE, OBSERVE, OBSERVE, OBSERVE, OBSERVE], LEVEL_6)
 	result = play(owner, OBSERVE)

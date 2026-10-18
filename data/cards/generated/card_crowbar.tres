@@ -11,3 +11,5 @@ source = 1
 effect_type = 2
 effect_value = 8
 tags = Array[StringName]([&"NOISE"])
+
+target_kinds = 2

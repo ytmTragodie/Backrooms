@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://kockijsg7m7d" path="res://scripts/events/event_action_data.gd" id="2_action"]
 [ext_resource type="Resource" path="res://data/insights/insight_level0_layout_repeats.tres" id="3_insight"]
 
+[ext_resource type="Resource" path="res://data/rewards/reward_upgrade.tres" id="reward"]
+
 [sub_resource type="Resource" id="Record"]
 script = ExtResource("2_action")
 action_id = &"observe"
@@ -37,6 +39,7 @@ action_id = &"search_nearby"
 granted_flags = Array[StringName]([&"marks_noted"])
 revealed_text = "你在附近找到了另一段相似的墙面。"
 
+
 [resource]
 script = ExtResource("1_event")
 id = &"event_level0_wall_marks"
@@ -51,3 +54,4 @@ clue_text = "相似的划痕在不同走廊反复出现。"
 completion_insight = ExtResource("3_insight")
 neglect_stress = 1
 clue_stability = 1
+completion_reward = ExtResource("reward")

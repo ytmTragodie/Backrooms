@@ -40,15 +40,18 @@ func _fixture() -> FloorData:
 	var data: FloorData = FLOOR.duplicate(false) as FloorData
 	data.entry_entity = FLOOR.entry_entity.duplicate(false) as EntityData
 	data.entry_entity.rule_insight = FLOOR.entry_entity.rule_insight.duplicate(false) as InsightData
+	data.entry_entity.resolution_reward = null
 	data.fresh_events = []
 	for source: EventData in FLOOR.fresh_events:
-		data.fresh_events.append(source.duplicate(false) as EventData)
+		var event: EventData = source.duplicate(false) as EventData
+		event.completion_reward = null
+		data.fresh_events.append(event)
 	return data
 
 
 func _manager(definitions: Array[CardData] = [], data: FloorData = FLOOR) -> TurnManager:
 	var manager: TurnManager = TurnManager.new()
-	manager.floor_data = data
+	manager.floor_data = preload("res://tests/legacy_fixture.gd").without_rewards(data) if data == FLOOR else data
 	manager.starter_deck = DeckData.new()
 	manager.starter_deck.cards.assign(DECK.cards if definitions.is_empty() else definitions)
 	root.add_child(manager)
@@ -131,9 +134,10 @@ func _test_shared_guard_and_disengage() -> void:
 	_play(manager, GUARD)
 	result = manager.end_turn()
 	_check(result.pressure_blocked == 2 and result.damage_blocked == 4 and result.player_damage == 0 and manager.run_state.floor_state.entity.state == &"STAGGERED", "Enough remaining Guard fully blocks bite and preserves Hound stagger behavior")
-	var hp: int = manager.run_state.floor_state.entity.hp
+	var departed: EntityInstance = manager.run_state.floor_state.entity
+	var hp: int = departed.hp
 	result = _play(manager, RUN, true)
-	_check(result.success and manager.run_state.floor_state.entity.state == &"DISENGAGED" and manager.run_state.floor_state.entity.hp == hp and manager.run_state.threat == 1, "Real Run card disengages staggered Hound without killing it")
+	_check(result.success and manager.run_state.floor_state.entity == null and departed.state == &"DISENGAGED" and departed.hp == hp and manager.run_state.threat == 1, "Real Run card disengages staggered Hound without killing it")
 	result = manager.end_turn()
 	_check(result.intent_resolved.is_empty() and result.pressure_damage == 2 and not manager.run_state.floor_state.current_event.resolved, "Resolving Entity does not stop Situation Pressure")
 	manager.free()
@@ -193,7 +197,7 @@ func _test_noise_and_defeat() -> void:
 	_check(result.entity_defeated and result.entity_damage == 2 and entity.hp == 0 and not entity.active and not entity.alive and entity.intent == &"none", "Common HP reaches zero once and defeats Hound")
 	_check(notifications == [0] and manager.run_state.ap == 1 and manager.run_state.deck_state.discard_pile.has(result.card_played), "Observer sees only fully committed HP/AP/card result")
 	var before: Dictionary = _snapshot(manager)
-	_fail_unchanged(manager, PlayCardCommand.new(_card(manager, ATTACK), null, manager.run_state.floor_state.board_state, entity), &"no_active_entity", before)
+	_fail_unchanged(manager, PlayCardCommand.new(_card(manager, ATTACK), null, manager.run_state.floor_state.board_state, entity), &"invalid_entity_target", before)
 	_check(result.debug_lines.count("[ENTITY] defeated entity_hound") == 1, "One defeat log, no duplicate reward/defeat on rejected further attack")
 	manager.free()
 
@@ -268,7 +272,7 @@ func _test_deck_composition() -> void:
 
 func _test_ui() -> void:
 	var main: Control = MAIN.instantiate() as Control
-	(main.get_node("TurnManager") as TurnManager).floor_data = FLOOR
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/legacy_fixture.gd").without_rewards(FLOOR)
 	(main.get_node("TurnManager") as TurnManager).starter_deck = DECK
 	root.add_child(main)
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
@@ -276,8 +280,8 @@ func _test_ui() -> void:
 	var world: Button = main.get_node("%WorldCard") as Button
 	var creature: Button = main.get_node("%EntityCard") as Button
 	var information: Label = main.get_node("%EntityInformation") as Label
-	_check(manager.floor_data == FLOOR and creature.visible and information.text.contains("猎犬") and information.text.contains("18／18") and hand.get_child_count() == 6, "Same screen starts mixed board, five normal cards and one generated equipment action")
-	_check(not (hand.get_child(1) as Button).disabled, "Single legal Entity target permits direct Attack without an unnecessary selector")
+	_check(manager.floor_data.id == FLOOR.id and creature.visible and information.text.contains("猎犬") and information.text.contains("18／18") and hand.get_child_count() == 6, "Same screen starts mixed board, five normal cards and one generated equipment action")
+	_check((hand.get_child(1) as Button).disabled, "Explicit Situation selection disables incompatible Attack; no silent retargeting")
 	var before: Dictionary = _snapshot(manager)
 	creature.pressed.emit()
 	_check(_snapshot(manager) == before and not (hand.get_child(1) as Button).disabled and information.text.contains("已选"), "Entity selection changes only presentation")
@@ -303,7 +307,7 @@ func _test_ui() -> void:
 
 func _test_ui_full_encounter() -> void:
 	var main: Control = MAIN.instantiate() as Control
-	(main.get_node("TurnManager") as TurnManager).floor_data = FLOOR
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/legacy_fixture.gd").without_rewards(FLOOR)
 	(main.get_node("TurnManager") as TurnManager).starter_deck = DECK
 	root.add_child(main)
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
@@ -312,7 +316,7 @@ func _test_ui_full_encounter() -> void:
 	var deck: DeckState = run.deck_state
 	# 只操作真实屏幕控件，不修改 HP、AP、牌序或目标领域状态。
 	for turn: int in range(20):
-		if run.player_hp == 0 or (floor.current_event == null and not floor.entity.active):
+		if run.player_hp == 0 or (floor.current_event == null and floor.entity == null):
 			break
 		for action: int in range(5):
 			var event: EventInstance = floor.current_event
@@ -324,15 +328,15 @@ func _test_ui_full_encounter() -> void:
 					if _available(manager, definition):
 						chosen = definition
 						break
-			if chosen == null and floor.entity.active and floor.entity.state == &"STAGGERED" and _available(manager, RUN):
+			if chosen == null and floor.entity != null and floor.entity.active and floor.entity.state == &"STAGGERED" and _available(manager, RUN):
 				chosen = RUN
 				target_entity = true
-			var impending: int = FLOOR.entry_entity.aggressive_damage if floor.entity.intent == &"lunge" else (FLOOR.entry_entity.normal_damage if floor.entity.intent == &"bite" else 0)
+			var impending: int = 0 if floor.entity == null else (FLOOR.entry_entity.aggressive_damage if floor.entity.intent == &"lunge" else (FLOOR.entry_entity.normal_damage if floor.entity.intent == &"bite" else 0))
 			if situation_active and event.last_progress_turn != floor.turn_count:
 				impending += 2
 			if chosen == null and floor.player_block < impending and _available(manager, GUARD):
 				chosen = GUARD
-			if chosen == null and floor.entity.active and _available(manager, ATTACK):
+			if chosen == null and floor.entity != null and floor.entity.active and _available(manager, ATTACK):
 				chosen = ATTACK
 				target_entity = true
 			if chosen == null and situation_active:
@@ -344,7 +348,7 @@ func _test_ui_full_encounter() -> void:
 				break
 			_press_card(main, chosen, target_entity)
 		(main.get_node("%EndTurn") as Button).pressed.emit()
-	_check(run.player_hp > 0 and floor.current_event == null and not floor.entity.active, "Real hand/target/End Turn controls can finish both demands alive")
+	_check(run.player_hp > 0 and floor.current_event == null and floor.entity == null, "Real hand/target/End Turn controls can finish both demands alive")
 	_check(manager.run_state == run and run.floor_state == floor and run.deck_state == deck and deck.get_card_count() == 10, "Entire mixed playthrough preserves one Run/Floor/deck/ten-card inventory")
 	_check(floor.discovered_insight_ids.has(FLOOR.entry_entity.rule_insight.id) and floor.discovered_insight_ids.has(FLOOR.fresh_events[0].clue_insight.id) and floor.cognition == 2, "Playable Situation provides Hound knowledge plus alternate light clue without manual pursuit/landmark actions")
 	await process_frame

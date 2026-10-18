@@ -39,13 +39,14 @@ func _fixture() -> FloorData:
 	for source: EventData in LEVEL_0.fresh_events:
 		var event: EventData = source.duplicate(false) as EventData
 		event.completion_insight = source.completion_insight.duplicate(false) as InsightData
+		event.completion_reward = null
 		data.fresh_events.append(event)
 	return data
 
 
 func _manager(data: FloorData = LEVEL_0, definitions: Array[CardData] = []) -> TurnManager:
 	var manager: TurnManager = TurnManager.new()
-	manager.floor_data = data
+	manager.floor_data = preload("res://tests/legacy_fixture.gd").without_rewards(data) if data == LEVEL_0 else data
 	manager.starter_deck = DeckData.new()
 	manager.starter_deck.cards.assign(definitions if not definitions.is_empty() else DECK.cards)
 	root.add_child(manager)
@@ -300,6 +301,7 @@ func _test_old_command_rejection() -> void:
 
 func _test_main_ui() -> void:
 	var main: Control = MAIN.instantiate() as Control
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/legacy_fixture.gd").without_rewards(preload("res://data/floors/floor_level_0.tres"))
 	# 十张纯调查夹具继续证明 A 的不变量；正式主屏使用完整 run_deck。
 	(main.get_node("TurnManager") as TurnManager).starter_deck = DECK
 	root.add_child(main)

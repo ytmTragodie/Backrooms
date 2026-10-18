@@ -36,6 +36,8 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 		return _fail(result, &"invalid_state_context", card_id)
 	if state.player_hp <= 0:
 		return _fail(result, &"run_ended", card_id)
+	if not state.pending_rewards.is_empty():
+		return _fail(result, &"reward_pending", card_id)
 	if not state.deck_state.hand.has(card):
 		return _fail(result, &"card_not_in_hand", card_id)
 	if floor_data != null and floor_data.is_placeholder:
@@ -48,6 +50,10 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	if definition == null or definition.id.is_empty():
 		return _fail(result, &"invalid_card_definition", card_id)
 	if definition.ap_cost < 0 or definition.placeholder_damage < 0 or definition.effect_value < 0 or definition.explore_amount < 0 or definition.threat_cost < 0:
+		return _fail(result, &"invalid_card_definition", card_id)
+	if definition.conditional_bonus < 0 or definition.condition_threshold < 0 or definition.bonus_condition not in [CardData.BonusCondition.NONE, CardData.BonusCondition.GUARDED, CardData.BonusCondition.HIGH_THREAT, CardData.BonusCondition.ANALYZED_TARGET]:
+		return _fail(result, &"invalid_card_definition", card_id)
+	if definition.target_kinds < 0 or definition.target_kinds > 3 or (definition.target_kinds != 0 and not definition.requires_active_target):
 		return _fail(result, &"invalid_card_definition", card_id)
 	if definition.effect_type not in [CardData.EffectType.NO_OP, CardData.EffectType.PLACEHOLDER_DAMAGE, CardData.EffectType.ATTACK, CardData.EffectType.BLOCK, CardData.EffectType.RUN, CardData.EffectType.LIGHT, CardData.EffectType.EXTINGUISH, CardData.EffectType.CUTOUT_RUSHED, CardData.EffectType.CUTOUT_SAFE, CardData.EffectType.RECOVER]:
 		return _fail(result, &"unsupported_effect", card_id)
@@ -116,6 +122,7 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 		EntitySystem.plan_noise_reaction(result, definition.tags, state.floor_state, floor_data)
 
 		EntitySystem.plan_world_followup(result, state, floor_data)
+		CardRewardSystem.plan(result, state, floor_data)
 
 	# 先计算并构建完整结果；占位伤害只进入结果，不修改任何目标的 HP。
 	result.success = true
@@ -149,6 +156,8 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	result.debug_lines.append("[AP] %d -> %d" % [previous_ap, state.ap])
 	result.debug_lines.append("[CARD] hand -> discard %s" % card_id if card.source == CardData.Source.NORMAL else "[CARD] source=%d resolved %s" % [card.source, card_id])
 	_commit_floor_result(result, state)
+	if result.commit_rng:
+		state.rng.state = result.rng_state_after
 	# 生成／升级／换层清理也在同一通知边界内完成，不由 UI 刷新触发。
 	cards.refresh_floor_cards(result.destination if result.destination != null else floor_data)
 	cards.refresh_equipment_cards(result.destination if result.destination != null else floor_data)
@@ -164,6 +173,23 @@ static func validate_card_target(command: PlayCardCommand, floor: FloorState, da
 	if command == null or command.card == null or command.card.definition == null:
 		return &"invalid_command"
 	var definition: CardData = command.card.definition
+	if command.target_event != null and command.target_entity != null:
+		return &"invalid_target_kind"
+	if command.target_event != null and (definition.target_kinds & CardData.TargetKind.SITUATION) == 0:
+		return &"invalid_target_kind"
+	if command.target_entity != null and (definition.target_kinds & CardData.TargetKind.ENTITY) == 0:
+		return &"invalid_target_kind"
+	if definition.requires_active_target and command.target_board == floor.board_state:
+		if command.target_event != null and command.target_event == floor.board_state.active_event and command.target_event.resolved:
+			return &"event_resolved"
+		if command.target_entity != null and command.target_entity == floor.board_state.entity and not command.target_entity.active:
+			return &"no_active_entity"
+	if command.target_entity != null and not definition.target_entity_states.is_empty():
+		var identity_error: StringName = EntitySystem.validate_target(command, floor)
+		if not identity_error.is_empty():
+			return identity_error
+		if not definition.target_entity_states.has(command.target_entity.state):
+			return &"entity_state_incompatible"
 	if definition.source == CardData.Source.EQUIPMENT:
 		return &"invalid_state_context" if state == null else EquipmentSystem.validate_card(command, state)
 	if definition.source == CardData.Source.FLOOR_TEMPORARY:
@@ -221,6 +247,8 @@ static func resolve_end_turn(state: RunState, data: FloorData = null) -> ActionR
 		return _fail(result, &"invalid_command", &"end_turn")
 	if state.player_hp <= 0:
 		return _fail(result, &"run_ended", &"end_turn")
+	if not state.pending_rewards.is_empty():
+		return _fail(result, &"reward_pending", &"end_turn")
 	if state.floor_state != null:
 		var error: StringName = _validate_floor_context(state, data)
 		if not error.is_empty():
@@ -238,7 +266,11 @@ static func resolve_end_turn(state: RunState, data: FloorData = null) -> ActionR
 	result.action_id = &"end_turn"
 	result.effect = &"end_turn"
 	result.success = true
+	if state.floor_state != null:
+		CardRewardSystem.plan(result, state, data)
 	_commit_floor_result(result, state)
+	if result.commit_rng:
+		state.rng.state = result.rng_state_after
 	result.debug_lines.append("[RESULT] success end_turn")
 	_write_log(result)
 	return result
@@ -296,6 +328,7 @@ static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
 		result.debug_lines.append("[COGNITION] %d -> %d" % [previous, floor.cognition])
 	# 固定次序：局势后果 -> 实体意图 -> 楼层滞留 -> 临时状态清理。
 	ResourceNodeSystem.commit(result, state)
+	CardRewardSystem.commit(result, state)
 	EntitySystem.commit(result, state)
 	if not result.threat_reason.is_empty():
 		floor.threat += result.threat_delta
@@ -316,6 +349,12 @@ static func _fail(result: ActionResult, reason: StringName, card_id: StringName)
 	result.failure_reason = reason
 	result.debug_lines.append("[RULE] validation failed reason=%s" % reason)
 	result.debug_lines.append("[RESULT] failed %s" % card_id)
+	_write_log(result)
+	return result
+
+
+static func resolve_reward(command: CardRewardCommand, state: RunState) -> ActionResult:
+	var result: ActionResult = CardRewardSystem.resolve(command, state)
 	_write_log(result)
 	return result
 

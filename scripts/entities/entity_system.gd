@@ -14,6 +14,9 @@ const LIGHT_STATES: Array[StringName] = [&"HIDDEN", &"OBSERVING", &"AGITATED", &
 static func validate_definition(data: EntityData) -> StringName:
 	if data == null or data.id.is_empty() or data.max_hp <= 0 or data.normal_damage < 0 or data.aggressive_damage < 0:
 		return &"invalid_entity_definition"
+	var reward_error: StringName = CardRewardSystem.validate_definition(data.resolution_reward)
+	if not reward_error.is_empty():
+		return reward_error
 	if data.behavior_type not in [EntityData.BehaviorType.PURSUIT, EntityData.BehaviorType.LIGHT_REACTIVE]:
 		return &"invalid_entity_definition"
 	if data.behavior_type == EntityData.BehaviorType.PURSUIT and data.initial_state not in [&"WATCHING", &"APPROACHING"]:
@@ -121,7 +124,8 @@ static func plan_card(result: ActionResult, definition: CardData, state: RunStat
 			if entity != null and entity.active and entity_data.behavior_type == EntityData.BehaviorType.PURSUIT:
 				_set_next_state(result, &"DISENGAGED" if entity.state == &"STAGGERED" else &"CHASING")
 		CardData.EffectType.ATTACK, CardData.EffectType.PLACEHOLDER_DAMAGE:
-			var damage: int = definition.effect_value if definition.effect_type == CardData.EffectType.ATTACK else definition.placeholder_damage
+			var analyzed: bool = entity != null and not entity.revealed_rules.is_empty()
+			var damage: int = definition.effect_value + definition.contextual_bonus(state.floor_state.player_block, state.threat, analyzed) if definition.effect_type == CardData.EffectType.ATTACK else definition.placeholder_damage
 			return plan_attack(result, damage, state, entity_data)
 	return &""
 
@@ -143,9 +147,14 @@ static func plan_attack(result: ActionResult, damage: int, state: RunState, data
 static func plan_world_followup(result: ActionResult, state: RunState, data: FloorData) -> void:
 	var floor: FloorState = state.floor_state
 	var entity: EntityInstance = floor.entity
-	if result.destination != null or not data.followup_on_light or data.entry_entity == null or data.followup_entity == null or entity == null or entity.entity_id != data.entry_entity.id:
+	if result.destination != null or not data.followup_on_light or data.entry_entity == null or data.followup_entity == null:
 		return
-	var resolved: bool = not entity.active or result.entity_defeated or result.entity_state_after == &"DISENGAGED"
+	# 入口实体已经退场时读楼层事实；仍在场时读本次尚未提交的解决计划。
+	if entity != null and entity.entity_id != data.entry_entity.id:
+		return
+	if floor.resolved_entity_ids.has(data.followup_entity.id):
+		return
+	var resolved: bool = floor.resolved_entity_ids.has(data.entry_entity.id) or (entity != null and (not entity.active or result.entity_defeated or result.entity_state_after == &"DISENGAGED"))
 	if not resolved or result.light_extinguished or not (floor.light_active or result.light_activated):
 		return
 	result.entity_spawned = spawn(data.followup_entity)
@@ -242,25 +251,29 @@ static func commit(result: ActionResult, state: RunState) -> void:
 	if result.player_damage > 0:
 		state.player_hp -= result.player_damage
 		result.debug_lines.append("[HP] player -%d remaining=%d" % [result.player_damage, state.player_hp])
-	if entity == null:
-		return
-	if result.analysis_after >= 0:
+	if entity != null and result.analysis_after >= 0:
 		entity.analysis_progress = result.analysis_after
 		if not result.entity_rule_revealed.is_empty():
 			entity.revealed_rules.append(result.entity_rule_revealed)
 		result.debug_lines.append("[ENTITY] analysis %s +%d total=%d" % [entity.entity_id, result.analysis_applied, entity.analysis_progress])
-	if result.entity_light_exposed:
+	if entity != null and result.entity_light_exposed:
 		entity.light_exposed = true
-	if result.entity_hp_after >= 0:
+	if entity != null and result.entity_hp_after >= 0:
 		entity.hp = result.entity_hp_after
 		result.debug_lines.append("[DAMAGE] %s -%d hp=%d" % [entity.entity_id, result.entity_damage, entity.hp])
-	if not result.entity_state_after.is_empty():
+	if entity != null and not result.entity_state_after.is_empty():
 		if entity.state != result.entity_state_after:
 			result.debug_lines.append("[ENTITY] %s state %s -> %s reason=%s" % [entity.entity_id, entity.state, result.entity_state_after, result.entity_state_reason])
 		entity.state = result.entity_state_after
 		entity.intent = result.entity_intent_after
-	if result.entity_defeated:
+	if entity != null and result.entity_defeated:
 		result.debug_lines.append("[ENTITY] defeated %s" % entity.entity_id)
+	if entity != null and not entity.active:
+		# 最终状态与奖励已提交后，才清空可选的活动槽；旧引用仍可检查最终事实。
+		if not floor.resolved_entity_ids.has(entity.entity_id):
+			floor.resolved_entity_ids.append(entity.entity_id)
+		floor.entity = null
+		result.debug_lines.append("[ENTITY] retired %s" % entity.entity_id)
 	if result.entity_spawned != null:
 		# 先把旧目标的 HP／状态完整提交，再替换槽位，避免把猎犬的致命伤写入笑魇。
 		floor.entity = result.entity_spawned

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/turns/turn_manager.gd" id="2_turns"]
@@ -10,6 +10,8 @@
 [ext_resource type="Resource" path="res://data/equipment/equip_almond_water.tres" id="8_water"]
 
 [ext_resource type="Script" path="res://scripts/ui/debug_panel.gd" id="9_debug"]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/CardRewardPanel.tscn" id="10_reward"]
 
 [sub_resource type="StyleBoxFlat" id="WorldStyle"]
 bg_color = Color(0.14, 0.17, 0.2, 1)
@@ -241,3 +243,7 @@ text = "启动六层混合测试局"
 [node name="Close" type="Button" parent="DebugPanel/Padding/Layout"]
 layout_mode = 2
 text = "关闭调试面板"
+
+[node name="RewardPanel" parent="." instance=ExtResource("10_reward")]
+unique_name_in_owner = true
+layout_mode = 1

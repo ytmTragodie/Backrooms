@@ -13,6 +13,8 @@ var discovered_insight_ids: Array[StringName] = []
 var remaining_fresh_events: Array[StringName] = []
 var seen_event_ids: Array[StringName] = []
 var board_state: BoardState = BoardState.new()
+# 只保存遭遇已解决的事实，不保留第二个活动实体或 HP 所有者。
+var resolved_entity_ids: Array[StringName] = []
 # 旧领域读取暂保留只读转发；调度器只写 BoardState，不维护第二份事件引用。
 var current_event: EventInstance:
 	get:

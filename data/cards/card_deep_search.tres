@@ -14,3 +14,5 @@ threat_cost = 1
 tags = Array[StringName]([&"SEARCH", &"NOISE"])
 collects_resources = true
 search_hidden_first = true
+
+target_kinds = 1

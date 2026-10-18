@@ -10,3 +10,5 @@ ap_cost = 1
 source = 2
 retain = true
 effect_type = 7
+
+target_kinds = 0

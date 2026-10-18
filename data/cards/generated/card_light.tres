@@ -9,3 +9,5 @@ display_name = "照明"
 ap_cost = 1
 source = 1
 effect_type = 5
+
+target_kinds = 0

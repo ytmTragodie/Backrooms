@@ -887,3 +887,36 @@ of event/Insight/resource draws. Run/deck/equipment/AP persist through transitio
 LegacyMain, direct gameplay commands and generic card-mode interpreters are removed.
 Early floorless NO_OP/PLACEHOLDER tests and unused legacy event fields remain test/data debt,
 not a player action boundary. See the migration plan §0.5 and cleanup audit for retired rules.
+
+## Phase 9: deckbuilding boundary
+
+`CardData.target_kinds`, `requires_active_target`, `target_entity_states` and analysis capability
+declare legal World Card routes. RuleResolver validates kind, visit, exact instance, lifecycle and
+state restrictions; UI forwards explicit selection unchanged and queries the same validator.
+Self/player effects ignore world selection. No UI-only legality or automatic incompatible retargeting.
+
+EventData.completion_reward and EntityData.resolution_reward reference small CardRewardData Resources.
+CardRewardSystem plans opportunities from newly completed/resolved facts in the same action draft,
+using a private copy of RunState RNG. RuleResolver commits RNG, rewards and original costs/effects
+before notifying. EntitySystem commits final HP/state and retires inactive instances; FloorState retains
+resolved_entity_ids as scheduling facts, never copies of entity runtime state. LIGHT follow-up reads
+those facts after Hound retirement, including same-action defeat/light compatibility.
+
+RunState.pending_rewards is the sole FIFO owner of CardReward opportunities. Options contain static
+NORMAL definitions, not card instances. Three distinct choices are sampled from validated content.
+CardRewardCommand must reference the actual first opportunity and offered choice or an eligible owned
+instance; the captured definition invalidates stale upgrade requests. CardRewardSystem validates the
+entire choice before CardSystem adds one instance to discard, swaps one definition in place, or removes
+one NORMAL instance. Removing the queue entry consumes the opportunity exactly once. No extra AP,
+turn, shuffle, draw or RNG cost occurs on claim. UI never edits zones or definitions.
+
+TurnManager only forwards reward commands through RuleResolver and publishes post-commit signals.
+Pending rewards pause card play/end turn. An empty upgrade/removal opportunity can close; otherwise
+exactly one eligible choice is required. Minimum removal size is five NORMAL cards. Generated equipment
+and floor cards are excluded from all persistent deck modifications. This explicit earned-reward command
+does not grant a second exploration/combat/equipment/cut-out action path.
+
+The prototype uses three base-to-upgrade Resource references and three simple numeric bonus conditions
+(existing Guard, high Threat, revealed target knowledge). No generic effects DSL or branch/menu system
+is introduced. Phase 9 tests exercise production reward content; fixed-inventory legacy suites use
+explicit no-reward fixtures without mutating production Resources.

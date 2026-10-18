@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardRewardData" format=3]
+
+[ext_resource type="Script" path="res://scripts/rewards/card_reward_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="card"]
+[ext_resource type="Resource" path="res://data/cards/rewards/card_careful_observe.tres" id="c0"]
+[ext_resource type="Resource" path="res://data/cards/rewards/card_heavy_strike.tres" id="c1"]
+[ext_resource type="Resource" path="res://data/cards/rewards/card_steady_guard.tres" id="c2"]
+[ext_resource type="Resource" path="res://data/cards/rewards/card_risky_search.tres" id="c3"]
+[ext_resource type="Resource" path="res://data/cards/rewards/card_reckless_strike.tres" id="c4"]
+[ext_resource type="Resource" path="res://data/cards/rewards/card_counter_strike.tres" id="c5"]
+[ext_resource type="Resource" path="res://data/cards/rewards/card_crisis_observe.tres" id="c6"]
+[ext_resource type="Resource" path="res://data/cards/rewards/card_exploit_weakness.tres" id="c7"]
+[ext_resource type="Resource" path="res://data/cards/rewards/card_thorough_search.tres" id="c8"]
+
+[resource]
+script = ExtResource("1")
+pool = Array[ExtResource("card")]([ExtResource("c0"), ExtResource("c1"), ExtResource("c2"), ExtResource("c3"), ExtResource("c4"), ExtResource("c5"), ExtResource("c6"), ExtResource("c7"), ExtResource("c8")])

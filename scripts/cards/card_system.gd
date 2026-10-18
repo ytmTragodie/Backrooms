@@ -188,3 +188,19 @@ func _reshuffle_discard() -> bool:
 		deck.draw_pile[index] = deck.draw_pile[swap_index]
 		deck.draw_pile[swap_index] = card
 	return true
+
+
+static func add_reward(deck: DeckState, definition: CardData) -> CardInstance:
+	var card: CardInstance = CardInstance.new(definition)
+	# 新牌先入弃牌堆，之后自然参与原有洗牌／抽牌，不凭领奖额外抽一张。
+	deck.discard_pile.append(card)
+	return card
+
+
+static func upgrade_instance(card: CardInstance) -> void:
+	card.definition = card.definition.upgrade_to
+
+
+static func remove_instance(deck: DeckState, card: CardInstance) -> void:
+	for pile: Array[CardInstance] in [deck.draw_pile, deck.hand, deck.discard_pile]:
+		pile.erase(card)

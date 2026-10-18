@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://kockijsg7m7d" path="res://scripts/events/event_action_data.gd" id="2_action"]
 [ext_resource type="Resource" path="res://data/insights/insight_level0_false_landmarks.tres" id="3_insight"]
 
+[ext_resource type="Resource" path="res://data/rewards/reward_remove.tres" id="reward"]
+
 [sub_resource type="Resource" id="Record"]
 script = ExtResource("2_action")
 action_id = &"observe"
@@ -37,6 +39,7 @@ action_id = &"search_nearby"
 granted_flags = Array[StringName]([&"corner_noted"])
 revealed_text = "附近的地毯接缝与记忆中的位置并不吻合。"
 
+
 [resource]
 script = ExtResource("1_event")
 id = &"event_level0_wrong_corner"
@@ -51,3 +54,4 @@ clue_text = "地毯接缝与记忆中的转角不吻合。"
 completion_insight = ExtResource("3_insight")
 neglect_stress = 1
 clue_stability = 1
+completion_reward = ExtResource("reward")

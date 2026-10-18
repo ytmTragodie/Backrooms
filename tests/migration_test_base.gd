@@ -41,6 +41,7 @@ func fixture(source: FloorData = LEVEL_0) -> FloorData:
 	data.fresh_events = []
 	for original: EventData in source.fresh_events:
 		var event: EventData = original.duplicate(false) as EventData
+		event.completion_reward = null
 		event.completion_insight = original.completion_insight.duplicate(false) as InsightData
 		if original.clue_insight != null:
 			event.clue_insight = original.clue_insight.duplicate(false) as InsightData
@@ -54,6 +55,7 @@ func fixture(source: FloorData = LEVEL_0) -> FloorData:
 		var original: EntityData = source.get(field) as EntityData
 		if original != null:
 			var entity: EntityData = original.duplicate(false) as EntityData
+			entity.resolution_reward = null
 			if original.rule_insight != null:
 				entity.rule_insight = original.rule_insight.duplicate(false) as InsightData
 			data.set(field, entity)
@@ -62,7 +64,7 @@ func fixture(source: FloorData = LEVEL_0) -> FloorData:
 
 func manager(definitions: Array[CardData] = [], data: FloorData = LEVEL_0, gear: bool = true, seed_value: int = 1) -> TurnManager:
 	var owner: TurnManager = TurnManager.new()
-	owner.floor_data = data
+	owner.floor_data = fixture(data) if data in [LEVEL_0, LEVEL_6] else data
 	owner.starter_deck = DeckData.new()
 	owner.starter_deck.cards.assign(DECK.cards if definitions.is_empty() else definitions)
 	if gear:
@@ -113,6 +115,9 @@ func snapshot(owner: TurnManager) -> Dictionary:
 	for node: ResourceNode in floor.resource_nodes:
 		nodes.append([node.get_instance_id(), node.status])
 	return {"run": run.get_instance_id(), "hp": run.player_hp, "stress": run.stress, "supply": run.supply, "ap": run.ap, "turn": run.turn_number, "rng": run.rng.state,
+		"resolved_entities": floor.resolved_entity_ids.duplicate(),
+		"rewards": run.pending_rewards.map(func(reward: CardReward) -> Array: return [reward.get_instance_id(), reward.definition.get_instance_id(), reward.choices.map(func(choice: CardData) -> int: return choice.get_instance_id())]),
+		"deck_definitions": [run.deck_state.draw_pile.map(func(card: CardInstance) -> int: return card.definition.get_instance_id()), run.deck_state.hand.map(func(card: CardInstance) -> int: return card.definition.get_instance_id()), run.deck_state.discard_pile.map(func(card: CardInstance) -> int: return card.definition.get_instance_id())],
 		"generation": [run.deck_state.equipment_generation_turn, run.deck_state.next_equipment_slot],
 		"card_sources": run.deck_state.hand.map(func(card: CardInstance) -> Array: return [card.definition.get_instance_id(), card.source_equipment.get_instance_id() if card.source_equipment != null else 0, card.source_board.get_instance_id() if card.source_board != null else 0]),
 		"floor": floor.get_instance_id(), "floor_data": owner.floor_data.get_instance_id(), "board": floor.board_state.get_instance_id(), "deck": run.deck_state.get_instance_id(), "piles": piles, "equipment": equipment, "nodes": nodes,

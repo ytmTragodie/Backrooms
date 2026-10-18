@@ -9,3 +9,5 @@ display_name = "饮用杏仁水"
 ap_cost = 1
 source = 1
 effect_type = 9
+
+target_kinds = 0

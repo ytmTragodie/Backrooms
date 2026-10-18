@@ -7,3 +7,5 @@ script = ExtResource("1_card")
 id = &"card_wait"
 display_name = "等待"
 ap_cost = 0
+
+target_kinds = 0

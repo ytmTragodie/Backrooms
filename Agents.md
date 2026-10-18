@@ -59,6 +59,10 @@ Level 0
   same flashlight opportunity according to actual LIGHT state. Search collects
   finite rewards directly. Smiler is world-triggered; no pursue/landmark/prepare
   command or preparation card remains.
+- Phase 9 earned deckbuilding choices consume an actual run-owned pending reward:
+  add one offered NORMAL card, upgrade one owned NORMAL instance, or remove one
+  eligible NORMAL instance. Reward UI sends validated commands; it is never a free
+  deck editor or a parallel exploration/combat/equipment/cut-out input.
 - Keep one exploration/combat turn loop, unique Insight rewards, finite resources,
   common entity HP with behavioral solutions, and an anti-soft-lock exit route.
   Exit availability must be solved within the card rules, not by restoring a

@@ -22,6 +22,9 @@ const FAILURE_MESSAGES: Dictionary = {
 	&"floor_inactive": "本次探索已结束", &"invalid_equipment_state": "装备状态异常",
 	&"invalid_card_source": "这张牌的来源已失效，请重新选择", &"cutout_unavailable": "尚未出现切出机会",
 	&"invalid_cutout_card": "切出牌定义异常",
+	&"reward_pending": "请先完成当前奖励选择", &"invalid_reward": "这次奖励已经处理",
+	&"invalid_reward_choice": "请选择本次提供的卡牌", &"invalid_reward_card": "这张牌不符合本次调整条件",
+	&"entity_state_incompatible": "该实体状态不适用此牌",
 }
 const TAG_NAMES: Dictionary = {&"OBSERVE": "观察", &"SEARCH": "搜索", &"NOISE": "噪音"}
 const ENTITY_STATES: Dictionary = {&"WATCHING": "窥视", &"APPROACHING": "靠近", &"CHASING": "追逐", &"STAGGERED": "踉跄", &"DEFEATED": "击败", &"DISENGAGED": "已脱离", &"HIDDEN": "隐藏", &"OBSERVING": "注视", &"AGITATED": "躁动", &"ATTACKING": "攻击", &"WITHDRAWN": "退去（仍存活）"}
@@ -49,6 +52,7 @@ var _selected_board: BoardState
 @onready var _entity_information: Label = %EntityInformation
 @onready var _equipment_status: Label = %EquipmentStatus
 @onready var _debug_panel: PanelContainer = %DebugPanel
+@onready var _reward_panel: CardRewardPanel = %RewardPanel
 
 
 func _ready() -> void:
@@ -56,6 +60,7 @@ func _ready() -> void:
 	_world_card.pressed.connect(_select_world_card)
 	_entity_card.pressed.connect(_select_entity)
 	_debug_panel.test_run_requested.connect(_start_debug_run)
+	_reward_panel.command_submitted.connect(_submit_reward_command)
 	_refresh_state()
 	print("[APP] Project initialized")
 
@@ -106,6 +111,7 @@ func _refresh_state() -> void:
 	var run: RunState = _manager.run_state
 	var floor: FloorState = run.floor_state
 	var board: BoardState = floor.board_state
+	_reward_panel.refresh(run)
 	_refresh_equipment_status(run)
 	var event: EventInstance = board.active_event
 	var data: EventData = _manager.floor_data.find_event(event.event_id) if event != null else null
@@ -123,7 +129,7 @@ func _refresh_state() -> void:
 			_entity_information.text = "实体牌　｜　%s\n生命：%d／%d\n状态：%s\n意图：%s\n公开警示：反复强光会激怒注视；无光时退去。\n已知规律：%s" % [entity_data.display_name, entity.hp, entity.max_hp, ENTITY_STATES.get(entity.state, "未知"), ENTITY_INTENTS.get(entity.intent, "未知") if floor.light_active else "若保持黑暗，回合末退去", "避光可令其存活退去" if floor.discovered_insight_ids.has(entity_data.rule_insight.id) else "可以通过实际行为或调查局势线索确认"]
 	_stats.text = "生命：%d　｜　压力：%d　｜　威胁：%d　｜　认知：%d　｜　行动点：%d　｜　回合：%d　｜　防护：%d" % [run.player_hp, run.stress, run.threat, run.cognition, run.ap, run.turn_number, floor.player_block]
 	_counts.text = "抽牌堆：%d｜弃牌堆：%d" % [run.deck_state.draw_pile.size(), run.deck_state.discard_pile.size()]
-	_end_turn.disabled = run.player_hp <= 0 or _manager.floor_data.is_placeholder
+	_end_turn.disabled = run.player_hp <= 0 or _manager.floor_data.is_placeholder or not run.pending_rewards.is_empty()
 	_world_card.disabled = event == null
 	if event == null:
 		_name.text = "本轮局势已调查完毕" if floor.remaining_fresh_events.is_empty() else "暂无符合条件的局势"
@@ -170,21 +176,13 @@ func _refresh_state() -> void:
 		var target_event: EventInstance
 		var target_entity: EntityInstance
 		if definition.explore_amount > 0:
-			if definition.analyzes_entities and _selected_entity != null:
-				target_entity = _selected_entity
-			elif event != null and not event.resolved:
-				target_event = event
-			elif definition.analyzes_entities and entity != null and entity.active:
-				target_entity = entity
 			button.text += "\n目标：局势或可分析实体" if definition.analyzes_entities else "\n目标：当前环境\n有限资源随搜索领取"
 		match definition.effect_type:
 			CardData.EffectType.ATTACK:
-				target_entity = entity
 				button.text = "%s\n行动点：%d\n伤害：%d\n目标：实体" % [definition.display_name, final_cost, definition.effect_value]
 			CardData.EffectType.BLOCK:
 				button.text = "%s\n行动点：%d\n防护：%d\n抵挡环境及实体\n回合末清除" % [definition.display_name, final_cost, definition.effect_value]
 			CardData.EffectType.RUN:
-				target_entity = entity
 				button.text = "%s\n行动点：%d\n踉跄时脱离\n否则引发追逐\n威胁增加一" % [definition.display_name, final_cost]
 			CardData.EffectType.LIGHT:
 				button.text = "照明\n行动点：%d\n本回合产生光照\n成功消耗一电量" % final_cost
@@ -198,18 +196,36 @@ func _refresh_state() -> void:
 				button.text = "安全切出\n行动点：%d\n保留 · 占手牌位\n准备充分 · 安全离层" % final_cost
 		if card.source == CardData.Source.EQUIPMENT:
 			button.text += "\n%s · 剩余%d" % [card.source_equipment.definition.display_name, card.source_equipment.remaining_uses]
+		# 显式选择保留原样，即使种类不兼容；领域校验负责置灰，不能静默重定向。
+		if definition.target_kinds != CardData.TargetKind.NONE:
+			target_event = _selected_event
+			target_entity = _selected_entity
+		if definition.effect_type == CardData.EffectType.ATTACK and definition.threat_cost > 0:
+			button.text += "\n威胁 +%d" % definition.threat_cost
+		var condition: String = CardText.condition_description(definition)
+		if not condition.is_empty():
+			button.text += "\n" + condition
 		button.text += "\n%s" % {CardData.Source.NORMAL: "普通牌", CardData.Source.EQUIPMENT: "装备牌", CardData.Source.FLOOR_TEMPORARY: "楼层临时牌"}.get(card.source, "")
 		var command: PlayCardCommand = PlayCardCommand.new(card, target_event, board, target_entity)
 		var error: StringName = RuleResolver.validate_card_target(command, floor, _manager.floor_data, run)
-		button.disabled = run.player_hp <= 0 or _manager.floor_data.is_placeholder or run.ap < final_cost or not error.is_empty()
+		button.disabled = run.player_hp <= 0 or _manager.floor_data.is_placeholder or run.ap < final_cost or not error.is_empty() or not run.pending_rewards.is_empty()
+		var reason: String = FAILURE_MESSAGES.get(error, "目标不适用")
+		if error == &"invalid_target_kind":
+			reason = "不能以实体为搜索目标" if definition.collects_resources and _selected_entity != null else "需要实体目标" if definition.target_kinds == CardData.TargetKind.ENTITY else "不能作用于所选目标"
+		if error in [&"event_resolved", &"no_active_entity"]:
+			reason = "该目标已解决"
 		# 详情仅为牌面文字和失败原因，不提供第二种动词或任何执行控件。
-		button.tooltip_text = button.text + ("\n暂不可用：%s" % FAILURE_MESSAGES.get(error, "目标不适用") if not error.is_empty() else "\n点击打出；只有一个合法目标时直接作用于该目标。")
+		button.tooltip_text = button.text + ("\n暂不可用：%s" % reason if not error.is_empty() else "\n行动点不足" if run.ap < final_cost else "\n点击打出，作用于已选目标。")
 		button.pressed.connect(_submit_card_command.bind(command))
 		_hand.add_child(button)
 
 
 func _submit_card_command(command: PlayCardCommand) -> void:
 	_manager.submit_card_command(command)
+
+
+func _submit_reward_command(command: CardRewardCommand) -> void:
+	_manager.submit_reward_command(command)
 
 
 func _refresh_equipment_status(run: RunState) -> void:
@@ -225,6 +241,9 @@ func _refresh_equipment_status(run: RunState) -> void:
 func _show_result(result: ActionResult) -> void:
 	if not result.success:
 		_status.text = "行动失败：%s。" % FAILURE_MESSAGES.get(result.failure_reason, "操作未完成")
+		return
+	if result.reward_claimed != null:
+		_status.text = "牌组已调整，继续本回合。"
 		return
 	if result.card_played != null:
 		_status.text = "已打出%s；消耗行动点：%d。" % [result.card_definition.display_name, result.ap_spent]

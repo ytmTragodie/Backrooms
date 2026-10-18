@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1_card"]
 
 
+[ext_resource type="Resource" path="res://data/cards/rewards/card_heavy_strike.tres" id="upgrade"]
+
 [resource]
 script = ExtResource("1_card")
 id = &"card_attack"
@@ -10,3 +12,6 @@ display_name = "攻击"
 ap_cost = 1
 effect_type = 2
 effect_value = 4
+
+target_kinds = 2
+upgrade_to = ExtResource("upgrade")

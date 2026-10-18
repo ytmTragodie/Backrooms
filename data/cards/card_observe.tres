@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1_card"]
 
 
+[ext_resource type="Resource" path="res://data/cards/rewards/card_careful_observe.tres" id="upgrade"]
+
 [resource]
 script = ExtResource("1_card")
 id = &"card_observe"
@@ -13,3 +15,6 @@ explore_amount = 2
 threat_cost = 0
 tags = Array[StringName]([&"OBSERVE"])
 analyzes_entities = true
+
+target_kinds = 3
+upgrade_to = ExtResource("upgrade")

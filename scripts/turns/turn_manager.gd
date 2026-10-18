@@ -88,3 +88,11 @@ func _announce_turn_start() -> void:
 		print("[TURN] start turn=%d ap=%d" % [run_state.turn_number, run_state.ap])
 	turn_started.emit(run_state.turn_number)
 	state_changed.emit()
+
+
+func submit_reward_command(command: CardRewardCommand) -> ActionResult:
+	var result: ActionResult = RuleResolver.resolve_reward(command, run_state)
+	if result.success:
+		state_changed.emit()
+	action_resolved.emit(result)
+	return result

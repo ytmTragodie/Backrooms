@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"card_thorough_search"
+display_name = "严密搜索"
+ap_cost = 1
+effect_type = 0
+effect_value = 0
+explore_amount = 4
+threat_cost = 1
+target_kinds = 1
+bonus_condition = 0
+conditional_bonus = 0
+tags = Array[StringName]([&"SEARCH"])
+collects_resources = true

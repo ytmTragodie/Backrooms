@@ -11,6 +11,9 @@ static func validate_situation(data: EventData) -> StringName:
 		return &"invalid_event_definition"
 	if data.clue_stability < 0 or data.clue_knowledge < 0:
 		return &"invalid_event_definition"
+	var reward_error: StringName = CardRewardSystem.validate_definition(data.completion_reward)
+	if not reward_error.is_empty():
+		return reward_error
 	if data.clue_insight != null:
 		var error: StringName = InsightSystem.validate_definition(data.clue_insight)
 		if not error.is_empty():
@@ -62,7 +65,7 @@ static func plan_explore(result: ActionResult, card: CardData, floor: FloorState
 	result.event_target = event
 	result.event_id = event.event_id
 	result.explore_base = card.explore_amount
-	result.explore_bonus = explore_bonus(card, definition)
+	result.explore_bonus = explore_bonus(card, definition) + card.contextual_bonus(floor.player_block, floor.threat)
 	result.explore_after = mini(definition.explore_threshold, event.explore_progress + result.explore_base + result.explore_bonus)
 	result.explore_applied = result.explore_after - event.explore_progress
 	result.clue_revealed = not event.clue_revealed and result.explore_after >= definition.clue_threshold

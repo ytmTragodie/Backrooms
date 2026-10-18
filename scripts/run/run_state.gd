@@ -22,6 +22,7 @@ var turn_number: int = 1
 # AP 的唯一权威值：TurnManager 在新回合恢复，RuleResolver 在合法出牌时扣除。
 var ap: int = AP_PER_TURN
 var deck_state: DeckState = DeckState.new()
+var pending_rewards: Array[CardReward] = []
 # 三个固定槽是装备的唯一所有者，楼层过渡不会重建或填充它们。
 var equipment_slots: Array[EquipmentInstance] = []
 var rng_seed: int = 1
