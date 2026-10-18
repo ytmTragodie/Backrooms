@@ -14,6 +14,8 @@ static func description(card: CardData) -> String:
 		text += "　踉跄时脱离，否则引发追逐"
 	if card.threat_cost > 0:
 		text += "　威胁 +%d" % card.threat_cost
+	if card.tags.has(&"NOISE"):
+		text += "　噪音"
 	if card.collects_resources:
 		text += "　同时领取一份可用资源"
 	var condition: String = condition_description(card)

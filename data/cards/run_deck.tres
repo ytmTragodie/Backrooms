@@ -11,4 +11,4 @@
 
 [resource]
 script = ExtResource("1")
-cards = Array[ExtResource("2")]([ExtResource("observe"), ExtResource("search"), ExtResource("observe"), ExtResource("attack"), ExtResource("guard"), ExtResource("deep"), ExtResource("attack"), ExtResource("guard"), ExtResource("run"), ExtResource("observe"), ExtResource("search"), ExtResource("attack")])
+cards = Array[ExtResource("2")]([ExtResource("observe"), ExtResource("search"), ExtResource("observe"), ExtResource("attack"), ExtResource("guard"), ExtResource("deep"), ExtResource("attack"), ExtResource("guard"), ExtResource("run"), ExtResource("observe"), ExtResource("search"), ExtResource("observe")])

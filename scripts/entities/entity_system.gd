@@ -158,6 +158,7 @@ static func plan_world_followup(result: ActionResult, state: RunState, data: Flo
 	if not resolved or result.light_extinguished or not (floor.light_active or result.light_activated):
 		return
 	result.entity_spawned = spawn(data.followup_entity)
+	result.entity_spawned.spawned_turn = floor.turn_count
 	# 声明式世界条件在当前动作的计划上判断，击败／脱离与 LIGHT 可同次触发。
 	if data.followup_entity.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE:
 		result.entity_spawned.state = &"OBSERVING"
@@ -186,9 +187,10 @@ static func plan_end_turn(result: ActionResult, state: RunState, data: FloorData
 		return
 	# 只执行界面已经公示的意图，每次 End Turn 一次；不用随机 AI 或第二套时钟。
 	result.intent_resolved = entity.intent
+	result.entity_target = entity
 	var definition: EntityData = data.find_entity(entity.entity_id)
 	if definition.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE:
-		_plan_light_end_turn(result, state, definition)
+		_plan_light_end_turn(result, state, definition, data)
 		return
 	var damage: int = 0
 	var next_state: StringName = entity.state
@@ -196,10 +198,10 @@ static func plan_end_turn(result: ActionResult, state: RunState, data: FloorData
 		&"approach":
 			next_state = &"APPROACHING"
 		&"bite":
-			damage = definition.normal_damage
+			damage = intent_damage(entity, definition, state.floor_state, data)
 			next_state = &"CHASING"
 		&"lunge":
-			damage = definition.aggressive_damage
+			damage = intent_damage(entity, definition, state.floor_state, data)
 		&"recover":
 			next_state = &"WATCHING"
 	# 局势先消耗同一份 Guard；实体只使用余额，避免一份防护抵挡两次。
@@ -210,7 +212,7 @@ static func plan_end_turn(result: ActionResult, state: RunState, data: FloorData
 	_set_next_state(result, next_state)
 
 
-static func _plan_light_end_turn(result: ActionResult, state: RunState, data: EntityData) -> void:
+static func _plan_light_end_turn(result: ActionResult, state: RunState, data: EntityData, floor_data: FloorData) -> void:
 	var entity: EntityInstance = state.floor_state.entity
 	# 先读取本回合实际照明，再由统一提交清除临时光源；不会在熄灯后执行过期攻击。
 	if not state.floor_state.light_active:
@@ -223,8 +225,9 @@ static func _plan_light_end_turn(result: ActionResult, state: RunState, data: En
 		_set_next_state(result, &"ATTACKING")
 		result.entity_state_reason = &"light_warning_ignored"
 	elif entity.state == &"ATTACKING":
-		result.damage_blocked = mini(state.floor_state.player_block - result.pressure_blocked, data.aggressive_damage)
-		result.player_damage = mini(state.player_hp - result.pressure_damage, maxi(0, data.aggressive_damage - result.damage_blocked))
+		var damage: int = intent_damage(entity, data, state.floor_state, floor_data)
+		result.damage_blocked = mini(state.floor_state.player_block - result.pressure_blocked, damage)
+		result.player_damage = mini(state.player_hp - result.pressure_damage, maxi(0, damage - result.damage_blocked))
 		# 格挡仍然有效，但规则型实体不会套用猎犬的踉跄状态机。
 		_set_next_state(result, &"ATTACKING")
 		result.entity_state_reason = &"light_strike"
@@ -233,6 +236,13 @@ static func _plan_light_end_turn(result: ActionResult, state: RunState, data: En
 static func _set_next_state(result: ActionResult, next_state: StringName) -> void:
 	result.entity_state_after = next_state
 	result.entity_intent_after = INTENTS[next_state]
+
+
+static func intent_damage(entity: EntityInstance, definition: EntityData, floor: FloorState, data: FloorData) -> int:
+	var base: int = definition.aggressive_damage if entity.intent in [&"lunge", &"light_strike"] else (definition.normal_damage if entity.intent == &"bite" else 0)
+	if base > 0 and data.threat_damage_step > 0:
+		base += mini(data.max_threat_damage_bonus, floor.threat / data.threat_damage_step)
+	return base
 
 
 static func finish_turn(floor: FloorState) -> void:

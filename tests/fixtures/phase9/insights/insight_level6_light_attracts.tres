@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="InsightData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/insight_data.gd" id="1_insight"]
+
+[resource]
+script = ExtResource("1_insight")
+id = &"insight_level6_light_attracts"
+display_name = "强光引来注视，避光使其退去"
+cutout_stability = 1

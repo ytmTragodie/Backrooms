@@ -63,6 +63,10 @@ Level 0
   add one offered NORMAL card, upgrade one owned NORMAL instance, or remove one
   eligible NORMAL instance. Reward UI sends validated commands; it is never a free
   deck editor or a parallel exploration/combat/equipment/cut-out input.
+- Phase 10 moves ordinary upgrade/removal opportunities to one optional floor-local
+  Safe Point. Rest/remove/upgrade consume the same once-per-visit opportunity only
+  after a valid final choice. Opening, reviewing or postponing it grants nothing.
+  Ordinary Situations do not all award cards; major content declares rare rewards.
 - Keep one exploration/combat turn loop, unique Insight rewards, finite resources,
   common entity HP with behavioral solutions, and an anti-soft-lock exit route.
   Exit availability must be solved within the card rules, not by restoring a

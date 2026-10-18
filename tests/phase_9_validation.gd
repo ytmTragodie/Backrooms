@@ -245,6 +245,8 @@ func _test_new_cards() -> void:
 
 func _test_target_ui() -> void:
 	var main: Control = MAIN.instantiate() as Control
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/fixtures/phase9/floors/floor_level_0.tres")
+	(main.get_node("TurnManager") as TurnManager).starter_deck = preload("res://tests/fixtures/phase9/cards/run_deck.tres")
 	(main.get_node("TurnManager") as TurnManager).floor_data = fixture(LEVEL_6)
 	root.add_child(main)
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
@@ -292,6 +294,8 @@ func claim_ui(main: Control, kinds: Array[int]) -> void:
 func _test_production_ui_run() -> void:
 	root.size = Vector2i(1152, 648)
 	var main: Control = MAIN.instantiate() as Control
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/fixtures/phase9/floors/floor_level_0.tres")
+	(main.get_node("TurnManager") as TurnManager).starter_deck = preload("res://tests/fixtures/phase9/cards/run_deck.tres")
 	root.add_child(main)
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
 	var state: RunState = owner.run_state

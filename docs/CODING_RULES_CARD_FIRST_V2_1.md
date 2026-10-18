@@ -821,3 +821,17 @@ quoted history never authorizes restoring those paths.
   shared CardData or rebuild the deck. Invalid/stale/double claims preserve state/RNG/notifications.
 - Pending choice pauses normal lifecycle. Empty upgrade/removal candidates can continue; removal keeps
   at least five normal cards. No shop, currency or Phase 10 content is implied by this foundation.
+
+## Phase 10 constraints
+
+- Ordinary production Situation definitions cannot offer routine upgrades/removals; those consume
+  one optional visit-local Safe Point. Every final choice requires exact current visit/point and
+  instance identity. Preview/postpone never consume state; failed choices preserve everything.
+- Rare card rewards stay explicit in major content; do not add a global hard-coded reward budget.
+- Resource search plans restoration; EquipmentSystem commits physical counters. Never consume a
+  finite cache with no useful reward or create material/crafting clutter.
+- Content timing, exit fallback and Threat danger are floor data; UI uses domain damage/legality.
+  Retain fallback remains independent of specific events/resources/Insight and survives bad hands.
+- Run summary/debug metrics record committed facts before transitions, never scene signal chains.
+- Preserve earlier coverage using explicit historical balance fixtures and verify current production
+  separately. A windowless run is not evidence of rendered-window/manual visual validation.

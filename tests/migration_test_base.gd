@@ -1,8 +1,8 @@
 extends SceneTree
 
-const LEVEL_0: FloorData = preload("res://data/floors/floor_level_0.tres")
-const LEVEL_6: FloorData = preload("res://data/floors/floor_level_6.tres")
-const DECK: DeckData = preload("res://data/cards/run_deck.tres")
+const LEVEL_0: FloorData = preload("res://tests/fixtures/phase9/floors/floor_level_0.tres")
+const LEVEL_6: FloorData = preload("res://tests/fixtures/phase9/floors/floor_level_6.tres")
+const DECK: DeckData = preload("res://tests/fixtures/phase9/cards/run_deck.tres")
 const OBSERVE: CardData = preload("res://data/cards/card_observe.tres")
 const SEARCH: CardData = preload("res://data/cards/card_search.tres")
 const DEEP: CardData = preload("res://data/cards/card_deep_search.tres")

@@ -23,6 +23,7 @@ var turn_number: int = 1
 var ap: int = AP_PER_TURN
 var deck_state: DeckState = DeckState.new()
 var pending_rewards: Array[CardReward] = []
+var metrics: RunMetrics = RunMetrics.new()
 # 三个固定槽是装备的唯一所有者，楼层过渡不会重建或填充它们。
 var equipment_slots: Array[EquipmentInstance] = []
 var rng_seed: int = 1

@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="ResourceNodeData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ResourceNodeData" format=3]
 
-[ext_resource type="Script" path="res://scripts/floors/resource_node_data.gd" id="1_node"]
+[ext_resource type="Script" path="res://scripts/floors/resource_node_data.gd" id="script"]
 
 [resource]
-script = ExtResource("1_node")
+script = ExtResource("script")
 id = &"resource_level0_scrap"
-display_name = "废弃材料箱"
-hidden = false
-supply_reward = 1
+display_name = "工具补给箱"
+supply_reward = 0
+equipment_id = &"equip_crowbar"
+uses_reward = 1

@@ -101,6 +101,9 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 		elif command.target_event != null:
 			EventSystem.plan_explore(draft, definition, state.floor_state, floor_data)
 		if definition.collects_resources:
+			var inventory_error: StringName = EquipmentSystem.validate_inventory(state)
+			if not inventory_error.is_empty():
+				return _fail(failure_result, inventory_error, card_id)
 			ResourceNodeSystem.plan_search_reward(draft, state, floor_data, definition.search_hidden_first)
 	result = draft
 	var combat_effect: bool = definition.effect_type in [CardData.EffectType.ATTACK, CardData.EffectType.BLOCK, CardData.EffectType.RUN]
@@ -120,6 +123,8 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 			result.threat_reason = &"card_risk"
 		# 成功效果的噪音才触发反应；任何失败都不会进入提交。
 		EntitySystem.plan_noise_reaction(result, definition.tags, state.floor_state, floor_data)
+		if result.light_activated and definition.source != CardData.Source.EQUIPMENT:
+			EntitySystem.plan_light_reaction(result, state, floor_data)
 
 		EntitySystem.plan_world_followup(result, state, floor_data)
 		CardRewardSystem.plan(result, state, floor_data)
@@ -155,7 +160,7 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	cards.finish_play(card, result)
 	result.debug_lines.append("[AP] %d -> %d" % [previous_ap, state.ap])
 	result.debug_lines.append("[CARD] hand -> discard %s" % card_id if card.source == CardData.Source.NORMAL else "[CARD] source=%d resolved %s" % [card.source, card_id])
-	_commit_floor_result(result, state)
+	_commit_floor_result(result, state, floor_data)
 	if result.commit_rng:
 		state.rng.state = result.rng_state_after
 	# 生成／升级／换层清理也在同一通知边界内完成，不由 UI 刷新触发。
@@ -210,7 +215,7 @@ static func validate_card_target(command: PlayCardCommand, floor: FloorState, da
 			if command.target_event == null and definition.collects_resources and (floor.board_state.active_event == null or floor.board_state.active_event.resolved):
 				if command.target_board != floor.board_state:
 					return &"invalid_event_target"
-				return &"" if ResourceNodeSystem.find_search_reward(floor, data, definition.search_hidden_first) != null else &"resources_exhausted"
+				return &"" if ResourceNodeSystem.find_search_reward(floor, data, definition.search_hidden_first, state) != null else &"resources_exhausted"
 			return EventSystem.validate_target(command, floor)
 		if not definition.analyzes_entities:
 			return &"invalid_target_kind"
@@ -268,7 +273,7 @@ static func resolve_end_turn(state: RunState, data: FloorData = null) -> ActionR
 	result.success = true
 	if state.floor_state != null:
 		CardRewardSystem.plan(result, state, data)
-	_commit_floor_result(result, state)
+	_commit_floor_result(result, state, data)
 	if result.commit_rng:
 		state.rng.state = result.rng_state_after
 	result.debug_lines.append("[RESULT] success end_turn")
@@ -290,6 +295,11 @@ static func _validate_floor_context(state: RunState, data: FloorData) -> StringN
 		return &"invalid_floor_state"
 	if data.overstay_start_turn < 3 or data.overstay_interval < 1 or data.dark_observe_surcharge < 0:
 		return &"invalid_floor_definition"
+	if data.minimum_exit_turn < 1 or data.minimum_exit_explore < 0 or data.fallback_exit_turn < data.minimum_exit_turn or data.threat_damage_step < 0 or data.max_threat_damage_bonus < 0:
+		return &"invalid_floor_definition"
+	var safe_error: StringName = SafePointSystem.validate(data.safe_point)
+	if not safe_error.is_empty():
+		return safe_error
 	var error: StringName = CutOutSystem.validate_state(floor.cutout_state)
 	if not error.is_empty():
 		return error
@@ -304,7 +314,7 @@ static func _validate_floor_context(state: RunState, data: FloorData) -> StringN
 	return error if not error.is_empty() else EntitySystem.validate(floor, data)
 
 
-static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
+static func _commit_floor_result(result: ActionResult, state: RunState, data: FloorData) -> void:
 	if result.action_id.is_empty():
 		return
 	result.debug_lines.append("[ACTION] %s" % result.action_id)
@@ -334,6 +344,12 @@ static func _commit_floor_result(result: ActionResult, state: RunState) -> void:
 		floor.threat += result.threat_delta
 		result.debug_lines.append("[THREAT] +%d reason=%s total=%d" % [result.threat_delta, result.threat_reason, floor.threat])
 	EquipmentSystem.commit(result, state)
+	if result.light_activated:
+		floor.light_active = true
+	SafePointSystem.reach(state, result)
+	state.metrics.record_action(result, state, data)
+	if data.retire_resolved_situations and floor.board_state.active_event != null and floor.board_state.active_event.resolved:
+		floor.board_state.active_event = null
 	CutOutSystem.commit(result, state)
 	if result.action_id == &"end_turn":
 		if result.expire_block:
@@ -355,8 +371,34 @@ static func _fail(result: ActionResult, reason: StringName, card_id: StringName)
 
 static func resolve_reward(command: CardRewardCommand, state: RunState) -> ActionResult:
 	var result: ActionResult = CardRewardSystem.resolve(command, state)
+	if result.success:
+		state.metrics.record_deck_change(result)
 	_write_log(result)
 	return result
+
+
+static func resolve_safe_point(command: SafePointCommand, state: RunState) -> ActionResult:
+	var result: ActionResult = SafePointSystem.resolve(command, state)
+	if result.success:
+		state.metrics.record_deck_change(result)
+	_write_log(result)
+	return result
+
+
+static func legal_hand_options(state: RunState, data: FloorData) -> int:
+	var count: int = 0
+	var board: BoardState = state.floor_state.board_state
+	for card: CardInstance in state.deck_state.hand:
+		if card_ap_cost(card.definition, state, data) > state.ap:
+			continue
+		var candidates: Array[PlayCardCommand] = [PlayCardCommand.new(card, null, board)]
+		if board.active_event != null:
+			candidates.append(PlayCardCommand.new(card, board.active_event, board))
+		if board.entity != null:
+			candidates.append(PlayCardCommand.new(card, null, board, board.entity))
+		if candidates.any(func(command: PlayCardCommand) -> bool: return validate_card_target(command, state.floor_state, data, state).is_empty()):
+			count += 1
+	return count
 
 
 static func _write_log(result: ActionResult) -> void:

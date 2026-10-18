@@ -26,7 +26,9 @@ static func plan(result: ActionResult, state: RunState, data: FloorData) -> void
 		definitions.append(data.find_event(result.event_target.event_id).completion_reward)
 	var entity: EntityInstance = state.floor_state.board_state.entity
 	if entity != null and entity.active and (result.entity_defeated or result.entity_state_after in [&"DISENGAGED", &"WITHDRAWN"]):
-		definitions.append(data.find_entity(entity.entity_id).resolution_reward)
+		var definition: EntityData = data.find_entity(entity.entity_id)
+		if not definition.reward_requires_light_exposure or entity.light_exposed or result.entity_light_exposed or result.entity_defeated:
+			definitions.append(definition.resolution_reward)
 	# 私有 RNG 草案串接其他计划；规划失败不推进本局 RNG。
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.state = result.rng_state_after if result.commit_rng else state.rng.state
@@ -90,15 +92,18 @@ static func resolve(command: CardRewardCommand, state: RunState) -> ActionResult
 			return _fail(result, &"invalid_reward_card")
 	# 从这里开始只有不会失败的牌区操作。奖励不恢复 AP、不推进回合、不另建牌组。
 	if kind == CardRewardData.Kind.ADD_CARD:
+		result.deck_change_kind = &"added"
 		result.deck_card_changed = CardSystem.add_reward(state.deck_state, command.choice)
 		result.debug_lines.append("[DECK] added %s zone=discard" % command.choice.id)
 	elif command.card != null:
 		result.deck_card_changed = command.card
 		if kind == CardRewardData.Kind.UPGRADE_CARD:
+			result.deck_change_kind = &"upgraded"
 			var previous_id: StringName = command.card.definition.id
 			CardSystem.upgrade_instance(command.card)
 			result.debug_lines.append("[DECK] upgraded %s -> %s" % [previous_id, command.card.definition.id])
 		else:
+			result.deck_change_kind = &"removed"
 			CardSystem.remove_instance(state.deck_state, command.card)
 			result.debug_lines.append("[DECK] removed %s" % command.card.definition.id)
 	state.pending_rewards.pop_front()

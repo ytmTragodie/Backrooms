@@ -23,6 +23,15 @@ extends Resource
 @export var rushed_cutout_card: CardData = preload("res://data/cards/generated/card_cutout_rushed.tres")
 @export var safe_cutout_card: CardData = preload("res://data/cards/generated/card_cutout_safe.tres")
 @export var followup_on_light: bool = false
+@export var intro_event: EventData
+@export var safe_point: SafePointData
+@export var minimum_exit_turn: int = 1
+@export var minimum_exit_explore: int = 0
+@export var fallback_exit_turn: int = 2
+@export var threat_damage_step: int = 0
+@export var max_threat_damage_bonus: int = 2
+# 旧测试夹具保留回合末退场；正式内容解决后立即清空，下一回合再补 Fresh。
+@export var retire_resolved_situations: bool = false
 
 
 func find_entity(entity_id: StringName) -> EntityData:

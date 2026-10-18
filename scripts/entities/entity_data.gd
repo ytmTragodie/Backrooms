@@ -15,3 +15,4 @@ enum BehaviorType { PURSUIT, LIGHT_REACTIVE }
 @export var analysis_threshold: int = 0
 @export_multiline var analysis_rule: String
 @export var resolution_reward: CardRewardData
+@export var reward_requires_light_exposure: bool = false

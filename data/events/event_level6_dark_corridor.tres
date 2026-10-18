@@ -1,53 +1,21 @@
-[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://bsryo08caqkpy"]
+[gd_resource type="Resource" script_class="EventData" format=3]
 
-[ext_resource type="Script" uid="uid://cgqk5m5366nak" path="res://scripts/events/event_data.gd" id="1_event"]
-[ext_resource type="Script" uid="uid://kockijsg7m7d" path="res://scripts/events/event_action_data.gd" id="2_action"]
-[ext_resource type="Resource" path="res://data/insights/insight_level6_darkness_limits_vision.tres" id="3_insight"]
-
-[sub_resource type="Resource" id="Record"]
-script = ExtResource("2_action")
-action_id = &"observe"
-granted_flags = Array[StringName]([&"dark_corridor_noted"])
-revealed_text = "你记住了墙面的触感，视觉仍无法提供方向。"
-
-[sub_resource type="Resource" id="Confirm"]
-script = ExtResource("2_action")
-action_id = &"observe"
-required_flags = Array[StringName]([&"dark_corridor_noted"])
-insight = ExtResource("3_insight")
-revealed_text = "你验证出这里的黑暗使普通视觉失效，触觉仍可提供线索。"
-resolves_event = true
-
-[sub_resource type="Resource" id="Search"]
-script = ExtResource("2_action")
-action_id = &"deep_search"
-insight = ExtResource("3_insight")
-revealed_text = "你验证出这里的黑暗使普通视觉失效，触觉仍可提供线索。"
-resolves_event = true
-
-[sub_resource type="Resource" id="Inspect"]
-script = ExtResource("2_action")
-action_id = &"inspect"
-granted_flags = Array[StringName]([&"dark_corridor_noted"])
-revealed_text = "你记住了墙面的触感，视觉仍无法提供方向。"
-
-[sub_resource type="Resource" id="SearchNearby"]
-script = ExtResource("2_action")
-action_id = &"search_nearby"
-granted_flags = Array[StringName]([&"dark_corridor_noted"])
-revealed_text = "你在附近摸索，找到另一处可比较的表面。"
-
-[sub_resource type="Resource" id="LitConfirm"]
-script = ExtResource("2_action")
-action_id = &"observe"
-insight = ExtResource("3_insight")
-revealed_text = "你验证出这里的黑暗使普通视觉失效，触觉仍可提供线索。"
-resolves_event = true
-requires_light = true
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="script"]
+[ext_resource type="Resource" path="res://data/insights/insight_level6_darkness_limits_vision.tres" id="insight"]
 
 [resource]
-script = ExtResource("1_event")
+script = ExtResource("script")
 id = &"event_level6_dark_corridor"
-display_name = "失去轮廓的走廊"
-display_text = "你伸手触到墙面，眼前却看不到任何轮廓。"
-action_results = Array[ExtResource("2_action")]([SubResource("Record"), SubResource("Confirm"), SubResource("Search"), SubResource("Inspect"), SubResource("SearchNearby"), SubResource("LitConfirm")])
+display_name = "失光走廊"
+display_text = "远处脚步没有回声。先用观察确认边界，或花行动点照明来免去黑暗中的首次观察加费。"
+objective_text = "调查环境，确认规律与路线"
+explore_threshold = 12
+clue_threshold = 4
+clue_text = "没有光时先观察更耗时，但并非无法行动。"
+completion_insight = ExtResource("insight")
+neglect_stress = 1
+neglect_damage = 0
+completion_supply = 0
+clue_light_exposure = false
+bonus_tag = &"OBSERVE"
+explore_bonus = 1

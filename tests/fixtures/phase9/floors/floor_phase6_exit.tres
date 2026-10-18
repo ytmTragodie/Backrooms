@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="FloorData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="1_floor"]
+
+[resource]
+script = ExtResource("1_floor")
+id = &"floor_phase6_exit"
+display_name = "测试切出终点"
+is_placeholder = true
+placeholder_description = "你已离开黑暗的六层。
+本阶段切出验证完成，后续玩法尚未开放。"

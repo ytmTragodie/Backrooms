@@ -25,6 +25,8 @@ extends Resource
 # 可格挡的环境伤害与旧 Stress 后果分开声明，不引入通用压力解释器。
 @export var neglect_damage: int = 0
 @export var completion_reward: CardRewardData
+@export var clue_light_exposure: bool = false
+@export var completion_supply: int = 0
 
 
 func has_action(action: StringName) -> bool:

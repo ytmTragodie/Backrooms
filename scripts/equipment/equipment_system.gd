@@ -166,6 +166,10 @@ static func plan_use(result: ActionResult, item: EquipmentInstance, state: RunSt
 
 
 static func commit(result: ActionResult, state: RunState) -> void:
+	# 搜索只规划补充值；物理计数仍统一由装备系统提交。
+	if result.resource_uses_gained > 0:
+		result.resource_equipment.remaining_uses += result.resource_uses_gained
+		result.debug_lines.append("[RESOURCE] replenished %s +%d" % [result.resource_equipment.definition.id, result.resource_uses_gained])
 	if result.equipment_used == null:
 		return
 	# 与 AP、伤害和照明在同一次同步结算内提交；UI 通知只发生在全部完成后。

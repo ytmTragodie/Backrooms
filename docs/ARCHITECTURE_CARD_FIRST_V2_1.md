@@ -920,3 +920,40 @@ The prototype uses three base-to-upgrade Resource references and three simple nu
 (existing Guard, high Threat, revealed target knowledge). No generic effects DSL or branch/menu system
 is introduced. Phase 9 tests exercise production reward content; fixed-inventory legacy suites use
 explicit no-reward fixtures without mutating production Resources.
+
+## Phase 10: content, safe points and run facts
+
+Production FloorData declares five fresh candidates, optional intro Event, one SafePointData,
+exit timing/progress fallback, overstay pacing and Threat damage scaling. Compatibility defaults
+preserve earlier rule fixtures. Current balancing never introduces another hand/AP/turn manager.
+
+SafePointState belongs to FloorState for the visit. Completion count reaches its configured
+opportunity; the current board must be clear of active entities and pending rewards to use it.
+SafePointCommand carries exact Board/point references, rest/remove/upgrade choice and optional
+owned NORMAL instance with captured definition. SafePointSystem validates everything before
+one commit consumes the point and changes HP/Stress or delegates deck mutation to CardSystem.
+RuleResolver/TurnManager publish only complete results. UI opening, candidate selection, back
+and postpone are read-only; no arbitrary rest/deck-edit API without a real opportunity exists.
+The previous reward kind helpers remain for historical regression, not ordinary production triggers.
+
+ResourceNodeData may declare equipment_id/uses_reward alongside Supply. ResourceNodeSystem
+selects a finite useful cache and plans the exact instance/capped amount; EquipmentSystem owns
+physical use-counter mutation. Full/missing equipment does not consume a cache with no benefit.
+Search progress, reward, uses, AP/card movement and RNG remain one synchronous transaction.
+
+EventSystem commits real applied Explore into floor-local total_explore and increments the visit
+completion count once. Production clears the resolved active reference after its rewards/facts
+are committed; Fresh replacement remains at next turn start. EventData clue_light_exposure is a
+declared automatic world consequence of the card milestone, using the same actual LIGHT reaction
+and follow-up path as equipment. It does not create a free light/encounter command.
+
+RunMetrics belongs to RunState and records already committed facts: deck changes, plays, unique
+Insight names/IDs, Situation durations, entity outcomes, floor-exit snapshots and hand quality.
+History is never an alternative live world/HP owner. Snapshot exit Threat/deck size before floor
+replacement so the terminal floor's zero values cannot erase run results. The summary panel reads
+facts only; new run is a pure application-flow reset. Debug logs remain local and debug-only.
+
+Phase 1–9 tests use frozen Phase 9 content in tests/fixtures/phase9, retaining transaction/source/
+state invariants and the old balance assertions explicitly. Phase 10 tests use real production
+resources, multiple seeds and actual UI commands. Separate windowed validation captures viewport
+textures; headless geometry checks are never presented as graphical verification.

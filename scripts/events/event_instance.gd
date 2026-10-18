@@ -10,6 +10,7 @@ var explore_progress: int = 0
 var clue_revealed: bool = false
 var last_progress_turn: int = 0
 var pressure_checked_turn: int = 0
+var activated_turn: int = 1
 
 var phase: StringName:
 	get:

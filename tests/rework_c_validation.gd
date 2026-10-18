@@ -396,6 +396,8 @@ func _test_retired_inputs() -> void:
 
 func _test_full_ui_run() -> void:
 	var main: Control = MAIN.instantiate() as Control
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/fixtures/phase9/floors/floor_level_0.tres")
+	(main.get_node("TurnManager") as TurnManager).starter_deck = preload("res://tests/fixtures/phase9/cards/run_deck.tres")
 	var legacy: FloorData = fixture(LEVEL_0)
 	legacy.cutout_destinations = [fixture(LEVEL_6)]
 	(main.get_node("TurnManager") as TurnManager).floor_data = legacy
@@ -464,5 +466,5 @@ func _test_full_ui_run() -> void:
 	_assert_zones(owner, DECK.cards.size())
 	await process_frame
 	await process_frame
-	check(main.get_viewport_rect().encloses((main.get_node("%Hand") as Control).get_global_rect()), "Unified hand remains in viewport")
+	check((main.get_node("%RunSummary") as Control).visible and not (main.get_node("%Hand") as Control).is_visible_in_tree(), "Terminal summary replaces live hand without showing reset floor counters")
 	main.free()

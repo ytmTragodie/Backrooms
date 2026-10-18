@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EventData" format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="script"]
+[ext_resource type="Resource" path="res://data/insights/insight_level0_meg_signal.tres" id="insight"]
+[ext_resource type="Resource" path="res://data/rewards/reward_cards.tres" id="reward"]
+
+[resource]
+script = ExtResource("script")
+id = &"event_level0_meg_signal"
+display_name = "M.E.G. 断续信号"
+display_text = "无线电残留信号藏在层层墙板之后。追索需要更久，但确认路线可带来一次新的行动思路。"
+objective_text = "调查环境，确认规律与路线"
+explore_threshold = 18
+clue_threshold = 8
+clue_text = "补给标记与信号节奏对应，稳定区域已经接近。"
+completion_insight = ExtResource("insight")
+neglect_stress = 1
+neglect_damage = 0
+completion_supply = 0
+clue_light_exposure = false
+bonus_tag = &"SEARCH"
+explore_bonus = 2
+completion_reward = ExtResource("reward")

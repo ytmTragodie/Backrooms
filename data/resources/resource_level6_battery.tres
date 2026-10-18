@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ResourceNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/resource_node_data.gd" id="script"]
+
+[resource]
+script = ExtResource("script")
+id = &"resource_level6_battery"
+display_name = "手电电池缓存"
+supply_reward = 0
+equipment_id = &"equip_flashlight"
+uses_reward = 2

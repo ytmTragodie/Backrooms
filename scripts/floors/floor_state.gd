@@ -15,6 +15,9 @@ var seen_event_ids: Array[StringName] = []
 var board_state: BoardState = BoardState.new()
 # 只保存遭遇已解决的事实，不保留第二个活动实体或 HP 所有者。
 var resolved_entity_ids: Array[StringName] = []
+var completed_situations: int = 0
+var total_explore: int = 0
+var safe_point: SafePointState
 # 旧领域读取暂保留只读转发；调度器只写 BoardState，不维护第二份事件引用。
 var current_event: EventInstance:
 	get:
@@ -39,6 +42,8 @@ var light_active: bool = false
 func _init(definition: FloorData) -> void:
 	assert(definition != null and not definition.id.is_empty(), "Floor needs a stable ID")
 	floor_id = definition.id
+	if definition.safe_point != null:
+		safe_point = SafePointState.new(definition.safe_point)
 	floor_flags = definition.initial_flags.duplicate()
 	if definition.entry_entity != null:
 		entity = EntitySystem.spawn(definition.entry_entity)

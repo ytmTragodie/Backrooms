@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="InsightData" format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/insight_data.gd" id="script"]
+
+[resource]
+script = ExtResource("script")
+id = &"insight_level6_emergency_cycle"
+display_name = "应急灯的放电周期"
+cutout_stability = 1
+cutout_knowledge = 0

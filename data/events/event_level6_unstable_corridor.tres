@@ -1,19 +1,21 @@
-[gd_resource type="Resource" script_class="EventData" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="EventData" format=3]
 
-[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
-[ext_resource type="Resource" path="res://data/insights/insight_level6_noise_pursuit.tres" id="2"]
-
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="script"]
+[ext_resource type="Resource" path="res://data/insights/insight_level6_noise_pursuit.tres" id="insight"]
 [ext_resource type="Resource" path="res://data/insights/insight_level6_light_attracts.tres" id="light_insight"]
 
 [resource]
-script = ExtResource("1")
+script = ExtResource("script")
 id = &"event_level6_unstable_corridor"
-display_name = "异常走廊"
-display_text = "黑暗中墙板缓缓挤压，另一侧传来爪声。调查环境与应对猎犬争用同一份行动点。"
-objective_text = "找到可供通过的稳定路线"
-explore_threshold = 9
+display_name = "挤压走廊"
+display_text = "墙板缓缓挤压，爪声同时靠近。推进调查能避免本回合挤压，防护要在环境和猎犬之间分配。"
+objective_text = "调查环境，确认规律与路线"
+explore_threshold = 12
 clue_threshold = 4
-clue_text = "每次重响过后，爪声都会变得急促；先防护也能抵挡挤压。"
-completion_insight = ExtResource("2")
-neglect_damage = 2
+clue_text = "强光会暴露黑暗中的注视；噪音则使爪声更加急促。"
+completion_insight = ExtResource("insight")
+neglect_stress = 0
+neglect_damage = 1
+completion_supply = 0
+clue_light_exposure = false
 clue_insight = ExtResource("light_insight")

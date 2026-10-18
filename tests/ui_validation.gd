@@ -15,9 +15,11 @@ func tests() -> void:
 
 func _test_default_entry() -> void:
 	var main: Control = MAIN.instantiate() as Control
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/fixtures/phase9/floors/floor_level_0.tres")
+	(main.get_node("TurnManager") as TurnManager).starter_deck = preload("res://tests/fixtures/phase9/cards/run_deck.tres")
 	root.add_child(main)
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
-	check(owner.floor_data == LEVEL_0 and owner.run_state.player_hp == 30 and owner.run_state.ap == 3 and owner.run_state.deck_state.hand.size() == 5, "Normal Main entry starts Level 0 directly without a scenario selector")
+	check(owner.floor_data.id == LEVEL_0.id and owner.run_state.player_hp == 30 and owner.run_state.ap == 3 and owner.run_state.deck_state.hand.size() == 5, "Normal Main entry starts Level 0 directly without a scenario selector")
 	check(owner.run_state.deck_state.get_card_count() == DECK.cards.size(), "Normal entry keeps the production run deck")
 	for removed: String in ["%CardMode", "%EquipmentPicker", "%ResourcePicker", "%NewLevel0", "%NewLevel6", "%FloorContext"]:
 		check(main.get_node_or_null(removed) == null, "Removed global/developer control: %s" % removed)
@@ -48,6 +50,8 @@ func _test_default_entry() -> void:
 
 func _test_debug_panel() -> void:
 	var main: Control = MAIN.instantiate() as Control
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/fixtures/phase9/floors/floor_level_0.tres")
+	(main.get_node("TurnManager") as TurnManager).starter_deck = preload("res://tests/fixtures/phase9/cards/run_deck.tres")
 	root.add_child(main)
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
 	var panel: Control = main.get_node("%DebugPanel") as Control
@@ -63,7 +67,7 @@ func _test_debug_panel() -> void:
 		await _press_f8()
 		(panel.get_node("Padding/Layout/StartLevel6") as Button).pressed.emit()
 		var mixed: TurnManager = main.get_node("TurnManager") as TurnManager
-		check(mixed != owner and mixed.floor_data == LEVEL_6 and not panel.visible, "Explicit debug test-run request closes panel and creates a separate new run")
+		check(mixed != owner and mixed.floor_data.id == LEVEL_6.id and not panel.visible, "Explicit debug test-run request closes panel and creates a separate new run")
 		check((main.get_node("%EntityCard") as Button).visible and (main.get_node("%EntityInformation") as Label).text.contains("猎犬"), "Normal board renders Situation + Hound with no testing action bar")
 		await process_frame
 		await process_frame
@@ -72,12 +76,14 @@ func _test_debug_panel() -> void:
 		_check_default_controls(main)
 		await _press_f8()
 		(panel.get_node("Padding/Layout/StartLevel0") as Button).pressed.emit()
-		check((main.get_node("TurnManager") as TurnManager).floor_data == LEVEL_0 and not panel.visible, "Retained Level 0 fixture also remains confined to hidden debug panel")
+		check((main.get_node("TurnManager") as TurnManager).floor_data.id == LEVEL_0.id and not panel.visible, "Retained Level 0 fixture also remains confined to hidden debug panel")
 	main.free()
 
 
 func _test_generated_hand() -> void:
 	var main: Control = MAIN.instantiate() as Control
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/fixtures/phase9/floors/floor_level_0.tres")
+	(main.get_node("TurnManager") as TurnManager).starter_deck = preload("res://tests/fixtures/phase9/cards/run_deck.tres")
 	(main.get_node("TurnManager") as TurnManager).floor_data = LEVEL_6
 	root.add_child(main)
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager

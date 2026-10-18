@@ -72,6 +72,8 @@ func _on_turn_started(turn_number: int) -> void:
 
 func _test_main_scene() -> void:
 	var main: Control = MAIN_SCENE.instantiate() as Control
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/fixtures/phase9/floors/floor_level_0.tres")
+	(main.get_node("TurnManager") as TurnManager).starter_deck = preload("res://tests/fixtures/phase9/cards/run_deck.tres")
 	root.add_child(main)
 	var manager: TurnManager = main.get_node("TurnManager") as TurnManager
 	var stats: Label = main.get_node("%RunStats") as Label

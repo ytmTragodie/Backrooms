@@ -9,7 +9,7 @@ static func validate_situation(data: EventData) -> StringName:
 		return &"invalid_event_definition"
 	if data.explore_bonus > 0 and data.bonus_tag.is_empty():
 		return &"invalid_event_definition"
-	if data.clue_stability < 0 or data.clue_knowledge < 0:
+	if data.clue_stability < 0 or data.clue_knowledge < 0 or data.completion_supply < 0:
 		return &"invalid_event_definition"
 	var reward_error: StringName = CardRewardSystem.validate_definition(data.completion_reward)
 	if not reward_error.is_empty():
@@ -70,6 +70,7 @@ static func plan_explore(result: ActionResult, card: CardData, floor: FloorState
 	result.explore_applied = result.explore_after - event.explore_progress
 	result.clue_revealed = not event.clue_revealed and result.explore_after >= definition.clue_threshold
 	if result.clue_revealed:
+		result.light_activated = definition.clue_light_exposure
 		result.event_information.append(definition.clue_text)
 		if definition.clue_stability > 0 or definition.clue_knowledge > 0:
 			CutOutSystem.plan_gain(result, floor.cutout_state, definition.clue_stability, definition.clue_knowledge, &"situation_clue")
@@ -77,6 +78,7 @@ static func plan_explore(result: ActionResult, card: CardData, floor: FloorState
 			InsightSystem.plan_confirmation(result, definition.clue_insight, floor)
 	result.event_resolved = result.explore_after == definition.explore_threshold
 	if result.event_resolved:
+		result.supply_delta += definition.completion_supply
 		InsightSystem.plan_confirmation(result, definition.completion_insight, floor)
 	if card.threat_cost > 0:
 		result.threat_delta = mini(card.threat_cost, FloorState.MAX_THREAT - floor.threat)
@@ -103,6 +105,7 @@ static func commit_situation(result: ActionResult, state: RunState) -> void:
 	if result.explore_after >= 0:
 		# 阈值、线索与进度在同一次提交生效；没有 UI 事件链驱动奖励。
 		event.explore_progress = result.explore_after
+		state.floor_state.total_explore += result.explore_applied
 		event.last_progress_turn = state.floor_state.turn_count
 		event.clue_revealed = event.clue_revealed or result.clue_revealed
 		event.known_information.append_array(result.event_information)
@@ -111,6 +114,7 @@ static func commit_situation(result: ActionResult, state: RunState) -> void:
 		if result.clue_revealed:
 			result.debug_lines.append("[SITUATION] clue %s" % event.event_id)
 		if event.resolved:
+			state.floor_state.completed_situations += 1
 			result.debug_lines.append("[SITUATION] resolved %s" % event.event_id)
 	if result.pressure_checked:
 		event.pressure_checked_turn = state.floor_state.turn_count
@@ -153,12 +157,16 @@ static func draw_fresh(data: FloorData, state: FloorState, rng: RandomNumberGene
 			print("[EVENT] no_eligible_fresh remaining=%d" % state.remaining_fresh_events.size())
 		return &""
 	# 先过滤条件，再用本局 RNG 加权选择；无候选时不消耗随机数。
-	var roll: int = rng.randi_range(1, total_weight)
+	var intro: EventData = data.intro_event if state.seen_event_ids.is_empty() and candidates.has(data.intro_event) else null
+	var roll: int = 1 if intro != null else rng.randi_range(1, total_weight)
 	for event: EventData in candidates:
+		if intro != null and event != intro:
+			continue
 		roll -= event.weight
 		if roll > 0:
 			continue
 		state.board_state.active_event = EventInstance.new(event.id)
+		state.board_state.active_event.activated_turn = state.turn_count
 		state.remaining_fresh_events.erase(event.id)
 		state.seen_event_ids.append(event.id)
 		if emit_log and OS.is_debug_build():

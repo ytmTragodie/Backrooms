@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/turns/turn_manager.gd" id="2_turns"]
@@ -12,6 +12,9 @@
 [ext_resource type="Script" path="res://scripts/ui/debug_panel.gd" id="9_debug"]
 
 [ext_resource type="PackedScene" path="res://scenes/ui/CardRewardPanel.tscn" id="10_reward"]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/SafePointPanel.tscn" id="11_safe"]
+[ext_resource type="PackedScene" path="res://scenes/ui/RunSummary.tscn" id="12_summary"]
 
 [sub_resource type="StyleBoxFlat" id="WorldStyle"]
 bg_color = Color(0.14, 0.17, 0.2, 1)
@@ -72,14 +75,14 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-autowrap_mode = 2
+autowrap_mode = 3
 horizontal_alignment = 1
 text = "选择世界牌目标，再打出手牌。"
 
 [node name="EquipmentStatus" type="Label" parent="Margin/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
-autowrap_mode = 2
+autowrap_mode = 3
 horizontal_alignment = 1
 mouse_filter = 2
 
@@ -123,37 +126,37 @@ theme_override_font_sizes/font_size = 24
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-autowrap_mode = 2
+autowrap_mode = 3
 
 [node name="Objective" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Information"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-autowrap_mode = 2
+autowrap_mode = 3
 
 [node name="Pressure" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Information"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-autowrap_mode = 2
+autowrap_mode = 3
 
 [node name="SituationRule" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Information"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-autowrap_mode = 2
+autowrap_mode = 3
 
 [node name="Clues" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Information"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-autowrap_mode = 2
+autowrap_mode = 3
 
 [node name="SituationState" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Information"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-autowrap_mode = 2
+autowrap_mode = 3
 
 [node name="HandTitle" type="Label" parent="Margin/Layout"]
 layout_mode = 2
@@ -201,7 +204,7 @@ offset_right = -20.0
 offset_bottom = -16.0
 mouse_filter = 2
 theme_override_font_sizes/font_size = 20
-autowrap_mode = 2
+autowrap_mode = 3
 
 [node name="DebugPanel" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -230,7 +233,7 @@ text = "开发调试 · 仅开发构建"
 
 [node name="Context" type="Label" parent="DebugPanel/Padding/Layout"]
 layout_mode = 2
-autowrap_mode = 2
+autowrap_mode = 3
 
 [node name="StartLevel0" type="Button" parent="DebugPanel/Padding/Layout"]
 layout_mode = 2
@@ -245,5 +248,19 @@ layout_mode = 2
 text = "关闭调试面板"
 
 [node name="RewardPanel" parent="." instance=ExtResource("10_reward")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="OpenSafePoint" type="Button" parent="Margin/Layout/Footer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "临时安全点"
+
+[node name="SafePointPanel" parent="." instance=ExtResource("11_safe")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="RunSummary" parent="." instance=ExtResource("12_summary")]
 unique_name_in_owner = true
 layout_mode = 1

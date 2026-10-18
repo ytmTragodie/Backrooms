@@ -71,3 +71,7 @@ var debug_lines: Array[String] = []
 var rewards_created: Array[CardReward] = []
 var reward_claimed: CardReward
 var deck_card_changed: CardInstance
+var deck_change_kind: StringName
+var safe_point_used: SafePointState
+var resource_equipment: EquipmentInstance
+var resource_uses_gained: int = 0

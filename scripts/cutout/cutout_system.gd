@@ -7,8 +7,9 @@ const MINIMUM_EXIT_TURN: int = 2
 
 
 static func is_available(floor: FloorState, data: FloorData) -> bool:
-	# 有准备可提前出现；无事件／资源／认知时，第二个驻留回合也必有仓促出口。
-	return not data.is_placeholder and not floor.cutout_state.destination_candidates.is_empty() and (floor.cutout_state.stability > 0 or floor.turn_count >= MINIMUM_EXIT_TURN)
+	# 探索／驻留要求和独立兜底都来自楼层数据，不能依赖某个事件或物品。
+	var explored: bool = floor.total_explore >= data.minimum_exit_explore and (data.minimum_exit_explore > 0 or floor.cutout_state.stability > 0)
+	return not data.is_placeholder and not floor.cutout_state.destination_candidates.is_empty() and floor.turn_count >= data.minimum_exit_turn and (explored or floor.turn_count >= data.fallback_exit_turn)
 
 
 static func validate_card_definitions(data: FloorData) -> StringName:
@@ -51,6 +52,11 @@ static func validate(state: CutOutState, data: FloorData) -> StringName:
 		if not destination.is_placeholder and (not destination.card_first_exploration or destination.cutout_destinations.is_empty()):
 			return &"invalid_destination"
 		if not destination.is_placeholder:
+			error = SafePointSystem.validate(destination.safe_point)
+			if not error.is_empty():
+				return error
+			if destination.minimum_exit_turn < 1 or destination.minimum_exit_explore < 0 or destination.fallback_exit_turn < destination.minimum_exit_turn or destination.threat_damage_step < 0 or destination.max_threat_damage_bonus < 0:
+				return &"invalid_floor_definition"
 			error = validate_card_definitions(destination)
 			if not error.is_empty():
 				return error
@@ -67,7 +73,7 @@ static func validate(state: CutOutState, data: FloorData) -> StringName:
 			event_ids.append(event.id)
 		var node_ids: Array[StringName] = []
 		for node: ResourceNodeData in destination.resource_nodes:
-			if node == null or node.id.is_empty() or node.supply_reward < 0 or node_ids.has(node.id):
+			if not ResourceNodeSystem.valid_definition(node) or node_ids.has(node.id):
 				return &"invalid_resource_definition"
 			node_ids.append(node.id)
 		var destination_ids: Array[StringName] = []

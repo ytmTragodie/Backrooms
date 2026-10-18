@@ -1,6 +1,6 @@
 extends SceneTree
 
-const LEVEL_0: FloorData = preload("res://data/floors/floor_level_0.tres")
+const LEVEL_0: FloorData = preload("res://tests/fixtures/phase9/floors/floor_level_0.tres")
 const DECK: DeckData = preload("res://data/cards/exploration_deck.tres")
 const OBSERVE: CardData = preload("res://data/cards/card_observe.tres")
 const SEARCH: CardData = preload("res://data/cards/card_search.tres")
@@ -301,7 +301,9 @@ func _test_old_command_rejection() -> void:
 
 func _test_main_ui() -> void:
 	var main: Control = MAIN.instantiate() as Control
-	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/legacy_fixture.gd").without_rewards(preload("res://data/floors/floor_level_0.tres"))
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/fixtures/phase9/floors/floor_level_0.tres")
+	(main.get_node("TurnManager") as TurnManager).starter_deck = preload("res://tests/fixtures/phase9/cards/run_deck.tres")
+	(main.get_node("TurnManager") as TurnManager).floor_data = preload("res://tests/legacy_fixture.gd").without_rewards(preload("res://tests/fixtures/phase9/floors/floor_level_0.tres"))
 	# 十张纯调查夹具继续证明 A 的不变量；正式主屏使用完整 run_deck。
 	(main.get_node("TurnManager") as TurnManager).starter_deck = DECK
 	root.add_child(main)

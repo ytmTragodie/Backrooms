@@ -84,6 +84,15 @@ func submit_card_command(command: PlayCardCommand) -> ActionResult:
 
 
 func _announce_turn_start() -> void:
+	if floor_data != null and not floor_data.is_placeholder:
+		var options: int = RuleResolver.legal_hand_options(run_state, floor_data)
+		run_state.metrics.hands_checked += 1
+		if options == 0:
+			run_state.metrics.dead_hands += 1
+		if options >= 2:
+			run_state.metrics.multiple_option_hands += 1
+		if OS.is_debug_build():
+			print("[BALANCE] hand options=%d cards=%d turn=%d" % [options, run_state.deck_state.hand.size(), run_state.turn_number])
 	if OS.is_debug_build():
 		print("[TURN] start turn=%d ap=%d" % [run_state.turn_number, run_state.ap])
 	turn_started.emit(run_state.turn_number)
@@ -92,6 +101,14 @@ func _announce_turn_start() -> void:
 
 func submit_reward_command(command: CardRewardCommand) -> ActionResult:
 	var result: ActionResult = RuleResolver.resolve_reward(command, run_state)
+	if result.success:
+		state_changed.emit()
+	action_resolved.emit(result)
+	return result
+
+
+func submit_safe_point_command(command: SafePointCommand) -> ActionResult:
+	var result: ActionResult = RuleResolver.resolve_safe_point(command, run_state)
 	if result.success:
 		state_changed.emit()
 	action_resolved.emit(result)

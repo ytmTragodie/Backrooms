@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="FloorData" format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="1_floor"]
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="2_event"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase9/events/event_level6_unstable_corridor.tres" id="3_dark"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase9/entities/entity_hound.tres" id="6_hound"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase9/floors/floor_phase6_exit.tres" id="7_exit"]
+
+[ext_resource type="Resource" path="res://tests/fixtures/phase9/entities/entity_smiler.tres" id="smiler"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase9/insights/insight_level6_light_attracts.tres" id="landmark"]
+
+[resource]
+script = ExtResource("1_floor")
+id = &"floor_level_6"
+display_name = "六层：混合遭遇"
+card_first_exploration = true
+fresh_events = Array[ExtResource("2_event")]([ExtResource("3_dark")])
+initial_flags = Array[StringName]([&"darkness"])
+dark_observe_surcharge = 1
+entry_entity = ExtResource("6_hound")
+cutout_destinations = Array[Resource]([ExtResource("7_exit")])
+followup_entity = ExtResource("smiler")
+landmark_insight = ExtResource("landmark")
+
+followup_on_light = true
