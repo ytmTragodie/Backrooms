@@ -7,6 +7,10 @@ signal command_submitted(command: CardRewardCommand)
 @onready var _options: VBoxContainer = $Margin/Layout/Scroll/Options
 
 
+func _ready() -> void:
+	GameUITheme.style_modal(self)
+
+
 func refresh(state: RunState) -> void:
 	visible = not state.pending_rewards.is_empty() and state.player_hp > 0
 	for child: Node in _options.get_children():
@@ -35,6 +39,12 @@ func _add_option(text: String, command: CardRewardCommand) -> void:
 	var button: Button = Button.new()
 	button.text = text
 	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	button.custom_minimum_size.y = 78
+	button.custom_minimum_size.y = 110
+	var definition: CardData = command.choice if command.choice != null else (command.card.definition if command.card != null else null)
+	if definition != null:
+		button.icon = AssetCatalog.texture(definition.id)
+		button.expand_icon = true
+		button.add_theme_constant_override("icon_max_width", 95)
+	button.tooltip_text = text
 	button.pressed.connect(func() -> void: command_submitted.emit(command))
 	_options.add_child(button)

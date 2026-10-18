@@ -5,9 +5,16 @@
     "usage": "0层背景",
     "required": true,
     "dimensions": "1920×1080",
-    "format": "PNG/JPG",
-    "status": "PLACEHOLDER",
-    "notes": "静态空环境，无文字；中央低对比。"
+    "format": "PNG",
+    "status": "PROVIDED",
+    "notes": "提供的 660×540 零层示例图；安全裁切铺满，后续可换宽幅图。",
+    "actual_dimensions": [
+      660,
+      540
+    ],
+    "transparency": "否",
+    "priority": "P1",
+    "transparency_requirement": "否"
   },
   "floor_level_6": {
     "path": "res://assets/backgrounds/level_6/background.png",
@@ -15,9 +22,16 @@
     "usage": "6层背景",
     "required": true,
     "dimensions": "1920×1080",
-    "format": "PNG/JPG",
-    "status": "PLACEHOLDER",
-    "notes": "静态空环境，无文字；中央低对比。"
+    "format": "PNG",
+    "status": "PROVIDED",
+    "notes": "开发者主资源目录提供；已检查编码/尺寸，动态数值仍由当前规则绘制。",
+    "priority": "P0",
+    "actual_dimensions": [
+      2720,
+      1520
+    ],
+    "transparency": "否",
+    "transparency_requirement": "否"
   },
   "event_level0_humming": {
     "path": "res://assets/cards/events/event_level0_humming.png",
@@ -27,7 +41,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "event_level0_meg_signal": {
     "path": "res://assets/cards/events/event_level0_meg_signal.png",
@@ -37,7 +54,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "event_level6_claw_marks": {
     "path": "res://assets/cards/events/event_level6_claw_marks.png",
@@ -47,7 +67,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "event_level6_dark_movement": {
     "path": "res://assets/cards/events/event_level6_dark_movement.png",
@@ -57,7 +80,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "event_level6_fading_light": {
     "path": "res://assets/cards/events/event_level6_fading_light.png",
@@ -67,7 +93,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "event_level6_stable_broadcast": {
     "path": "res://assets/cards/events/event_level6_stable_broadcast.png",
@@ -77,7 +106,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "objective_level0_damp_wall": {
     "path": "res://assets/cards/objectives/objective_level0_damp_wall.png",
@@ -87,7 +119,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P0",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "objective_level0_wrong_corner": {
     "path": "res://assets/cards/objectives/objective_level0_wrong_corner.png",
@@ -97,7 +132,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P0",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "objective_level6_emergency_light": {
     "path": "res://assets/cards/objectives/objective_level6_emergency_light.png",
@@ -107,7 +145,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P0",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "objective_level6_wall_seam": {
     "path": "res://assets/cards/objectives/objective_level6_wall_seam.png",
@@ -117,7 +158,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P0",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "entity_hound": {
     "path": "res://assets/cards/entities/entity_hound.png",
@@ -126,8 +170,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      2048,
+      1152
+    ],
+    "transparency": "否",
+    "priority": "P1",
+    "transparency_requirement": "否"
   },
   "entity_smiler": {
     "path": "res://assets/cards/entities/entity_smiler.png",
@@ -136,8 +187,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      2720,
+      1520
+    ],
+    "transparency": "否",
+    "priority": "P1",
+    "transparency_requirement": "否"
   },
   "portrait_hound": {
     "path": "res://assets/entities/hound.png",
@@ -146,8 +204,16 @@
     "required": false,
     "dimensions": "1024×1024",
     "format": "PNG",
-    "status": "MISSING",
-    "notes": "透明背景；不含文字。"
+    "status": "PROVIDED",
+    "notes": "透明背景；不含文字。",
+    "priority": "P2",
+    "fallback": "内建样式/无叠层",
+    "actual_dimensions": [
+      2048,
+      1152
+    ],
+    "transparency": "否",
+    "transparency_requirement": "是"
   },
   "portrait_smiler": {
     "path": "res://assets/entities/smiler.png",
@@ -156,8 +222,16 @@
     "required": false,
     "dimensions": "1024×1024",
     "format": "PNG",
-    "status": "MISSING",
-    "notes": "透明背景；不含文字。"
+    "status": "PROVIDED",
+    "notes": "透明背景；不含文字。",
+    "priority": "P2",
+    "fallback": "内建样式/无叠层",
+    "actual_dimensions": [
+      2720,
+      1520
+    ],
+    "transparency": "否",
+    "transparency_requirement": "是"
   },
   "frame_player": {
     "path": "res://assets/ui/frames/player.png",
@@ -166,8 +240,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明中心；边框保留安全距，用九宫格拉伸。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      750,
+      1050
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
   },
   "frame_event": {
     "path": "res://assets/ui/frames/event.png",
@@ -176,8 +257,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明中心；边框保留安全距，用九宫格拉伸。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      750,
+      1050
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
   },
   "frame_entity": {
     "path": "res://assets/ui/frames/entity.png",
@@ -186,8 +274,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明中心；边框保留安全距，用九宫格拉伸。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      750,
+      1050
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
   },
   "frame_objective": {
     "path": "res://assets/ui/frames/objective.png",
@@ -196,8 +291,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明中心；边框保留安全距，用九宫格拉伸。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      750,
+      1050
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
   },
   "icon_hp": {
     "path": "res://assets/ui/icons/hp.png",
@@ -206,8 +308,15 @@
     "required": true,
     "dimensions": "64×64",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      200,
+      200
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
   },
   "icon_stress": {
     "path": "res://assets/ui/icons/stress.png",
@@ -216,8 +325,15 @@
     "required": true,
     "dimensions": "64×64",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+    "status": "PROVIDED",
+    "notes": "开发者主资源目录提供；已检查编码/尺寸，动态数值仍由当前规则绘制。",
+    "priority": "P1",
+    "actual_dimensions": [
+      200,
+      200
+    ],
+    "transparency": "是",
+    "transparency_requirement": "是"
   },
   "icon_threat": {
     "path": "res://assets/ui/icons/threat.png",
@@ -226,8 +342,15 @@
     "required": true,
     "dimensions": "64×64",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      64,
+      64
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
   },
   "icon_cognition": {
     "path": "res://assets/ui/icons/cognition.png",
@@ -236,8 +359,15 @@
     "required": true,
     "dimensions": "64×64",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+    "status": "PROVIDED",
+    "notes": "开发者主资源目录提供；已检查编码/尺寸，动态数值仍由当前规则绘制。",
+    "priority": "P1",
+    "actual_dimensions": [
+      64,
+      64
+    ],
+    "transparency": "是",
+    "transparency_requirement": "是"
   },
   "icon_ap": {
     "path": "res://assets/ui/icons/ap.png",
@@ -246,8 +376,15 @@
     "required": true,
     "dimensions": "64×64",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+    "status": "PROVIDED",
+    "notes": "开发者主资源目录提供；已检查编码/尺寸，动态数值仍由当前规则绘制。",
+    "priority": "P1",
+    "actual_dimensions": [
+      200,
+      200
+    ],
+    "transparency": "是",
+    "transparency_requirement": "是"
   },
   "icon_guard": {
     "path": "res://assets/ui/icons/guard.png",
@@ -256,8 +393,15 @@
     "required": true,
     "dimensions": "64×64",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      64,
+      64
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
   },
   "icon_light": {
     "path": "res://assets/ui/icons/light.png",
@@ -266,8 +410,15 @@
     "required": true,
     "dimensions": "64×64",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      64,
+      64
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
   },
   "icon_noise": {
     "path": "res://assets/ui/icons/noise.png",
@@ -276,8 +427,15 @@
     "required": true,
     "dimensions": "64×64",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+    "status": "PROVIDED",
+    "notes": "开发者主资源目录提供；已检查编码/尺寸，动态数值仍由当前规则绘制。",
+    "priority": "P1",
+    "actual_dimensions": [
+      64,
+      64
+    ],
+    "transparency": "是",
+    "transparency_requirement": "是"
   },
   "icon_retain": {
     "path": "res://assets/ui/icons/retain.png",
@@ -286,8 +444,15 @@
     "required": true,
     "dimensions": "64×64",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+    "status": "PROVIDED",
+    "notes": "开发者主资源目录提供；已检查编码/尺寸，动态数值仍由当前规则绘制。",
+    "priority": "P1",
+    "actual_dimensions": [
+      64,
+      64
+    ],
+    "transparency": "是",
+    "transparency_requirement": "是"
   },
   "icon_exhaust": {
     "path": "res://assets/ui/icons/exhaust.png",
@@ -297,17 +462,26 @@
     "dimensions": "64×64",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "透明背景，单色轮廓，在小尺寸可辨。"
+    "notes": "透明背景，单色轮廓，在小尺寸可辨。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P2",
+    "fallback_path": "res://assets/defaults/icon_arrow.png",
+    "transparency_requirement": "是"
   },
   "button_primary": {
-    "path": "res://assets/ui/buttons/primary.png",
+    "path": "res://assets/ui/buttons/primary_background.png",
     "category": "界面",
     "usage": "主要按钮",
     "required": false,
     "dimensions": "320×80",
     "format": "PNG",
     "status": "MISSING",
-    "notes": "透明圆角，可拉伸。"
+    "notes": "原 primary.png 为箭头图标而非按钮底板，未强行映射；当前按钮使用内建皮肤。",
+    "priority": "P2",
+    "fallback": "内建样式/无叠层",
+    "actual_dimensions": null,
+    "transparency": "未知",
+    "assignment": "PLANNED",
+    "transparency_requirement": "否"
   },
   "fx_vhs_noise": {
     "path": "res://assets/ui/overlays/vhs_noise.png",
@@ -317,7 +491,10 @@
     "dimensions": "1920×1080",
     "format": "PNG",
     "status": "MISSING",
-    "notes": "透明叠加，无最终 shader/动画。"
+    "notes": "透明叠加，无最终 shader/动画。",
+    "priority": "P2",
+    "fallback": "内建样式/无叠层",
+    "transparency_requirement": "是"
   },
   "fx_damage_flash": {
     "path": "res://assets/fx/damage_flash.png",
@@ -327,7 +504,10 @@
     "dimensions": "1920×1080",
     "format": "PNG",
     "status": "MISSING",
-    "notes": "透明叠加，无最终 shader/动画。"
+    "notes": "透明叠加，无最终 shader/动画。",
+    "priority": "P2",
+    "fallback": "内建样式/无叠层",
+    "transparency_requirement": "是"
   },
   "fx_card_highlight": {
     "path": "res://assets/fx/card_highlight.png",
@@ -337,7 +517,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "MISSING",
-    "notes": "透明叠加，无最终 shader/动画。"
+    "notes": "透明叠加，无最终 shader/动画。",
+    "priority": "P2",
+    "fallback": "内建样式/无叠层",
+    "transparency_requirement": "是"
   },
   "fx_target_highlight": {
     "path": "res://assets/fx/target_highlight.png",
@@ -347,7 +530,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "MISSING",
-    "notes": "透明叠加，无最终 shader/动画。"
+    "notes": "透明叠加，无最终 shader/动画。",
+    "priority": "P2",
+    "fallback": "内建样式/无叠层",
+    "transparency_requirement": "是"
   },
   "ambience_level_0": {
     "path": "res://assets/audio/ambience/level_0.ogg",
@@ -357,7 +543,10 @@
     "dimensions": "30–60秒",
     "format": "OGG",
     "status": "MISSING",
-    "notes": "可循环，无首尾爆音；低音量。"
+    "notes": "可循环，无首尾爆音；低音量。",
+    "priority": "P1",
+    "fallback": "静音",
+    "transparency_requirement": "不适用"
   },
   "ambience_level_6": {
     "path": "res://assets/audio/ambience/level_6.ogg",
@@ -367,7 +556,10 @@
     "dimensions": "30–60秒",
     "format": "OGG",
     "status": "MISSING",
-    "notes": "可循环，无首尾爆音；低音量。"
+    "notes": "可循环，无首尾爆音；低音量。",
+    "priority": "P1",
+    "fallback": "静音",
+    "transparency_requirement": "不适用"
   },
   "audio_card_play": {
     "path": "res://assets/audio/sfx/card_play.ogg",
@@ -377,7 +569,10 @@
     "dimensions": "0.2–3秒",
     "format": "OGG/WAV",
     "status": "MISSING",
-    "notes": "短音效，峰值留余量。"
+    "notes": "短音效，峰值留余量。",
+    "priority": "P1",
+    "fallback": "静音",
+    "transparency_requirement": "不适用"
   },
   "audio_hound": {
     "path": "res://assets/audio/sfx/hound.ogg",
@@ -387,7 +582,10 @@
     "dimensions": "0.2–3秒",
     "format": "OGG/WAV",
     "status": "MISSING",
-    "notes": "短音效，峰值留余量。"
+    "notes": "短音效，峰值留余量。",
+    "priority": "P1",
+    "fallback": "静音",
+    "transparency_requirement": "不适用"
   },
   "audio_smiler": {
     "path": "res://assets/audio/sfx/smiler.ogg",
@@ -397,7 +595,10 @@
     "dimensions": "0.2–3秒",
     "format": "OGG/WAV",
     "status": "MISSING",
-    "notes": "短音效，峰值留余量。"
+    "notes": "短音效，峰值留余量。",
+    "priority": "P1",
+    "fallback": "静音",
+    "transparency_requirement": "不适用"
   },
   "audio_cutout": {
     "path": "res://assets/audio/sfx/cutout.ogg",
@@ -407,7 +608,10 @@
     "dimensions": "0.2–3秒",
     "format": "OGG/WAV",
     "status": "MISSING",
-    "notes": "短音效，峰值留余量。"
+    "notes": "短音效，峰值留余量。",
+    "priority": "P1",
+    "fallback": "静音",
+    "transparency_requirement": "不适用"
   },
   "audio_event": {
     "path": "res://assets/audio/sfx/event.ogg",
@@ -417,7 +621,10 @@
     "dimensions": "0.2–3秒",
     "format": "OGG/WAV",
     "status": "MISSING",
-    "notes": "短音效，峰值留余量。"
+    "notes": "短音效，峰值留余量。",
+    "priority": "P1",
+    "fallback": "静音",
+    "transparency_requirement": "不适用"
   },
   "audio_omen": {
     "path": "res://assets/audio/sfx/omen.ogg",
@@ -427,7 +634,10 @@
     "dimensions": "0.2–3秒",
     "format": "OGG/WAV",
     "status": "MISSING",
-    "notes": "短音效，峰值留余量。"
+    "notes": "短音效，峰值留余量。",
+    "priority": "P1",
+    "fallback": "静音",
+    "transparency_requirement": "不适用"
   },
   "audio_button_click": {
     "path": "res://assets/audio/ui/button_click.ogg",
@@ -437,7 +647,10 @@
     "dimensions": "0.2–3秒",
     "format": "OGG/WAV",
     "status": "MISSING",
-    "notes": "短音效，峰值留余量。"
+    "notes": "短音效，峰值留余量。",
+    "priority": "P1",
+    "fallback": "静音",
+    "transparency_requirement": "不适用"
   },
   "card_attack": {
     "path": "res://assets/cards/player/card_attack.png",
@@ -446,8 +659,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      1280,
+      1920
+    ],
+    "transparency": "否",
+    "priority": "P1",
+    "transparency_requirement": "否"
   },
   "card_deep_search": {
     "path": "res://assets/cards/player/card_deep_search.png",
@@ -457,7 +677,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P0",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "card_defend": {
     "path": "res://assets/cards/player/card_defend.png",
@@ -466,8 +689,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "开发者主资源目录提供；已检查编码/尺寸，动态数值仍由当前规则绘制。",
+    "priority": "P0",
+    "actual_dimensions": [
+      1280,
+      1920
+    ],
+    "transparency": "否",
+    "transparency_requirement": "否"
   },
   "card_observe": {
     "path": "res://assets/cards/player/card_observe.png",
@@ -476,8 +706,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "开发者主资源目录提供；已检查编码/尺寸，动态数值仍由当前规则绘制。",
+    "priority": "P0",
+    "actual_dimensions": [
+      1664,
+      2496
+    ],
+    "transparency": "否",
+    "transparency_requirement": "否"
   },
   "card_run": {
     "path": "res://assets/cards/player/card_run.png",
@@ -486,8 +723,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "开发者主资源目录提供；已检查编码/尺寸，动态数值仍由当前规则绘制。",
+    "priority": "P0",
+    "actual_dimensions": [
+      1664,
+      2496
+    ],
+    "transparency": "否",
+    "transparency_requirement": "否"
   },
   "card_search": {
     "path": "res://assets/cards/player/card_search.png",
@@ -497,7 +741,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P0",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "card_equipment_crowbar": {
     "path": "res://assets/cards/player/card_crowbar.png",
@@ -506,8 +753,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      2048,
+      2048
+    ],
+    "transparency": "否",
+    "priority": "P1",
+    "transparency_requirement": "否"
   },
   "card_floor_cutout_rushed": {
     "path": "res://assets/cards/player/card_cutout_rushed.png",
@@ -516,8 +770,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      2048,
+      2048
+    ],
+    "transparency": "否",
+    "priority": "P1",
+    "transparency_requirement": "否"
   },
   "card_floor_cutout_safe": {
     "path": "res://assets/cards/player/card_cutout_safe.png",
@@ -526,8 +787,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      2048,
+      2048
+    ],
+    "transparency": "否",
+    "priority": "P1",
+    "transparency_requirement": "否"
   },
   "card_equipment_extinguish": {
     "path": "res://assets/cards/player/card_extinguish.png",
@@ -536,8 +804,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      365,
+      392
+    ],
+    "transparency": "否",
+    "priority": "P1",
+    "transparency_requirement": "否"
   },
   "card_equipment_light": {
     "path": "res://assets/cards/player/card_light.png",
@@ -546,8 +821,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      365,
+      392
+    ],
+    "transparency": "否",
+    "priority": "P1",
+    "transparency_requirement": "否"
   },
   "card_equipment_water": {
     "path": "res://assets/cards/player/card_water.png",
@@ -556,8 +838,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      549,
+      359
+    ],
+    "transparency": "否",
+    "priority": "P1",
+    "transparency_requirement": "否"
   },
   "card_careful_observe": {
     "path": "res://assets/cards/player/card_careful_observe.png",
@@ -566,8 +855,15 @@
     "required": true,
     "dimensions": "512×768",
     "format": "PNG",
-    "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "status": "PROVIDED",
+    "notes": "开发者提供的仔细检查插画，用于同属观察语义的仔细观察；正式数值由 CardData 决定。",
+    "priority": "P1",
+    "actual_dimensions": [
+      1664,
+      2496
+    ],
+    "transparency": "否",
+    "transparency_requirement": "否"
   },
   "card_counter_strike": {
     "path": "res://assets/cards/player/card_counter_strike.png",
@@ -577,7 +873,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "card_crisis_observe": {
     "path": "res://assets/cards/player/card_crisis_observe.png",
@@ -587,7 +886,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "card_exploit_weakness": {
     "path": "res://assets/cards/player/card_exploit_weakness.png",
@@ -597,7 +899,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "card_heavy_strike": {
     "path": "res://assets/cards/player/card_heavy_strike.png",
@@ -607,7 +912,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "card_reckless_strike": {
     "path": "res://assets/cards/player/card_reckless_strike.png",
@@ -617,7 +925,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "card_risky_search": {
     "path": "res://assets/cards/player/card_risky_search.png",
@@ -627,7 +938,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "card_steady_guard": {
     "path": "res://assets/cards/player/card_steady_guard.png",
@@ -637,7 +951,10 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
   },
   "card_thorough_search": {
     "path": "res://assets/cards/player/card_thorough_search.png",
@@ -647,6 +964,175 @@
     "dimensions": "512×768",
     "format": "PNG",
     "status": "PLACEHOLDER",
-    "notes": "保持文字区域干净；文字由界面绘制。"
+    "notes": "保持文字区域干净；文字由界面绘制。 当前使用明确默认素材；专用最终素材仍缺失。",
+    "priority": "P1",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "transparency_requirement": "否"
+  },
+  "frame_equipment": {
+    "category": "界面",
+    "usage": "装备行动牌框",
+    "required": false,
+    "dimensions": "按提供尺寸",
+    "format": "PNG",
+    "path": "res://assets/ui/frames/equipment.png",
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      750,
+      1050
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
+  },
+  "ui_card_background": {
+    "category": "界面",
+    "usage": "共用旧纸卡底",
+    "required": false,
+    "dimensions": "按提供尺寸",
+    "format": "PNG",
+    "path": "res://assets/ui/overlays/card_paper.png",
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      750,
+      1050
+    ],
+    "transparency": "否",
+    "priority": "P1",
+    "transparency_requirement": "否"
+  },
+  "ui_cost": {
+    "category": "界面",
+    "usage": "行动点费用圆章",
+    "required": false,
+    "dimensions": "按提供尺寸",
+    "format": "PNG",
+    "path": "res://assets/ui/icons/cost_medallion.png",
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      116,
+      116
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
+  },
+  "ui_name_panel": {
+    "category": "界面",
+    "usage": "名称纸签",
+    "required": false,
+    "dimensions": "按提供尺寸",
+    "format": "PNG",
+    "path": "res://assets/ui/frames/name_panel.png",
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      624,
+      106
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
+  },
+  "ui_description_panel": {
+    "category": "界面",
+    "usage": "效果纸签",
+    "required": false,
+    "dimensions": "按提供尺寸",
+    "format": "PNG",
+    "path": "res://assets/ui/frames/description_panel.png",
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      624,
+      180
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
+  },
+  "ui_stat_panel": {
+    "category": "界面",
+    "usage": "属性底座",
+    "required": false,
+    "dimensions": "按提供尺寸",
+    "format": "PNG",
+    "path": "res://assets/ui/frames/stat_panel.png",
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      194,
+      95
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
+  },
+  "ui_type_panel": {
+    "category": "界面",
+    "usage": "分类底座",
+    "required": false,
+    "dimensions": "按提供尺寸",
+    "format": "PNG",
+    "path": "res://assets/ui/frames/type_panel.png",
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      145,
+      69
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
+  },
+  "icon_search": {
+    "category": "界面",
+    "usage": "icon_search",
+    "required": false,
+    "dimensions": "按提供尺寸",
+    "format": "PNG",
+    "path": "res://assets/ui/icons/search.png",
+    "status": "PROVIDED",
+    "notes": "参考包提供；运行时动态文字，不使用示例数值。",
+    "actual_dimensions": [
+      64,
+      64
+    ],
+    "transparency": "是",
+    "priority": "P1",
+    "transparency_requirement": "是"
+  },
+  "ui_default_art": {
+    "path": "res://assets/cards/default-cardcover.png",
+    "category": "默认插画",
+    "usage": "缺少专用插画时的中性默认封面",
+    "required": true,
+    "dimensions": "2048×2048",
+    "actual_dimensions": [
+      2048,
+      2048
+    ],
+    "format": "PNG",
+    "transparency": "否",
+    "status": "PROVIDED",
+    "priority": "P0",
+    "notes": "开发者提供；不能把徽记猜测成新阵营或新玩法。",
+    "transparency_requirement": "否"
+  },
+  "font_chinese": {
+    "path": "res://assets/ui/fonts/chinese_regular.ttf",
+    "category": "字体",
+    "usage": "可选专用中文界面字体",
+    "required": false,
+    "dimensions": "正文14–18px清晰",
+    "format": "TTF/OTF",
+    "transparency": "不适用",
+    "status": "MISSING",
+    "priority": "P1",
+    "notes": "当前使用 Godot/系统中文后备字体；字体文件后续放入此路径即可替换。",
+    "transparency_requirement": "不适用"
   }
 }

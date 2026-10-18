@@ -33,6 +33,11 @@ static func texture(id: StringName, category: StringName = &"card") -> Texture2D
 	if is_provided(id):
 		var loaded: Texture2D = load(path_for(id)) as Texture2D
 		if loaded != null: return loaded
+	if _entries.is_empty(): entries()
+	var fallback: String = _entries.get(String(id), {}).get("fallback_path", "")
+	if fallback.begins_with("res://assets/") and not fallback.contains("..") and ResourceLoader.exists(fallback):
+		var loaded_default: Texture2D = load(fallback) as Texture2D
+		if loaded_default != null: return loaded_default
 	match category:
 		&"background": return BACKGROUND_PLACEHOLDER
 		&"frame": return FRAME_PLACEHOLDER
@@ -42,6 +47,10 @@ static func texture(id: StringName, category: StringName = &"card") -> Texture2D
 
 static func audio(id: StringName) -> AudioStream:
 	return load(path_for(id)) as AudioStream if is_provided(id) else null
+
+
+static func font(id: StringName) -> Font:
+	return load(path_for(id)) as Font if is_provided(id) else null
 
 
 static func frame(id: StringName) -> StyleBoxTexture:

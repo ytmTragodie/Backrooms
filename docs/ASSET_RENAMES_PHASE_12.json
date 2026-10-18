@@ -1,0 +1,23 @@
+[
+  {
+    "old": "res://assets/backgrounds/level_6/background.jpeg",
+    "new": "res://assets/backgrounds/level_6/background.png",
+    "reason": "实际 PNG 编码，修正扩展名；像素内容未改",
+    "sha256": "1e9406e5f78a130d391ee3d734d8ae8db32d481e7214de45a1f10862e6672ed9",
+    "bytes_preserved": true
+  },
+  {
+    "old": "res://assets/cards/player/card_attack.jpeg",
+    "new": "res://assets/cards/player/card_attack.png",
+    "reason": "实际 PNG 编码，修正扩展名；像素内容未改",
+    "sha256": "bf04b1236266a210c7c27dbe94e599a622e52c669d5f26fa60926b3008805609",
+    "bytes_preserved": true
+  },
+  {
+    "old": "res://assets/cards/player/card_defend.jpeg",
+    "new": "res://assets/cards/player/card_defend.png",
+    "reason": "实际 PNG 编码，修正扩展名；像素内容未改",
+    "sha256": "248fc32b0e0563e6f3e748bcaa19e5e65030830633bc9d2f6e000ee9f4449158",
+    "bytes_preserved": true
+  }
+]

@@ -1,6 +1,6 @@
 # 后室：切出 Demo
 
-当前实现：Card-First V2.1，Rework A/B/C、局内构筑与 Phase 11 事件重分类／素材管线。
+当前实现：Card-First V2.1，Rework A/B/C、局内构筑、Phase 11 事件重分类，以及 Phase 12 素材接入与卡牌 UI。
 Godot 4.x、Compatibility、类型化 GDScript，无外部插件。F5 直接开始正常零层探索。
 
 ## 权威文档
@@ -104,7 +104,7 @@ Retain 占基础手牌一格，1 AP；失败保留同一实例。稳定至少 2�
 git diff --check
 ```
 
-导入 → Phase 1–10、Rework A/B/C、UI 共 14 套 → 启动 Main。
+导入 → Phase 1–12、Rework A/B/C、UI 共 16 套 → 启动 Main。
 严格检查退出码、PASS、脚本异常、其他 ERROR 和泄漏；允许本机原有 Windows 根证书环境提示。
 无窗口套件覆盖规则、实际鼠标输入与几何；独立窗口脚本保存真实渲染截图，执行与目视检查结果见报告。发布包尚未测试。
 
@@ -124,6 +124,15 @@ $env:BACKROOMS_PLAYTEST_OUTPUT = 'C:/your/output/phase10'
 
 ## 素材替换与图形验证
 
-将真实文件放入 `assets/asset_manifest.json` 的预定 path，或只改该 path；重新导入/启动即可。缺图使用 SVG 占位、缺音静音，无绝对本机路径。详见素材清单末尾“给美术/素材收集者的操作说明”。
+将真实文件放入 `assets/asset_manifest.json` 的预定 path，或只改该 path；重新导入/启动即可。缺专用插画使用提供的 `default-cardcover.png`，其他缺图有本地默认/SVG 回退，缺音静音，无绝对本机素材路径。详见素材清单“给美术/素材收集者的操作说明”。
 
-窗口化走查使用 `--rendering-method gl_compatibility --script res://tests/phase_11_graphical_validation.gd`；可用环境变量 `BACKROOMS_PLAYTEST_OUTPUT` 指定截图目录，未设置时写入 Godot user 数据目录。该脚本拒绝 headless，实际渲染五个检查点。
+Phase 12 窗口化走查：
+
+```powershell
+$env:BACKROOMS_PLAYTEST_OUTPUT = 'C:/your/output/phase12'
+& 'C:/path/to/Godot_console.exe' --path . --rendering-method gl_compatibility --script res://tests/phase_12_graphical_validation.gd
+```
+
+该脚本拒绝 headless，覆盖 1152×648、1280×720、1920×1080，每种尺寸保存 13 个实际渲染状态。局部输入检查通过真实 GUI 命中发送鼠标手势；完整路线复用按钮命令与既有规则。纯目标、无事件猎犬、空内容仓促切出是测试夹具，其余截图来自生产数据路线。
+
+卡面参考来自 `assets/ref/backrooms_card_template_v1`，它是单卡模板，已适配为统一手牌、只读事件行、目标/实体牌桌与七项状态条。玩家仍选择目标后单击手牌；开发工具保持 F8 隐藏。素材缺口分 P0/P1/P2，替换路径、完整审计、截图和限制见 [Phase 12 报告](docs/PHASE_12_VALIDATION.md) 与 [素材清单](docs/ASSET_MANIFEST.md)。

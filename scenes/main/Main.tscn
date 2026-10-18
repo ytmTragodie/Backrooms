@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/turns/turn_manager.gd" id="2_turns"]
@@ -16,17 +16,10 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/SafePointPanel.tscn" id="11_safe"]
 [ext_resource type="PackedScene" path="res://scenes/ui/RunSummary.tscn" id="12_summary"]
 
-[sub_resource type="StyleBoxFlat" id="WorldStyle"]
-bg_color = Color(0.14, 0.17, 0.2, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.72, 0.64, 0.38, 1)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_left = 14
-corner_radius_bottom_right = 14
+[ext_resource type="Script" path="res://scripts/ui/objective_card_view.gd" id="13_objective"]
+[ext_resource type="Script" path="res://scripts/ui/entity_card_view.gd" id="14_entity"]
+[ext_resource type="Script" path="res://scripts/ui/hand_view.gd" id="15_hand"]
+[ext_resource type="Script" path="res://scripts/ui/top_status_bar.gd" id="16_status"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -43,24 +36,32 @@ starter_deck = ExtResource("4_deck")
 floor_data = ExtResource("3_floor")
 starting_equipment = Array[ExtResource("5_equipment")]([ExtResource("6_flashlight"), ExtResource("7_crowbar"), ExtResource("8_water")])
 
+
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-color = Color(0.055, 0.07, 0.085, 1)
+color = Color(0.025, 0.03, 0.035, 1)
 
 [node name="LevelArt" type="TextureRect" parent="."]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+unique_name_in_owner = true
 expand_mode = 1
 stretch_mode = 6
-modulate = Color(1, 1, 1, 0.55)
+
+[node name="ReadabilityOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.025, 0.035, 0.04, 0.68)
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -74,38 +75,23 @@ theme_override_constants/margin_bottom = 8
 
 [node name="Layout" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 5
 
 [node name="StatusIcons" type="HBoxContainer" parent="Margin/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
+script = ExtResource("16_status")
 
 [node name="RunStats" type="Label" parent="Margin/Layout"]
+unique_name_in_owner = true
 visible = false
-unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-horizontal_alignment = 1
-
-[node name="Status" type="Label" parent="Margin/Layout"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-autowrap_mode = 3
-horizontal_alignment = 1
-text = "选择世界牌目标，再打出手牌。"
-
-[node name="EquipmentStatus" type="Label" parent="Margin/Layout"]
-unique_name_in_owner = true
-layout_mode = 2
-autowrap_mode = 3
-horizontal_alignment = 1
-mouse_filter = 2
 
 [node name="SceneRules" type="Label" parent="Margin/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
-autowrap_mode = 3
+clip_text = true
+text_overrun_behavior = 3
 theme_override_font_sizes/font_size = 13
 
 [node name="EventRow" type="HBoxContainer" parent="Margin/Layout"]
@@ -116,134 +102,67 @@ theme_override_constants/separation = 12
 [node name="Board" type="HBoxContainer" parent="Margin/Layout"]
 layout_mode = 2
 size_flags_vertical = 3
+alignment = 1
 theme_override_constants/separation = 16
 
 [node name="WorldCard" type="Button" parent="Margin/Layout/Board"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(550, 160)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("WorldStyle")
-theme_override_styles/hover = SubResource("WorldStyle")
-theme_override_styles/pressed = SubResource("WorldStyle")
+size_flags_vertical = 3
+script = ExtResource("13_objective")
 
-[node name="Padding" type="MarginContainer" parent="Margin/Layout/Board/WorldCard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="Scroll" type="ScrollContainer" parent="Margin/Layout/Board/WorldCard/Padding"]
+[node name="EntityCard" type="Button" parent="Margin/Layout/Board"]
+unique_name_in_owner = true
 layout_mode = 2
-mouse_filter = 1
-horizontal_scroll_mode = 0
+size_flags_vertical = 3
+script = ExtResource("14_entity")
 
-[node name="Information" type="VBoxContainer" parent="Margin/Layout/Board/WorldCard/Padding/Scroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-theme_override_constants/separation = 3
-
-[node name="SituationName" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Scroll/Information"]
+[node name="EquipmentStatus" type="Label" parent="Margin/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_font_sizes/font_size = 18
-
-[node name="Description" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Scroll/Information"]
-theme_override_font_sizes/font_size = 14
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-autowrap_mode = 3
-
-[node name="Objective" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Scroll/Information"]
-theme_override_font_sizes/font_size = 14
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-autowrap_mode = 3
-
-[node name="Pressure" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Scroll/Information"]
-theme_override_font_sizes/font_size = 14
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-autowrap_mode = 3
-
-[node name="SituationRule" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Scroll/Information"]
-theme_override_font_sizes/font_size = 14
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-autowrap_mode = 3
-
-[node name="Clues" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Scroll/Information"]
-theme_override_font_sizes/font_size = 14
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-autowrap_mode = 3
-
-[node name="SituationState" type="Label" parent="Margin/Layout/Board/WorldCard/Padding/Scroll/Information"]
-theme_override_font_sizes/font_size = 14
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-autowrap_mode = 3
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 13
 
 [node name="HandTitle" type="Label" parent="Margin/Layout"]
+visible = false
 layout_mode = 2
-text = "玩家手牌　｜　每张牌一个行动 · 选择目标后出牌"
-horizontal_alignment = 1
+text = "统一手牌 · 悬停预览，单击出牌"
 
 [node name="Hand" type="HBoxContainer" parent="Margin/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
+script = ExtResource("15_hand")
 
 [node name="Footer" type="HBoxContainer" parent="Margin/Layout"]
 layout_mode = 2
-theme_override_constants/separation = 18
+theme_override_constants/separation = 14
 
 [node name="PileCounts" type="Label" parent="Margin/Layout/Footer"]
 unique_name_in_owner = true
 layout_mode = 2
+custom_minimum_size = Vector2(150, 0)
+
+[node name="Status" type="Label" parent="Margin/Layout/Footer"]
+unique_name_in_owner = true
+layout_mode = 2
 size_flags_horizontal = 3
+clip_text = true
+text_overrun_behavior = 3
+theme_override_font_sizes/font_size = 13
+text = "选择目标，再单击手牌。"
+
+[node name="OpenSafePoint" type="Button" parent="Margin/Layout/Footer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "临时安全点"
 
 [node name="EndTurn" type="Button" parent="Margin/Layout/Footer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 36)
 layout_mode = 2
+custom_minimum_size = Vector2(146, 34)
 text = "结束回合"
-
-[node name="EntityCard" type="Button" parent="Margin/Layout/Board"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(420, 160)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("WorldStyle")
-theme_override_styles/hover = SubResource("WorldStyle")
-theme_override_styles/pressed = SubResource("WorldStyle")
-
-[node name="EntityInformation" type="Label" parent="Margin/Layout/Board/EntityCard"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 16.0
-offset_right = -20.0
-offset_bottom = -16.0
-mouse_filter = 2
-theme_override_font_sizes/font_size = 18
-autowrap_mode = 3
 
 [node name="DebugPanel" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -255,6 +174,7 @@ offset_right = 464.0
 offset_bottom = 350.0
 script = ExtResource("9_debug")
 
+
 [node name="Padding" type="MarginContainer" parent="DebugPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 16
@@ -262,47 +182,51 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_bottom = 16
 
+
 [node name="Layout" type="VBoxContainer" parent="DebugPanel/Padding"]
 layout_mode = 2
 theme_override_constants/separation = 12
+
 
 [node name="Title" type="Label" parent="DebugPanel/Padding/Layout"]
 layout_mode = 2
 text = "开发调试 · 仅开发构建"
 
+
 [node name="Context" type="Label" parent="DebugPanel/Padding/Layout"]
 layout_mode = 2
 autowrap_mode = 3
+
 
 [node name="StartLevel0" type="Button" parent="DebugPanel/Padding/Layout"]
 layout_mode = 2
 text = "启动零层测试局"
 
+
 [node name="StartLevel6" type="Button" parent="DebugPanel/Padding/Layout"]
 layout_mode = 2
 text = "启动六层混合测试局"
+
 
 [node name="Close" type="Button" parent="DebugPanel/Padding/Layout"]
 layout_mode = 2
 text = "关闭调试面板"
 
+
 [node name="RewardPanel" parent="." instance=ExtResource("10_reward")]
 unique_name_in_owner = true
 layout_mode = 1
 
-[node name="OpenSafePoint" type="Button" parent="Margin/Layout/Footer"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "临时安全点"
 
 [node name="SafePointPanel" parent="." instance=ExtResource("11_safe")]
 unique_name_in_owner = true
 layout_mode = 1
 
+
 [node name="RunSummary" parent="." instance=ExtResource("12_summary")]
 unique_name_in_owner = true
 layout_mode = 1
+
 
 [node name="NoiseOverlay" type="TextureRect" parent="."]
 unique_name_in_owner = true
@@ -314,6 +238,7 @@ anchor_bottom = 1.0
 expand_mode = 1
 mouse_filter = 2
 modulate = Color(1, 1, 1, 0.08)
+
 
 [node name="DamageFlash" type="TextureRect" parent="."]
 unique_name_in_owner = true

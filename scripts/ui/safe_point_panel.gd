@@ -10,6 +10,7 @@ var _view_state: RunState
 
 
 func _ready() -> void:
+	GameUITheme.style_modal(self)
 	_back.pressed.connect(func() -> void: open(_view_state))
 	$Margin/Layout/Footer/Close.pressed.connect(hide)
 
@@ -64,5 +65,6 @@ func _button(text: String) -> Button:
 	button.text = text
 	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	button.custom_minimum_size.y = 68
+	button.add_theme_stylebox_override("normal", GameUITheme.panel(Color("252923"), GameUITheme.GREEN))
 	_options.add_child(button)
 	return button

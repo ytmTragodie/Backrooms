@@ -1,0 +1,2382 @@
+[
+  {
+    "stable_id": "floor_level_0",
+    "path": "res://assets/backgrounds/level_0/background.png",
+    "category": "运行图像",
+    "usage": "floor_level_0",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "bc8f9d200c1f4286f2ad29ec682343ad7eb260fe3b8fc01a4fe8eff3baf5a280",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "floor_level_6",
+    "path": "res://assets/backgrounds/level_6/background.png",
+    "category": "运行图像",
+    "usage": "floor_level_6",
+    "dimensions": [
+      2720,
+      1520
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "1e9406e5f78a130d391ee3d734d8ae8db32d481e7214de45a1f10862e6672ed9",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "ui_default_art",
+    "path": "res://assets/cards/default-cardcover.png",
+    "category": "运行图像",
+    "usage": "ui_default_art,event_level0_humming,event_level0_meg_signal,event_level6_claw_marks,event_level6_dark_movement,event_level6_fading_light,event_level6_stable_broadcast,objective_level0_damp_wall,objective_level0_wrong_corner,objective_level6_emergency_light,objective_level6_wall_seam,card_deep_search,card_search,card_counter_strike,card_crisis_observe,card_exploit_weakness,card_heavy_strike,card_reckless_strike,card_risky_search,card_steady_guard,card_thorough_search",
+    "dimensions": [
+      2048,
+      2048
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "1297f72d2ea62d85ed521aa204403e6d9cf28a640007122f642741327623cdfe",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "entity_hound",
+    "path": "res://assets/cards/entities/entity_hound.png",
+    "category": "运行图像",
+    "usage": "entity_hound",
+    "dimensions": [
+      2048,
+      1152
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "ac233dcbb47dcf2cfff506709d881fa49c342acd2f2d0897db14d263798f3d8c",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "entity_smiler",
+    "path": "res://assets/cards/entities/entity_smiler.png",
+    "category": "运行图像",
+    "usage": "entity_smiler",
+    "dimensions": [
+      2720,
+      1520
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "596fa3d50a518a1ec87d3368c0f76fb0d7111ae37b8c16b73503824d83a207e0",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_6b4b831d0693",
+    "path": "res://assets/cards/events/art_hallway.png",
+    "category": "运行图像",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "abfdcaaad869eefcd499aa4a4a26c25c5daab04c3b868ee20799e744cb60578e",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_f7f0ffb930e0",
+    "path": "res://assets/cards/events/art_listener.png",
+    "category": "运行图像",
+    "usage": "无法确认为当前领域/按钮用途；未擅自映射。",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "UNASSIGNED",
+    "notes": "无法确认为当前领域/按钮用途；未擅自映射。",
+    "sha256": "ab309e35564147613e6b4ce5377c1b7a1a18387b14512414d5f2640bd296d1f9",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "card_attack",
+    "path": "res://assets/cards/player/card_attack.png",
+    "category": "运行图像",
+    "usage": "card_attack",
+    "dimensions": [
+      1280,
+      1920
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "bf04b1236266a210c7c27dbe94e599a622e52c669d5f26fa60926b3008805609",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "card_careful_observe",
+    "path": "res://assets/cards/player/card_careful_observe.png",
+    "category": "运行图像",
+    "usage": "card_careful_observe",
+    "dimensions": [
+      1664,
+      2496
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "74ddeef2221548d8539719d98eb1d75585d6bd524d542207855ebcc2142d8af6",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "card_equipment_crowbar",
+    "path": "res://assets/cards/player/card_crowbar.png",
+    "category": "运行图像",
+    "usage": "card_equipment_crowbar",
+    "dimensions": [
+      2048,
+      2048
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "5f95fb6e4ad92082cca9cfacf79220c1ba2ae65d8be5583eaef0f1ffada3ecf9",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "card_floor_cutout_rushed",
+    "path": "res://assets/cards/player/card_cutout_rushed.png",
+    "category": "运行图像",
+    "usage": "card_floor_cutout_rushed",
+    "dimensions": [
+      2048,
+      2048
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "d21655d650a3c0e2167db3e48f59ab969ac818347a05fa87150e2865a157bf82",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "card_floor_cutout_safe",
+    "path": "res://assets/cards/player/card_cutout_safe.png",
+    "category": "运行图像",
+    "usage": "card_floor_cutout_safe",
+    "dimensions": [
+      2048,
+      2048
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "3aeedef49c6f479b4fe611c6f2308fa86f0928873460d50e199e57321cfbbb4e",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "card_defend",
+    "path": "res://assets/cards/player/card_defend.png",
+    "category": "运行图像",
+    "usage": "card_defend",
+    "dimensions": [
+      1280,
+      1920
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "248fc32b0e0563e6f3e748bcaa19e5e65030830633bc9d2f6e000ee9f4449158",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "card_equipment_extinguish",
+    "path": "res://assets/cards/player/card_extinguish.png",
+    "category": "运行图像",
+    "usage": "card_equipment_extinguish",
+    "dimensions": [
+      365,
+      392
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "11c1877bd2bd8a604e490a6f5854c1fe52b8b9d0531e17858d64ae8a61e7f6ea",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "card_equipment_light",
+    "path": "res://assets/cards/player/card_light.png",
+    "category": "运行图像",
+    "usage": "card_equipment_light",
+    "dimensions": [
+      365,
+      392
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "11c1877bd2bd8a604e490a6f5854c1fe52b8b9d0531e17858d64ae8a61e7f6ea",
+    "duplicate_of": "res://assets/cards/player/card_extinguish.png"
+  },
+  {
+    "stable_id": "card_observe",
+    "path": "res://assets/cards/player/card_observe.png",
+    "category": "运行图像",
+    "usage": "card_observe",
+    "dimensions": [
+      1664,
+      2496
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "69a70ee408e54620e47be5f6233cda0dd0175af0593c60132c6bef699082cff6",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "card_run",
+    "path": "res://assets/cards/player/card_run.png",
+    "category": "运行图像",
+    "usage": "card_run",
+    "dimensions": [
+      1664,
+      2496
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "fa3e87eeb57609dafd11d53280206029b060cf29e39d515275612ec1c89cb34c",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "card_equipment_water",
+    "path": "res://assets/cards/player/card_water.png",
+    "category": "运行图像",
+    "usage": "card_equipment_water",
+    "dimensions": [
+      549,
+      359
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "0fd771c638111e0339389276de8bc9a270290ded2db3ed0a4b263fef25d62f1a",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_040e8093dbb8",
+    "path": "res://assets/cards/player/行动-仔细检查.png",
+    "category": "运行图像",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      1664,
+      2496
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "74ddeef2221548d8539719d98eb1d75585d6bd524d542207855ebcc2142d8af6",
+    "duplicate_of": "res://assets/cards/player/card_careful_observe.png"
+  },
+  {
+    "stable_id": "source_c1bdbb79ac8c",
+    "path": "res://assets/cards/player/行动-挣扎.png",
+    "category": "运行图像",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      1664,
+      2496
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "50a32984b633ae09a2958f920cc9ec83335adb18725255da1e490e4094d1b35f",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_a00e28582fff",
+    "path": "res://assets/defaults/art_flicker.png",
+    "category": "默认",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "0c968589e709b2c54943d0f4699d19478e9ca20682f97922ae5989e592bf1802",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_f35476a3ffc5",
+    "path": "res://assets/defaults/art_hallway.png",
+    "category": "默认",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "abfdcaaad869eefcd499aa4a4a26c25c5daab04c3b868ee20799e744cb60578e",
+    "duplicate_of": "res://assets/cards/events/art_hallway.png"
+  },
+  {
+    "stable_id": "source_3150aba04937",
+    "path": "res://assets/defaults/icon_alert.png",
+    "category": "默认",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "604eaf2dcf6fe2b8e34e12bd5aa45831f90edaa9a8c68c95bc18454141592cf6",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_97e29ee37183",
+    "path": "res://assets/defaults/icon_arrow.png",
+    "category": "默认",
+    "usage": "icon_exhaust",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "默认替代：icon_exhaust",
+    "sha256": "e895986b9057c47f59aae3984e80bd0039838758469dfaa3e4319b8e171f7d36",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_39e3950af2bc",
+    "path": "res://assets/defaults/icon_gear.png",
+    "category": "默认",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "1831af52cf49085f055b259a51f32f18f3b1f872dc155b782d9ea69f858aa031",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_fbd7d52f3195",
+    "path": "res://assets/defaults/icon_search.png",
+    "category": "默认",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "fecf16b60a6fbf6c4573901514d2b9b640cf7c2625caa6ff369bfb4d1e0addfd",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_905f43f6f6c5",
+    "path": "res://assets/defaults/icon_shield.png",
+    "category": "默认",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "748e6eef43c87f9f4df142213e19506df03283a0a89c3173be39450614f1621e",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_babc44f9b284",
+    "path": "res://assets/defaults/icon_stack.png",
+    "category": "默认",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "7d2141bc683a6c19707895dae69c205b914ec232d2f81db6f9ecc070f4f04a10",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "portrait_hound",
+    "path": "res://assets/entities/hound.png",
+    "category": "运行图像",
+    "usage": "portrait_hound",
+    "dimensions": [
+      2048,
+      1152
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "ac233dcbb47dcf2cfff506709d881fa49c342acd2f2d0897db14d263798f3d8c",
+    "duplicate_of": "res://assets/cards/entities/entity_hound.png"
+  },
+  {
+    "stable_id": "portrait_smiler",
+    "path": "res://assets/entities/smiler.png",
+    "category": "运行图像",
+    "usage": "portrait_smiler",
+    "dimensions": [
+      2720,
+      1520
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "596fa3d50a518a1ec87d3368c0f76fb0d7111ae37b8c16b73503824d83a207e0",
+    "duplicate_of": "res://assets/cards/entities/entity_smiler.png"
+  },
+  {
+    "stable_id": "source_57cc36b8ba32",
+    "path": "res://assets/placeholders/background.svg",
+    "category": "默认",
+    "usage": "确定性引擎回退，最终素材仍可缺失",
+    "dimensions": [
+      "1152",
+      "648"
+    ],
+    "format": "SVG",
+    "transparency": true,
+    "status": "PLACEHOLDER",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "确定性引擎回退，最终素材仍可缺失",
+    "sha256": "139fc418a2a322d7f7031ba05d1976340853909de7b69c002b6d5050c7621986",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_b9f026f7d5a5",
+    "path": "res://assets/placeholders/card.svg",
+    "category": "默认",
+    "usage": "确定性引擎回退，最终素材仍可缺失",
+    "dimensions": [
+      "128",
+      "192"
+    ],
+    "format": "SVG",
+    "transparency": true,
+    "status": "PLACEHOLDER",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "确定性引擎回退，最终素材仍可缺失",
+    "sha256": "dac7fb1650fd551f827d96a772e1a33f1a1dde15f39e51c576df939a799393a4",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_0fb19ec92ac8",
+    "path": "res://assets/placeholders/frame.svg",
+    "category": "默认",
+    "usage": "确定性引擎回退，最终素材仍可缺失",
+    "dimensions": [
+      "128",
+      "192"
+    ],
+    "format": "SVG",
+    "transparency": true,
+    "status": "PLACEHOLDER",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "确定性引擎回退，最终素材仍可缺失",
+    "sha256": "5cce58a36217d7c6bd789c8c4bd2f1ed2eb92f8e53aeb654ed418bdb9f738b4b",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_6c12ee976d43",
+    "path": "res://assets/placeholders/icon.svg",
+    "category": "默认",
+    "usage": "确定性引擎回退，最终素材仍可缺失",
+    "dimensions": [
+      "64",
+      "64"
+    ],
+    "format": "SVG",
+    "transparency": true,
+    "status": "PLACEHOLDER",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "确定性引擎回退，最终素材仍可缺失",
+    "sha256": "a73a59215ee9f4c54eccc5deae8f432f52f49e52892d33f3147b7d44ed06e236",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_ac8e216dd53e",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/art_flashlight.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      365,
+      392
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "11c1877bd2bd8a604e490a6f5854c1fe52b8b9d0531e17858d64ae8a61e7f6ea",
+    "duplicate_of": "res://assets/cards/player/card_extinguish.png"
+  },
+  {
+    "stable_id": "source_353032bdc3ac",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/art_flicker.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "0c968589e709b2c54943d0f4699d19478e9ca20682f97922ae5989e592bf1802",
+    "duplicate_of": "res://assets/defaults/art_flicker.png"
+  },
+  {
+    "stable_id": "source_3a5f040f40d5",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/art_hallway.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "abfdcaaad869eefcd499aa4a4a26c25c5daab04c3b868ee20799e744cb60578e",
+    "duplicate_of": "res://assets/cards/events/art_hallway.png"
+  },
+  {
+    "stable_id": "source_31812a942200",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/art_level0.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "bc8f9d200c1f4286f2ad29ec682343ad7eb260fe3b8fc01a4fe8eff3baf5a280",
+    "duplicate_of": "res://assets/backgrounds/level_0/background.png"
+  },
+  {
+    "stable_id": "source_5a4bf6545334",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/background_grunge.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "104c61c3b0357dcae84d8fc9a56da6fdb1ac917e93cd5800129d09e1dc08ed11",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_0ed0542ba814",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/blank_ui_overlay.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "a0bdbba84d3f72812c2ab6779ff998643c29dbb3ba263fa83bfd03730e8dcdd7",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_b0fed19ecfcd",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/cost_medallion.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      116,
+      116
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "10f5c25b3e7518a347e9f033f5344ffb80d7c6be4b5a7afebaf2378441bfb2e9",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_b2e54af41f09",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/frame_entity.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "fb69f120ca3aff8a97bcad013a3cdcd74cc517080a21d9b14b59ba27d7c0b7f5",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_9294d60cf5cb",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/frame_entity_a.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "76e82048d2a8e4995b61dbb0d06dcc6d48964e91e1578f3ab94f55b7d5356022",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_ce68e3bf124c",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/frame_event.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "3966586b158b3e14cf3d6203ac90c4f400d7ee06cb521736c94b61c129aee742",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_8b715f280b52",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/frame_event_a.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "1039dbc04e24af76cb264e0bb27216015a7dd29695ff3c2c1deda9aadce965f0",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_319cd1be493d",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/frame_item.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "4095baf39cdaa50bed4ce915047e4012a7e4631729327bda01cf06a7e1289529",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_0ac1db3994d4",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/frame_location.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "654caac996c952b99798e6606dc908839bd2ad2657e08bc2107e1bcaaa559196",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_24c8c7f6b780",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/frame_location_a.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "2150fc0f5ad5783aac531b691dc378720967a195a13925e9b87d9634df469f05",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_4f0de411fe04",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/frame_skill.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "7bff2078d53ad24b0dd52705883c41222502bdbf7b5e766c2cdb3dc350404305",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_a3430d6e8d4b",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/frame_skill_a.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "87e8b1bcd5af3b4d1c677590c59ff5db091f9bb6b8ae7976af840c40718eaaea",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_c5ecef767f69",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_alert.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "604eaf2dcf6fe2b8e34e12bd5aa45831f90edaa9a8c68c95bc18454141592cf6",
+    "duplicate_of": "res://assets/defaults/icon_alert.png"
+  },
+  {
+    "stable_id": "source_e0583bfd26c3",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_arrow.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "e895986b9057c47f59aae3984e80bd0039838758469dfaa3e4319b8e171f7d36",
+    "duplicate_of": "res://assets/defaults/icon_arrow.png"
+  },
+  {
+    "stable_id": "source_e1d433472a59",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_event_category.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "dcf5cc7ca17cba05aff08ea67a0eb6942da6410bb31bf34b7cd94d79458002fd",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_5f645767c500",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_flashlight.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "ebe9279e7c6698dd43312cfbcff1c3635f0e19c049f5a906ceab5d91fd081495",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_1734c11cb3bc",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_gear.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "1831af52cf49085f055b259a51f32f18f3b1f872dc155b782d9ea69f858aa031",
+    "duplicate_of": "res://assets/defaults/icon_gear.png"
+  },
+  {
+    "stable_id": "source_0ce35830fb3b",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_heart.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "9c9ec8133f54b7cea54795aff63b210fd0c4cc151e30a0d49284a5dfc720d067",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_129bcd92296b",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_item_category.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "6899ff3872c9fa5328252f43b0e3c27b01418238df32fe926bbecf6ad7eca8bf",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_43c11cefdfe5",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_search.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "fecf16b60a6fbf6c4573901514d2b9b640cf7c2625caa6ff369bfb4d1e0addfd",
+    "duplicate_of": "res://assets/defaults/icon_search.png"
+  },
+  {
+    "stable_id": "source_abccfda93975",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_shield.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "748e6eef43c87f9f4df142213e19506df03283a0a89c3173be39450614f1621e",
+    "duplicate_of": "res://assets/defaults/icon_shield.png"
+  },
+  {
+    "stable_id": "source_546f589830c0",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_skill_category.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "266afca70e201a5ce46d692c805b0113aac71593de7459359d99e7f5f4ca2d33",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_3905bce15439",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_stack.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "7d2141bc683a6c19707895dae69c205b914ec232d2f81db6f9ecc070f4f04a10",
+    "duplicate_of": "res://assets/defaults/icon_stack.png"
+  },
+  {
+    "stable_id": "source_fef0275b0022",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/icon_status_category.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "720564627ea6c3cb60ae01a3e872e5edd442b7c05f9550bc2261a3912cf910e6",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_1f500d4453d0",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/panel_description.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      624,
+      180
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "725764c28a7e04a08f50e68a2d7432dabc59e4daf7e3872d214054378195e5b6",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_9908b4fbecb0",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/panel_name.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      624,
+      106
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "3d99c578eb617aa732f71bc797e71efa5f8127dbeab3a5f3707885afd25d5966",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_6d28223c9c64",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/panel_stat.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      194,
+      95
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "e1e3e1fbd0b2cde12bef390456d2fdba9af629fe346f7ff97ca33734efc7368d",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_58210103c7b9",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/panel_type.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      145,
+      69
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "83f71856601e9165da76bd56ab080ecb0a3b0d195466c35b0cf8b4a6709b1aa9",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_3c6853fa05e3",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/切出-仓促切出.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      2048,
+      2048
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "d21655d650a3c0e2167db3e48f59ab969ac818347a05fa87150e2865a157bf82",
+    "duplicate_of": "res://assets/cards/player/card_cutout_rushed.png"
+  },
+  {
+    "stable_id": "source_f8428c88498d",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/切出-安全切出.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      2048,
+      2048
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "3aeedef49c6f479b4fe611c6f2308fa86f0928873460d50e199e57321cfbbb4e",
+    "duplicate_of": "res://assets/cards/player/card_cutout_safe.png"
+  },
+  {
+    "stable_id": "source_410c7c6a59ea",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/实体-Hound.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      2048,
+      1152
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "ac233dcbb47dcf2cfff506709d881fa49c342acd2f2d0897db14d263798f3d8c",
+    "duplicate_of": "res://assets/cards/entities/entity_hound.png"
+  },
+  {
+    "stable_id": "source_f7f4ccf952c0",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/实体：笑魇.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      2720,
+      1520
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "596fa3d50a518a1ec87d3368c0f76fb0d7111ae37b8c16b73503824d83a207e0",
+    "duplicate_of": "res://assets/cards/entities/entity_smiler.png"
+  },
+  {
+    "stable_id": "source_b90556459473",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/物品-撬棍.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      2048,
+      2048
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "5f95fb6e4ad92082cca9cfacf79220c1ba2ae65d8be5583eaef0f1ffada3ecf9",
+    "duplicate_of": "res://assets/cards/player/card_crowbar.png"
+  },
+  {
+    "stable_id": "source_b886f757c098",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/物品-杏仁水.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      549,
+      359
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "0fd771c638111e0339389276de8bc9a270290ded2db3ed0a4b263fef25d62f1a",
+    "duplicate_of": "res://assets/cards/player/card_water.png"
+  },
+  {
+    "stable_id": "source_3e1344b1e9c2",
+    "path": "res://assets/ref/backrooms_card_template_v1/assets/行动-挣扎.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      1664,
+      2496
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "50a32984b633ae09a2958f920cc9ec83335adb18725255da1e490e4094d1b35f",
+    "duplicate_of": "res://assets/cards/player/行动-挣扎.png"
+  },
+  {
+    "stable_id": "source_b204a73ad818",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/art_flashlight.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      365,
+      392
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "11c1877bd2bd8a604e490a6f5854c1fe52b8b9d0531e17858d64ae8a61e7f6ea",
+    "duplicate_of": "res://assets/cards/player/card_extinguish.png"
+  },
+  {
+    "stable_id": "source_93c018f54ea0",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/art_flicker.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "0c968589e709b2c54943d0f4699d19478e9ca20682f97922ae5989e592bf1802",
+    "duplicate_of": "res://assets/defaults/art_flicker.png"
+  },
+  {
+    "stable_id": "source_ad94ca1d4c0b",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/art_hallway.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "abfdcaaad869eefcd499aa4a4a26c25c5daab04c3b868ee20799e744cb60578e",
+    "duplicate_of": "res://assets/cards/events/art_hallway.png"
+  },
+  {
+    "stable_id": "source_b509a81c3ae5",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/art_level0.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "bc8f9d200c1f4286f2ad29ec682343ad7eb260fe3b8fc01a4fe8eff3baf5a280",
+    "duplicate_of": "res://assets/backgrounds/level_0/background.png"
+  },
+  {
+    "stable_id": "source_173a3a4430e2",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/art_listener.png",
+    "category": "参考",
+    "usage": "无法确认为当前领域/按钮用途；未擅自映射。",
+    "dimensions": [
+      660,
+      540
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "UNASSIGNED",
+    "notes": "无法确认为当前领域/按钮用途；未擅自映射。",
+    "sha256": "ab309e35564147613e6b4ce5377c1b7a1a18387b14512414d5f2640bd296d1f9",
+    "duplicate_of": "res://assets/cards/events/art_listener.png"
+  },
+  {
+    "stable_id": "source_5078c1190929",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/background_grunge.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "104c61c3b0357dcae84d8fc9a56da6fdb1ac917e93cd5800129d09e1dc08ed11",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/background_grunge.png"
+  },
+  {
+    "stable_id": "source_1fddd10dc087",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/blank_ui_overlay.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "a0bdbba84d3f72812c2ab6779ff998643c29dbb3ba263fa83bfd03730e8dcdd7",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/blank_ui_overlay.png"
+  },
+  {
+    "stable_id": "source_8805374751e7",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/cost_medallion.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      116,
+      116
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "10f5c25b3e7518a347e9f033f5344ffb80d7c6be4b5a7afebaf2378441bfb2e9",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/cost_medallion.png"
+  },
+  {
+    "stable_id": "source_14c0cb8f7323",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_entity.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "fb69f120ca3aff8a97bcad013a3cdcd74cc517080a21d9b14b59ba27d7c0b7f5",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/frame_entity.png"
+  },
+  {
+    "stable_id": "source_3d664f6e18f4",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_event.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "3966586b158b3e14cf3d6203ac90c4f400d7ee06cb521736c94b61c129aee742",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/frame_event.png"
+  },
+  {
+    "stable_id": "source_e69c9d0c5374",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_item.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "4095baf39cdaa50bed4ce915047e4012a7e4631729327bda01cf06a7e1289529",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/frame_item.png"
+  },
+  {
+    "stable_id": "source_a74decc772d4",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_location.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "654caac996c952b99798e6606dc908839bd2ad2657e08bc2107e1bcaaa559196",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/frame_location.png"
+  },
+  {
+    "stable_id": "source_7fc2975317e5",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_skill.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "7bff2078d53ad24b0dd52705883c41222502bdbf7b5e766c2cdb3dc350404305",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/frame_skill.png"
+  },
+  {
+    "stable_id": "source_65f41764bd9e",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_alert.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "604eaf2dcf6fe2b8e34e12bd5aa45831f90edaa9a8c68c95bc18454141592cf6",
+    "duplicate_of": "res://assets/defaults/icon_alert.png"
+  },
+  {
+    "stable_id": "source_402715004b6c",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_arrow.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "e895986b9057c47f59aae3984e80bd0039838758469dfaa3e4319b8e171f7d36",
+    "duplicate_of": "res://assets/defaults/icon_arrow.png"
+  },
+  {
+    "stable_id": "source_68912de5b343",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_event_category.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "dcf5cc7ca17cba05aff08ea67a0eb6942da6410bb31bf34b7cd94d79458002fd",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_event_category.png"
+  },
+  {
+    "stable_id": "source_9a62be6f4e28",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_flashlight.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "ebe9279e7c6698dd43312cfbcff1c3635f0e19c049f5a906ceab5d91fd081495",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_flashlight.png"
+  },
+  {
+    "stable_id": "source_3f4846e67e68",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_gear.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "1831af52cf49085f055b259a51f32f18f3b1f872dc155b782d9ea69f858aa031",
+    "duplicate_of": "res://assets/defaults/icon_gear.png"
+  },
+  {
+    "stable_id": "source_3bc3a23610ad",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_heart.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "9c9ec8133f54b7cea54795aff63b210fd0c4cc151e30a0d49284a5dfc720d067",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_heart.png"
+  },
+  {
+    "stable_id": "source_e3b4d170d62c",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_item_category.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "6899ff3872c9fa5328252f43b0e3c27b01418238df32fe926bbecf6ad7eca8bf",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_item_category.png"
+  },
+  {
+    "stable_id": "source_cd18b929258a",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_search.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "fecf16b60a6fbf6c4573901514d2b9b640cf7c2625caa6ff369bfb4d1e0addfd",
+    "duplicate_of": "res://assets/defaults/icon_search.png"
+  },
+  {
+    "stable_id": "source_14fc937b85e6",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_shield.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "748e6eef43c87f9f4df142213e19506df03283a0a89c3173be39450614f1621e",
+    "duplicate_of": "res://assets/defaults/icon_shield.png"
+  },
+  {
+    "stable_id": "source_42ec2b771939",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_skill_category.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "266afca70e201a5ce46d692c805b0113aac71593de7459359d99e7f5f4ca2d33",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_skill_category.png"
+  },
+  {
+    "stable_id": "source_f603002fc6eb",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_stack.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "7d2141bc683a6c19707895dae69c205b914ec232d2f81db6f9ecc070f4f04a10",
+    "duplicate_of": "res://assets/defaults/icon_stack.png"
+  },
+  {
+    "stable_id": "source_30f031d38b9f",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_status_category.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "720564627ea6c3cb60ae01a3e872e5edd442b7c05f9550bc2261a3912cf910e6",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_status_category.png"
+  },
+  {
+    "stable_id": "source_58e020482c25",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_description.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      624,
+      180
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "725764c28a7e04a08f50e68a2d7432dabc59e4daf7e3872d214054378195e5b6",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/panel_description.png"
+  },
+  {
+    "stable_id": "source_c7051c27a497",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_name.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      624,
+      106
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "3d99c578eb617aa732f71bc797e71efa5f8127dbeab3a5f3707885afd25d5966",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/panel_name.png"
+  },
+  {
+    "stable_id": "source_803217c8b1bd",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_stat.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      194,
+      95
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "e1e3e1fbd0b2cde12bef390456d2fdba9af629fe346f7ff97ca33734efc7368d",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/panel_stat.png"
+  },
+  {
+    "stable_id": "source_62004525c59a",
+    "path": "res://assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_type.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      145,
+      69
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "83f71856601e9165da76bd56ab080ecb0a3b0d195466c35b0cf8b4a6709b1aa9",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/panel_type.png"
+  },
+  {
+    "stable_id": "source_5a3118950fbb",
+    "path": "res://assets/ref/backrooms_card_template_v1/LAYOUT_GUIDE.png",
+    "category": "参考",
+    "usage": "已查看的布局参考，非运行卡牌/游戏数据",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "已查看的布局参考，非运行卡牌/游戏数据",
+    "sha256": "3ae8def97c7a9df0c7d1d87efdbfe485755cade75bfef1e11ca1a9fb84a7d1e5",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_8ec2d7f78a5d",
+    "path": "res://assets/ref/backrooms_card_template_v1/PREVIEW_5_CARDS.png",
+    "category": "参考",
+    "usage": "已查看的布局参考，非运行卡牌/游戏数据",
+    "dimensions": [
+      1100,
+      1130
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "已查看的布局参考，非运行卡牌/游戏数据",
+    "sha256": "0716030ed5621517285d82a5166948baf157e8d37715721716937eb6bc706d5b",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_41ba0c6072bd",
+    "path": "res://assets/ref/backrooms_card_template_v1/samples/flashlight.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "ee5ded4abd320dc052df36a53468839bc54b595fa49720c0bb4b78c7ca528e4d",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_9c52e1404d6e",
+    "path": "res://assets/ref/backrooms_card_template_v1/samples/flashlight_cost_0.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "5b4841995d6d5a03ebd3f326760fea54cd722bda99bf7794960cca4461ed7939",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_4ed4959f7172",
+    "path": "res://assets/ref/backrooms_card_template_v1/samples/flicker.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "16d7cac2c40c80164dfe3a984a6e68ea0af3ab18bd256f15f77a2310d97953f9",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_c6a39aecf744",
+    "path": "res://assets/ref/backrooms_card_template_v1/samples/level0.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "2ab4eaf8bd3f4fe13b23a666c9058649e6156c82b323ea921848f450d8d60cb2",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_1ca7cf1a526d",
+    "path": "res://assets/ref/backrooms_card_template_v1/samples/listener.png",
+    "category": "参考",
+    "usage": "无法确认为当前领域/按钮用途；未擅自映射。",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "UNASSIGNED",
+    "notes": "无法确认为当前领域/按钮用途；未擅自映射。",
+    "sha256": "d13e403464f01c525dfb6a5bbce26b08d7a4b25b0a6b8feaaa4cb8fb1508fec5",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_6ebf7b0f99c7",
+    "path": "res://assets/ref/backrooms_card_template_v1/samples/stealth.png",
+    "category": "参考",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "0d021843912abcd3edd6e54d4ed517fbb59fc1a6192526764c977c825b5a4e43",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_b556dcec52e3",
+    "path": "res://assets/ui/buttons/primary.png",
+    "category": "运行图像",
+    "usage": "无法确认为当前领域/按钮用途；未擅自映射。",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "UNASSIGNED",
+    "notes": "无法确认为当前领域/按钮用途；未擅自映射。",
+    "sha256": "e895986b9057c47f59aae3984e80bd0039838758469dfaa3e4319b8e171f7d36",
+    "duplicate_of": "res://assets/defaults/icon_arrow.png"
+  },
+  {
+    "stable_id": "ui_description_panel",
+    "path": "res://assets/ui/frames/description_panel.png",
+    "category": "运行图像",
+    "usage": "ui_description_panel",
+    "dimensions": [
+      624,
+      180
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "725764c28a7e04a08f50e68a2d7432dabc59e4daf7e3872d214054378195e5b6",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/panel_description.png"
+  },
+  {
+    "stable_id": "frame_entity",
+    "path": "res://assets/ui/frames/entity.png",
+    "category": "运行图像",
+    "usage": "frame_entity",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "76e82048d2a8e4995b61dbb0d06dcc6d48964e91e1578f3ab94f55b7d5356022",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/frame_entity_a.png"
+  },
+  {
+    "stable_id": "frame_equipment",
+    "path": "res://assets/ui/frames/equipment.png",
+    "category": "运行图像",
+    "usage": "frame_equipment",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "4095baf39cdaa50bed4ce915047e4012a7e4631729327bda01cf06a7e1289529",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/frame_item.png"
+  },
+  {
+    "stable_id": "frame_event",
+    "path": "res://assets/ui/frames/event.png",
+    "category": "运行图像",
+    "usage": "frame_event",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "1039dbc04e24af76cb264e0bb27216015a7dd29695ff3c2c1deda9aadce965f0",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/frame_event_a.png"
+  },
+  {
+    "stable_id": "source_c925bf525927",
+    "path": "res://assets/ui/frames/frame_location_a.png",
+    "category": "运行图像",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "2150fc0f5ad5783aac531b691dc378720967a195a13925e9b87d9634df469f05",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/frame_location_a.png"
+  },
+  {
+    "stable_id": "ui_name_panel",
+    "path": "res://assets/ui/frames/name_panel.png",
+    "category": "运行图像",
+    "usage": "ui_name_panel",
+    "dimensions": [
+      624,
+      106
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "3d99c578eb617aa732f71bc797e71efa5f8127dbeab3a5f3707885afd25d5966",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/panel_name.png"
+  },
+  {
+    "stable_id": "frame_objective",
+    "path": "res://assets/ui/frames/objective.png",
+    "category": "运行图像",
+    "usage": "frame_objective",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "4095baf39cdaa50bed4ce915047e4012a7e4631729327bda01cf06a7e1289529",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/frame_item.png"
+  },
+  {
+    "stable_id": "frame_player",
+    "path": "res://assets/ui/frames/player.png",
+    "category": "运行图像",
+    "usage": "frame_player",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "87e8b1bcd5af3b4d1c677590c59ff5db091f9bb6b8ae7976af840c40718eaaea",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/frame_skill_a.png"
+  },
+  {
+    "stable_id": "ui_stat_panel",
+    "path": "res://assets/ui/frames/stat_panel.png",
+    "category": "运行图像",
+    "usage": "ui_stat_panel",
+    "dimensions": [
+      194,
+      95
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "e1e3e1fbd0b2cde12bef390456d2fdba9af629fe346f7ff97ca33734efc7368d",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/panel_stat.png"
+  },
+  {
+    "stable_id": "ui_type_panel",
+    "path": "res://assets/ui/frames/type_panel.png",
+    "category": "运行图像",
+    "usage": "ui_type_panel",
+    "dimensions": [
+      145,
+      69
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "83f71856601e9165da76bd56ab080ecb0a3b0d195466c35b0cf8b4a6709b1aa9",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/panel_type.png"
+  },
+  {
+    "stable_id": "source_d15d9902664e",
+    "path": "res://assets/ui/icons/aahp.png",
+    "category": "运行图像",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "9c9ec8133f54b7cea54795aff63b210fd0c4cc151e30a0d49284a5dfc720d067",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_heart.png"
+  },
+  {
+    "stable_id": "icon_ap",
+    "path": "res://assets/ui/icons/ap.png",
+    "category": "运行图像",
+    "usage": "icon_ap",
+    "dimensions": [
+      200,
+      200
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "15c597c61dc39b1b9047dcb027bf29174576903497c0fed8f503a534901b372d",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "icon_cognition",
+    "path": "res://assets/ui/icons/cognition.png",
+    "category": "运行图像",
+    "usage": "icon_cognition",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "fecf16b60a6fbf6c4573901514d2b9b640cf7c2625caa6ff369bfb4d1e0addfd",
+    "duplicate_of": "res://assets/defaults/icon_search.png"
+  },
+  {
+    "stable_id": "ui_cost",
+    "path": "res://assets/ui/icons/cost_medallion.png",
+    "category": "运行图像",
+    "usage": "ui_cost",
+    "dimensions": [
+      116,
+      116
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "10f5c25b3e7518a347e9f033f5344ffb80d7c6be4b5a7afebaf2378441bfb2e9",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/cost_medallion.png"
+  },
+  {
+    "stable_id": "icon_guard",
+    "path": "res://assets/ui/icons/guard.png",
+    "category": "运行图像",
+    "usage": "icon_guard",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "748e6eef43c87f9f4df142213e19506df03283a0a89c3173be39450614f1621e",
+    "duplicate_of": "res://assets/defaults/icon_shield.png"
+  },
+  {
+    "stable_id": "icon_hp",
+    "path": "res://assets/ui/icons/hp.png",
+    "category": "运行图像",
+    "usage": "icon_hp",
+    "dimensions": [
+      200,
+      200
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "efdfa3739136c91aa38e058e2ef127d50e1b0919ff8469a9621fd1cd8004ceeb",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_0c423b0bb250",
+    "path": "res://assets/ui/icons/icon_event_category.png",
+    "category": "运行图像",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "dcf5cc7ca17cba05aff08ea67a0eb6942da6410bb31bf34b7cd94d79458002fd",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_event_category.png"
+  },
+  {
+    "stable_id": "source_2b3656f06b70",
+    "path": "res://assets/ui/icons/icon_gear.png",
+    "category": "运行图像",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "1831af52cf49085f055b259a51f32f18f3b1f872dc155b782d9ea69f858aa031",
+    "duplicate_of": "res://assets/defaults/icon_gear.png"
+  },
+  {
+    "stable_id": "source_c116d06b95e1",
+    "path": "res://assets/ui/icons/icon_item_category.png",
+    "category": "运行图像",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "6899ff3872c9fa5328252f43b0e3c27b01418238df32fe926bbecf6ad7eca8bf",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_item_category.png"
+  },
+  {
+    "stable_id": "source_cfea236668eb",
+    "path": "res://assets/ui/icons/icon_skill_category.png",
+    "category": "运行图像",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "266afca70e201a5ce46d692c805b0113aac71593de7459359d99e7f5f4ca2d33",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_skill_category.png"
+  },
+  {
+    "stable_id": "source_c9011fe653b6",
+    "path": "res://assets/ui/icons/icon_status_category.png",
+    "category": "运行图像",
+    "usage": "备选/重复/参考；不进入运行素材映射",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "REFERENCE_ONLY",
+    "notes": "备选/重复/参考；不进入运行素材映射",
+    "sha256": "720564627ea6c3cb60ae01a3e872e5edd442b7c05f9550bc2261a3912cf910e6",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_status_category.png"
+  },
+  {
+    "stable_id": "icon_light",
+    "path": "res://assets/ui/icons/light.png",
+    "category": "运行图像",
+    "usage": "icon_light",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "ebe9279e7c6698dd43312cfbcff1c3635f0e19c049f5a906ceab5d91fd081495",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/icon_flashlight.png"
+  },
+  {
+    "stable_id": "icon_noise",
+    "path": "res://assets/ui/icons/noise.png",
+    "category": "运行图像",
+    "usage": "icon_noise",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "604eaf2dcf6fe2b8e34e12bd5aa45831f90edaa9a8c68c95bc18454141592cf6",
+    "duplicate_of": "res://assets/defaults/icon_alert.png"
+  },
+  {
+    "stable_id": "icon_retain",
+    "path": "res://assets/ui/icons/retain.png",
+    "category": "运行图像",
+    "usage": "icon_retain",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "7d2141bc683a6c19707895dae69c205b914ec232d2f81db6f9ecc070f4f04a10",
+    "duplicate_of": "res://assets/defaults/icon_stack.png"
+  },
+  {
+    "stable_id": "icon_search",
+    "path": "res://assets/ui/icons/search.png",
+    "category": "运行图像",
+    "usage": "icon_search",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "fecf16b60a6fbf6c4573901514d2b9b640cf7c2625caa6ff369bfb4d1e0addfd",
+    "duplicate_of": "res://assets/defaults/icon_search.png"
+  },
+  {
+    "stable_id": "icon_stress",
+    "path": "res://assets/ui/icons/stress.png",
+    "category": "运行图像",
+    "usage": "icon_stress",
+    "dimensions": [
+      200,
+      200
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "85688c3cfdea29b7565de7e55ce28e8997e02cf05beca1f31976b459bd920202",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "source_878df612e6e0",
+    "path": "res://assets/ui/icons/thread.png",
+    "category": "运行图像",
+    "usage": "无法确认为当前领域/按钮用途；未擅自映射。",
+    "dimensions": [
+      200,
+      200
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "UNUSED",
+    "assignment": "UNASSIGNED",
+    "notes": "无法确认为当前领域/按钮用途；未擅自映射。",
+    "sha256": "6b4eae1f88ca303ecd8e3b84de21ac22d369c3bdf46a4db6c83b8ae3230bf032",
+    "duplicate_of": null
+  },
+  {
+    "stable_id": "icon_threat",
+    "path": "res://assets/ui/icons/threat.png",
+    "category": "运行图像",
+    "usage": "icon_threat",
+    "dimensions": [
+      64,
+      64
+    ],
+    "format": "PNG",
+    "transparency": true,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "604eaf2dcf6fe2b8e34e12bd5aa45831f90edaa9a8c68c95bc18454141592cf6",
+    "duplicate_of": "res://assets/defaults/icon_alert.png"
+  },
+  {
+    "stable_id": "ui_card_background",
+    "path": "res://assets/ui/overlays/card_paper.png",
+    "category": "运行图像",
+    "usage": "ui_card_background",
+    "dimensions": [
+      750,
+      1050
+    ],
+    "format": "PNG",
+    "transparency": false,
+    "status": "PROVIDED",
+    "assignment": "MAPPED",
+    "notes": "运行素材",
+    "sha256": "104c61c3b0357dcae84d8fc9a56da6fdb1ac917e93cd5800129d09e1dc08ed11",
+    "duplicate_of": "res://assets/ref/backrooms_card_template_v1/assets/background_grunge.png"
+  }
+]

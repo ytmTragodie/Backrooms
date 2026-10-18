@@ -8,6 +8,7 @@ signal new_run_requested
 
 
 func _ready() -> void:
+	GameUITheme.style_modal(self)
 	$Margin/Layout/NewRun.pressed.connect(func() -> void: new_run_requested.emit())
 
 
