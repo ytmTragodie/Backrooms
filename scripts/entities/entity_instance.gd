@@ -5,6 +5,8 @@ extends RefCounted
 var entity_id: StringName
 var hp: int
 var max_hp: int
+var block: int # 防御
+var statuses: Array[StringName] = [] #状态
 var state: StringName
 var intent: StringName
 # 区分“主动攻击惹怒”与“实际观察到光照反应”，前者不能凭空验证避光 Insight。
