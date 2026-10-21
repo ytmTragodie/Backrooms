@@ -44,27 +44,24 @@ static func plan_search_reward(result: ActionResult, state: RunState, data: Floo
 	if selected == null:
 		return
 	if state.floor_state.find_resource(selected.id).status == ResourceNode.Status.UNDISCOVERED:
-		result.resource_discovered_id = selected.id
-	result.resource_looted_id = selected.id
-	result.supply_delta += selected.supply_reward
+		result.floor.resource_discovered_id = selected.id
+	result.floor.resource_looted_id = selected.id
+	result.player.supply_delta += selected.supply_reward
 	var item: EquipmentInstance = recipient(selected, state)
 	if item != null:
-		result.resource_equipment = item
-		result.resource_uses_gained = mini(selected.uses_reward, item.definition.capacity - item.remaining_uses)
+		result.equipment.resource_equipment = item
+		result.equipment.resource_uses_gained = mini(selected.uses_reward, item.definition.capacity - item.remaining_uses)
 	if result.action_id.is_empty():
 		result.action_id = &"search_environment"
 
 
 static func commit(result: ActionResult, state: RunState) -> void:
-	if not result.resource_discovered_id.is_empty():
-		state.floor_state.find_resource(result.resource_discovered_id).status = ResourceNode.Status.DISCOVERED
-		result.debug_lines.append("[RESOURCE] discovered %s" % result.resource_discovered_id)
-	if not result.resource_looted_id.is_empty():
-		state.floor_state.find_resource(result.resource_looted_id).status = ResourceNode.Status.LOOTED
-		result.debug_lines.append("[RESOURCE] looted %s" % result.resource_looted_id)
-	if result.supply_delta != 0:
-		state.supply += result.supply_delta
-		result.debug_lines.append("[RESOURCE] supply %+d total=%d" % [result.supply_delta, state.supply])
+	if not result.floor.resource_discovered_id.is_empty():
+		state.floor_state.find_resource(result.floor.resource_discovered_id).status = ResourceNode.Status.DISCOVERED
+		result.debug_lines.append("[RESOURCE] discovered %s" % result.floor.resource_discovered_id)
+	if not result.floor.resource_looted_id.is_empty():
+		state.floor_state.find_resource(result.floor.resource_looted_id).status = ResourceNode.Status.LOOTED
+		result.debug_lines.append("[RESOURCE] looted %s" % result.floor.resource_looted_id)
 
 
 static func valid_definition(data: ResourceNodeData) -> bool:

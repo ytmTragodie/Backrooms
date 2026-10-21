@@ -49,7 +49,7 @@ func _test_taxonomy() -> void:
 		check(data.fresh_objectives.size() == 2 and not data.scene_rules.is_empty(), "Each floor separates two actual targets from persistent scene rules")
 		check(EventSystem.validate_definitions(data).is_empty(), "Production Events validate")
 		for event: EventData in data.events:
-			check(not event.get_property_list().any(func(p: Dictionary) -> bool: return p.name in ["explore_threshold", "explore_progress"]), "Events have no Explore HP")
+			check(not event.get_property_list().any(func(p: Dictionary) -> bool: return p.name in ["progress_threshold", "explore_progress"]), "Events have no Explore HP")
 		var owner: TurnManager = manager(CURRENT_DECK.cards, data)
 		check(owner.run_state.floor_state.board_state.active_events.size() <= 2 and owner.run_state.floor_state.current_objective != null, "Events and Objective coexist")
 		for pile: Array[CardInstance] in [owner.run_state.deck_state.hand, owner.run_state.deck_state.draw_pile, owner.run_state.deck_state.discard_pile]:
@@ -75,7 +75,7 @@ func _test_capacity_and_modifiers() -> void:
 	check(play(owner, OBSERVE).success and state.ap == 1, "Card commits modified AP and Objective together")
 	var before: Dictionary = extended_snapshot(owner)
 	var failed: ActionResult = play(owner, OBSERVE)
-	check(not failed.success and extended_snapshot(owner) == before and failed.event_changes.is_empty(), "Failed AP changes no timers/conditions/charges/AP/RNG")
+	check(not failed.success and extended_snapshot(owner) == before and failed.event.changes.is_empty(), "Failed AP changes no timers/conditions/charges/AP/RNG")
 	owner.end_turn()
 	check(state.stress == 2 and state.player_hp == 28 and old.retired, "Both active debuffs resolve in one lifecycle, then expire")
 	check(state.floor_state.seen_event_ids == [first.id, second.id, third.id] and state.floor_state.board_state.active_events[1].definition == third, "Overflow fills first free slot without replacing survivor")
@@ -84,7 +84,7 @@ func _test_capacity_and_modifiers() -> void:
 	var forged: ActionResult = ActionResult.new()
 	var stale: EventChange = EventChange.new(old)
 	stale.matching_actions = 99
-	forged.event_changes.append(stale)
+	forged.event.changes.append(stale)
 	EventSystem.commit(forged, state)
 	check(extended_snapshot(owner) == before and old.matching_actions == 0, "Stale Event reference cannot re-enter or produce effects")
 	owner.free()
@@ -92,7 +92,7 @@ func _test_capacity_and_modifiers() -> void:
 	owner = manager([GUARD, OBSERVE, OBSERVE, OBSERVE, OBSERVE], data)
 	check(play(owner, GUARD).success, "Guard is useful against Event-only environmental damage")
 	var result: ActionResult = owner.end_turn()
-	check(result.pressure_blocked == 2 and result.pressure_damage == 0 and owner.run_state.player_hp == 30, "Environmental Event consumes same Guard before entities")
+	check(result.player.pressure_blocked == 2 and result.player.pressure_damage == 0 and owner.run_state.player_hp == 30, "Environmental Event consumes same Guard before entities")
 	owner.free()
 	data = clean_floor(CURRENT_6)
 	data.entry_entity_automatic = true
@@ -103,7 +103,7 @@ func _test_capacity_and_modifiers() -> void:
 	var same_board: BoardState = owner.run_state.floor_state.board_state
 	check(play(owner, GUARD).success, "Mixed encounter defense uses normal card/AP")
 	result = owner.end_turn()
-	check(result.pressure_blocked == 2 and result.damage_blocked == 2 and result.player_damage == 2, "Event pressure consumes Guard before Hound intent; remainder is not counted twice")
+	check(result.player.pressure_blocked == 2 and result.player.damage_blocked == 2 and result.player.damage_taken == 2, "Event pressure consumes Guard before Hound intent; remainder is not counted twice")
 	check(owner.run_state.floor_state.board_state == same_board and same_board.entity != null and owner.run_state.ap == 3, "Event and Entity keep one board/AP/turn lifecycle")
 	owner.free()
 
@@ -202,7 +202,7 @@ func _test_current_exit_fallback() -> void:
 			check(generated(owner, &"rushed") != null and owner.run_state.cognition == 0, "Current floors retain exit without any Event/Objective/resource/Insight/equipment")
 			for attempt: int in range(20):
 				var result: ActionResult = play_generated(owner, &"rushed")
-				if result.cutout_attempt != null and result.cutout_attempt.succeeded: break
+				if result.cutout.attempt != null and result.cutout.attempt.succeeded: break
 				check(generated(owner, &"rushed") != null, "Rushed failure preserves exit")
 				owner.end_turn()
 		check(owner.floor_data.is_placeholder, "Missing all current content cannot permanently trap either floor")

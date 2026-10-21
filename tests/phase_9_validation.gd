@@ -48,7 +48,7 @@ func reject_reward(owner: TurnManager, command_value: CardRewardCommand, reason:
 	var result: ActionResult = owner.submit_reward_command(command_value)
 	owner.state_changed.disconnect(listener)
 	check(not result.success and result.failure_reason == reason, "Reward rejection reports %s" % reason)
-	check(snapshot(owner) == before and notifications.is_empty() and result.deck_card_changed == null, "Rejected reward preserves RNG/AP/all zones/definitions/opportunities/equipment with no notification")
+	check(snapshot(owner) == before and notifications.is_empty() and result.deck.card_changed == null, "Rejected reward preserves RNG/AP/all zones/definitions/opportunities/equipment with no notification")
 
 
 func _test_declared_targets() -> void:
@@ -60,7 +60,7 @@ func _test_declared_targets() -> void:
 	var observe: CardInstance = hand_card(owner, OBSERVE)
 	check(RuleResolver.validate_card_target(PlayCardCommand.new(observe, board.active_objective, board), owner.run_state.floor_state, owner.floor_data, owner.run_state).is_empty(), "Observe declares a live Situation route")
 	check(RuleResolver.validate_card_target(PlayCardCommand.new(observe, null, board, board.entity), owner.run_state.floor_state, owner.floor_data, owner.run_state).is_empty(), "Observe declares an analyzable live Entity route")
-	check(play(owner, OBSERVE, true).analysis_applied == 2 and play(owner, OBSERVE).explore_applied == 2, "Declared Observe routes share AP and preserve separate knowledge/Explore consumers")
+	check(play(owner, OBSERVE, true).entity.analysis_applied == 2 and play(owner, OBSERVE).objective.progress_applied == 2, "Declared Observe routes share AP and preserve separate knowledge/Explore consumers")
 	owner.free()
 	var data: FloorData = fixture(LEVEL_6)
 	data.entry_entity = data.followup_entity
@@ -81,7 +81,7 @@ func _test_retirement_and_reward() -> void:
 	var notified: Array[bool] = []
 	owner.state_changed.connect(func() -> void: notified.append(hound.hp == 0 and board.entity == null and state.pending_rewards.size() == 1))
 	var result: ActionResult = play(owner, lethal, true)
-	check(result.entity_defeated and not hound.alive and board.entity == null and state.floor_state.resolved_entity_ids == [hound.entity_id] and notified == [true], "Final defeat/reward commit precedes board retirement and observer notification")
+	check(result.entity.defeated and not hound.alive and board.entity == null and state.floor_state.resolved_entity_ids == [hound.entity_id] and notified == [true], "Final defeat/reward commit precedes board retirement and observer notification")
 	check(state.pending_rewards[0].choices.size() == 3, "Meaningful Hound resolution offers three choices")
 	var reward: CardReward = state.pending_rewards[0]
 	check(owner.submit_reward_command(CardRewardCommand.new(reward, reward.choices[0])).success, "Resolve actual Hound opportunity")
@@ -138,14 +138,14 @@ func _test_rewards_and_rng() -> void:
 			reject_reward(owner, CardRewardCommand.new(reward, LEVEL_0.rushed_cutout_card), &"invalid_reward_choice")
 			var selected: CardData = reward.choices[0]
 			var result: ActionResult = owner.submit_reward_command(CardRewardCommand.new(reward, selected))
-			check(result.success and result.deck_card_changed.definition == selected and state.deck_state.discard_pile.has(result.deck_card_changed) and state.deck_state.get_card_count() == 8 and state.pending_rewards.is_empty(), "One new NORMAL instance enters existing discard for future draws")
+			check(result.success and result.deck.card_changed.definition == selected and state.deck_state.discard_pile.has(result.deck.card_changed) and state.deck_state.get_card_count() == 8 and state.pending_rewards.is_empty(), "One new NORMAL instance enters existing discard for future draws")
 			check(all_cards(state).filter(func(card: CardInstance) -> bool: return reward.choices.has(card.definition)).size() == 1, "Unchosen offers never enter any zone")
 			check(state.ap == before.ap and state.turn_number == before.turn and state.rng.state == before.rng, "Claim does not draw/advance/reset AP or consume extra RNG")
 			reject_reward(owner, CardRewardCommand.new(reward, selected), &"invalid_reward")
 			var drawn: bool = false
 			for turn: int in range(5):
 				owner.end_turn()
-				drawn = drawn or state.deck_state.hand.has(result.deck_card_changed)
+				drawn = drawn or state.deck_state.hand.has(result.deck.card_changed)
 			check(drawn, "Chosen instance is drawn later through existing shuffle lifecycle")
 		check(offered[0] == offered[1], "Same seed and commands reproduce exact reward choices")
 		for owner: TurnManager in pair:
@@ -187,7 +187,7 @@ func _test_removal() -> void:
 	var data: FloorData = production_floor(LEVEL_6)
 	data.entry_entity.resolution_reward = null
 	var event: ObjectiveData = data.fresh_objectives[0]
-	event.explore_threshold = 2
+	event.progress_threshold = 2
 	event.clue_threshold = 2
 	event.completion_reward = REMOVE
 	var owner: TurnManager = manager([OBSERVE, SEARCH, ATTACK, GUARD, RUN, OBSERVE], data)
@@ -220,26 +220,26 @@ func _test_new_cards() -> void:
 		check(definition.is_deckbuilding_definition_valid(), "Reward has a reusable real baseline: %s" % definition.id)
 		var owner: TurnManager = manager([definition, GUARD, OBSERVE, OBSERVE, OBSERVE], LEVEL_6, false)
 		var result: ActionResult = play(owner, definition, definition.target_kinds == CardData.TargetKind.ENTITY)
-		check(result.success and result.ap_spent == definition.ap_cost + (1 if definition.tags.has(&"OBSERVE") else 0), "Each offered definition resolves its declared semantic")
+		check(result.success and result.card.ap_spent == definition.ap_cost + (1 if definition.tags.has(&"OBSERVE") else 0), "Each offered definition resolves its declared semantic")
 		check(owner.run_state.threat == definition.threat_cost, "Each risk variant commits own Threat cost")
 		if definition.explore_amount > 0:
-			check(result.explore_applied == definition.explore_amount, "Explore baseline is consumed by generic Situation")
+			check(result.objective.progress_applied == definition.explore_amount, "Explore baseline is consumed by generic Situation")
 		elif definition.effect_type == CardData.EffectType.ATTACK:
-			check(result.entity_damage == definition.effect_value, "Conditional attacks still have baseline damage without synergy")
+			check(result.entity.damage == definition.effect_value, "Conditional attacks still have baseline damage without synergy")
 		owner.free()
 	var owner: TurnManager = manager([GUARD, COUNTER, OBSERVE, OBSERVE, OBSERVE], LEVEL_6, false)
 	play(owner, GUARD)
-	check(play(owner, COUNTER, true).entity_damage == 7, "Guard condition increases same attack semantic")
+	check(play(owner, COUNTER, true).entity.damage == 7, "Guard condition increases same attack semantic")
 	owner.free()
 	owner = manager([CRISIS, OBSERVE, OBSERVE, OBSERVE, OBSERVE], LEVEL_6, false)
 	owner.run_state.floor_state.threat = 4
-	check(play(owner, CRISIS).explore_applied == 5, "High Threat condition increases Explore")
+	check(play(owner, CRISIS).objective.progress_applied == 5, "High Threat condition increases Explore")
 	owner.free()
 	owner = manager([OBSERVE, OBSERVE, WEAKNESS], LEVEL_6, false)
 	play(owner, OBSERVE, true)
 	play(owner, OBSERVE, true)
 	owner.end_turn()
-	check(play(owner, WEAKNESS, true).entity_damage == 7, "Revealed behavior knowledge enables analyzed-target attack bonus")
+	check(play(owner, WEAKNESS, true).entity.damage == 7, "Revealed behavior knowledge enables analyzed-target attack bonus")
 	owner.free()
 
 

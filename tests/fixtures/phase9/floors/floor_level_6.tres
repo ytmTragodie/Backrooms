@@ -23,3 +23,6 @@ followup_entity = ExtResource("smiler")
 landmark_insight = ExtResource("landmark")
 
 followup_on_light = true
+intro_objective = ExtResource("3_dark")
+objective_spawn_chance = 1.0
+max_objectives_per_floor = 1

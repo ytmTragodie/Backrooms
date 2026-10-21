@@ -61,14 +61,14 @@ static func has_damage(floor: FloorState) -> bool:
 
 
 static func plan_card(result: ActionResult, card: CardData, state: RunState) -> void:
-	if result.destination != null: return
+	if result.cutout.destination != null: return
 	for event: EventInstance in state.floor_state.board_state.active_events:
 		var change: EventChange = EventChange.new(event)
 		var definition: EventData = event.definition
 		if definition.category == EventData.Category.OMEN:
 			for tag: StringName in definition.accelerate_tags:
 				# LIGHT 必须确实生效，印刷标签或失败开灯不算曝光。
-				if (tag == &"LIGHT" and result.light_activated) or (tag != &"LIGHT" and card.tags.has(tag)):
+				if (tag == &"LIGHT" and result.floor.light_activated) or (tag != &"LIGHT" and card.tags.has(tag)):
 					change.remaining_turns = maxi(0, change.remaining_turns - 1)
 			_trigger_omen(change, result, state)
 		elif definition.category == EventData.Category.OPPORTUNITY and card.tags.has(definition.condition_tag):
@@ -76,10 +76,10 @@ static func plan_card(result: ActionResult, card: CardData, state: RunState) -> 
 			if change.matching_actions >= definition.required_actions:
 				change.retired = true
 				change.reason = &"condition_met"
-				result.supply_delta += definition.supply_reward
+				result.player.supply_delta += definition.supply_reward
 				if definition.insight != null: InsightSystem.plan_confirmation(result, definition.insight, state.floor_state)
-				if definition.card_reward != null: result.event_reward_definitions.append(definition.card_reward)
-		result.event_changes.append(change)
+				if definition.card_reward != null: result.event.reward_definitions.append(definition.card_reward)
+		result.event.changes.append(change)
 
 
 static func plan_end_turn(result: ActionResult, state: RunState) -> void:
@@ -91,16 +91,22 @@ static func plan_end_turn(result: ActionResult, state: RunState) -> void:
 		change.remaining_turns = maxi(0, change.remaining_turns - 1)
 		var definition: EventData = event.definition
 		if definition.category == EventData.Category.DEBUFF:
-			result.pressure_stress += definition.stress_per_turn
-			var blocked: int = mini(floor.player_block - result.pressure_blocked, definition.damage_per_turn)
-			result.pressure_blocked += blocked
-			result.pressure_damage += definition.damage_per_turn - blocked
+			result.player.pressure_stress += definition.stress_per_turn
+			result.player.stress_delta += definition.stress_per_turn
+			# 压力共享同一临时防护池；用累计 block_delta 计算剩余 Guard。
+			var remaining_block: int = maxi(0, floor.player_block + result.player.block_delta)
+			var blocked: int = mini(remaining_block, definition.damage_per_turn)
+			var damage: int = definition.damage_per_turn - blocked
+			result.player.pressure_blocked += blocked
+			result.player.block_delta -= blocked
+			result.player.pressure_damage += damage
+			result.player.hp_delta -= damage
 		if definition.category == EventData.Category.OMEN:
 			_trigger_omen(change, result, state)
 		elif change.remaining_turns == 0:
 			change.retired = true
 			change.reason = &"expired"
-		result.event_changes.append(change)
+		result.event.changes.append(change)
 
 
 static func _trigger_omen(change: EventChange, result: ActionResult, state: RunState) -> void:
@@ -112,14 +118,14 @@ static func _trigger_omen(change: EventChange, result: ActionResult, state: RunS
 		change.reason = &"already_resolved"
 		return
 	# 槽被占用时保持零倒计时等待，绝不覆盖实体或丢失预告。
-	var old_retiring: bool = result.entity_defeated or result.entity_state_after in [&"DISENGAGED", &"WITHDRAWN"]
-	if result.entity_spawned != null or (floor.entity != null and floor.entity.active and not old_retiring): return
-	result.entity_spawned = EntitySystem.spawn(definition)
-	result.entity_spawned.spawned_turn = floor.turn_count
-	if definition.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE and (floor.light_active or result.light_activated) and not result.light_extinguished:
-		result.entity_spawned.state = &"OBSERVING"
-		result.entity_spawned.intent = EntitySystem.INTENTS[&"OBSERVING"]
-		result.entity_spawned.light_exposed = true
+	var old_retiring: bool = result.entity.defeated or result.entity.state_after in [&"DISENGAGED", &"WITHDRAWN"]
+	if result.entity.spawned != null or (floor.entity != null and floor.entity.active and not old_retiring): return
+	result.entity.spawned = EntitySystem.spawn(definition)
+	result.entity.spawned.spawned_turn = floor.turn_count
+	if definition.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE and (floor.light_active or result.floor.light_activated) and not result.floor.light_extinguished:
+		result.entity.spawned.state = &"OBSERVING"
+		result.entity.spawned.intent = EntitySystem.INTENTS[&"OBSERVING"]
+		result.entity.spawned.light_exposed = true
 	change.retired = true
 	change.reason = &"omen_triggered"
 
@@ -127,7 +133,7 @@ static func _trigger_omen(change: EventChange, result: ActionResult, state: RunS
 static func commit(result: ActionResult, state: RunState) -> void:
 	var board: BoardState = state.floor_state.board_state
 	# 只提交仍归当前 Board 所有的实例；外部旧引用不能重新入场或发奖。
-	for change: EventChange in result.event_changes:
+	for change: EventChange in result.event.changes:
 		if not board.active_events.has(change.target) or change.target.retired: continue
 		change.target.remaining_turns = change.remaining_turns
 		change.target.matching_actions = change.matching_actions
@@ -135,9 +141,4 @@ static func commit(result: ActionResult, state: RunState) -> void:
 		change.target.retired = change.retired
 		result.debug_lines.append("[EVENT] %s timer=%d actions=%d reason=%s" % [change.target.definition.id, change.remaining_turns, change.matching_actions, change.reason])
 		if change.retired: board.active_events.erase(change.target)
-	# 环境总压力只提交一次；解析器协调顺序，不成为另一处 HP/Guard 写入者。
-	if result.action_id == &"end_turn":
-		state.stress += result.pressure_stress
-		state.floor_state.player_block -= result.pressure_blocked
-		state.player_hp -= mini(state.player_hp, result.pressure_damage)
-		result.debug_lines.append("[PRESSURE] total stress=%d damage=%d blocked=%d" % [result.pressure_stress, result.pressure_damage, result.pressure_blocked])
+	# 玩家压力由 PlayerSystem 提交；EventSystem 只拥有 EventInstance。

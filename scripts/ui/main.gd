@@ -268,8 +268,8 @@ func _show_result(result: ActionResult) -> void:
 	if not result.success:
 		_status.text = "行动失败：%s。" % FAILURE_MESSAGES.get(result.failure_reason, "请重新选择")
 		return
-	_audio.cue(&"audio_cutout" if result.destination != null else &"audio_card_play" if result.card_played != null else &"audio_button_click")
-	if result.pressure_damage + result.player_damage > 0 and AssetCatalog.is_provided(&"fx_damage_flash"):
+	_audio.cue(&"audio_cutout" if result.cutout.destination != null else &"audio_card_play" if result.card.card_played != null else &"audio_button_click")
+	if result.player.pressure_damage + result.player.damage_taken > 0 and AssetCatalog.is_provided(&"fx_damage_flash"):
 		var flash: TextureRect = %DamageFlash
 		flash.texture = AssetCatalog.texture(&"fx_damage_flash")
 		flash.modulate.a = 0.2
@@ -278,19 +278,19 @@ func _show_result(result: ActionResult) -> void:
 		_flash_tween = create_tween()
 		_flash_tween.tween_property(flash, "modulate:a", 0.0, 0.16)
 		_flash_tween.tween_callback(flash.hide)
-	if result.reward_claimed != null: _status.text = "新牌已加入原有牌组。"
-	elif result.safe_point_used != null: _status.text = "整备完成，继续探索。"
-	elif result.card_played != null: _status.text = "已打出%s · 消耗%d行动点" % [result.card_definition.display_name, result.ap_spent]
+	if result.run.reward_claimed != null: _status.text = "新牌已加入原有牌组。"
+	elif result.run.safe_point_used != null: _status.text = "整备完成，继续探索。"
+	elif result.card.card_played != null: _status.text = "已打出%s · 消耗%d行动点" % [result.card.card_definition.display_name, result.card.ap_spent]
 	else: _status.text = "新回合 · 观察意图，再分配行动点。"
-	if result.explore_applied > 0: _status.text += " · 调查：+%d" % result.explore_applied
-	if result.cognition_delta > 0: _status.text += " · 认知：+%d" % result.cognition_delta
-	if result.cutout_attempt != null: _status.text = "切出成功。" if result.cutout_attempt.succeeded else "仓促切出失败，此牌已保留。"
-	if result.destination != null and result.destination.is_placeholder: _status.text = "已成功离层，本局完成。"
+	if result.objective.progress_applied > 0: _status.text += " · 调查：+%d" % result.objective.progress_applied
+	if result.floor.cognition_delta > 0: _status.text += " · 认知：+%d" % result.floor.cognition_delta
+	if result.cutout.attempt != null: _status.text = "切出成功。" if result.cutout.attempt.succeeded else "仓促切出失败，此牌已保留。"
+	if result.cutout.destination != null and result.cutout.destination.is_placeholder: _status.text = "已成功离层，本局完成。"
 	var feedback: PackedStringArray = []
-	if result.pressure_damage + result.player_damage > 0: feedback.append("生命 −%d" % (result.pressure_damage + result.player_damage))
-	if result.entity_damage > 0: feedback.append("伤害 %d" % result.entity_damage)
-	if result.block_gained > 0: feedback.append("防护 +%d" % result.block_gained)
-	if result.threat_delta > 0: feedback.append("威胁 +%d" % result.threat_delta)
+	if result.player.pressure_damage + result.player.damage_taken > 0: feedback.append("生命 −%d" % (result.player.pressure_damage + result.player.damage_taken))
+	if result.entity.damage > 0: feedback.append("伤害 %d" % result.entity.damage)
+	if result.player.block_delta > 0: feedback.append("防护 +%d" % result.player.block_delta)
+	if result.floor.threat_delta > 0: feedback.append("威胁 +%d" % result.floor.threat_delta)
 	if not feedback.is_empty(): _feedback("　".join(feedback))
 
 

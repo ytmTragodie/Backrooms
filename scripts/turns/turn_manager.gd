@@ -75,9 +75,9 @@ func request_play_card(card: CardInstance, objective: ObjectiveInstance = null, 
 func submit_card_command(command: PlayCardCommand) -> ActionResult:
 	# 所有对外出牌请求统一经过这里，避免提交成功却漏发界面通知。
 	var result: ActionResult = RuleResolver.resolve(command, run_state, card_system, floor_data)
-	if result.success and result.destination != null:
+	if result.success and result.cutout.destination != null:
 		# 换层只同步定义；不重建 Run、牌组、装备或恢复 AP。
-		floor_data = result.destination
+		floor_data = result.cutout.destination
 	# 完整提交后才通知；失败仅发布结果，不伪装成一次状态变化。
 	if result.success:
 		state_changed.emit()

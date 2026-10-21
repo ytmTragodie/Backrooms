@@ -105,9 +105,9 @@ static func validate(state: CutOutState, data: FloorData) -> StringName:
 
 
 static func plan_gain(result: ActionResult, state: CutOutState, stability: int, knowledge: int, reason: StringName) -> void:
-	result.stability_delta = mini(result.stability_delta + stability, CutOutState.MAX_STABILITY - state.stability)
-	result.knowledge_delta = mini(result.knowledge_delta + knowledge, CutOutState.MAX_KNOWLEDGE - state.destination_knowledge)
-	result.preparation_reason = reason
+	result.cutout.stability_delta = mini(result.cutout.stability_delta + stability, CutOutState.MAX_STABILITY - state.stability)
+	result.cutout.knowledge_delta = mini(result.cutout.knowledge_delta + knowledge, CutOutState.MAX_KNOWLEDGE - state.destination_knowledge)
+	result.cutout.preparation_reason = reason
 
 
 static func plan_attempt(result: ActionResult, state: RunState, data: FloorData, attempt_type: StringName) -> StringName:
@@ -127,41 +127,40 @@ static func plan_attempt(result: ActionResult, state: RunState, data: FloorData,
 	if attempt_type == &"rushed":
 		attempt.roll = rng.randi_range(1, 100)
 		attempt.succeeded = attempt.roll <= mini(90, 55 + cutout.stability * 10 + cutout.destination_knowledge * 5)
-		result.stress_delta = 1
+		result.player.stress_delta += 1
 		if not attempt.succeeded:
-			result.threat_delta = mini(1, FloorState.MAX_THREAT - state.floor_state.threat)
-			result.threat_reason = &"rushed_cutout_failed"
+			result.floor.threat_delta = mini(1, FloorState.MAX_THREAT - state.floor_state.threat)
+			result.floor.threat_reason = &"rushed_cutout_failed"
 	if attempt.succeeded:
 		var index: int = 0 if attempt_type == &"safe" else rng.randi_range(0, cutout.destination_candidates.size() - 1)
 		attempt.destination_id = cutout.destination_candidates[index]
-		result.destination = data.find_destination(attempt.destination_id)
-		result.next_floor = FloorState.new(result.destination)
+		result.cutout.destination = data.find_destination(attempt.destination_id)
+		result.cutout.next_floor = FloorState.new(result.cutout.destination)
 		# 新楼层只在私有计划对象上初始化；不改 AP、手牌、管理器或当前楼层。
-		if not result.destination.is_placeholder:
-			ObjectiveSystem.draw_fresh(result.destination, result.next_floor, rng, false)
-			EventSystem.fill_slots(result.next_floor, result.destination)
-	result.cutout_attempt = attempt
-	result.rng_state_after = rng.state
-	result.commit_rng = true
+		if not result.cutout.destination.is_placeholder:
+			ObjectiveSystem.draw_fresh(result.cutout.destination, result.cutout.next_floor, rng, false)
+			EventSystem.fill_slots(result.cutout.next_floor, result.cutout.destination)
+	result.cutout.attempt = attempt
+	result.run.rng_state_after = rng.state
+	result.run.commit_rng = true
 	return &""
 
 
 static func commit(result: ActionResult, state: RunState) -> void:
 	var cutout: CutOutState = state.floor_state.cutout_state
-	cutout.stability += result.stability_delta
-	cutout.destination_knowledge += result.knowledge_delta
-	if not result.preparation_reason.is_empty():
-		result.debug_lines.append("[CUTOUT] stability +%d knowledge +%d reason=%s" % [result.stability_delta, result.knowledge_delta, result.preparation_reason])
-	if result.cutout_attempt == null:
+	cutout.stability = mini(CutOutState.MAX_STABILITY, cutout.stability + result.cutout.stability_delta)
+	cutout.destination_knowledge = mini(CutOutState.MAX_KNOWLEDGE, cutout.destination_knowledge + result.cutout.knowledge_delta)
+	if not result.cutout.preparation_reason.is_empty():
+		result.debug_lines.append("[CUTOUT] stability +%d knowledge +%d reason=%s" % [result.cutout.stability_delta, result.cutout.knowledge_delta, result.cutout.preparation_reason])
+	if result.cutout.attempt == null:
 		return
-	state.last_cutout_attempt = result.cutout_attempt
-	state.stress += result.stress_delta
+	state.last_cutout_attempt = result.cutout.attempt
 	# RNG 由 RuleResolver 与奖励草案一起提交，避免两个系统分别写同一随机状态。
-	result.debug_lines.append("[CUTOUT] attempt type=%s roll=%d stress=+%d" % [result.cutout_attempt.attempt_type, result.cutout_attempt.roll, result.stress_delta])
-	if result.cutout_attempt.succeeded:
+	result.debug_lines.append("[CUTOUT] attempt type=%s roll=%d stress=+%d" % [result.cutout.attempt.attempt_type, result.cutout.attempt.roll, result.player.stress_delta])
+	if result.cutout.attempt.succeeded:
 		# 目的地定义和新状态已在规划阶段创建；此处只切换权威状态引用。
-		state.floor_state = result.next_floor
-		result.debug_lines.append("[CUTOUT] success destination=%s" % result.cutout_attempt.destination_id)
+		state.floor_state = result.cutout.next_floor
+		result.debug_lines.append("[CUTOUT] success destination=%s" % result.cutout.attempt.destination_id)
 		if state.floor_state.current_objective != null:
 			result.debug_lines.append("[EVENT] draw %s" % state.floor_state.current_objective_id)
 		if state.floor_state.entity != null:

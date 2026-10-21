@@ -58,7 +58,7 @@ func finish_play(card: CardInstance, result: ActionResult) -> void:
 		move_hand_to_discard(card)
 	elif card.source == CardData.Source.EQUIPMENT and card.definition.effect_type in [CardData.EffectType.LIGHT, CardData.EffectType.EXTINGUISH]:
 		return
-	elif result.cutout_attempt == null or result.cutout_attempt.succeeded:
+	elif result.cutout.attempt == null or result.cutout.attempt.succeeded:
 		_run_state.deck_state.hand.erase(card)
 	# 仓促尝试失败属于已结算动作，但保留同一退出机会，不能误删唯一出口。
 

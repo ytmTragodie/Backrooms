@@ -56,7 +56,7 @@ func reject_safe(owner: TurnManager, command_value: SafePointCommand, reason: St
 	var result: ActionResult = owner.submit_safe_point_command(command_value)
 	owner.state_changed.disconnect(listener)
 	check(not result.success and result.failure_reason == reason, "Safe point rejects %s" % reason)
-	check(before == full_snapshot(owner) and calls.is_empty() and result.safe_point_used == null, "Rejected choice changes no opportunity/AP/RNG/zone/equipment/metrics")
+	check(before == full_snapshot(owner) and calls.is_empty() and result.run.safe_point_used == null, "Rejected choice changes no opportunity/AP/RNG/zone/equipment/metrics")
 
 
 func _test_content_and_economy() -> void:
@@ -72,7 +72,7 @@ func _test_content_and_economy() -> void:
 			var owner: TurnManager = live_owner(data, [big, OBSERVE, ATTACK, GUARD, SEARCH])
 			var old: ObjectiveInstance = owner.run_state.floor_state.current_objective
 			var result: ActionResult = play(owner, big)
-			check(result.success and result.objective_resolved and owner.run_state.floor_state.board_state.active_objective == null, "Completed Situation leaves active slot after result commit")
+			check(result.success and result.objective.newly_resolved and owner.run_state.floor_state.board_state.active_objective == null, "Completed Situation leaves active slot after result commit")
 			if event.completion_reward != null:
 				budget += 1
 				check(event.completion_reward.kind == CardRewardData.Kind.ADD_CARD and owner.run_state.pending_rewards.size() == 1, "Only selected major Situation gives three-card reward")
@@ -192,7 +192,7 @@ func _test_resource_feedback() -> void:
 	check(state.floor_state.resource_nodes[0].status == ResourceNode.Status.UNDISCOVERED, "Full equipment does not waste a finite battery cache")
 	play_generated(owner, &"light")
 	var result: ActionResult = owner.submit_card_command(command_value)
-	check(result.success and result.resource_uses_gained == 1 and battery.remaining_uses == 3 and state.floor_state.resource_nodes[0].status == ResourceNode.Status.LOOTED, "Search refills actual battery with capacity cap in same atomic resolution")
+	check(result.success and result.equipment.resource_uses_gained == 1 and battery.remaining_uses == 3 and state.floor_state.resource_nodes[0].status == ResourceNode.Status.LOOTED, "Search refills actual battery with capacity cap in same atomic resolution")
 	reject(owner, PlayCardCommand.new(hand_card(owner, SEARCH), null, state.floor_state.board_state), &"resources_exhausted")
 	owner.end_turn()
 	check(state.floor_state.resource_nodes[0].status == ResourceNode.Status.DEPLETED and battery.remaining_uses == 3, "Depleted cache never yields another recharge")
@@ -206,7 +206,7 @@ func _test_resource_feedback() -> void:
 		var item: EquipmentInstance = owner.run_state.equipment_slots[index]
 		item.remaining_uses = 0
 		result = play(owner, SEARCH)
-		check(result.success and result.resource_equipment == item and item.remaining_uses == 1, "Declared finite searches restore Crowbar durability / Almond Water count")
+		check(result.success and result.equipment.resource_equipment == item and item.remaining_uses == 1, "Declared finite searches restore Crowbar durability / Almond Water count")
 		owner.free()
 
 
@@ -232,7 +232,7 @@ func _test_exit_guarantee() -> void:
 			for attempt: int in range(20):
 				var before: FloorState = owner.run_state.floor_state
 				var result: ActionResult = play_generated(owner, &"rushed")
-				if result.cutout_attempt != null and result.cutout_attempt.succeeded:
+				if result.cutout.attempt != null and result.cutout.attempt.succeeded:
 					check(owner.run_state.floor_state != before, "Only successful cut-out changes floor")
 					break
 				check(generated(owner, &"rushed") == retained, "Failed rush retains exact opportunity")
@@ -250,7 +250,7 @@ func _test_threat() -> void:
 	state.floor_state.threat = 4
 	check(EntitySystem.intent_damage(entity, LIVE_6.entry_entity, state.floor_state, LIVE_6) == 5, "Level 6 Threat increases published intent damage")
 	var result: ActionResult = owner.end_turn()
-	check(result.player_damage == 5 and result.pressure_damage == 1 and state.player_hp == 24, "Published Threat-enhanced damage resolves through original Pressure/intent pipeline")
+	check(result.player.damage_taken == 5 and result.player.pressure_damage == 1 and state.player_hp == 24, "Published Threat-enhanced damage resolves through original Pressure/intent pipeline")
 	owner.free()
 
 
@@ -330,7 +330,7 @@ func full_run(seed_value: int = 1) -> void:
 	var rewarded_instances: Array[CardInstance] = []
 	var drawn_reward: Array[CardInstance] = []
 	owner.action_resolved.connect(func(result: ActionResult) -> void:
-		if result.deck_change_kind == &"added": rewarded_instances.append(result.deck_card_changed))
+		if result.deck.change_kind == &"added": rewarded_instances.append(result.deck.card_changed))
 	await checkpoint(main, "level0_targeting")
 	for global_turn: int in range(80):
 		if owner.floor_data.is_placeholder or state.player_hp <= 0:

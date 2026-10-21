@@ -40,13 +40,13 @@ func _assert_zones(owner: TurnManager, normal_count: int) -> void:
 func _test_resource_cards() -> void:
 	var data: FloorData = fixture()
 	data.fresh_objectives = [data.fresh_objectives[0]]
-	data.fresh_objectives[0].explore_threshold = 100
+	data.fresh_objectives[0].progress_threshold = 100
 	data.fresh_objectives[0].clue_threshold = 90
 	var owner: TurnManager = manager([SEARCH, SEARCH, SEARCH, SEARCH, SEARCH], data, false)
 	var state: RunState = owner.run_state
 	var node: ResourceNode = state.floor_state.resource_nodes[0]
 	var result: ActionResult = play(owner, SEARCH)
-	check(result.success and result.explore_applied == 3 and result.threat_delta == 1 and result.resource_looted_id == node.node_id and state.supply == 2 and node.status == ResourceNode.Status.LOOTED and state.ap == 2, "Single Search atomically grants Explore, finite reward, Threat, AP and normal discard")
+	check(result.success and result.objective.progress_applied == 3 and result.floor.threat_delta == 1 and result.floor.resource_looted_id == node.node_id and state.supply == 2 and node.status == ResourceNode.Status.LOOTED and state.ap == 2, "Single Search atomically grants Explore, finite reward, Threat, AP and normal discard")
 	play(owner, SEARCH)
 	play(owner, SEARCH)
 	check(state.supply == 3 and state.floor_state.current_objective.explore_progress == 9, "Ordinary search collects visible caches once, then still meaningfully explores")
@@ -64,9 +64,9 @@ func _test_resource_cards() -> void:
 		total += definition.supply_reward
 	for index: int in range(3):
 		result = play(owner, DEEP)
-		check(result.success and not result.resource_discovered_id.is_empty() and not result.resource_looted_id.is_empty() and result.ap_spent == 2 and result.threat_delta == 1, "Deep Search directly collects a finite environment reward without a mode or second Loot verb")
+		check(result.success and not result.floor.resource_discovered_id.is_empty() and not result.floor.resource_looted_id.is_empty() and result.card.ap_spent == 2 and result.floor.threat_delta == 1, "Deep Search directly collects a finite environment reward without a mode or second Loot verb")
 		if index == 0:
-			check(data.find_resource(result.resource_looted_id).hidden, "Deep Search preserves hidden-cache priority as a declared modifier")
+			check(data.find_resource(result.floor.resource_looted_id).hidden, "Deep Search preserves hidden-cache priority as a declared modifier")
 		owner.end_turn()
 	check(owner.run_state.supply == total and owner.run_state.floor_state.resource_nodes.all(func(value: ResourceNode) -> bool: return value.status == ResourceNode.Status.DEPLETED), "All finite resources pay exactly their declared total")
 	reject(owner, command(owner, DEEP), &"resources_exhausted")
@@ -87,7 +87,7 @@ func _test_equipment_cards() -> void:
 	state.ap = 3
 	var stale: PlayCardCommand = generated_request(owner, &"light")
 	var result: ActionResult = play_generated(owner, &"light")
-	check(result.success and result.card_definition.effect_type == CardData.EffectType.LIGHT and state.ap == 2 and state.equipment_slots[0].remaining_uses == 2 and state.floor_state.light_active, "Lighting consumes one battery and snapshots the played semantic before replacement")
+	check(result.success and result.card.card_definition.effect_type == CardData.EffectType.LIGHT and state.ap == 2 and state.equipment_slots[0].remaining_uses == 2 and state.floor_state.light_active, "Lighting consumes one battery and snapshots the played semantic before replacement")
 	check(generated(owner, &"light") == null and generated(owner, &"extinguish") == card and state.deck_state.discard_pile.is_empty(), "LIGHT on replaces same hand instance with explicit Extinguish, never a popup or second slot")
 	reject(owner, stale, &"invalid_card_source")
 	owner.card_system.generate_equipment_card(LEVEL_6)
@@ -111,7 +111,7 @@ func _test_equipment_cards() -> void:
 	request.target_entity = EntitySystem.spawn(LEVEL_6.entry_entity)
 	reject(owner, request, &"invalid_entity_target")
 	result = play_generated(owner, &"crowbar")
-	check(result.success and result.damage_requested == 8 and state.floor_state.entity.hp == 10 and state.equipment_slots[0].remaining_uses == 2 and state.floor_state.entity.state == &"CHASING", "Dedicated Crowbar Strike preserves 8 damage, one durability and actual NOISE")
+	check(result.success and result.card.damage_requested == 8 and state.floor_state.entity.hp == 10 and state.equipment_slots[0].remaining_uses == 2 and state.floor_state.entity.state == &"CHASING", "Dedicated Crowbar Strike preserves 8 damage, one durability and actual NOISE")
 	check(not state.deck_state.hand.has(card) and state.deck_state.discard_pile.is_empty() and CROWBAR.capacity == 3, "Crowbar action disappears without changing shared EquipmentData")
 	owner.free()
 	for stress: int in [1, 6, 7, 9]:
@@ -167,7 +167,7 @@ func _test_smiler_cards() -> void:
 	check(state.floor_state.entity == hound, "LIGHT never overwrites active Hound")
 	var result: ActionResult = play(owner, ATTACK, true)
 	var smiler: EntityInstance = state.floor_state.entity
-	check(result.entity_defeated and not hound.active and smiler != hound and smiler.entity_id == data.followup_entity.id and smiler.hp == 120 and smiler.alive and smiler.state == &"OBSERVING", "Resolved Hound + actual LIGHT automatically spawns common Smiler atomically without copying lethal damage")
+	check(result.entity.defeated and not hound.active and smiler != hound and smiler.entity_id == data.followup_entity.id and smiler.hp == 120 and smiler.alive and smiler.state == &"OBSERVING", "Resolved Hound + actual LIGHT automatically spawns common Smiler atomically without copying lethal damage")
 	play_generated(owner, &"extinguish")
 	owner.end_turn()
 	check(smiler.alive and not smiler.active and smiler.state == &"WITHDRAWN" and state.cognition == 1, "Correct explicit Extinguish resolves Smiler alive and confirms unique behavior Insight")
@@ -188,7 +188,7 @@ func _test_smiler_cards() -> void:
 			check(smiler.state == &"AGITATED" and smiler.intent == &"warn_light", "Repeated LIGHT publishes warning")
 		result = owner.end_turn()
 		if exposure == 2:
-			check(result.player_damage == 6 and smiler.hp == 120, "Continued LIGHT still resolves common attack pipeline")
+			check(result.player.damage_taken == 6 and smiler.hp == 120, "Continued LIGHT still resolves common attack pipeline")
 	owner.end_turn()
 	check(smiler.state == &"WITHDRAWN" and smiler.alive and owner.run_state.cognition == 1, "Stopping light preserves behavioral solution and unique knowledge")
 	owner.free()
@@ -198,7 +198,7 @@ func _test_smiler_cards() -> void:
 	owner = _equipment_fixture(data, [], [OBSERVE, OBSERVE, OBSERVE, OBSERVE, OBSERVE])
 	play(owner, OBSERVE)
 	result = play(owner, OBSERVE)
-	check(result.clue_revealed and owner.run_state.floor_state.discovered_insight_ids.has(data.fresh_objectives[0].clue_insight.id) and owner.run_state.cognition == 1, "Situation clue supplies same light Insight with no Smiler/pursuit/landmark input")
+	check(result.objective.clue_revealed and owner.run_state.floor_state.discovered_insight_ids.has(data.fresh_objectives[0].clue_insight.id) and owner.run_state.cognition == 1, "Situation clue supplies same light Insight with no Smiler/pursuit/landmark input")
 	owner.end_turn()
 	play(owner, OBSERVE)
 	check(owner.run_state.cognition == 1, "Revisiting known clue cannot duplicate Insight")
@@ -218,7 +218,7 @@ func _test_cutout_cards() -> void:
 	var stale: PlayCardCommand = generated_request(owner, &"rushed")
 	var index: int = deck.hand.find(exit_card)
 	var result: ActionResult = play(owner, OBSERVE)
-	check(result.objective_resolved and generated(owner, &"safe") == exit_card and generated(owner, &"rushed") == null and deck.hand.find(exit_card) == index and state.cognition == 1, "Normal investigation and Insight automatically upgrade same retained exit in place")
+	check(result.objective.newly_resolved and generated(owner, &"safe") == exit_card and generated(owner, &"rushed") == null and deck.hand.find(exit_card) == index and state.cognition == 1, "Normal investigation and Insight automatically upgrade same retained exit in place")
 	reject(owner, stale, &"invalid_card_source")
 	state.floor_state.cutout_state.stability = 1
 	reject(owner, generated_request(owner, &"safe"), &"cutout_unprepared")
@@ -226,7 +226,7 @@ func _test_cutout_cards() -> void:
 	var observed: Array[bool] = []
 	owner.state_changed.connect(func() -> void: observed.append(owner.floor_data.id == state.floor_state.floor_id and not deck.hand.has(exit_card)))
 	result = play_generated(owner, &"safe")
-	check(result.success and result.cutout_attempt.succeeded and owner.floor_data == LEVEL_6 and state.ap == 1 and observed == [true], "Safe transition removes temporary card and synchronizes destination before notification without AP reset")
+	check(result.success and result.cutout.attempt.succeeded and owner.floor_data == LEVEL_6 and state.ap == 1 and observed == [true], "Safe transition removes temporary card and synchronizes destination before notification without AP reset")
 	check(not deck.hand.has(exit_card) and generated(owner, &"safe") == null and generated(owner, &"rushed") == null, "New visit has no stale exit")
 	owner.end_turn()
 	var next_exit: CardInstance = generated(owner, &"rushed")
@@ -262,8 +262,8 @@ func _test_anti_soft_lock() -> void:
 			var stress_before: int = state.stress
 			var threat_before: int = source.threat
 			var result: ActionResult = play_generated(owner, &"rushed")
-			check(result.success and result.ap_spent == 1, "Rushed attempt is a paid generated-card action even when its outcome fails")
-			if result.cutout_attempt.succeeded:
+			check(result.success and result.card.ap_spent == 1, "Rushed attempt is a paid generated-card action even when its outcome fails")
+			if result.cutout.attempt.succeeded:
 				successes += 1
 				check(state.floor_state != source and not deck.hand.has(card), "Only successful cut-out removes card and changes floor")
 				if owner.floor_data.is_placeholder:
@@ -365,7 +365,7 @@ func _test_failure_matrix() -> void:
 				owner.run_state.floor_state.cutout_state.destination_candidates = [&"missing"]
 				expected = &"invalid_destination"
 			"bad_event":
-				destination.fresh_objectives[0].explore_threshold = -1
+				destination.fresh_objectives[0].progress_threshold = -1
 				expected = &"invalid_objective_definition"
 			"bad_entity":
 				destination.followup_entity.id = destination.entry_entity.id

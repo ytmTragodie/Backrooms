@@ -18,7 +18,7 @@ var entity_encounters: Array[Dictionary] = []
 
 
 func record_deck_change(result: ActionResult) -> void:
-	match result.deck_change_kind:
+	match result.deck.change_kind:
 		&"added": cards_rewarded += 1
 		&"upgraded": cards_upgraded += 1
 		&"removed": cards_removed += 1
@@ -26,23 +26,26 @@ func record_deck_change(result: ActionResult) -> void:
 
 func record_action(result: ActionResult, state: RunState, data: FloorData) -> void:
 	var floor: FloorState = state.floor_state
-	if result.card_played != null:
+	if result.card.card_played != null:
 		cards_played += 1
-	if result.objective_resolved:
-		var turns: int = floor.turn_count - result.objective_target.activated_turn + 1
-		objectives.append({"id": result.objective_id, "turns": turns})
-		result.debug_lines.append("[BALANCE] situation=%s turns=%d" % [result.objective_id, turns])
-	for id: StringName in result.insight_ids:
-		insights[String(floor.floor_id) + "/" + String(id)] = data.find_insight(id).display_name
-	var entity: EntityInstance = result.entity_target
-	if entity != null and not entity.active and result.entity_state_after in [&"DEFEATED", &"WITHDRAWN", &"DISENGAGED"]:
-		var name_text: String = data.find_entity(entity.entity_id).display_name
+	if result.objective.newly_resolved and result.objective.target != null:
+		var turns: int = floor.turn_count - result.objective.target.activated_turn + 1
+		objectives.append({"id": result.objective.id, "turns": turns})
+		result.debug_lines.append("[BALANCE] situation=%s turns=%d" % [result.objective.id, turns])
+	for id: StringName in result.floor.insight_ids:
+		var insight: InsightData = data.find_insight(id)
+		if insight != null:
+			insights[String(floor.floor_id) + "/" + String(id)] = insight.display_name
+	var entity: EntityInstance = result.entity.target
+	if entity != null and not entity.active and result.entity.state_after in [&"DEFEATED", &"WITHDRAWN", &"DISENGAGED"]:
+		var entity_data: EntityData = data.find_entity(entity.entity_id)
+		var name_text: String = entity_data.display_name if entity_data != null else String(entity.entity_id)
 		if entity.alive:
 			resolved_alive.append(name_text)
 		else:
 			defeated.append(name_text)
 		result.debug_lines.append("[BALANCE] entity=%s turns=%d alive=%s" % [entity.entity_id, floor.turn_count - entity.spawned_turn + 1, entity.alive])
 		entity_encounters.append({"id": entity.entity_id, "turns": floor.turn_count - entity.spawned_turn + 1, "alive": entity.alive})
-	if result.cutout_attempt != null and result.cutout_attempt.succeeded:
+	if result.cutout.attempt != null and result.cutout.attempt.succeeded:
 		floor_exits.append({"id": floor.floor_id, "name": data.display_name, "turns": floor.turn_count, "threat": floor.threat, "deck_size": state.deck_state.get_card_count()})
 		result.debug_lines.append("[BALANCE] exit=%s turns=%d threat=%d deck=%d rewarded=%d avg_cards=%.2f" % [floor.floor_id, floor.turn_count, floor.threat, state.deck_state.get_card_count(), cards_rewarded, float(cards_played) / state.turn_number])

@@ -41,6 +41,9 @@ func _fixture() -> FloorData:
 		event.completion_insight = source.completion_insight.duplicate(false) as InsightData
 		event.completion_reward = null
 		data.fresh_objectives.append(event)
+	data.objective_spawn_chance = 1.0
+	data.max_objectives_per_floor = data.fresh_objectives.size()
+	data.intro_objective = data.fresh_objectives[0] if not data.fresh_objectives.is_empty() else null
 	return data
 
 
@@ -75,7 +78,7 @@ func _test_ownership_and_zones() -> void:
 			identities.append(card.get_instance_id())
 		_check(not identities.has(floor.current_objective.get_instance_id()), "World Event never enters or counts toward a player zone")
 	_play(first)
-	_check(second.run_state.floor_state.current_objective.explore_progress == 0 and LEVEL_0.fresh_objectives[0].explore_threshold == 6, "Progress is per-instance; another run and shared ObjectiveData stay unchanged")
+	_check(second.run_state.floor_state.current_objective.explore_progress == 0 and LEVEL_0.fresh_objectives[0].progress_threshold == 6, "Progress is per-instance; another run and shared ObjectiveData stay unchanged")
 	_check(deck.get_card_count() == 10 and floor.board_state.active_objective.explore_progress == 3, "Playing a card changes the board without turning a World Card into a Player Card")
 	first.free()
 	second.free()
@@ -87,12 +90,12 @@ func _test_baseline_and_tag_modifier() -> void:
 	data.fresh_objectives[0].explore_bonus = 0
 	var manager: TurnManager = _manager(data)
 	var result: ActionResult = _play(manager)
-	_check(OBSERVE.explore_amount == 2 and OBSERVE.ap_cost == 1 and result.explore_base == 2 and result.explore_bonus == 0 and result.explore_applied == 2, "Observe produces a real reusable baseline of two Explore")
+	_check(OBSERVE.explore_amount == 2 and OBSERVE.ap_cost == 1 and result.objective.progress_base == 2 and result.objective.progress_bonus == 0 and result.objective.progress_applied == 2, "Observe produces a real reusable baseline of two Explore")
 	_check(manager.run_state.floor_state.current_objective.explore_progress == 2 and manager.run_state.cognition == 0 and manager.run_state.ap == 2, "Baseline Explore commits progress and AP without automatic Cognition")
 	manager.free()
 	manager = _manager()
 	result = _play(manager)
-	_check(result.explore_base == 2 and result.explore_bonus == 1 and result.explore_applied == 3, "OBSERVE gains one Explore against Abnormal Hum")
+	_check(result.objective.progress_base == 2 and result.objective.progress_bonus == 1 and result.objective.progress_applied == 3, "OBSERVE gains one Explore against Abnormal Hum")
 	_check(manager.run_state.floor_state.current_objective.objective_id == &"event_level0_humming", "The seeded production entry is the configured prototype Situation")
 	manager.free()
 	var renamed: CardData = OBSERVE.duplicate(false) as CardData
@@ -100,32 +103,32 @@ func _test_baseline_and_tag_modifier() -> void:
 	renamed.display_name = "不同名字的调查牌"
 	manager = _manager(LEVEL_0, [renamed])
 	result = _play(manager, renamed)
-	_check(result.explore_applied == 3, "Bonus matches OBSERVE tag despite different stable ID and display name")
+	_check(result.objective.progress_applied == 3, "Bonus matches OBSERVE tag despite different stable ID and display name")
 	manager.free()
 	renamed = OBSERVE.duplicate(false) as CardData
 	renamed.tags = []
 	manager = _manager(LEVEL_0, [renamed])
 	result = _play(manager, renamed)
-	_check(result.explore_applied == 2 and not result.clue_revealed, "Matching ID/name without the tag does not receive a Situation modifier")
+	_check(result.objective.progress_applied == 2 and not result.objective.clue_revealed, "Matching ID/name without the tag does not receive a Situation modifier")
 	manager.free()
 
 
 func _test_card_risk() -> void:
 	var data: FloorData = _fixture()
 	data.fresh_objectives = [data.fresh_objectives[0]]
-	data.fresh_objectives[0].explore_threshold = 20
+	data.fresh_objectives[0].progress_threshold = 20
 	var manager: TurnManager = _manager(data)
 	var result: ActionResult = _play(manager, SEARCH)
-	_check(result.explore_base == 3 and result.explore_applied == 3 and result.ap_spent == 1 and result.threat_delta == 1, "Search has its own three Explore, one AP and one Threat")
+	_check(result.objective.progress_base == 3 and result.objective.progress_applied == 3 and result.card.ap_spent == 1 and result.floor.threat_delta == 1, "Search has its own three Explore, one AP and one Threat")
 	result = _play(manager, DEEP)
-	_check(result.explore_base == 5 and result.explore_applied == 5 and result.ap_spent == 2 and result.threat_delta == 1, "Deep Search has its own five Explore, two AP and one Threat")
+	_check(result.objective.progress_base == 5 and result.objective.progress_applied == 5 and result.card.ap_spent == 2 and result.floor.threat_delta == 1, "Deep Search has its own five Explore, two AP and one Threat")
 	_check(manager.run_state.ap == 0 and manager.run_state.threat == 2 and manager.run_state.floor_state.current_objective.explore_progress == 8, "Risk and investigation progress commit in the same normal action economy")
 	_check(manager.run_state.supply == 4 and manager.run_state.floor_state.resource_nodes.filter(func(node: ResourceNode) -> bool: return node.status == ResourceNode.Status.LOOTED).size() == 2, "Declared Search outcomes collect two distinct finite rewards in the same exploration transactions")
 	manager.free()
 	manager = _manager()
 	manager.run_state.floor_state.threat = FloorState.MAX_THREAT
 	result = _play(manager, SEARCH)
-	_check(result.success and result.threat_delta == 0 and manager.run_state.threat == 10, "Card risk clamps at the existing Threat cap")
+	_check(result.success and result.floor.threat_delta == 0 and manager.run_state.threat == 10, "Card risk clamps at the existing Threat cap")
 	manager.free()
 
 
@@ -135,21 +138,21 @@ func _test_pressure_and_persistence() -> void:
 	var event: ObjectiveInstance = floor.current_objective
 	_play(manager)
 	var result: ActionResult = manager.end_turn()
-	_check(result.pressure_checked and result.pressure_stress == 0 and manager.run_state.stress == 0, "Progress in this turn prevents the declared neglect Pressure")
+	_check(result.objective.pressure_checked and result.player.pressure_stress == 0 and manager.run_state.stress == 0, "Progress in this turn prevents the declared neglect Pressure")
 	_check(floor.current_objective == event and event.explore_progress == 3 and event.clue_revealed, "Unresolved Explore and clues persist on the same board object across turns")
 	_check(manager.run_state.turn_number == 2 and floor.turn_count == 2 and manager.run_state.ap == 3, "Situation uses the existing turn/AP lifecycle")
 	result = manager.end_turn()
-	_check(result.pressure_stress == 1 and manager.run_state.stress == 1 and event.pressure_checked_turn == 2, "Ignoring the next turn adds exactly one Stress at end turn")
+	_check(result.player.pressure_stress == 1 and manager.run_state.stress == 1 and event.pressure_checked_turn == 2, "Ignoring the next turn adds exactly one Stress at end turn")
 	_check(event.explore_progress == 3 and floor.current_objective == event, "Pressure never clears or replaces unfinished progress")
 	result = manager.end_turn()
-	_check(result.pressure_stress == 1 and manager.run_state.stress == 2 and result.threat_delta == 1 and floor.threat == 1, "Neglect Pressure and existing turn-three overstay resolve together")
+	_check(result.player.pressure_stress == 1 and manager.run_state.stress == 2 and result.floor.threat_delta == 1 and floor.threat == 1, "Neglect Pressure and existing turn-three overstay resolve together")
 	_check(manager.run_state.player_hp == 30 and manager.run_state.deck_state.hand.size() == 5, "Simple Stress Pressure does not invent environmental damage or a second hand")
 	manager.free()
 	manager = _manager()
 	result = RuleResolver.resolve_end_turn(manager.run_state, LEVEL_0)
-	_check(result.pressure_stress == 1 and manager.run_state.stress == 1, "Pressure is a domain result, not a UI-side action")
+	_check(result.player.pressure_stress == 1 and manager.run_state.stress == 1, "Pressure is a domain result, not a UI-side action")
 	result = RuleResolver.resolve_end_turn(manager.run_state, LEVEL_0)
-	_check(result.pressure_stress == 0 and manager.run_state.stress == 1, "Repeated resolution of the same floor turn cannot charge Pressure twice")
+	_check(result.player.pressure_stress == 0 and manager.run_state.stress == 1, "Repeated resolution of the same floor turn cannot charge Pressure twice")
 	manager.free()
 
 
@@ -162,10 +165,10 @@ func _test_milestones_and_replacement() -> void:
 	var notifications: Array[Dictionary] = []
 	manager.state_changed.connect(func() -> void: notifications.append(_snapshot(manager)))
 	var result: ActionResult = _play(manager)
-	_check(result.clue_revealed and event.known_information.size() == 1 and not event.resolved and state.cognition == 0, "Three Explore reveals one clue without completing the Situation")
+	_check(result.objective.clue_revealed and event.known_information.size() == 1 and not event.resolved and state.cognition == 0, "Three Explore reveals one clue without completing the Situation")
 	result = _play(manager, DEEP)
-	_check(result.objective_resolved and not result.clue_revealed and event.resolved and event.explore_progress == 6, "Completion is a separate once-only threshold")
-	_check(result.explore_base == 5 and result.explore_applied == 3 and state.ap == 0, "Explore is clamped to the current Objective; overflow does not affect another Event")
+	_check(result.objective.newly_resolved and not result.objective.clue_revealed and event.resolved and event.explore_progress == 6, "Completion is a separate once-only threshold")
+	_check(result.objective.progress_base == 5 and result.objective.progress_applied == 3 and state.ap == 0, "Explore is clamped to the current Objective; overflow does not affect another Event")
 	_check(event.known_information.size() == 1 and state.cognition == 1 and floor.discovered_insight_ids.size() == 1, "Clue and unique Insight are not duplicated at completion")
 	_check(floor.cutout_state.stability == 2 and floor.cutout_state.destination_knowledge == 1 and state.rng.state == rng_before, "Declared clue plus unique Insight improve preparation without consuming RNG")
 	_check(notifications.size() == 2 and notifications[1] == _snapshot(manager), "UI notification sees complete AP/card/Explore/Threat/Insight/preparation commit")
@@ -173,7 +176,7 @@ func _test_milestones_and_replacement() -> void:
 	_reject(_play(manager), &"objective_resolved", manager, before)
 	_check(notifications.size() == 2, "Rejected resolved target emits no state-change notification")
 	result = manager.end_turn()
-	_check(result.pressure_stress == 0 and floor.current_objective != event and not floor.current_objective.resolved and floor.current_objective.explore_progress == 0, "Resolved Situation causes no Pressure and next Fresh activates at next turn start")
+	_check(result.player.pressure_stress == 0 and floor.current_objective != event and not floor.current_objective.resolved and floor.current_objective.explore_progress == 0, "Resolved Situation causes no Pressure and next Fresh activates at next turn start")
 	_check(floor.seen_objective_ids.size() == 2 and floor.remaining_fresh_objectives.size() == 1 and state.turn_number == 2, "Fresh replacement advances only once and does not replay the old Event")
 	var new_card: CardInstance = state.deck_state.hand.filter(func(card: CardInstance) -> bool: return card.source == CardData.Source.NORMAL)[0]
 	before = _snapshot(manager)
@@ -184,8 +187,8 @@ func _test_milestones_and_replacement() -> void:
 	powerful.explore_amount = 8
 	manager = _manager(LEVEL_0, [powerful])
 	result = _play(manager, powerful)
-	_check(result.clue_revealed and result.objective_resolved and result.insight_ids.size() == 1 and manager.run_state.floor_state.current_objective.known_information.size() == 1, "One action crossing clue and completion thresholds triggers each outcome once")
-	_check(result.explore_applied == 6 and manager.run_state.cognition == 1 and manager.run_state.ap == 1, "Simultaneous milestones still form one AP/card/progress/reward transaction")
+	_check(result.objective.clue_revealed and result.objective.newly_resolved and result.floor.insight_ids.size() == 1 and manager.run_state.floor_state.current_objective.known_information.size() == 1, "One action crossing clue and completion thresholds triggers each outcome once")
+	_check(result.objective.progress_applied == 6 and manager.run_state.cognition == 1 and manager.run_state.ap == 1, "Simultaneous milestones still form one AP/card/progress/reward transaction")
 	manager.free()
 
 
@@ -209,7 +212,7 @@ func _test_unique_insights_and_fresh_conditions() -> void:
 	_check(floor.current_objective == null and floor.remaining_fresh_objectives.is_empty() and floor.seen_objective_ids.size() == 3, "Fresh pool exhausts without reintroducing old rewards or fake Residual content")
 	_check(floor.cutout_state.stability == CutOutState.MAX_STABILITY and floor.cutout_state.destination_knowledge == 1 and manager.run_state.deck_state == deck and deck.get_card_count() == 10, "Distinct clue milestones add bounded preparation while shared Insight reward remains unique")
 	var result: ActionResult = manager.end_turn()
-	_check(result.pressure_stress == 0 and floor.current_objective == null, "An empty board produces no phantom Situation Pressure")
+	_check(result.player.pressure_stress == 0 and floor.current_objective == null, "An empty board produces no phantom Situation Pressure")
 	_check(ObjectiveSystem.draw_fresh(data, floor, manager.run_state.rng).is_empty(), "Repeated empty Fresh scheduling cannot create a World Card")
 	var rng_before: int = manager.run_state.rng.state
 	ObjectiveSystem.draw_fresh(data, floor, manager.run_state.rng)
@@ -227,7 +230,7 @@ func _test_unique_insights_and_fresh_conditions() -> void:
 	manager.run_state.floor_state.cognition = 5
 	_play(manager)
 	var completed: ActionResult = _play(manager, SEARCH)
-	_check(completed.cognition_delta == 0 and manager.run_state.cognition == 5 and manager.run_state.floor_state.discovered_insight_ids.size() == 1, "Completion records unique knowledge at the Cognition cap without exceeding five")
+	_check(completed.floor.cognition_delta == 0 and manager.run_state.cognition == 5 and manager.run_state.floor_state.discovered_insight_ids.size() == 1, "Completion records unique knowledge at the Cognition cap without exceeding five")
 	manager.free()
 
 
@@ -266,7 +269,7 @@ func _test_transactional_failures() -> void:
 				definition.threat_cost = -1
 				expected = &"invalid_card_definition"
 			"threshold":
-				data.fresh_objectives[0].explore_threshold = 0
+				data.fresh_objectives[0].progress_threshold = 0
 			"clue":
 				data.fresh_objectives[0].clue_threshold = 7
 			"pressure":
@@ -290,7 +293,7 @@ func _test_transactional_failures() -> void:
 		if expected != &"invalid_card_definition":
 			_reject(manager.end_turn(), expected, manager, before)
 		manager.free()
-	_check(OBSERVE.explore_amount == 2 and LEVEL_0.fresh_objectives[0].explore_threshold == 6 and LEVEL_0.fresh_objectives[0].completion_insight.id != &"", "Malformed fixtures never corrupt shared authoring Resources")
+	_check(OBSERVE.explore_amount == 2 and LEVEL_0.fresh_objectives[0].progress_threshold == 6 and LEVEL_0.fresh_objectives[0].completion_insight.id != &"", "Malformed fixtures never corrupt shared authoring Resources")
 
 
 func _test_old_command_rejection() -> void:
@@ -385,7 +388,7 @@ func _snapshot(manager: TurnManager) -> Dictionary:
 		cards.append(values)
 	var definitions: Array = []
 	for data: ObjectiveData in manager.floor_data.fresh_objectives:
-		definitions.append([data.get_instance_id(), data.id, data.display_name, data.explore_threshold, data.clue_threshold, data.clue_text, data.neglect_stress, data.bonus_tag, data.explore_bonus, data.completion_insight.get_instance_id(), data.completion_insight.id, data.completion_insight.cutout_stability, data.completion_insight.cutout_knowledge])
+		definitions.append([data.get_instance_id(), data.id, data.display_name, data.progress_threshold, data.clue_threshold, data.clue_text, data.neglect_stress, data.bonus_tag, data.explore_bonus, data.completion_insight.get_instance_id(), data.completion_insight.id, data.completion_insight.cutout_stability, data.completion_insight.cutout_knowledge])
 	var resources: Array = []
 	for node: ResourceNode in floor.resource_nodes:
 		resources.append([node.get_instance_id(), node.node_id, node.status])
@@ -407,7 +410,7 @@ func _snapshot(manager: TurnManager) -> Dictionary:
 func _reject(result: ActionResult, reason: StringName, manager: TurnManager, before: Dictionary) -> void:
 	_check(not result.success and result.failure_reason == reason, "Expected command rejection: %s" % reason)
 	_check(_snapshot(manager) == before, "Failed command changes no AP, cards, Explore, Pressure, Threat, milestones, Insight, definitions, preparation or RNG")
-	_check(result.ap_spent == 0 and result.card_played == null and result.objective_target == null and result.explore_applied == 0 and not result.clue_revealed and not result.objective_resolved and result.insight_ids.is_empty() and result.threat_delta == 0 and result.pressure_stress == 0, "Failed ActionResult has no partial gameplay effects")
+	_check(result.card.ap_spent == 0 and result.card.card_played == null and result.objective.target == null and result.objective.progress_applied == 0 and not result.objective.clue_revealed and not result.objective.newly_resolved and result.floor.insight_ids.is_empty() and result.floor.threat_delta == 0 and result.player.pressure_stress == 0, "Failed ActionResult has no partial gameplay effects")
 
 
 func _check(condition: bool, message: String) -> void:

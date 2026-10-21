@@ -46,6 +46,9 @@ func _fixture() -> FloorData:
 		var event: ObjectiveData = source.duplicate(false) as ObjectiveData
 		event.completion_reward = null
 		data.fresh_objectives.append(event)
+	data.objective_spawn_chance = 1.0
+	data.max_objectives_per_floor = data.fresh_objectives.size()
+	data.intro_objective = data.fresh_objectives[0] if not data.fresh_objectives.is_empty() else null
 	return data
 
 
@@ -82,13 +85,13 @@ func _test_mixed_economy() -> void:
 	_check(board.entity.hp == 18 and board.entity.state == &"WATCHING" and board.entity.intent == &"approach", "Hound retains common HP and readable state/intent")
 	_check(run.ap == 3 and deck.hand.size() == 5 and deck.get_card_count() == 10, "One ordinary hand and AP pool")
 	var result: ActionResult = _play(manager, OBSERVE)
-	_check(result.success and result.ap_spent == 2 and board.active_objective.explore_progress == 2 and run.ap == 1, "Situation Explore works while Hound exists; Level 6 darkness still affects first Observe")
+	_check(result.success and result.card.ap_spent == 2 and board.active_objective.explore_progress == 2 and run.ap == 1, "Situation Explore works while Hound exists; Level 6 darkness still affects first Observe")
 	result = _play(manager, ATTACK, true)
 	_check(result.success and run.ap == 0 and board.entity.hp == 14 and board.active_objective.explore_progress == 2, "Entity attack spends remaining shared AP without pausing/erasing Explore")
 	var before: Dictionary = _snapshot(manager)
 	_fail_unchanged(manager, PlayCardCommand.new(_card(manager, GUARD), null, board), &"insufficient_ap", before)
 	result = manager.end_turn()
-	_check(result.player_damage == 4 and result.pressure_damage == 0 and run.player_hp == 26, "Published Hound intent resolves while progressed Situation stays active")
+	_check(result.player.damage_taken == 4 and result.player.pressure_damage == 0 and run.player_hp == 26, "Published Hound intent resolves while progressed Situation stays active")
 	_check(manager.run_state == run and run.floor_state == floor and floor.board_state == board and run.deck_state == deck and floor.cutout_state != null, "No new combat Run/Floor/Board/deck/CutOut state is created")
 	_check(board.active_objective.explore_progress == 2 and run.turn_number == 2 and floor.turn_count == 2 and run.ap == 3 and deck.hand.size() == 5, "Same turn lifecycle preserves Explore and restores only the normal AP")
 	for pile: Array[CardInstance] in [deck.hand, deck.draw_pile, deck.discard_pile]:
@@ -102,11 +105,11 @@ func _test_pressure_intents_order() -> void:
 	var floor: FloorState = manager.run_state.floor_state
 	var event: ObjectiveInstance = floor.current_objective
 	var first: ActionResult = manager.end_turn()
-	_check(first.pressure_damage == 2 and first.intent_resolved == &"approach" and manager.run_state.player_hp == 28, "Pressure and harmless initial intent both resolve")
+	_check(first.player.pressure_damage == 2 and first.entity.intent_resolved == &"approach" and manager.run_state.player_hp == 28, "Pressure and harmless initial intent both resolve")
 	var second: ActionResult = manager.end_turn()
-	_check(second.pressure_damage == 2 and second.player_damage == 4 and manager.run_state.player_hp == 22, "Pressure and damaging intent coexist on an unresolved Situation")
+	_check(second.player.pressure_damage == 2 and second.player.damage_taken == 4 and manager.run_state.player_hp == 22, "Pressure and damaging intent coexist on an unresolved Situation")
 	var third: ActionResult = manager.end_turn()
-	_check(third.pressure_damage == 2 and third.player_damage == 5 and third.threat_delta == 1 and floor.threat == 1, "Overstay still runs during mixed encounter")
+	_check(third.player.pressure_damage == 2 and third.player.damage_taken == 5 and third.floor.threat_delta == 1 and floor.threat == 1, "Overstay still runs during mixed encounter")
 	_check(_line(third, "[PRESSURE]") < _line(third, "[ENTITY] intent=") and _line(third, "[ENTITY] intent=") < _line(third, "[THREAT]") and _line(third, "[THREAT]") < _line(third, "[TURN] cleanup"), "Commit logs prove Pressure -> intent -> overstay -> cleanup")
 	_check(floor.current_objective == event and event.explore_progress == 0 and floor.seen_objective_ids.size() == 1, "Entity actions do not replace or reshuffle an unresolved Situation")
 	manager.free()
@@ -115,7 +118,7 @@ func _test_pressure_intents_order() -> void:
 	var deck: DeckState = manager.run_state.deck_state
 	var hand: Array[CardInstance] = deck.hand.duplicate()
 	var lethal: ActionResult = manager.end_turn()
-	_check(lethal.pressure_damage == 1 and lethal.intent_resolved.is_empty() and manager.run_state.player_hp == 0, "Lethal Pressure suppresses later intent and clamps HP")
+	_check(lethal.player.pressure_damage == 1 and lethal.entity.intent_resolved.is_empty() and manager.run_state.player_hp == 0, "Lethal Pressure suppresses later intent and clamps HP")
 	_check(manager.run_state.turn_number == 1 and deck.hand == hand and manager.run_state.ap == 3, "Lethal consequence never refills AP, discards or starts next turn")
 	manager.free()
 
@@ -125,7 +128,7 @@ func _test_shared_guard_and_disengage() -> void:
 	_play(manager, ATTACK, true)
 	_play(manager, GUARD)
 	var result: ActionResult = manager.end_turn()
-	_check(result.pressure_blocked == 2 and result.damage_blocked == 2 and result.player_damage == 2 and manager.run_state.player_hp == 28, "Four Guard blocks two environment then two bite damage; no double spending")
+	_check(result.player.pressure_blocked == 2 and result.player.damage_blocked == 2 and result.player.damage_taken == 2 and manager.run_state.player_hp == 28, "Four Guard blocks two environment then two bite damage; no double spending")
 	_check(manager.run_state.floor_state.player_block == 0, "All temporary Guard expires after consequences")
 	manager.free()
 	manager = _manager([ATTACK, GUARD, GUARD, RUN, OBSERVE])
@@ -133,30 +136,30 @@ func _test_shared_guard_and_disengage() -> void:
 	_play(manager, GUARD)
 	_play(manager, GUARD)
 	result = manager.end_turn()
-	_check(result.pressure_blocked == 2 and result.damage_blocked == 4 and result.player_damage == 0 and manager.run_state.floor_state.entity.state == &"STAGGERED", "Enough remaining Guard fully blocks bite and preserves Hound stagger behavior")
+	_check(result.player.pressure_blocked == 2 and result.player.damage_blocked == 4 and result.player.damage_taken == 0 and manager.run_state.floor_state.entity.state == &"STAGGERED", "Enough remaining Guard fully blocks bite and preserves Hound stagger behavior")
 	var departed: EntityInstance = manager.run_state.floor_state.entity
 	var hp: int = departed.hp
 	result = _play(manager, RUN, true)
 	_check(result.success and manager.run_state.floor_state.entity == null and departed.state == &"DISENGAGED" and departed.hp == hp and manager.run_state.threat == 1, "Real Run card disengages staggered Hound without killing it")
 	result = manager.end_turn()
-	_check(result.intent_resolved.is_empty() and result.pressure_damage == 2 and not manager.run_state.floor_state.current_objective.resolved, "Resolving Entity does not stop Situation Pressure")
+	_check(result.entity.intent_resolved.is_empty() and result.player.pressure_damage == 2 and not manager.run_state.floor_state.current_objective.resolved, "Resolving Entity does not stop Situation Pressure")
 	manager.free()
 	var data: FloorData = _fixture()
 	data.entry_entity = null
 	manager = _manager([GUARD, GUARD, GUARD, GUARD, GUARD], data)
 	_play(manager, GUARD)
 	result = manager.end_turn()
-	_check(result.pressure_blocked == 2 and result.player_damage == 0 and manager.run_state.player_hp == 30, "Guard has a meaningful pure-environment route without any creature")
+	_check(result.player.pressure_blocked == 2 and result.player.damage_taken == 0 and manager.run_state.player_hp == 30, "Guard has a meaningful pure-environment route without any creature")
 	manager.free()
 
 
 func _test_entity_knowledge() -> void:
 	var data: FloorData = _fixture()
-	data.fresh_objectives[0].explore_threshold = 4
+	data.fresh_objectives[0].progress_threshold = 4
 	var manager: TurnManager = _manager([OBSERVE, OBSERVE, OBSERVE, OBSERVE, OBSERVE], data)
 	var entity: EntityInstance = manager.run_state.floor_state.entity
 	var first: ActionResult = _play(manager, OBSERVE, true)
-	_check(first.analysis_applied == 2 and entity.analysis_progress == 2 and entity.hp == 18 and entity.revealed_rules.is_empty() and manager.run_state.cognition == 0, "Observe on Entity advances actual knowledge, never Damage or Situation progress")
+	_check(first.entity.analysis_applied == 2 and entity.analysis_progress == 2 and entity.hp == 18 and entity.revealed_rules.is_empty() and manager.run_state.cognition == 0, "Observe on Entity advances actual knowledge, never Damage or Situation progress")
 	var second: ActionResult = _play(manager, OBSERVE, true)
 	_check(second.success and entity.analysis_progress == 4 and entity.revealed_rules == [data.entry_entity.analysis_rule] and manager.run_state.cognition == 1, "Entity knowledge threshold exposes noise/control rule and unique Insight")
 	manager.end_turn()
@@ -164,7 +167,7 @@ func _test_entity_knowledge() -> void:
 	_fail_unchanged(manager, PlayCardCommand.new(_card(manager, OBSERVE), null, manager.run_state.floor_state.board_state, entity), &"analysis_complete", before)
 	_play(manager, OBSERVE)
 	var resolved: ActionResult = _play(manager, OBSERVE)
-	_check(resolved.objective_resolved and resolved.cognition_delta == 1 and manager.run_state.cognition == 2 and entity.revealed_rules.size() == 1, "Situation clue adds distinct light Insight while shared completion fact does not repeat entity knowledge")
+	_check(resolved.objective.newly_resolved and resolved.floor.cognition_delta == 1 and manager.run_state.cognition == 2 and entity.revealed_rules.size() == 1, "Situation clue adds distinct light Insight while shared completion fact does not repeat entity knowledge")
 	_check(FLOOR.entry_entity.analysis_threshold == 4 and FLOOR.entry_entity.max_hp == 18, "Shared EntityData remains static")
 	manager.free()
 
@@ -176,7 +179,7 @@ func _test_noise_and_defeat() -> void:
 	_check(result.success and floor.current_objective.explore_progress == 5 and floor.entity.state == &"CHASING" and floor.entity.intent == &"lunge" and floor.entity.hp == 18, "Noise from real Situation Explore provokes Hound without fake damage")
 	_check(manager.run_state.threat == 1 and manager.run_state.ap == 1, "Deep Search keeps its own one Threat/two AP cost, no duplicate noise cost")
 	result = manager.end_turn()
-	_check(result.player_damage == 5 and result.pressure_damage == 0, "Noise-updated public intent resolves in same ordinary lifecycle")
+	_check(result.player.damage_taken == 5 and result.player.pressure_damage == 0, "Noise-updated public intent resolves in same ordinary lifecycle")
 	manager.free()
 	manager = _manager([DEEP, DEEP, DEEP, DEEP, DEEP])
 	manager.run_state.ap = 1
@@ -194,8 +197,8 @@ func _test_noise_and_defeat() -> void:
 	var notifications: Array[int] = []
 	manager.state_changed.connect(func() -> void: notifications.append(entity.hp))
 	result = _play(manager, ATTACK, true)
-	_check(result.entity_defeated and result.entity_damage == 2 and entity.hp == 0 and not entity.active and not entity.alive and entity.intent == &"none", "Common HP reaches zero once and defeats Hound")
-	_check(notifications == [0] and manager.run_state.ap == 1 and manager.run_state.deck_state.discard_pile.has(result.card_played), "Observer sees only fully committed HP/AP/card result")
+	_check(result.entity.defeated and result.entity.damage == 2 and entity.hp == 0 and not entity.active and not entity.alive and entity.intent == &"none", "Common HP reaches zero once and defeats Hound")
+	_check(notifications == [0] and manager.run_state.ap == 1 and manager.run_state.deck_state.discard_pile.has(result.card.card_played), "Observer sees only fully committed HP/AP/card result")
 	var before: Dictionary = _snapshot(manager)
 	_fail_unchanged(manager, PlayCardCommand.new(_card(manager, ATTACK), null, manager.run_state.floor_state.board_state, entity), &"invalid_entity_target", before)
 	_check(result.debug_lines.count("[ENTITY] defeated entity_hound") == 1, "One defeat log, no duplicate reward/defeat on rejected further attack")
@@ -405,7 +408,7 @@ func _fail_unchanged(manager: TurnManager, command: PlayCardCommand, reason: Str
 	var result: ActionResult = manager.request_play_card(command.card, command.target_objective, command.target_board, command.target_entity)
 	manager.state_changed.disconnect(listener)
 	_check(not result.success and result.failure_reason == reason, "Expected failure: %s, got %s" % [reason, result.failure_reason])
-	_check(result.ap_spent == 0 and result.card_played == null and result.entity_hp_after == -1 and result.analysis_after == -1 and result.threat_delta == 0 and result.insight_ids.is_empty(), "Rejected action contains no partially planned gameplay result")
+	_check(result.card.ap_spent == 0 and result.card.card_played == null and result.entity.hp_after == -1 and result.entity.analysis_after == -1 and result.floor.threat_delta == 0 and result.floor.insight_ids.is_empty(), "Rejected action contains no partially planned gameplay result")
 	_check(_snapshot(manager) == before and notifications.is_empty(), "Failure preserves AP/cards/world/knowledge/gear/RNG and emits no state notification")
 
 

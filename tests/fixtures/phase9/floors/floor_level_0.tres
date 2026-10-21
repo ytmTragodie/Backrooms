@@ -19,3 +19,6 @@ fresh_objectives = Array[ExtResource("2_event")]([ExtResource("3_humming"), ExtR
 resource_nodes = Array[ExtResource("6_node")]([ExtResource("7_supply"), ExtResource("8_battery"), ExtResource("9_scrap")])
 cutout_destinations = Array[Resource]([ExtResource("10_destination")])
 card_first_exploration = true
+intro_objective = ExtResource("3_humming")
+objective_spawn_chance = 1.0
+max_objectives_per_floor = 3

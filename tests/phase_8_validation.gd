@@ -40,7 +40,7 @@ func tests() -> void:
 	owner = _equipment_fixture(clues, [], [ATTACK, OBSERVE, OBSERVE, OBSERVE, OBSERVE])
 	entity = owner.run_state.floor_state.entity
 	entity.hp = 4
-	check(play(owner, ATTACK, true).entity_defeated and entity.hp == 0 and not entity.alive, "Edge-case kill retains common HP/defeat semantics")
+	check(play(owner, ATTACK, true).entity.defeated and entity.hp == 0 and not entity.alive, "Edge-case kill retains common HP/defeat semantics")
 	check(play(owner, OBSERVE).success and owner.run_state.cognition == 1, "Killing Smiler leaves automatic clue Insight path available")
 	owner.free()
 	var mixed: FloorData = fixture(LEVEL_6)
@@ -55,7 +55,7 @@ func tests() -> void:
 	play(owner, GUARD)
 	var hp_before: int = owner.run_state.player_hp
 	var guarded: ActionResult = owner.end_turn()
-	check(guarded.pressure_blocked == 2 and guarded.damage_blocked == 2 and guarded.player_damage == 4 and owner.run_state.player_hp == hp_before - 4, "Situation consumes Guard first; Smiler only uses remaining block")
+	check(guarded.player.pressure_blocked == 2 and guarded.player.damage_blocked == 2 and guarded.player.damage_taken == 4 and owner.run_state.player_hp == hp_before - 4, "Situation consumes Guard first; Smiler only uses remaining block")
 	owner.free()
 	owner = _equipment_fixture(data, [FLASH])
 	owner.run_state.equipment_slots[0].remaining_uses = 0

@@ -20,18 +20,21 @@ static func validate_definition(data: CardRewardData) -> StringName:
 	return &"" if ids.size() >= CHOICE_COUNT else &"invalid_reward_definition"
 
 
+# 根据本次动作新完成的目标/实体，创建待领取机会；不直接改 pending_rewards。
 static func plan(result: ActionResult, state: RunState, data: FloorData) -> void:
-	var definitions: Array[CardRewardData] = result.event_reward_definitions.duplicate()
-	if result.objective_resolved and result.objective_target != null and not result.objective_target.resolved:
-		definitions.append(data.find_objective(result.objective_target.objective_id).completion_reward)
+	var definitions: Array[CardRewardData] = result.event.reward_definitions.duplicate()
+	if result.objective.newly_resolved and result.objective.target != null:
+		var objective_definition: ObjectiveData = data.find_objective(result.objective.target.objective_id)
+		if objective_definition != null:
+			definitions.append(objective_definition.completion_reward)
 	var entity: EntityInstance = state.floor_state.board_state.entity
-	if entity != null and entity.active and (result.entity_defeated or result.entity_state_after in [&"DISENGAGED", &"WITHDRAWN"]):
+	if entity != null and entity.active and (result.entity.defeated or result.entity.state_after in [&"DISENGAGED", &"WITHDRAWN"]):
 		var definition: EntityData = data.find_entity(entity.entity_id)
-		if not definition.reward_requires_light_exposure or entity.light_exposed or result.entity_light_exposed or result.entity_defeated:
+		if definition != null and (not definition.reward_requires_light_exposure or entity.light_exposed or result.entity.light_exposed or result.entity.defeated):
 			definitions.append(definition.resolution_reward)
 	# 私有 RNG 草案串接其他计划；规划失败不推进本局 RNG。
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-	rng.state = result.rng_state_after if result.commit_rng else state.rng.state
+	rng.state = result.run.rng_state_after if result.run.commit_rng else state.rng.state
 	for definition: CardRewardData in definitions:
 		if definition == null:
 			continue
@@ -43,14 +46,15 @@ static func plan(result: ActionResult, state: RunState, data: FloorData) -> void
 				var picked: int = rng.randi_range(0, candidates.size() - 1)
 				opportunity.choices.append(candidates[picked])
 				candidates.remove_at(picked)
-			result.commit_rng = true
-			result.rng_state_after = rng.state
-		result.rewards_created.append(opportunity)
+			result.run.commit_rng = true
+			result.run.rng_state_after = rng.state
+		result.run.reward_created.append(opportunity)
 
 
+# 只提交待领取队列；同一字段由 plan 写入、commit 读取。
 static func commit(result: ActionResult, state: RunState) -> void:
-	state.pending_rewards.append_array(result.rewards_created)
-	for opportunity: CardReward in result.rewards_created:
+	for opportunity: CardReward in result.run.reward_created:
+		state.pending_rewards.append(opportunity)
 		result.debug_lines.append("[REWARD] offered kind=%d choices=%d" % [opportunity.definition.kind, opportunity.choices.size()])
 
 
@@ -70,7 +74,8 @@ static func eligible_cards(state: RunState, kind: CardRewardData.Kind) -> Array[
 	return eligible
 
 
-static func resolve(command: CardRewardCommand, state: RunState) -> ActionResult:
+# 校验并规划一次领取；不生成牌实例、不弹出奖励、不改牌区。
+static func plan_claim(command: CardRewardCommand, state: RunState) -> ActionResult:
 	var result: ActionResult = ActionResult.new()
 	result.action_id = &"card_reward"
 	result.debug_lines.append("[COMMAND] card_reward")
@@ -86,32 +91,40 @@ static func resolve(command: CardRewardCommand, state: RunState) -> ActionResult
 	if kind == CardRewardData.Kind.ADD_CARD:
 		if command.card != null or command.choice == null or command.choice.source != CardData.Source.NORMAL or not reward.choices.has(command.choice) or not reward.definition.pool.has(command.choice):
 			return _fail(result, &"invalid_reward_choice")
+		result.deck.change_kind = &"added"
+		result.deck.added_definition = command.choice
+		result.debug_lines.append("[DECK] plan add %s zone=discard" % command.choice.id)
 	else:
 		var candidates: Array[CardInstance] = eligible_cards(state, kind)
 		if command.choice != null or (command.card == null and not candidates.is_empty()) or (command.card != null and (not candidates.has(command.card) or command.captured_definition != command.card.definition)):
 			return _fail(result, &"invalid_reward_card")
-	# 从这里开始只有不会失败的牌区操作。奖励不恢复 AP、不推进回合、不另建牌组。
-	if kind == CardRewardData.Kind.ADD_CARD:
-		result.deck_change_kind = &"added"
-		result.deck_card_changed = CardSystem.add_reward(state.deck_state, command.choice)
-		result.debug_lines.append("[DECK] added %s zone=discard" % command.choice.id)
-	elif command.card != null:
-		result.deck_card_changed = command.card
-		if kind == CardRewardData.Kind.UPGRADE_CARD:
-			result.deck_change_kind = &"upgraded"
-			var previous_id: StringName = command.card.definition.id
-			CardSystem.upgrade_instance(command.card)
-			result.debug_lines.append("[DECK] upgraded %s -> %s" % [previous_id, command.card.definition.id])
-		else:
-			result.deck_change_kind = &"removed"
-			CardSystem.remove_instance(state.deck_state, command.card)
-			result.debug_lines.append("[DECK] removed %s" % command.card.definition.id)
-	state.pending_rewards.pop_front()
-	result.reward_claimed = reward
-	result.success = true
-	result.effect = &"card_reward"
-	result.debug_lines.append("[REWARD] claimed kind=%d" % kind)
+		result.deck.card_changed = command.card
+		result.deck.change_kind = &"upgraded" if kind == CardRewardData.Kind.UPGRADE_CARD else &"removed"
+	result.run.reward_claimed = reward
 	return result
+
+
+# 领取的牌区操作由 CardSystem 执行；pending_rewards 仍只在本系统提交。
+static func commit_claim(result: ActionResult, state: RunState) -> void:
+	if result == null or state == null or result.run.reward_claimed == null:
+		return
+	if result.deck.change_kind == &"added" and result.deck.added_definition != null:
+		var card: CardInstance = CardSystem.add_reward(state.deck_state, result.deck.added_definition)
+		result.deck.card_added = card
+		result.deck.card_changed = card
+		result.debug_lines.append("[DECK] added %s zone=discard" % card.definition.id)
+	elif result.deck.change_kind == &"upgraded" and result.deck.card_changed != null:
+		var previous_id: StringName = result.deck.card_changed.definition.id
+		CardSystem.upgrade_instance(result.deck.card_changed)
+		result.deck.card_upgraded = result.deck.card_changed
+		result.debug_lines.append("[DECK] upgraded %s -> %s" % [previous_id, result.deck.card_changed.definition.id])
+	elif result.deck.change_kind == &"removed" and result.deck.card_changed != null:
+		CardSystem.remove_instance(state.deck_state, result.deck.card_changed)
+		result.deck.card_removed = result.deck.card_changed
+		result.debug_lines.append("[DECK] removed %s" % result.deck.card_changed.definition.id)
+	if not state.pending_rewards.is_empty() and state.pending_rewards[0] == result.run.reward_claimed:
+		state.pending_rewards.pop_front()
+	result.debug_lines.append("[REWARD] claimed kind=%d" % result.run.reward_claimed.definition.kind)
 
 
 static func _fail(result: ActionResult, reason: StringName) -> ActionResult:

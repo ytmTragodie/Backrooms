@@ -46,6 +46,10 @@ func fixture(source: FloorData = LEVEL_0) -> FloorData:
 		if original.clue_insight != null:
 			event.clue_insight = original.clue_insight.duplicate(false) as InsightData
 		data.fresh_objectives.append(event)
+	# 测试夹具保持旧用例的确定性：首个目标固定为 intro，概率必中，且允许抽完整个夹具池。
+	data.objective_spawn_chance = 1.0
+	data.max_objectives_per_floor = data.fresh_objectives.size()
+	data.intro_objective = data.fresh_objectives[0] if not data.fresh_objectives.is_empty() else null
 	data.resource_nodes = []
 	for original: ResourceNodeData in source.resource_nodes:
 		data.resource_nodes.append(original.duplicate(false) as ResourceNodeData)
@@ -122,7 +126,7 @@ func snapshot(owner: TurnManager) -> Dictionary:
 		"card_sources": run.deck_state.hand.map(func(card: CardInstance) -> Array: return [card.definition.get_instance_id(), card.source_equipment.get_instance_id() if card.source_equipment != null else 0, card.source_board.get_instance_id() if card.source_board != null else 0]),
 		"floor": floor.get_instance_id(), "floor_data": owner.floor_data.get_instance_id(), "board": floor.board_state.get_instance_id(), "deck": run.deck_state.get_instance_id(), "piles": piles, "equipment": equipment, "nodes": nodes,
 		"state": [floor.turn_count, floor.threat, floor.cognition, floor.player_block, floor.dark_observation_used, floor.light_active, floor.discovered_insight_ids.duplicate(), floor.remaining_fresh_objectives.duplicate(), floor.seen_objective_ids.duplicate(), floor.floor_flags.duplicate()],
-		"event": [event.get_instance_id(), event.explore_progress, event.resolved, event.clue_revealed, event.known_information.duplicate(), event.last_progress_turn, event.pressure_checked_turn] if event != null else [],
+		"event": [event.get_instance_id(), event.explore_progress, event.sequence_index, event.completed_interactions.duplicate(), event.resolved, event.clue_revealed, event.known_information.duplicate(), event.last_progress_turn, event.pressure_checked_turn] if event != null else [],
 		"entity": [entity.get_instance_id(), entity.hp, entity.max_hp, entity.state, entity.intent, entity.analysis_progress, entity.revealed_rules.duplicate(), entity.light_exposed] if entity != null else [],
 		"cutout": [floor.cutout_state.get_instance_id(), floor.cutout_state.stability, floor.cutout_state.destination_knowledge, floor.cutout_state.destination_candidates.duplicate()],
 		"attempt": run.last_cutout_attempt.get_instance_id() if run.last_cutout_attempt != null else 0}
@@ -137,7 +141,7 @@ func reject(owner: TurnManager, request: PlayCardCommand, reason: StringName) ->
 	owner.state_changed.disconnect(listener)
 	check(not result.success and result.failure_reason == reason, "Expected %s, got %s" % [reason, result.failure_reason])
 	check(snapshot(owner) == before and notifications.is_empty(), "Failure preserves all state/RNG/piles/charges and sends no state notification")
-	check(result.ap_spent == 0 and result.card_played == null and result.entity_hp_after == -1 and result.analysis_after == -1 and result.insight_ids.is_empty() and result.equipment_used == null and result.destination == null and result.resource_looted_id.is_empty(), "Failure result contains no partial plan")
+	check(result.card.ap_spent == 0 and result.card.card_played == null and result.entity.hp_after == -1 and result.entity.analysis_after == -1 and result.floor.insight_ids.is_empty() and result.equipment.used_equipment == null and result.cutout.destination == null and result.floor.resource_looted_id.is_empty(), "Failure result contains no partial plan")
 
 
 func generated(owner: TurnManager, action_id: StringName) -> CardInstance:

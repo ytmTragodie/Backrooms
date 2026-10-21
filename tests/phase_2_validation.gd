@@ -178,7 +178,7 @@ func _test_debug_ui() -> void:
 	_check(hand.get_child_count() == 4 and counts.text == "抽牌堆：5｜弃牌堆：2", "Normal plays enter discard; first Insight also generates a retained exit")
 	var card_count: int = manager.run_state.deck_state.get_card_count()
 	(hand.get_child(0) as Button).pressed.emit()
-	_check(hand.get_child_count() == 4 and manager.run_state.ap == 1 and card_count == 10, "Resolved-target rejection preserves AP and the ten-card normal inventory")
+	_check(hand.get_child_count() == 4 and manager.run_state.ap == 1 and card_count == 10, "Resolved-target rejection preserves AP and the ten-card normal inventory (hand=%d ap=%d cards=%d)" % [hand.get_child_count(), manager.run_state.ap, manager.run_state.deck_state.get_card_count()])
 	end_turn.pressed.emit()
 	_check(manager.run_state.turn_number == 2 and manager.run_state.ap == 3, "UI End Turn preserves Phase 1 lifecycle")
 	_check(hand.get_child_count() == 5 and stats.text.contains("回合：2"), "Same deck redraws five cards for the next Situation")

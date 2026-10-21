@@ -83,15 +83,15 @@ static func plan_card(result: ActionResult, command: PlayCardCommand, state: Run
 	var item: EquipmentInstance = command.card.source_equipment
 	result.action_id = command.card.definition.id
 	if command.card.definition.effect_type == CardData.EffectType.EXTINGUISH:
-		result.light_extinguished = true
+		result.floor.light_extinguished = true
 	else:
 		var error: StringName = plan_use(result, item, state, floor_data, command.card.definition.effect_value)
 		if not error.is_empty():
 			return error
-		result.equipment_uses_spent = 1
-	result.equipment_used = item
-	result.equipment_slot = state.equipment_slots.find(item)
-	if result.light_activated:
+		result.equipment.uses_spent = 1
+	result.equipment.used_equipment = item
+	result.equipment.slot = state.equipment_slots.find(item)
+	if result.floor.light_activated:
 		EntitySystem.plan_light_reaction(result, state, floor_data)
 	return &""
 
@@ -146,7 +146,7 @@ static func plan_use(result: ActionResult, item: EquipmentInstance, state: RunSt
 				return &"light_not_needed"
 			if state.floor_state.light_active:
 				return &"light_already_active"
-			result.light_activated = true
+			result.floor.light_activated = true
 		EquipmentData.EffectType.ATTACK:
 			# 专用攻击牌声明总伤害；物品仅提供来源与耐久，不再选择增强分支。
 			var entity: EntityInstance = state.floor_state.entity
@@ -157,28 +157,24 @@ static func plan_use(result: ActionResult, item: EquipmentInstance, state: RunSt
 		EquipmentData.EffectType.RECOVER:
 			if state.stress < 0:
 				return &"invalid_state_context"
-			result.stress_restored = mini(data.effect_value, state.stress)
+			var stress_restored: int = mini(data.effect_value, state.stress)
+			var hp_restored: int = 0
 			if state.stress >= data.heal_stress_threshold:
-				result.hp_restored = mini(data.conditional_heal, maxi(0, RunState.MAX_PLAYER_HP - state.player_hp))
-			if result.stress_restored == 0 and result.hp_restored == 0:
+				hp_restored = mini(data.conditional_heal, maxi(0, RunState.MAX_PLAYER_HP - state.player_hp))
+			if stress_restored == 0 and hp_restored == 0:
 				return &"nothing_to_restore"
+			result.player.stress_delta -= stress_restored
+			result.player.hp_delta += hp_restored
 	return &""
 
 
 static func commit(result: ActionResult, state: RunState) -> void:
 	# 搜索只规划补充值；物理计数仍统一由装备系统提交。
-	if result.resource_uses_gained > 0:
-		result.resource_equipment.remaining_uses += result.resource_uses_gained
-		result.debug_lines.append("[RESOURCE] replenished %s +%d" % [result.resource_equipment.definition.id, result.resource_uses_gained])
-	if result.equipment_used == null:
+	if result.equipment.resource_uses_gained > 0:
+		result.equipment.resource_equipment.remaining_uses += result.equipment.resource_uses_gained
+		result.debug_lines.append("[RESOURCE] replenished %s +%d" % [result.equipment.resource_equipment.definition.id, result.equipment.resource_uses_gained])
+	if result.equipment.used_equipment == null:
 		return
-	# 与 AP、伤害和照明在同一次同步结算内提交；UI 通知只发生在全部完成后。
-	result.equipment_used.remaining_uses -= result.equipment_uses_spent
-	state.stress -= result.stress_restored
-	state.player_hp += result.hp_restored
-	if result.light_activated:
-		state.floor_state.light_active = true
-		result.debug_lines.append("[LIGHT] active until=end_turn")
-	result.debug_lines.append("[EQUIPMENT] used %s uses -%d remaining=%d" % [result.equipment_used.definition.id, result.equipment_uses_spent, result.equipment_used.remaining_uses])
-	if result.stress_restored > 0 or result.hp_restored > 0:
-		result.debug_lines.append("[RECOVERY] stress -%d hp +%d" % [result.stress_restored, result.hp_restored])
+	# 玩家 HP/Stress 已由 PlayerSystem 提交；这里只提交装备自身计数。
+	result.equipment.used_equipment.remaining_uses -= result.equipment.uses_spent
+	result.debug_lines.append("[EQUIPMENT] used %s uses -%d remaining=%d" % [result.equipment.used_equipment.definition.id, result.equipment.uses_spent, result.equipment.used_equipment.remaining_uses])

@@ -9,6 +9,9 @@ static func without_rewards(source: FloorData) -> FloorData:
 		var event: ObjectiveData = original.duplicate(false) as ObjectiveData
 		event.completion_reward = null
 		copy.fresh_objectives.append(event)
+	copy.objective_spawn_chance = 1.0
+	copy.max_objectives_per_floor = copy.fresh_objectives.size()
+	copy.intro_objective = copy.fresh_objectives[0] if not copy.fresh_objectives.is_empty() else null
 	for field: String in ["entry_entity", "followup_entity"]:
 		var original: EntityData = source.get(field) as EntityData
 		if original != null:

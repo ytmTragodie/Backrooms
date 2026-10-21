@@ -4,10 +4,12 @@ extends RefCounted
 const AP_PER_TURN: int = 3
 const MAX_PLAYER_HP: int = 30
 const CARRY_SLOT_COUNT: int = 3
-
+# 玩家信息记录
 var player_hp: int = MAX_PLAYER_HP
 var stress: int = 0
 var supply: int = 0
+
+
 # 尝试记录属于整局，成功切换楼层后仍可读取；不在旧、新楼层各存一份。
 var last_cutout_attempt: CutOutAttemptResult
 var floor_state: FloorState

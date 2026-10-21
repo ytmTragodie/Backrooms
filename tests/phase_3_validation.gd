@@ -44,11 +44,11 @@ func _test_success_and_replay() -> void:
 	var rng_before: int = state.rng.state
 	var result: ActionResult = RuleResolver.resolve(command, state, cards)
 	_check(result.success and result.failure_reason.is_empty(), "Valid command returns structured success")
-	_check(result.ap_spent == 1 and state.ap == 2, "Final AP cost is applied exactly once")
-	_check(result.card_played == card, "Result identifies the played runtime instance")
+	_check(result.card.ap_spent == 1 and state.ap == 2, "Final AP cost is applied exactly once")
+	_check(result.card.card_played == card, "Result identifies the played runtime instance")
 	_check(state.deck_state.hand.count(card) == 0 and state.deck_state.discard_pile.count(card) == 1, "Commit moves the card to discard exactly once")
 	_check(state.deck_state.get_card_count() == 9, "Resolution preserves the card inventory")
-	_check(result.effect == &"no_op" and result.damage_requested == 0, "Observe resolves one no-op placeholder")
+	_check(result.card.effect == &"no_op" and result.card.damage_requested == 0, "Observe resolves one no-op placeholder")
 	_check(state.cognition == 0 and state.player_hp == 30, "Observe changes neither Cognition nor HP")
 	_check(state.rng.state == rng_before, "Card play consumes no shuffle RNG")
 	_check(result.debug_lines.size() == 6, "Successful resolution has a single ordered trace")
@@ -59,7 +59,7 @@ func _test_success_and_replay() -> void:
 	var before_replay: Dictionary = _snapshot(state)
 	var replay: ActionResult = RuleResolver.resolve(command, state, cards)
 	_check_failure(replay, &"card_not_in_hand", state, before_replay)
-	_check(replay != result and result.success and result.ap_spent == 1, "Rejection never rewrites an earlier result")
+	_check(replay != result and result.success and result.card.ap_spent == 1, "Rejection never rewrites an earlier result")
 	_check(state.deck_state.discard_pile.count(card) == 1, "Replayed request cannot discard a second time")
 
 
@@ -70,14 +70,14 @@ func _test_placeholder_effects() -> void:
 	var struggle: CardInstance = state.deck_state.hand[1]
 	var wait: CardInstance = state.deck_state.hand[4]
 	var result: ActionResult = RuleResolver.resolve(PlayCardCommand.new(struggle), state, cards)
-	_check(result.success and result.effect == &"placeholder_damage", "Struggle resolves the data-defined damage placeholder")
-	_check(result.damage_requested == 2 and result.ap_spent == 1, "Struggle returns 2 requested damage and costs 1 AP")
+	_check(result.success and result.card.effect == &"placeholder_damage", "Struggle resolves the data-defined damage placeholder")
+	_check(result.card.damage_requested == 2 and result.card.ap_spent == 1, "Struggle returns 2 requested damage and costs 1 AP")
 	_check(state.player_hp == 30 and state.cognition == 0 and state.threat == 0 and state.stress == 0, "Requested damage is never applied to fake targets or other state")
 	# Test fixture: exhaust AP without adding new gameplay actions.
 	state.ap = 0
 	var free_result: ActionResult = RuleResolver.resolve(PlayCardCommand.new(wait), state, cards)
-	_check(free_result.success and free_result.ap_spent == 0 and state.ap == 0, "Zero-cost Wait succeeds at zero AP")
-	_check(free_result.effect == &"no_op" and free_result.damage_requested == 0, "Wait returns only a no-op")
+	_check(free_result.success and free_result.card.ap_spent == 0 and state.ap == 0, "Zero-cost Wait succeeds at zero AP")
+	_check(free_result.card.effect == &"no_op" and free_result.card.damage_requested == 0, "Wait returns only a no-op")
 	var observe: CardInstance = state.deck_state.hand[0]
 	var before: Dictionary = _snapshot(state)
 	_check_failure(RuleResolver.resolve(PlayCardCommand.new(observe), state, cards), &"insufficient_ap", state, before)
@@ -170,7 +170,7 @@ func _test_notification_order() -> void:
 	_check(_notified_ap.size() == 1, "Failed command emits no state-change notification")
 	var next_card: CardInstance = _observed_manager.run_state.deck_state.hand[0]
 	_check(_observed_manager.request_play_card(next_card).success, "A second command uses the same entry")
-	_check(_observed_results.size() == 3 and _observed_results[2].damage_requested == 2, "Each successful command publishes its single effect")
+	_check(_observed_results.size() == 3 and _observed_results[2].card.damage_requested == 2, "Each successful command publishes its single effect")
 	_check(_notified_ap == [2, 1], "Each command deducts AP only once")
 	_observed_manager.free()
 
@@ -240,7 +240,7 @@ func _on_state_changed() -> void:
 func _on_action_resolved(result: ActionResult) -> void:
 	_observed_results.append(result)
 	if result.success:
-		_check(_observed_manager.run_state.deck_state.discard_pile.has(result.card_played), "Result notification runs after card movement")
+		_check(_observed_manager.run_state.deck_state.discard_pile.has(result.card.card_played), "Result notification runs after card movement")
 		_check(_notified_ap.size() == _observed_results.filter(func(item: ActionResult) -> bool: return item.success).size(), "Result notification follows the state notification")
 
 
@@ -315,8 +315,8 @@ func _snapshot_cards(pile: Array[CardInstance]) -> Array[Dictionary]:
 
 func _check_failure(result: ActionResult, reason: StringName, state: RunState, before: Dictionary) -> void:
 	_check(not result.success and result.failure_reason == reason, "Invalid action returns the expected failure reason: %s" % reason)
-	_check(result.ap_spent == 0 and result.card_played == null, "Failure reports no AP spent or played card")
-	_check(result.effect.is_empty() and result.damage_requested == 0, "Failure produces no placeholder effect")
+	_check(result.card.ap_spent == 0 and result.card.card_played == null, "Failure reports no AP spent or played card")
+	_check(result.card.effect.is_empty() and result.card.damage_requested == 0, "Failure produces no placeholder effect")
 	_check(_snapshot(state) == before, "Invalid action causes zero partial state mutation")
 	_check(result.debug_lines.size() == 3 and result.debug_lines[1] == "[RULE] validation failed reason=%s" % reason, "Failure trace has no cost, commit, or effect entry")
 

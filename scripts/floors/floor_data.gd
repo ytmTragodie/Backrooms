@@ -36,6 +36,10 @@ extends Resource
 # 旧测试夹具保留回合末退场；正式内容解决后立即清空，下一回合再补 Fresh。
 @export var retire_resolved_objectives: bool = false
 
+# 目标生成概率（首个 intro 目标不受此概率限制）与本次楼层访问允许生成的目标总数。
+@export_range(0.0, 1.0, 0.01) var objective_spawn_chance: float = 0.25
+@export var max_objectives_per_floor: int = 2
+
 
 func find_entity(entity_id: StringName) -> EntityData:
 	for definition: EntityData in [entry_entity, followup_entity]:
