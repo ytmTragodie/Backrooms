@@ -133,7 +133,7 @@ static func validate_interaction(command: PlayCardCommand, floor: FloorState, da
 
 
 # 三种类型的统一规划入口。只写 result，不修改任何 State。
-static func plan_interaction(result: ActionResult, card: CardData, floor: FloorState, data: FloorData) -> StringName:
+static func plan_interaction(result: ActionResult, card: CardData, floor: FloorState, data: FloorData, player: PlayerState) -> StringName:
 	var objective: ObjectiveInstance = floor.board_state.active_objective
 	if objective == null:
 		return &"invalid_objective_target"
@@ -145,7 +145,7 @@ static func plan_interaction(result: ActionResult, card: CardData, floor: FloorS
 	var error: StringName = &""
 	match definition.objective_type:
 		ObjectiveData.ObjectiveType.PROGRESS:
-			error = _plan_progress(result, card, objective, definition, floor)
+			error = _plan_progress(result, card, objective, definition, floor, player)
 		ObjectiveData.ObjectiveType.CONDITION:
 			error = _plan_condition(result, card, objective, definition)
 		ObjectiveData.ObjectiveType.SEQUENCE:
@@ -160,10 +160,11 @@ static func plan_interaction(result: ActionResult, card: CardData, floor: FloorS
 	return &""
 
 
-static func _plan_progress(result: ActionResult, card: CardData, objective: ObjectiveInstance, definition: ObjectiveData, floor: FloorState) -> StringName:
+static func _plan_progress(result: ActionResult, card: CardData, objective: ObjectiveInstance, definition: ObjectiveData, floor: FloorState, player: PlayerState) -> StringName:
 	if card.explore_amount <= 0:
 		return &"objective_step_incompatible"
-	var bonus: int = explore_bonus(card, definition) + card.contextual_bonus(floor.player_block, floor.threat)
+	var block: int = player.block
+	var bonus: int = explore_bonus(card, definition) + card.contextual_bonus(block, floor.threat)
 	result.action_id = &"explore"
 	result.objective.target = objective
 	result.objective.id = objective.objective_id
@@ -258,9 +259,9 @@ static func plan_pressure(result: ActionResult, state: RunState, floor: FloorSta
 	result.objective.pressure_checked = true
 	if objective.last_progress_turn == floor.turn_count:
 		return
-	var remaining_block: int = maxi(0, floor.player_block + result.player.block_delta)
+	var remaining_block: int = maxi(0, state.player.block + result.player.block_delta)
 	var blocked: int = mini(remaining_block, definition.neglect_damage)
-	var remaining_hp: int = maxi(0, state.player_hp + result.player.hp_delta)
+	var remaining_hp: int = maxi(0, state.player.hp + result.player.hp_delta)
 	var damage: int = mini(remaining_hp, definition.neglect_damage - blocked)
 	result.player.pressure_stress += definition.neglect_stress
 	result.player.stress_delta += definition.neglect_stress

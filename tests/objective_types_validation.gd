@@ -105,11 +105,11 @@ func _test_progress_gate() -> void:
 	var event: ObjectiveInstance = owner.run_state.floor_state.current_objective
 	var planned: ActionResult = ActionResult.new()
 	var before: int = event.explore_progress
-	check(ObjectiveSystem.plan_interaction(planned, _observe, owner.run_state.floor_state, data).is_empty() and event.explore_progress == before, "Progress plan is pure and does not mutate the ObjectiveInstance")
+	check(ObjectiveSystem.plan_interaction(planned, _observe, owner.run_state.floor_state, data, owner.run_state.player).is_empty() and event.explore_progress == before, "Progress plan is pure and does not mutate the ObjectiveInstance")
 	var result: ActionResult = play(owner, _observe)
 	check(result.success and result.objective.progress_applied == 2 and event.explore_progress == 2 and not event.resolved, "Progress commits only its own domain after the plan")
 	var second: ActionResult = play(owner, _observe)
-	check(second.success and second.objective.newly_resolved and event.resolved and owner.run_state.supply == 2, "Progress completion records one new resolution and planned supply")
+	check(second.success and second.objective.newly_resolved and event.resolved and owner.run_state.player.supply == 2, "Progress completion records one new resolution and planned supply")
 	reject(owner, command(owner, _observe), &"objective_resolved")
 	owner.free()
 
@@ -119,12 +119,12 @@ func _test_condition() -> void:
 	var owner: TurnManager = manager([_search, _observe, _observe, _observe, _observe], data, false)
 	var event: ObjectiveInstance = owner.run_state.floor_state.current_objective
 	var plan: ActionResult = ActionResult.new()
-	check(ObjectiveSystem.plan_interaction(plan, _search, owner.run_state.floor_state, data).is_empty() and event.completed_interactions.is_empty(), "Condition plan does not write completed interactions")
+	check(ObjectiveSystem.plan_interaction(plan, _search, owner.run_state.floor_state, data, owner.run_state.player).is_empty() and event.completed_interactions.is_empty(), "Condition plan does not write completed interactions")
 	var first: ActionResult = play(owner, _search)
 	check(first.success and first.objective.completed_conditions.has(&"SEARCH") and event.completed_interactions == [&"SEARCH"] and not event.resolved, "Condition step is legal in any order and commits once")
 	check(first.objective.progress_applied == 0 and event.explore_progress == 0, "Condition does not fake Progress")
 	var second: ActionResult = play(owner, _observe)
-	check(second.success and second.objective.newly_resolved and event.resolved and owner.run_state.supply == 2, "Condition completion happens only after all distinct steps")
+	check(second.success and second.objective.newly_resolved and event.resolved and owner.run_state.player.supply == 2, "Condition completion happens only after all distinct steps")
 	reject(owner, command(owner, _observe), &"objective_resolved")
 	owner.free()
 
@@ -151,13 +151,13 @@ func _test_sequence() -> void:
 	var owner: TurnManager = manager([_search, _observe, _observe, _observe, _observe], data, false)
 	var event: ObjectiveInstance = owner.run_state.floor_state.current_objective
 	reject(owner, command(owner, _search), &"objective_step_incompatible")
-	check(event.sequence_index == 0 and owner.run_state.ap == 3 and owner.run_state.deck_state.hand.size() == 5, "Wrong sequence step rejects before AP/card/RNG")
+	check(event.sequence_index == 0 and owner.run_state.player.ap == 3 and owner.run_state.player.deck.hand.size() == 5, "Wrong sequence step rejects before AP/card/RNG")
 	var plan: ActionResult = ActionResult.new()
-	check(ObjectiveSystem.plan_interaction(plan, _observe, owner.run_state.floor_state, data).is_empty() and event.sequence_index == 0, "Sequence plan computes sequence_after without mutating the instance")
+	check(ObjectiveSystem.plan_interaction(plan, _observe, owner.run_state.floor_state, data, owner.run_state.player).is_empty() and event.sequence_index == 0, "Sequence plan computes sequence_after without mutating the instance")
 	var first: ActionResult = play(owner, _observe)
 	check(first.success and first.objective.sequence_after == 1 and event.sequence_index == 1 and not event.resolved, "Sequence advances exactly one step")
 	var second: ActionResult = play(owner, _search)
-	check(second.success and second.objective.newly_resolved and event.sequence_index == 2 and event.resolved and owner.run_state.supply == 2, "Sequence completes only in declared order")
+	check(second.success and second.objective.newly_resolved and event.sequence_index == 2 and event.resolved and owner.run_state.player.supply == 2, "Sequence completes only in declared order")
 	reject(owner, command(owner, _observe), &"objective_resolved")
 	owner.free()
 
@@ -190,8 +190,8 @@ func _test_completion_reward_once() -> void:
 	var owner: TurnManager = manager([_observe, _search, _observe, _search, _observe], data, false)
 	check(play(owner, _observe).success, "First condition step does not create a reward")
 	var result: ActionResult = play(owner, _search)
-	check(result.success and result.objective.newly_resolved and result.run.reward_created.size() == 1 and owner.run_state.pending_rewards.size() == 1 and owner.run_state.pending_rewards[0].definition == REWARD_CARDS, "New completion creates exactly one reward opportunity")
-	var pending_before: int = owner.run_state.pending_rewards.size()
+	check(result.success and result.objective.newly_resolved and result.run.reward_created.size() == 1 and owner.run_state.flow.pending_rewards.size() == 1 and owner.run_state.flow.pending_rewards[0].definition == REWARD_CARDS, "New completion creates exactly one reward opportunity")
+	var pending_before: int = owner.run_state.flow.pending_rewards.size()
 	var replay: ActionResult = play(owner, _observe)
-	check(not replay.success and owner.run_state.pending_rewards.size() == pending_before, "Resolved objective cannot create a second reward")
+	check(not replay.success and owner.run_state.flow.pending_rewards.size() == pending_before, "Resolved objective cannot create a second reward")
 	owner.free()

@@ -47,5 +47,5 @@ func record_action(result: ActionResult, state: RunState, data: FloorData) -> vo
 		result.debug_lines.append("[BALANCE] entity=%s turns=%d alive=%s" % [entity.entity_id, floor.turn_count - entity.spawned_turn + 1, entity.alive])
 		entity_encounters.append({"id": entity.entity_id, "turns": floor.turn_count - entity.spawned_turn + 1, "alive": entity.alive})
 	if result.cutout.attempt != null and result.cutout.attempt.succeeded:
-		floor_exits.append({"id": floor.floor_id, "name": data.display_name, "turns": floor.turn_count, "threat": floor.threat, "deck_size": state.deck_state.get_card_count()})
-		result.debug_lines.append("[BALANCE] exit=%s turns=%d threat=%d deck=%d rewarded=%d avg_cards=%.2f" % [floor.floor_id, floor.turn_count, floor.threat, state.deck_state.get_card_count(), cards_rewarded, float(cards_played) / state.turn_number])
+		floor_exits.append({"id": floor.floor_id, "name": data.display_name, "turns": floor.turn_count, "threat": floor.threat, "deck_size": state.player.deck.get_card_count()})
+		result.debug_lines.append("[BALANCE] exit=%s turns=%d threat=%d deck=%d rewarded=%d avg_cards=%.2f" % [floor.floor_id, floor.turn_count, floor.threat, state.player.deck.get_card_count(), cards_rewarded, float(cards_played) / state.flow.turn_number])

@@ -50,11 +50,11 @@ static func validate_card(command: PlayCardCommand, state: RunState) -> StringNa
 		return &"invalid_objective_target"
 	if command.target_objective != null:
 		return &"invalid_target_kind"
-	var error: StringName = validate_inventory(state)
+	var error: StringName = validate_inventory(state.player.equipment)
 	if not error.is_empty():
 		return error
 	var item: EquipmentInstance = command.card.source_equipment
-	if item == null or not state.equipment_slots.has(item):
+	if item == null or not state.player.equipment.slots.has(item):
 		return &"invalid_equipment_target"
 	var effect: CardData.EffectType = command.card.definition.effect_type
 	if command.card.definition not in [item.definition.action_card, item.definition.active_action_card]:
@@ -74,7 +74,7 @@ static func validate_card(command: PlayCardCommand, state: RunState) -> StringNa
 			return &"light_not_needed"
 		if floor.light_active:
 			return &"light_already_active"
-	if effect == CardData.EffectType.RECOVER and state.stress == 0 and (state.stress < item.definition.heal_stress_threshold or item.definition.conditional_heal == 0 or state.player_hp >= RunState.MAX_PLAYER_HP):
+	if effect == CardData.EffectType.RECOVER and state.player.stress == 0 and (state.player.stress < item.definition.heal_stress_threshold or item.definition.conditional_heal == 0 or state.player.hp >= state.player.max_hp):
 		return &"nothing_to_restore"
 	return &""
 
@@ -90,19 +90,22 @@ static func plan_card(result: ActionResult, command: PlayCardCommand, state: Run
 			return error
 		result.equipment.uses_spent = 1
 	result.equipment.used_equipment = item
-	result.equipment.slot = state.equipment_slots.find(item)
+	result.equipment.slot = state.player.equipment.slots.find(item)
 	if result.floor.light_activated:
 		EntitySystem.plan_light_reaction(result, state, floor_data)
 	return &""
 
 
-static func initialize(state: RunState, definitions: Array[EquipmentData]) -> StringName:
+static func initialize(equipment: EquipmentState, definitions: Array[EquipmentData]) -> StringName:
 	# 开局也先验证全部内容再赋值，超过三格或坏定义不会留下半份初始装备。
-	if definitions.size() > RunState.CARRY_SLOT_COUNT:
-		return &"carry_slots_full"
-	if state.equipment_slots.size() != RunState.CARRY_SLOT_COUNT:
+	# 这里只写装备槽；不会创建第二份玩家/牌区状态。
+	if equipment == null:
 		return &"invalid_equipment_state"
-	for existing: EquipmentInstance in state.equipment_slots:
+	if definitions.size() > EquipmentState.SLOT_COUNT:
+		return &"carry_slots_full"
+	if equipment.slots.size() != EquipmentState.SLOT_COUNT:
+		return &"invalid_equipment_state"
+	for existing: EquipmentInstance in equipment.slots:
 		if existing != null:
 			return &"equipment_already_initialized"
 	for data: EquipmentData in definitions:
@@ -110,21 +113,21 @@ static func initialize(state: RunState, definitions: Array[EquipmentData]) -> St
 		if not error.is_empty():
 			return error
 	var slots: Array[EquipmentInstance] = []
-	slots.resize(RunState.CARRY_SLOT_COUNT)
+	slots.resize(EquipmentState.SLOT_COUNT)
 	for index: int in range(definitions.size()):
 		slots[index] = EquipmentInstance.new(definitions[index])
-	state.equipment_slots.assign(slots)
+	equipment.slots.assign(slots)
 	if OS.is_debug_build():
 		for index: int in range(definitions.size()):
 			print("[EQUIPMENT] equipped %s slot=%d uses=%d" % [definitions[index].id, index, slots[index].remaining_uses])
 	return &""
 
 
-static func validate_inventory(state: RunState) -> StringName:
-	if state.equipment_slots.size() != RunState.CARRY_SLOT_COUNT:
+static func validate_inventory(equipment: EquipmentState) -> StringName:
+	if equipment == null or equipment.slots.size() != EquipmentState.SLOT_COUNT:
 		return &"invalid_equipment_state"
 	var seen: Array[EquipmentInstance] = []
-	for item: EquipmentInstance in state.equipment_slots:
+	for item: EquipmentInstance in equipment.slots:
 		if item == null:
 			continue
 		if seen.has(item):
@@ -155,12 +158,12 @@ static func plan_use(result: ActionResult, item: EquipmentInstance, state: RunSt
 			if not error.is_empty():
 				return error
 		EquipmentData.EffectType.RECOVER:
-			if state.stress < 0:
+			if state.player.stress < 0:
 				return &"invalid_state_context"
-			var stress_restored: int = mini(data.effect_value, state.stress)
+			var stress_restored: int = mini(data.effect_value, state.player.stress)
 			var hp_restored: int = 0
-			if state.stress >= data.heal_stress_threshold:
-				hp_restored = mini(data.conditional_heal, maxi(0, RunState.MAX_PLAYER_HP - state.player_hp))
+			if state.player.stress >= data.heal_stress_threshold:
+				hp_restored = mini(data.conditional_heal, maxi(0, state.player.max_hp - state.player.hp))
 			if stress_restored == 0 and hp_restored == 0:
 				return &"nothing_to_restore"
 			result.player.stress_delta -= stress_restored

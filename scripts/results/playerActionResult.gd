@@ -1,8 +1,10 @@
 class_name PlayerActionResult
 extends RefCounted
 
-# 玩家域的净变化。提交只读取 hp_delta/stress_delta/supply_delta/block_delta；
+# 玩家域的净变化。提交读取 ap_delta/hp_delta/stress_delta/supply_delta/block_delta；
 # 其余字段是计划分解，供日志、UI 与测试说明伤害来源，不是第二份可写状态。
+# AP 由 PlayerSystem 提交：RuleResolver 只写入负的费用差值。
+var ap_delta: int = 0
 var hp_delta: int = 0
 var stress_delta: int = 0
 var supply_delta: int = 0

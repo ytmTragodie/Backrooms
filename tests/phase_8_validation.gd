@@ -14,7 +14,7 @@ func tests() -> void:
 	var owner: TurnManager = _equipment_fixture(data, [FLASH], [OBSERVE, OBSERVE, OBSERVE, OBSERVE, OBSERVE])
 	var entity: EntityInstance = owner.run_state.floor_state.entity
 	owner.end_turn()
-	check(entity.alive and entity.hp == 120 and entity.state == &"WITHDRAWN" and owner.run_state.cognition == 0, "No-light behavior resolves Smiler without inventing discovery")
+	check(entity.alive and entity.hp == 120 and entity.state == &"WITHDRAWN" and owner.run_state.floor_state.cognition == 0, "No-light behavior resolves Smiler without inventing discovery")
 	owner.free()
 	var clues: FloorData = fixture(LEVEL_6)
 	clues.entry_entity = clues.followup_entity
@@ -22,26 +22,26 @@ func tests() -> void:
 	clues.fresh_objectives[0].clue_threshold = 2
 	owner = _equipment_fixture(clues, [FLASH], [OBSERVE, OBSERVE, OBSERVE, OBSERVE, OBSERVE])
 	play(owner, OBSERVE)
-	check(owner.run_state.cognition == 1, "Situation clue replaces manual landmark investigation with same unique Insight")
+	check(owner.run_state.floor_state.cognition == 1, "Situation clue replaces manual landmark investigation with same unique Insight")
 	play_generated(owner, &"light")
 	owner.end_turn()
 	play_generated(owner, &"light")
 	play_generated(owner, &"extinguish")
 	owner.end_turn()
-	check(owner.run_state.cognition == 1 and owner.run_state.floor_state.cutout_state.stability == 1, "Clue then behavior cannot duplicate Insight/preparation")
+	check(owner.run_state.floor_state.cognition == 1 and owner.run_state.floor_state.cutout_state.stability == 1, "Clue then behavior cannot duplicate Insight/preparation")
 	owner.free()
 	owner = _equipment_fixture(data, [], [ATTACK, OBSERVE, OBSERVE, OBSERVE, OBSERVE])
 	entity = owner.run_state.floor_state.entity
 	play(owner, ATTACK, true)
 	check(entity.hp == 116 and entity.state == &"ATTACKING" and not entity.light_exposed, "Common attack HP does not fabricate LIGHT exposure")
 	owner.end_turn()
-	check(entity.state == &"WITHDRAWN" and owner.run_state.cognition == 0, "Unexposed withdrawal grants no invented knowledge")
+	check(entity.state == &"WITHDRAWN" and owner.run_state.floor_state.cognition == 0, "Unexposed withdrawal grants no invented knowledge")
 	owner.free()
 	owner = _equipment_fixture(clues, [], [ATTACK, OBSERVE, OBSERVE, OBSERVE, OBSERVE])
 	entity = owner.run_state.floor_state.entity
 	entity.hp = 4
 	check(play(owner, ATTACK, true).entity.defeated and entity.hp == 0 and not entity.alive, "Edge-case kill retains common HP/defeat semantics")
-	check(play(owner, OBSERVE).success and owner.run_state.cognition == 1, "Killing Smiler leaves automatic clue Insight path available")
+	check(play(owner, OBSERVE).success and owner.run_state.floor_state.cognition == 1, "Killing Smiler leaves automatic clue Insight path available")
 	owner.free()
 	var mixed: FloorData = fixture(LEVEL_6)
 	mixed.entry_entity = mixed.followup_entity
@@ -53,14 +53,14 @@ func tests() -> void:
 		owner.end_turn()
 	play_generated(owner, &"light")
 	play(owner, GUARD)
-	var hp_before: int = owner.run_state.player_hp
+	var hp_before: int = owner.run_state.player.hp
 	var guarded: ActionResult = owner.end_turn()
-	check(guarded.player.pressure_blocked == 2 and guarded.player.damage_blocked == 2 and guarded.player.damage_taken == 4 and owner.run_state.player_hp == hp_before - 4, "Situation consumes Guard first; Smiler only uses remaining block")
+	check(guarded.player.pressure_blocked == 2 and guarded.player.damage_blocked == 2 and guarded.player.damage_taken == 4 and owner.run_state.player.hp == hp_before - 4, "Situation consumes Guard first; Smiler only uses remaining block")
 	owner.free()
 	owner = _equipment_fixture(data, [FLASH])
-	owner.run_state.equipment_slots[0].remaining_uses = 0
+	owner.run_state.player.equipment.slots[0].remaining_uses = 0
 	reject(owner, generated_request(owner, &"light"), &"equipment_depleted")
 	check(owner.run_state.floor_state.entity.state == &"HIDDEN" and not owner.run_state.floor_state.entity.light_exposed, "Failed generated LIGHT cannot expose Smiler")
 	owner.end_turn()
-	check(generated(owner, &"light") == null and owner.run_state.floor_state.entity == null and owner.run_state.floor_state.resolved_entity_ids.has(data.entry_entity.id) and owner.run_state.cognition == 0, "Empty source prevents regenerated LIGHT and fake Insight")
+	check(generated(owner, &"light") == null and owner.run_state.floor_state.entity == null and owner.run_state.floor_state.resolved_entity_ids.has(data.entry_entity.id) and owner.run_state.floor_state.cognition == 0, "Empty source prevents regenerated LIGHT and fake Insight")
 	owner.free()

@@ -30,7 +30,7 @@ func open(state: RunState) -> void:
 	_title.text = "临时安全点\n你可以进行一次整备"
 	var point: SafePointState = state.floor_state.safe_point
 	var rest: Button = _button("休整\n恢复生命 %d，缓解压力 %d" % [point.definition.heal, point.definition.stress_relief])
-	rest.disabled = state.player_hp == RunState.MAX_PLAYER_HP and state.stress == 0
+	rest.disabled = state.player.hp == state.player.max_hp and state.player.stress == 0
 	rest.tooltip_text = "当前无需休整" if rest.disabled else "本次安全点只能选择一项"
 	rest.pressed.connect(func() -> void: command_submitted.emit(SafePointCommand.new(state.floor_state.board_state, point, SafePointCommand.Choice.REST)))
 	for choice: SafePointCommand.Choice in [SafePointCommand.Choice.REMOVE, SafePointCommand.Choice.UPGRADE]:
@@ -46,7 +46,7 @@ func _show_candidates(state: RunState, choice: SafePointCommand.Choice, kind: Ca
 	_back.show()
 	_title.text = "整理牌组：选择一张移除" if choice == SafePointCommand.Choice.REMOVE else "强化：选择一张升级"
 	for card: CardInstance in CardRewardSystem.eligible_cards(state, kind):
-		var zone: String = "当前手牌" if state.deck_state.hand.has(card) else ("抽牌堆" if state.deck_state.draw_pile.has(card) else "弃牌堆")
+		var zone: String = "当前手牌" if state.player.deck.hand.has(card) else ("抽牌堆" if state.player.deck.draw_pile.has(card) else "弃牌堆")
 		var text: String = zone + "｜" + CardText.description(card.definition)
 		if choice == SafePointCommand.Choice.UPGRADE:
 			text += "\n升级为：" + CardText.description(card.definition.upgrade_to)

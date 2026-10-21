@@ -23,7 +23,7 @@ explore_bonus = 1
 
 ; 事件类型
 objective_type = 0
-progress_threshold = 12
+progress_threshold = 6
 
 
 ; reward 信息添加

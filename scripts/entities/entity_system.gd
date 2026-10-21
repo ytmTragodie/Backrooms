@@ -44,8 +44,6 @@ static func spawn(data: EntityData) -> EntityInstance:
 
 
 static func validate(floor: FloorState, data: FloorData) -> StringName:
-	if floor.player_block < 0:
-		return &"invalid_entity_state"
 	var entity: EntityInstance = floor.entity
 	# 两种遭遇共用当前实例槽；不允许用后续定义覆盖仍活跃的前一个实体。
 	for definition: EntityData in [data.entry_entity, data.followup_entity]:
@@ -124,7 +122,7 @@ static func plan_card(result: ActionResult, definition: CardData, state: RunStat
 				_set_next_state(result, &"DISENGAGED" if entity.state == &"STAGGERED" else &"CHASING")
 		CardData.EffectType.ATTACK, CardData.EffectType.PLACEHOLDER_DAMAGE:
 			var analyzed: bool = entity != null and not entity.revealed_rules.is_empty()
-			var damage: int = definition.effect_value + definition.contextual_bonus(state.floor_state.player_block, state.threat, analyzed) if definition.effect_type == CardData.EffectType.ATTACK else definition.placeholder_damage
+			var damage: int = definition.effect_value + definition.contextual_bonus(state.player.block, state.floor_state.threat, analyzed) if definition.effect_type == CardData.EffectType.ATTACK else definition.placeholder_damage
 			return plan_attack(result, damage, state, entity_data)
 	return &""
 
@@ -182,7 +180,7 @@ static func plan_light_reaction(result: ActionResult, state: RunState, data: Flo
 static func plan_end_turn(result: ActionResult, state: RunState, data: FloorData) -> void:
 	var entity: EntityInstance = state.floor_state.entity
 	result.player.expire_block = true
-	var remaining_hp: int = maxi(0, state.player_hp + result.player.hp_delta)
+	var remaining_hp: int = maxi(0, state.player.hp + result.player.hp_delta)
 	if entity == null or not entity.active or remaining_hp <= 0:
 		return
 	# 只执行界面已经公示的意图，每次 End Turn 一次；不用随机 AI 或第二套时钟。
@@ -205,7 +203,7 @@ static func plan_end_turn(result: ActionResult, state: RunState, data: FloorData
 		&"recover":
 			next_state = &"WATCHING"
 	# 局势先消耗同一份 Guard；实体只使用余额，避免一份防护抵挡两次。
-	var remaining_block: int = maxi(0, state.floor_state.player_block + result.player.block_delta)
+	var remaining_block: int = maxi(0, state.player.block + result.player.block_delta)
 	var blocked: int = mini(remaining_block, damage)
 	var hp_loss: int = mini(remaining_hp, maxi(0, damage - blocked))
 	result.player.damage_blocked += blocked
@@ -231,8 +229,8 @@ static func _plan_light_end_turn(result: ActionResult, state: RunState, data: En
 		result.entity.state_reason = &"light_warning_ignored"
 	elif entity.state == &"ATTACKING":
 		var damage: int = intent_damage(entity, data, state.floor_state, floor_data)
-		var remaining_hp: int = maxi(0, state.player_hp + result.player.hp_delta)
-		var remaining_block: int = maxi(0, state.floor_state.player_block + result.player.block_delta)
+		var remaining_hp: int = maxi(0, state.player.hp + result.player.hp_delta)
+		var remaining_block: int = maxi(0, state.player.block + result.player.block_delta)
 		var blocked: int = mini(remaining_block, damage)
 		var hp_loss: int = mini(remaining_hp, maxi(0, damage - blocked))
 		result.player.damage_blocked += blocked

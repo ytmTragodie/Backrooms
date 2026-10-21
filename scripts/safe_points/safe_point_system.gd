@@ -10,7 +10,7 @@ static func validate(data: SafePointData) -> StringName:
 
 static func available(state: RunState) -> bool:
 	var floor: FloorState = state.floor_state
-	return floor != null and floor.safe_point != null and floor.safe_point.reached and not floor.safe_point.consumed and floor.board_state.entity == null and state.pending_rewards.is_empty() and state.player_hp > 0
+	return floor != null and floor.safe_point != null and floor.safe_point.reached and not floor.safe_point.consumed and floor.board_state.entity == null and state.flow.pending_rewards.is_empty() and state.player.hp > 0
 
 
 static func reach(state: RunState, result: ActionResult) -> void:
@@ -38,8 +38,8 @@ static func plan(command: SafePointCommand, state: RunState) -> ActionResult:
 	if command.choice == SafePointCommand.Choice.REST:
 		if command.card != null:
 			return _fail(result, &"invalid_reward_card")
-		var hp_restored: int = mini(command.point.definition.heal, RunState.MAX_PLAYER_HP - state.player_hp)
-		var stress_restored: int = mini(command.point.definition.stress_relief, state.stress)
+		var hp_restored: int = mini(command.point.definition.heal, state.player.max_hp - state.player.hp)
+		var stress_restored: int = mini(command.point.definition.stress_relief, state.player.stress)
 		if hp_restored + stress_restored == 0:
 			return _fail(result, &"nothing_to_restore")
 		result.player.hp_delta += hp_restored
@@ -63,7 +63,7 @@ static func commit(result: ActionResult, state: RunState) -> void:
 	if result == null or state == null or result.run.safe_point_used == null:
 		return
 	if result.deck.change_kind == &"removed" and result.deck.card_changed != null:
-		CardSystem.remove_instance(state.deck_state, result.deck.card_changed)
+		CardSystem.remove_instance(state.player.deck, result.deck.card_changed)
 		result.deck.card_removed = result.deck.card_changed
 		result.debug_lines.append("[DECK] removed %s" % result.deck.card_changed.definition.id)
 	elif result.deck.change_kind == &"upgraded" and result.deck.card_changed != null:

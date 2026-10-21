@@ -28,10 +28,10 @@ func tests() -> void:
 	var owner: TurnManager = manager([OBSERVE, SEARCH, OBSERVE, SEARCH, OBSERVE])
 	play(owner, OBSERVE)
 	var result: ActionResult = play(owner, SEARCH)
-	check(result.objective.newly_resolved and result.objective.clue_revealed == false and owner.run_state.cognition == 1 and owner.run_state.threat == 1, "Cards replace inspect/search buttons while retaining unique Insight/Threat")
+	check(result.objective.newly_resolved and result.objective.clue_revealed == false and owner.run_state.floor_state.cognition == 1 and owner.run_state.floor_state.threat == 1, "Cards replace inspect/search buttons while retaining unique Insight/Threat")
 	reject(owner, command(owner, OBSERVE), &"objective_resolved")
 	owner.end_turn()
-	check(owner.run_state.floor_state.current_objective.explore_progress == 0 and owner.run_state.floor_state.seen_objective_ids.size() == 2 and owner.run_state.ap == 3, "Same lifecycle replaces resolved event only at next turn")
+	check(owner.run_state.floor_state.current_objective.explore_progress == 0 and owner.run_state.floor_state.seen_objective_ids.size() == 2 and owner.run_state.player.ap == 3, "Same lifecycle replaces resolved event only at next turn")
 	owner.free()
 	first = FloorState.new(LEVEL_0)
 	for index: int in range(7):

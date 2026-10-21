@@ -4,7 +4,8 @@ extends RefCounted
 const MAX_COGNITION: int = 5
 const MAX_THREAT: int = 10
 
-# 只保存本次驻留的可变值与稳定 ID，不把共享 Resource 当作运行时状态。
+# 只保存本次楼层驻留的可变值与稳定 ID，不把共享 Resource 当作运行时状态。
+# 玩家 HP/Stress/Supply/AP/Block 不属于这里；它们跨楼层存在 PlayerState 中。
 var floor_id: StringName
 var turn_count: int = 1
 var threat: int = 0
@@ -35,7 +36,7 @@ var entity: EntityInstance:
 		return board_state.entity
 	set(value):
 		board_state.entity = value
-var player_block: int = 0
+# 黑暗首次观察附加费与临时照明只在本次驻留内有效。
 var dark_observation_used: bool = false
 var light_active: bool = false
 

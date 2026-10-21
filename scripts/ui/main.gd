@@ -132,14 +132,14 @@ func _refresh_state() -> void:
 		_selected_board = board
 		_selected_objective = board.active_objective
 		_selected_entity = board.entity if board.active_objective == null else null
-	if not run.deck_state.hand.has(_preview_card): _preview_card = null
+	if not run.player.deck.hand.has(_preview_card): _preview_card = null
 	_world_card.present(floor, _manager.floor_data, ResourceNodeSystem.find_search_reward(floor, _manager.floor_data, true, run) != null, _selected_objective != null)
 	var entity: EntityInstance = board.entity
 	_entity_card.present(entity, _manager.floor_data.find_entity(entity.entity_id) if entity != null else null, floor, _manager.floor_data, _selected_entity != null)
-	(%RunStats as Label).text = "生命：%d 压力：%d 威胁：%d 认知：%d 行动点：%d 回合：%d 防护：%d" % [run.player_hp, run.stress, run.threat, run.cognition, run.ap, run.turn_number, floor.player_block]
+	(%RunStats as Label).text = "生命：%d 压力：%d 威胁：%d 认知：%d 行动点：%d 回合：%d 防护：%d" % [run.player.hp, run.player.stress, run.floor_state.threat, run.floor_state.cognition, run.player.ap, run.flow.turn_number, run.player.block]
 	(%StatusIcons as TopStatusBar).present(run)
-	(%PileCounts as Label).text = "抽牌堆：%d｜弃牌堆：%d" % [run.deck_state.draw_pile.size(), run.deck_state.discard_pile.size()]
-	_end_turn.disabled = run.player_hp <= 0 or _manager.floor_data.is_placeholder or not run.pending_rewards.is_empty()
+	(%PileCounts as Label).text = "抽牌堆：%d｜弃牌堆：%d" % [run.player.deck.draw_pile.size(), run.player.deck.discard_pile.size()]
+	_end_turn.disabled = run.player.hp <= 0 or _manager.floor_data.is_placeholder or not run.flow.pending_rewards.is_empty()
 	_refresh_equipment_status(run)
 	_refresh_environment(floor, _manager.floor_data)
 	_refresh_hand(run)
@@ -156,22 +156,22 @@ func _refresh_hand(run: RunState) -> void:
 	for child: Node in _hand.get_children():
 		_hand.remove_child(child)
 		child.queue_free()
-	for card: CardInstance in run.deck_state.hand:
+	for card: CardInstance in run.player.deck.hand:
 		var command: PlayCardCommand = _command_for(card)
 		var error: StringName = RuleResolver.validate_card_target(command, run.floor_state, _manager.floor_data, run)
 		var cost: int = RuleResolver.card_ap_cost(card.definition, run, _manager.floor_data)
 		var bonus: int = 0
 		if card.definition.explore_amount > 0 and _selected_objective != null:
-			bonus = ObjectiveSystem.explore_bonus(card.definition, _manager.floor_data.find_objective(_selected_objective.objective_id)) + card.definition.contextual_bonus(run.floor_state.player_block, run.threat)
+			bonus = ObjectiveSystem.explore_bonus(card.definition, _manager.floor_data.find_objective(_selected_objective.objective_id)) + card.definition.contextual_bonus(run.player.block, run.floor_state.threat)
 		elif card.definition.effect_type == CardData.EffectType.ATTACK:
-			bonus = card.definition.contextual_bonus(run.floor_state.player_block, run.threat, _selected_entity != null and not _selected_entity.revealed_rules.is_empty())
-		var unavailable: bool = run.player_hp <= 0 or _manager.floor_data.is_placeholder or run.ap < cost or not error.is_empty() or not run.pending_rewards.is_empty()
+			bonus = card.definition.contextual_bonus(run.player.block, run.floor_state.threat, _selected_entity != null and not _selected_entity.revealed_rules.is_empty())
+		var unavailable: bool = run.player.hp <= 0 or _manager.floor_data.is_placeholder or run.player.ap < cost or not error.is_empty() or not run.flow.pending_rewards.is_empty()
 		var detail: String = CardText.description(card.definition) + "\n" + CardText.primary(card.definition, bonus)
 		var reason: String = FAILURE_MESSAGES.get(error, "所选目标不适用")
 		if error == &"invalid_target_kind":
 			reason = "不能以实体为搜索目标" if card.definition.collects_resources and _selected_entity != null else "需要实体目标" if card.definition.target_kinds == CardData.TargetKind.ENTITY else "不能作用于所选目标"
 		if not error.is_empty(): detail += "\n暂不可用：" + reason
-		elif run.ap < cost: detail += "\n行动点不足"
+		elif run.player.ap < cost: detail += "\n行动点不足"
 		var view: PlayerCardView = PlayerCardView.new()
 		_hand.add_child(view)
 		view.present(card, cost, CardText.primary(card.definition, bonus), detail, error.is_empty(), unavailable)
@@ -215,10 +215,10 @@ func _submit_card_command(command: PlayCardCommand) -> void:
 func _refresh_equipment_status(run: RunState) -> void:
 	var equipment: PackedStringArray = []
 	var counters: Dictionary = {&"battery": "电量", &"durability": "耐久", &"charges": "次数"}
-	for item: EquipmentInstance in run.equipment_slots:
+	for item: EquipmentInstance in run.player.equipment.slots:
 		equipment.append("%s %s%d" % [item.definition.display_name, counters.get(item.definition.counter_kind, "次数"), item.remaining_uses] if item != null else "空携带槽")
 	(%EquipmentStatus as Label).text = "携带装备　" + "　｜　".join(equipment)
-	_debug_panel.update_context("%s\n补给 %d　稳定 %d　目的地认知 %d\n已出牌 %d　无效整手 %d／%d" % [_manager.floor_data.display_name, run.supply, run.floor_state.cutout_state.stability, run.floor_state.cutout_state.destination_knowledge, run.metrics.cards_played, run.metrics.dead_hands, run.metrics.hands_checked])
+	_debug_panel.update_context("%s\n补给 %d　稳定 %d　目的地认知 %d\n已出牌 %d　无效整手 %d／%d" % [_manager.floor_data.display_name, run.player.supply, run.floor_state.cutout_state.stability, run.floor_state.cutout_state.destination_knowledge, run.metrics.cards_played, run.metrics.dead_hands, run.metrics.hands_checked])
 
 
 func _refresh_environment(floor: FloorState, data: FloorData) -> void:

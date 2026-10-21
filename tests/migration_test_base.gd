@@ -80,7 +80,7 @@ func manager(definitions: Array[CardData] = [], data: FloorData = LEVEL_0, gear:
 
 
 func hand_card(owner: TurnManager, definition: CardData) -> CardInstance:
-	for card: CardInstance in owner.run_state.deck_state.hand:
+	for card: CardInstance in owner.run_state.player.deck.hand:
 		if card.definition == definition:
 			return card
 	check(false, "Requested real card must exist in hand")
@@ -107,29 +107,29 @@ func snapshot(owner: TurnManager) -> Dictionary:
 	var event: ObjectiveInstance = floor.current_objective
 	var entity: EntityInstance = floor.entity
 	var piles: Array = []
-	for pile: Array[CardInstance] in [run.deck_state.hand, run.deck_state.draw_pile, run.deck_state.discard_pile]:
+	for pile: Array[CardInstance] in [run.player.deck.hand, run.player.deck.draw_pile, run.player.deck.discard_pile]:
 		var ids: Array[int] = []
 		for card: CardInstance in pile:
 			ids.append(card.get_instance_id())
 		piles.append(ids)
 	var equipment: Array = []
-	for item: EquipmentInstance in run.equipment_slots:
+	for item: EquipmentInstance in run.player.equipment.slots:
 		equipment.append([item.get_instance_id(), item.remaining_uses, item.definition.get_instance_id(), item.definition.capacity] if item != null else [])
 	var nodes: Array = []
 	for node: ResourceNode in floor.resource_nodes:
 		nodes.append([node.get_instance_id(), node.status])
-	return {"run": run.get_instance_id(), "hp": run.player_hp, "stress": run.stress, "supply": run.supply, "ap": run.ap, "turn": run.turn_number, "rng": run.rng.state,
+	return {"run": run.get_instance_id(), "hp": run.player.hp, "stress": run.player.stress, "supply": run.player.supply, "ap": run.player.ap, "turn": run.flow.turn_number, "rng": run.rng.state,
 		"resolved_entities": floor.resolved_entity_ids.duplicate(),
-		"rewards": run.pending_rewards.map(func(reward: CardReward) -> Array: return [reward.get_instance_id(), reward.definition.get_instance_id(), reward.choices.map(func(choice: CardData) -> int: return choice.get_instance_id())]),
-		"deck_definitions": [run.deck_state.draw_pile.map(func(card: CardInstance) -> int: return card.definition.get_instance_id()), run.deck_state.hand.map(func(card: CardInstance) -> int: return card.definition.get_instance_id()), run.deck_state.discard_pile.map(func(card: CardInstance) -> int: return card.definition.get_instance_id())],
-		"generation": [run.deck_state.equipment_generation_turn, run.deck_state.next_equipment_slot],
-		"card_sources": run.deck_state.hand.map(func(card: CardInstance) -> Array: return [card.definition.get_instance_id(), card.source_equipment.get_instance_id() if card.source_equipment != null else 0, card.source_board.get_instance_id() if card.source_board != null else 0]),
-		"floor": floor.get_instance_id(), "floor_data": owner.floor_data.get_instance_id(), "board": floor.board_state.get_instance_id(), "deck": run.deck_state.get_instance_id(), "piles": piles, "equipment": equipment, "nodes": nodes,
-		"state": [floor.turn_count, floor.threat, floor.cognition, floor.player_block, floor.dark_observation_used, floor.light_active, floor.discovered_insight_ids.duplicate(), floor.remaining_fresh_objectives.duplicate(), floor.seen_objective_ids.duplicate(), floor.floor_flags.duplicate()],
+		"rewards": run.flow.pending_rewards.map(func(reward: CardReward) -> Array: return [reward.get_instance_id(), reward.definition.get_instance_id(), reward.choices.map(func(choice: CardData) -> int: return choice.get_instance_id())]),
+		"deck_definitions": [run.player.deck.draw_pile.map(func(card: CardInstance) -> int: return card.definition.get_instance_id()), run.player.deck.hand.map(func(card: CardInstance) -> int: return card.definition.get_instance_id()), run.player.deck.discard_pile.map(func(card: CardInstance) -> int: return card.definition.get_instance_id())],
+		"generation": [run.player.equipment.generation_turn, run.player.equipment.next_slot],
+		"card_sources": run.player.deck.hand.map(func(card: CardInstance) -> Array: return [card.definition.get_instance_id(), card.source_equipment.get_instance_id() if card.source_equipment != null else 0, card.source_board.get_instance_id() if card.source_board != null else 0]),
+		"floor": floor.get_instance_id(), "floor_data": owner.floor_data.get_instance_id(), "board": floor.board_state.get_instance_id(), "deck": run.player.deck.get_instance_id(), "piles": piles, "equipment": equipment, "nodes": nodes,
+		"state": [floor.turn_count, floor.threat, floor.cognition, run.player.block, floor.dark_observation_used, floor.light_active, floor.discovered_insight_ids.duplicate(), floor.remaining_fresh_objectives.duplicate(), floor.seen_objective_ids.duplicate(), floor.floor_flags.duplicate()],
 		"event": [event.get_instance_id(), event.explore_progress, event.sequence_index, event.completed_interactions.duplicate(), event.resolved, event.clue_revealed, event.known_information.duplicate(), event.last_progress_turn, event.pressure_checked_turn] if event != null else [],
 		"entity": [entity.get_instance_id(), entity.hp, entity.max_hp, entity.state, entity.intent, entity.analysis_progress, entity.revealed_rules.duplicate(), entity.light_exposed] if entity != null else [],
 		"cutout": [floor.cutout_state.get_instance_id(), floor.cutout_state.stability, floor.cutout_state.destination_knowledge, floor.cutout_state.destination_candidates.duplicate()],
-		"attempt": run.last_cutout_attempt.get_instance_id() if run.last_cutout_attempt != null else 0}
+		"attempt": run.flow.last_cutout_attempt.get_instance_id() if run.flow.last_cutout_attempt != null else 0}
 
 
 func reject(owner: TurnManager, request: PlayCardCommand, reason: StringName) -> void:
@@ -146,7 +146,7 @@ func reject(owner: TurnManager, request: PlayCardCommand, reason: StringName) ->
 
 func generated(owner: TurnManager, action_id: StringName) -> CardInstance:
 	var effects: Dictionary = {&"light": CardData.EffectType.LIGHT, &"extinguish": CardData.EffectType.EXTINGUISH, &"crowbar": CardData.EffectType.ATTACK, &"recover": CardData.EffectType.RECOVER, &"rushed": CardData.EffectType.CUTOUT_RUSHED, &"safe": CardData.EffectType.CUTOUT_SAFE}
-	for card: CardInstance in owner.run_state.deck_state.hand:
+	for card: CardInstance in owner.run_state.player.deck.hand:
 		if card.source != CardData.Source.NORMAL and card.definition.effect_type == effects.get(action_id, -1):
 			return card
 	return null
@@ -171,7 +171,7 @@ func click_generated(main: Control, action_id: StringName) -> void:
 		return
 	if card.definition.effect_type == CardData.EffectType.ATTACK:
 		(main.get_node("%EntityCard") as Button).pressed.emit()
-	var index: int = owner.run_state.deck_state.hand.find(card)
+	var index: int = owner.run_state.player.deck.hand.find(card)
 	var button: Button = (main.get_node("%Hand") as HBoxContainer).get_child(index) as Button
 	check(not button.disabled, "Generated hand card has a legal primary action")
 	button.pressed.emit()
@@ -180,8 +180,8 @@ func click_generated(main: Control, action_id: StringName) -> void:
 func click_card(main: Control, definition: CardData, entity: bool = false) -> void:
 	(main.get_node("%EntityCard" if entity else "%WorldCard") as Button).pressed.emit()
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
-	for index: int in range(owner.run_state.deck_state.hand.size()):
-		if owner.run_state.deck_state.hand[index].definition == definition:
+	for index: int in range(owner.run_state.player.deck.hand.size()):
+		if owner.run_state.player.deck.hand[index].definition == definition:
 			var button: Button = (main.get_node("%Hand") as HBoxContainer).get_child(index) as Button
 			check(not button.disabled, "Real single-semantic hand card is playable")
 			button.pressed.emit()

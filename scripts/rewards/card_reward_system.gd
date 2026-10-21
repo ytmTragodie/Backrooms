@@ -54,15 +54,15 @@ static func plan(result: ActionResult, state: RunState, data: FloorData) -> void
 # 只提交待领取队列；同一字段由 plan 写入、commit 读取。
 static func commit(result: ActionResult, state: RunState) -> void:
 	for opportunity: CardReward in result.run.reward_created:
-		state.pending_rewards.append(opportunity)
+		state.flow.pending_rewards.append(opportunity)
 		result.debug_lines.append("[REWARD] offered kind=%d choices=%d" % [opportunity.definition.kind, opportunity.choices.size()])
 
 
 static func eligible_cards(state: RunState, kind: CardRewardData.Kind) -> Array[CardInstance]:
 	var eligible: Array[CardInstance] = []
-	if kind == CardRewardData.Kind.REMOVE_CARD and state.deck_state.get_card_count() <= MINIMUM_DECK_SIZE:
+	if kind == CardRewardData.Kind.REMOVE_CARD and state.player.deck.get_card_count() <= MINIMUM_DECK_SIZE:
 		return eligible
-	for pile: Array[CardInstance] in [state.deck_state.draw_pile, state.deck_state.hand, state.deck_state.discard_pile]:
+	for pile: Array[CardInstance] in [state.player.deck.draw_pile, state.player.deck.hand, state.player.deck.discard_pile]:
 		for card: CardInstance in pile:
 			if card.source != CardData.Source.NORMAL:
 				continue
@@ -79,9 +79,9 @@ static func plan_claim(command: CardRewardCommand, state: RunState) -> ActionRes
 	var result: ActionResult = ActionResult.new()
 	result.action_id = &"card_reward"
 	result.debug_lines.append("[COMMAND] card_reward")
-	if command == null or state == null or command.reward == null or state.pending_rewards.is_empty() or state.pending_rewards[0] != command.reward:
+	if command == null or state == null or command.reward == null or state.flow.pending_rewards.is_empty() or state.flow.pending_rewards[0] != command.reward:
 		return _fail(result, &"invalid_reward")
-	if state.player_hp <= 0:
+	if state.player.hp <= 0:
 		return _fail(result, &"run_ended")
 	var reward: CardReward = command.reward
 	var error: StringName = validate_definition(reward.definition)
@@ -109,7 +109,7 @@ static func commit_claim(result: ActionResult, state: RunState) -> void:
 	if result == null or state == null or result.run.reward_claimed == null:
 		return
 	if result.deck.change_kind == &"added" and result.deck.added_definition != null:
-		var card: CardInstance = CardSystem.add_reward(state.deck_state, result.deck.added_definition)
+		var card: CardInstance = CardSystem.add_reward(state.player.deck, result.deck.added_definition)
 		result.deck.card_added = card
 		result.deck.card_changed = card
 		result.debug_lines.append("[DECK] added %s zone=discard" % card.definition.id)
@@ -119,11 +119,11 @@ static func commit_claim(result: ActionResult, state: RunState) -> void:
 		result.deck.card_upgraded = result.deck.card_changed
 		result.debug_lines.append("[DECK] upgraded %s -> %s" % [previous_id, result.deck.card_changed.definition.id])
 	elif result.deck.change_kind == &"removed" and result.deck.card_changed != null:
-		CardSystem.remove_instance(state.deck_state, result.deck.card_changed)
+		CardSystem.remove_instance(state.player.deck, result.deck.card_changed)
 		result.deck.card_removed = result.deck.card_changed
 		result.debug_lines.append("[DECK] removed %s" % result.deck.card_changed.definition.id)
-	if not state.pending_rewards.is_empty() and state.pending_rewards[0] == result.run.reward_claimed:
-		state.pending_rewards.pop_front()
+	if not state.flow.pending_rewards.is_empty() and state.flow.pending_rewards[0] == result.run.reward_claimed:
+		state.flow.pending_rewards.pop_front()
 	result.debug_lines.append("[REWARD] claimed kind=%d" % result.run.reward_claimed.definition.kind)
 
 

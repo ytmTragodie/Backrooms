@@ -94,7 +94,7 @@ static func plan_end_turn(result: ActionResult, state: RunState) -> void:
 			result.player.pressure_stress += definition.stress_per_turn
 			result.player.stress_delta += definition.stress_per_turn
 			# 压力共享同一临时防护池；用累计 block_delta 计算剩余 Guard。
-			var remaining_block: int = maxi(0, floor.player_block + result.player.block_delta)
+			var remaining_block: int = maxi(0, state.player.block + result.player.block_delta)
 			var blocked: int = mini(remaining_block, definition.damage_per_turn)
 			var damage: int = definition.damage_per_turn - blocked
 			result.player.pressure_blocked += blocked

@@ -19,8 +19,8 @@ func _test_default_entry() -> void:
 	(main.get_node("TurnManager") as TurnManager).starter_deck = preload("res://tests/fixtures/phase9/cards/run_deck.tres")
 	root.add_child(main)
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
-	check(owner.floor_data.id == LEVEL_0.id and owner.run_state.player_hp == 30 and owner.run_state.ap == 3 and owner.run_state.deck_state.hand.size() == 5, "Normal Main entry starts Level 0 directly without a scenario selector")
-	check(owner.run_state.deck_state.get_card_count() == DECK.cards.size(), "Normal entry keeps the production run deck")
+	check(owner.floor_data.id == LEVEL_0.id and owner.run_state.player.hp == 30 and owner.run_state.player.ap == 3 and owner.run_state.player.deck.hand.size() == 5, "Normal Main entry starts Level 0 directly without a scenario selector")
+	check(owner.run_state.player.deck.get_card_count() == DECK.cards.size(), "Normal entry keeps the production run deck")
 	for removed: String in ["%CardMode", "%EquipmentPicker", "%ResourcePicker", "%NewLevel0", "%NewLevel6", "%FloorContext"]:
 		check(main.get_node_or_null(removed) == null, "Removed global/developer control: %s" % removed)
 	for value: String in ["生命", "压力", "威胁", "认知", "行动点", "回合", "防护"]:
@@ -39,7 +39,7 @@ func _test_default_entry() -> void:
 	await _mouse_click(hand.get_child(0) as Control, MOUSE_BUTTON_RIGHT)
 	check(snapshot(owner) == before and main.find_children("*", "PopupMenu", true, false).is_empty(), "Right-click shows no verb menu and changes no gameplay state")
 	await _mouse_click(hand.get_child(0) as Control)
-	check(owner.run_state.floor_state.current_objective.explore_progress == 3 and owner.run_state.ap == 2, "One real mouse click directly investigates without action selection")
+	check(owner.run_state.floor_state.current_objective.explore_progress == 3 and owner.run_state.player.ap == 2, "One real mouse click directly investigates without action selection")
 	check(main.find_children("*", "PopupMenu", true, false).is_empty(), "Playing a card creates no gameplay-action list")
 	await process_frame
 	await process_frame
@@ -94,20 +94,20 @@ func _test_generated_hand() -> void:
 	var hand: HBoxContainer = main.get_node("%Hand") as HBoxContainer
 	var light: CardInstance = generated(owner, &"light")
 	check(light != null and hand.get_child_count() == 6, "Five normal cards and one equipment card share the same visible hand")
-	var index: int = run.deck_state.hand.find(light)
+	var index: int = run.player.deck.hand.find(light)
 	var button: Button = hand.get_child(index) as Button
 	check(button.text.contains("照明") and button.text.contains("装备牌") and button.get_node_or_null("CardActions") == null, "Generated equipment card has a readable primary action and no generic mode selector")
 	await process_frame
 	await process_frame
 	for node: Control in [hand, button, main.get_node("%EndTurn") as Control]:
 		check(main.get_viewport_rect().encloses(node.get_global_rect()), "Six-card layout is contained at the normal window aspect ratio")
-	var battery: EquipmentInstance = run.equipment_slots[0]
+	var battery: EquipmentInstance = run.player.equipment.slots[0]
 	await _mouse_click(button)
-	check(run.ap == 2 and battery.remaining_uses == 2 and run.floor_state.light_active and generated(owner, &"extinguish") == light, "Actual click lights and exposes separate Extinguish definition in the same hand position")
-	check(run.deck_state.discard_pile.is_empty(), "Equipment click does not pollute normal discard")
+	check(run.player.ap == 2 and battery.remaining_uses == 2 and run.floor_state.light_active and generated(owner, &"extinguish") == light, "Actual click lights and exposes separate Extinguish definition in the same hand position")
+	check(run.player.deck.discard_pile.is_empty(), "Equipment click does not pollute normal discard")
 	var before: Dictionary = snapshot(owner)
 	check(main.find_children("*", "PopupMenu", true, false).is_empty(), "Unified hand has no mode menus")
-	index = run.deck_state.hand.find(light)
+	index = run.player.deck.hand.find(light)
 	button = hand.get_child(index) as Button
 	check(button.text.contains("熄灯"), "LIGHT on exposes Extinguish as its own explicit card")
 	await _mouse_click(button)
@@ -115,14 +115,14 @@ func _test_generated_hand() -> void:
 	(main.get_node("%EndTurn") as Button).pressed.emit()
 	var exit_card: CardInstance = generated(owner, &"rushed")
 	check(exit_card != null, "Minimum floor stay generates an explicit exit hand card")
-	index = run.deck_state.hand.find(exit_card)
+	index = run.player.deck.hand.find(exit_card)
 	button = hand.get_child(index) as Button
 	check(button.text.contains("仓促切出") and button.text.contains("保留") and button.text.contains("楼层临时牌"), "Exit card displays source and intentional hand-slot cost")
 	(main.get_node("%EndTurn") as Button).pressed.emit()
-	check(generated(owner, &"rushed") == exit_card and run.deck_state.hand.size() == 6, "UI End Turn retains the floor card while normal refill and one equipment generation share the hand")
-	run.ap = 0
+	check(generated(owner, &"rushed") == exit_card and run.player.deck.hand.size() == 6, "UI End Turn retains the floor card while normal refill and one equipment generation share the hand")
+	run.player.ap = 0
 	main._refresh_state()
-	index = run.deck_state.hand.find(exit_card)
+	index = run.player.deck.hand.find(exit_card)
 	button = hand.get_child(index) as Button
 	check(button.disabled and button.get_node_or_null("CardActions") == null, "Zero AP disables the paid exit card; old free forced branches are absent")
 	before = snapshot(owner)

@@ -34,13 +34,13 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	# 所有失败分支都位于玩法写入之前，因此无需失败后的回滚。
 	if command == null or card == null:
 		return _fail(result, &"invalid_command", card_id)
-	if state == null or state.deck_state == null or cards == null or not cards.is_bound_to(state):
+	if state == null or state.player.deck == null or cards == null or not cards.is_bound_to(state):
 		return _fail(result, &"invalid_state_context", card_id)
-	if state.player_hp <= 0:
+	if state.player.hp <= 0:
 		return _fail(result, &"run_ended", card_id)
-	if not state.pending_rewards.is_empty():
+	if not state.flow.pending_rewards.is_empty():
 		return _fail(result, &"reward_pending", card_id)
-	if not state.deck_state.hand.has(card):
+	if not state.player.deck.hand.has(card):
 		return _fail(result, &"card_not_in_hand", card_id)
 	if floor_data != null and floor_data.is_placeholder:
 		return _fail(result, &"floor_inactive", card_id)
@@ -81,7 +81,7 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 		return _fail(result, &"invalid_objective_target", card_id)
 	var final_cost: int = command_ap_cost(command, state, floor_data)
 	var dark_observation: bool = _is_dark_observation(definition, state, floor_data)
-	if state.ap < final_cost:
+	if state.player.ap < final_cost:
 		return _fail(result, &"insufficient_ap", card_id)
 	# 所有非平凡效果统一写私有草案，失败不会泄露半份资源／实体／奖励计划。
 	var failure_result: ActionResult = result
@@ -101,17 +101,17 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 		if command.target_entity != null:
 			EntitySystem.plan_analysis(draft, definition, state.floor_state, floor_data)
 		elif command.target_objective != null:
-			var objective_error: StringName = ObjectiveSystem.plan_interaction(draft, definition, state.floor_state, floor_data)
+			var objective_error: StringName = ObjectiveSystem.plan_interaction(draft, definition, state.floor_state, floor_data, state.player)
 			if not objective_error.is_empty():
 				return _fail(result, objective_error, card_id)
 		if definition.collects_resources:
-			var inventory_error: StringName = EquipmentSystem.validate_inventory(state)
+			var inventory_error: StringName = EquipmentSystem.validate_inventory(state.player.equipment)
 			if not inventory_error.is_empty():
 				return _fail(failure_result, inventory_error, card_id)
 			ResourceNodeSystem.plan_search_reward(draft, state, floor_data, definition.search_hidden_first)
 	elif situation_play and command.target_objective != null:
 		# CONDITION/SEQUENCE 可由任意带匹配标签的牌推进，不要求 Explore。
-		var step_error: StringName = ObjectiveSystem.plan_interaction(draft, definition, state.floor_state, floor_data)
+		var step_error: StringName = ObjectiveSystem.plan_interaction(draft, definition, state.floor_state, floor_data, state.player)
 		if not step_error.is_empty():
 			return _fail(result, step_error, card_id)
 	result = draft
@@ -164,11 +164,13 @@ static func resolve(command: PlayCardCommand, state: RunState, cards: CardSystem
 	result.debug_lines.append("[RULE] validation success")
 	result.debug_lines.append("[RULE] final_cost=%d" % final_cost)
 
-	# 验证到提交保持同步，期间不发送信号，避免观察者读到只扣 AP、未移牌的中间状态。
-	var previous_ap: int = state.ap
-	state.ap -= result.card.ap_spent
+	# 验证到提交保持同步，期间不发送信号，避免观察者读到部分提交的中间状态。
+	# AP 不在 plan 阶段写 State：这里只登记负差值，由 PlayerSystem 统一提交。
+	var previous_ap: int = state.player.ap
+	result.player.ap_delta -= result.card.ap_spent
+	var resulting_ap: int = maxi(0, previous_ap + result.player.ap_delta)
 	cards.finish_play(card, result)
-	result.debug_lines.append("[AP] %d -> %d" % [previous_ap, state.ap])
+	result.debug_lines.append("[AP] %d -> %d" % [previous_ap, resulting_ap])
 	result.debug_lines.append("[CARD] hand -> discard %s" % card_id if card.source == CardData.Source.NORMAL else "[CARD] source=%d resolved %s" % [card.source, card_id])
 	_commit_floor_result(result, state, floor_data)
 	if result.run.commit_rng:
@@ -272,9 +274,9 @@ static func resolve_end_turn(state: RunState, data: FloorData = null) -> ActionR
 	result.debug_lines.append("[COMMAND] end_turn")
 	if state == null:
 		return _fail(result, &"invalid_command", &"end_turn")
-	if state.player_hp <= 0:
+	if state.player.hp <= 0:
 		return _fail(result, &"run_ended", &"end_turn")
-	if not state.pending_rewards.is_empty():
+	if not state.flow.pending_rewards.is_empty():
 		return _fail(result, &"reward_pending", &"end_turn")
 	if state.floor_state != null:
 		var error: StringName = _validate_floor_context(state, data)
@@ -304,6 +306,9 @@ static func resolve_end_turn(state: RunState, data: FloorData = null) -> ActionR
 
 
 static func _validate_floor_context(state: RunState, data: FloorData) -> StringName:
+	var player_error: StringName = PlayerSystem.validate(state)
+	if not player_error.is_empty():
+		return player_error
 	var floor: FloorState = state.floor_state
 	if floor == null or data == null or floor.floor_id != data.id:
 		return &"invalid_floor_context"
@@ -340,6 +345,8 @@ static func _validate_floor_context(state: RunState, data: FloorData) -> StringN
 
 
 static func _commit_floor_result(result: ActionResult, state: RunState, data: FloorData) -> void:
+	# AP 属于玩家域，即使本次牌没有其它楼层效果也必须提交；不能因 action_id 为空而漏写。
+	PlayerSystem.commit(result, state)
 	if result.action_id.is_empty():
 		return
 	result.debug_lines.append("[ACTION] %s" % result.action_id)
@@ -347,8 +354,7 @@ static func _commit_floor_result(result: ActionResult, state: RunState, data: Fl
 		return
 	if result.objective.newly_resolved:
 		result.floor.completed_objectives_delta = 1
-	# 玩家是唯一持有 HP/Stress/Supply/Block 的领域；先提交净变化。
-	PlayerSystem.commit(result, state)
+	# 玩家是唯一持有 HP/Stress/Supply/Block 的领域；其余领域随后提交。
 	ObjectiveSystem.commit(result, state)
 	InsightSystem.commit(result, state)
 	ResourceNodeSystem.commit(result, state)
@@ -404,8 +410,8 @@ static func resolve_safe_point(command: SafePointCommand, state: RunState) -> Ac
 static func legal_hand_options(state: RunState, data: FloorData) -> int:
 	var count: int = 0
 	var board: BoardState = state.floor_state.board_state
-	for card: CardInstance in state.deck_state.hand:
-		if card_ap_cost(card.definition, state, data) > state.ap:
+	for card: CardInstance in state.player.deck.hand:
+		if card_ap_cost(card.definition, state, data) > state.player.ap:
 			continue
 		var candidates: Array[PlayCardCommand] = [PlayCardCommand.new(card, null, board)]
 		if board.active_objective != null:

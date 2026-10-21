@@ -21,6 +21,6 @@ func _ready() -> void:
 
 func present(state: RunState) -> void:
 	var names: Array[String] = ["生命", "压力", "威胁", "认知", "行动点", "回合", "防护"]
-	var values: Array[int] = [state.player_hp, state.stress, state.threat, state.cognition, state.ap, state.turn_number, state.floor_state.player_block]
+	var values: Array[int] = [state.player.hp, state.player.stress, state.floor_state.threat, state.floor_state.cognition, state.player.ap, state.flow.turn_number, state.player.block]
 	for index: int in range(values.size()):
 		_values[index].text = "%s %d" % [names[index], values[index]]

@@ -12,13 +12,13 @@ func _ready() -> void:
 
 
 func refresh(state: RunState) -> void:
-	visible = not state.pending_rewards.is_empty() and state.player_hp > 0
+	visible = not state.flow.pending_rewards.is_empty() and state.player.hp > 0
 	for child: Node in _options.get_children():
 		_options.remove_child(child)
 		child.queue_free()
 	if not visible:
 		return
-	var reward: CardReward = state.pending_rewards[0]
+	var reward: CardReward = state.flow.pending_rewards[0]
 	var kind: CardRewardData.Kind = reward.definition.kind
 	_title.text = {CardRewardData.Kind.ADD_CARD: "选择一张牌加入牌组", CardRewardData.Kind.UPGRADE_CARD: "选择一张牌升级", CardRewardData.Kind.REMOVE_CARD: "选择一张牌移出牌组"}[kind]
 	if kind == CardRewardData.Kind.ADD_CARD:

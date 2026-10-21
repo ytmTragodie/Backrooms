@@ -35,7 +35,7 @@ func production_floor(source: FloorData = LEVEL_0) -> FloorData:
 
 func all_cards(state: RunState) -> Array[CardInstance]:
 	var cards: Array[CardInstance] = []
-	for pile: Array[CardInstance] in [state.deck_state.hand, state.deck_state.draw_pile, state.deck_state.discard_pile]:
+	for pile: Array[CardInstance] in [state.player.deck.hand, state.player.deck.draw_pile, state.player.deck.discard_pile]:
 		cards.append_array(pile)
 	return cards
 
@@ -79,11 +79,11 @@ func _test_retirement_and_reward() -> void:
 	var hound: EntityInstance = board.entity
 	var stale: PlayCardCommand = PlayCardCommand.new(hand_card(owner, ATTACK), null, board, hound)
 	var notified: Array[bool] = []
-	owner.state_changed.connect(func() -> void: notified.append(hound.hp == 0 and board.entity == null and state.pending_rewards.size() == 1))
+	owner.state_changed.connect(func() -> void: notified.append(hound.hp == 0 and board.entity == null and state.flow.pending_rewards.size() == 1))
 	var result: ActionResult = play(owner, lethal, true)
 	check(result.entity.defeated and not hound.alive and board.entity == null and state.floor_state.resolved_entity_ids == [hound.entity_id] and notified == [true], "Final defeat/reward commit precedes board retirement and observer notification")
-	check(state.pending_rewards[0].choices.size() == 3, "Meaningful Hound resolution offers three choices")
-	var reward: CardReward = state.pending_rewards[0]
+	check(state.flow.pending_rewards[0].choices.size() == 3, "Meaningful Hound resolution offers three choices")
+	var reward: CardReward = state.flow.pending_rewards[0]
 	check(owner.submit_reward_command(CardRewardCommand.new(reward, reward.choices[0])).success, "Resolve actual Hound opportunity")
 	reject(owner, stale, &"invalid_entity_target")
 	check(play_generated(owner, &"light").success and board.entity != null and board.entity.entity_id == LEVEL_6.followup_entity.id, "LIGHT after removed Hound uses resolved fact to spawn Smiler")
@@ -110,11 +110,11 @@ func _test_disengage_reward() -> void:
 	play(owner, GUARD)
 	owner.end_turn()
 	check(hound.state == &"STAGGERED", "Published intent can be fully blocked in same loop")
-	check(play(owner, RUN, true).success and hound.alive and hound.state == &"DISENGAGED" and owner.run_state.floor_state.entity == null and owner.run_state.pending_rewards.size() == 1, "Data-driven reward also supports meaningful alive disengagement")
-	var reward: CardReward = owner.run_state.pending_rewards[0]
+	check(play(owner, RUN, true).success and hound.alive and hound.state == &"DISENGAGED" and owner.run_state.floor_state.entity == null and owner.run_state.flow.pending_rewards.size() == 1, "Data-driven reward also supports meaningful alive disengagement")
+	var reward: CardReward = owner.run_state.flow.pending_rewards[0]
 	owner.submit_reward_command(CardRewardCommand.new(reward, reward.choices[0]))
 	owner.end_turn()
-	check(owner.run_state.pending_rewards.is_empty() and owner.run_state.floor_state.entity == null, "Resolved facts cannot repeat reward or respawn Hound")
+	check(owner.run_state.flow.pending_rewards.is_empty() and owner.run_state.floor_state.entity == null, "Resolved facts cannot repeat reward or respawn Hound")
 	owner.free()
 
 
@@ -127,8 +127,8 @@ func _test_rewards_and_rng() -> void:
 			var before_rng: int = owner.run_state.rng.state
 			play(owner, OBSERVE)
 			var state: RunState = owner.run_state
-			check(state.pending_rewards.size() == 1 and state.rng.state != before_rng, "Only declared completion offers reward and commits RNG")
-			var reward: CardReward = state.pending_rewards[0]
+			check(state.flow.pending_rewards.size() == 1 and state.rng.state != before_rng, "Only declared completion offers reward and commits RNG")
+			var reward: CardReward = state.flow.pending_rewards[0]
 			check(reward.choices.size() == 3 and reward.choices[0] != reward.choices[1] and reward.choices[1] != reward.choices[2] and reward.choices[0] != reward.choices[2], "Offer contains exactly three distinct choices")
 			offered.append(reward.choices.map(func(card: CardData) -> StringName: return card.id))
 			check(all_cards(state).all(func(card: CardInstance) -> bool: return not reward.choices.has(card.definition)), "No offered choice enters deck before claim")
@@ -138,14 +138,14 @@ func _test_rewards_and_rng() -> void:
 			reject_reward(owner, CardRewardCommand.new(reward, LEVEL_0.rushed_cutout_card), &"invalid_reward_choice")
 			var selected: CardData = reward.choices[0]
 			var result: ActionResult = owner.submit_reward_command(CardRewardCommand.new(reward, selected))
-			check(result.success and result.deck.card_changed.definition == selected and state.deck_state.discard_pile.has(result.deck.card_changed) and state.deck_state.get_card_count() == 8 and state.pending_rewards.is_empty(), "One new NORMAL instance enters existing discard for future draws")
+			check(result.success and result.deck.card_changed.definition == selected and state.player.deck.discard_pile.has(result.deck.card_changed) and state.player.deck.get_card_count() == 8 and state.flow.pending_rewards.is_empty(), "One new NORMAL instance enters existing discard for future draws")
 			check(all_cards(state).filter(func(card: CardInstance) -> bool: return reward.choices.has(card.definition)).size() == 1, "Unchosen offers never enter any zone")
-			check(state.ap == before.ap and state.turn_number == before.turn and state.rng.state == before.rng, "Claim does not draw/advance/reset AP or consume extra RNG")
+			check(state.player.ap == before.ap and state.flow.turn_number == before.turn and state.rng.state == before.rng, "Claim does not draw/advance/reset AP or consume extra RNG")
 			reject_reward(owner, CardRewardCommand.new(reward, selected), &"invalid_reward")
 			var drawn: bool = false
 			for turn: int in range(5):
 				owner.end_turn()
-				drawn = drawn or state.deck_state.hand.has(result.deck.card_changed)
+				drawn = drawn or state.player.deck.hand.has(result.deck.card_changed)
 			check(drawn, "Chosen instance is drawn later through existing shuffle lifecycle")
 		check(offered[0] == offered[1], "Same seed and commands reproduce exact reward choices")
 		for owner: TurnManager in pair:
@@ -168,16 +168,16 @@ func _test_upgrade() -> void:
 	for index: int in range(3):
 		play(owner, OBSERVE)
 	var state: RunState = owner.run_state
-	var reward: CardReward = state.pending_rewards[0]
+	var reward: CardReward = state.flow.pending_rewards[0]
 	check(reward.definition == UPGRADE, "Declared Situation offers upgrade rather than extra cards")
-	var copies: Array[CardInstance] = state.deck_state.hand.filter(func(card: CardInstance) -> bool: return card.definition == ATTACK)
+	var copies: Array[CardInstance] = state.player.deck.hand.filter(func(card: CardInstance) -> bool: return card.definition == ATTACK)
 	var chosen: CardInstance = copies[0]
 	var stale: PlayCardCommand = PlayCardCommand.new(chosen, null, state.floor_state.board_state)
-	var index_before: int = state.deck_state.hand.find(chosen)
+	var index_before: int = state.player.deck.hand.find(chosen)
 	var inventory: Array[CardInstance] = all_cards(state)
 	var result: ActionResult = owner.submit_reward_command(CardRewardCommand.new(reward, null, chosen))
 	check(result.success and chosen.definition == ATTACK.upgrade_to and copies[1].definition == ATTACK and ATTACK.effect_value == 4, "Only chosen copy upgrades; other copy and shared CardData unchanged")
-	check(state.deck_state.hand.find(chosen) == index_before and state.deck_state.get_card_count() == 6 and all_cards(state) == inventory, "Upgrade preserves exact instance, position and zone ownership")
+	check(state.player.deck.hand.find(chosen) == index_before and state.player.deck.get_card_count() == 6 and all_cards(state) == inventory, "Upgrade preserves exact instance, position and zone ownership")
 	reject(owner, stale, &"invalid_card_source")
 	reject_reward(owner, CardRewardCommand.new(reward, null, copies[1]), &"invalid_reward")
 	owner.free()
@@ -193,24 +193,24 @@ func _test_removal() -> void:
 	var owner: TurnManager = manager([OBSERVE, SEARCH, ATTACK, GUARD, RUN, OBSERVE], data)
 	play(owner, OBSERVE)
 	var state: RunState = owner.run_state
-	var reward: CardReward = state.pending_rewards[0]
+	var reward: CardReward = state.flow.pending_rewards[0]
 	var eligible: Array[CardInstance] = CardRewardSystem.eligible_cards(state, CardRewardData.Kind.REMOVE_CARD)
 	check(eligible.size() == 6 and eligible.all(func(card: CardInstance) -> bool: return card.source == CardData.Source.NORMAL), "Removal opportunity enumerates only owned normal instances across all zones")
-	for card: CardInstance in state.deck_state.hand:
+	for card: CardInstance in state.player.deck.hand:
 		if card.source != CardData.Source.NORMAL:
 			reject_reward(owner, CardRewardCommand.new(reward, null, card), &"invalid_reward_card")
 	check(generated(owner, &"light") != null and generated(owner, &"rushed") != null, "Removal exclusion test includes actual equipment and retained CutOut cards")
 	reject_reward(owner, CardRewardCommand.new(reward), &"invalid_reward_card")
 	var chosen: CardInstance = eligible[0]
 	var stale: PlayCardCommand = PlayCardCommand.new(chosen, null, state.floor_state.board_state)
-	check(owner.submit_reward_command(CardRewardCommand.new(reward, null, chosen)).success and state.deck_state.get_card_count() == 5 and not all_cards(state).has(chosen), "Exactly one normal instance leaves run deck")
+	check(owner.submit_reward_command(CardRewardCommand.new(reward, null, chosen)).success and state.player.deck.get_card_count() == 5 and not all_cards(state).has(chosen), "Exactly one normal instance leaves run deck")
 	reject(owner, stale, &"card_not_in_hand")
 	check(CardRewardSystem.eligible_cards(state, CardRewardData.Kind.REMOVE_CARD).is_empty(), "Five-card minimum excludes further removals")
 	# 独立机会夹具验证空候选继续边界，不给真实玩家新增自由删牌入口。
 	var empty: CardReward = CardReward.new()
 	empty.definition = REMOVE
-	state.pending_rewards.append(empty)
-	check(owner.submit_reward_command(CardRewardCommand.new(empty)).success and state.deck_state.get_card_count() == 5, "Empty removal opportunity can close without trapping run")
+	state.flow.pending_rewards.append(empty)
+	check(owner.submit_reward_command(CardRewardCommand.new(empty)).success and state.player.deck.get_card_count() == 5, "Empty removal opportunity can close without trapping run")
 	owner.free()
 
 
@@ -221,7 +221,7 @@ func _test_new_cards() -> void:
 		var owner: TurnManager = manager([definition, GUARD, OBSERVE, OBSERVE, OBSERVE], LEVEL_6, false)
 		var result: ActionResult = play(owner, definition, definition.target_kinds == CardData.TargetKind.ENTITY)
 		check(result.success and result.card.ap_spent == definition.ap_cost + (1 if definition.tags.has(&"OBSERVE") else 0), "Each offered definition resolves its declared semantic")
-		check(owner.run_state.threat == definition.threat_cost, "Each risk variant commits own Threat cost")
+		check(owner.run_state.floor_state.threat == definition.threat_cost, "Each risk variant commits own Threat cost")
 		if definition.explore_amount > 0:
 			check(result.objective.progress_applied == definition.explore_amount, "Explore baseline is consumed by generic Situation")
 		elif definition.effect_type == CardData.EffectType.ATTACK:
@@ -254,19 +254,19 @@ func _test_target_ui() -> void:
 	var hand: HBoxContainer = main.get_node("%Hand") as HBoxContainer
 	var before: Dictionary = snapshot(owner)
 	(main.get_node("%WorldCard") as Button).pressed.emit()
-	for index: int in range(owner.run_state.deck_state.hand.size()):
-		var card: CardInstance = owner.run_state.deck_state.hand[index]
+	for index: int in range(owner.run_state.player.deck.hand.size()):
+		var card: CardInstance = owner.run_state.player.deck.hand[index]
 		if card.source != CardData.Source.NORMAL:
 			continue
 		var error: StringName = RuleResolver.validate_card_target(PlayCardCommand.new(card, board.active_objective, board) if card.definition.target_kinds != 0 else PlayCardCommand.new(card, null, board), owner.run_state.floor_state, owner.floor_data, owner.run_state)
 		check((hand.get_child(index) as Button).disabled == not error.is_empty(), "Situation selection UI agrees with domain target legality")
-	var attack: Button = hand.get_child(owner.run_state.deck_state.hand.find(hand_card(owner, ATTACK))) as Button
+	var attack: Button = hand.get_child(owner.run_state.player.deck.hand.find(hand_card(owner, ATTACK))) as Button
 	check(attack.disabled and attack.tooltip_text.contains("需要实体目标"), "Selected Situation disables Attack with Chinese reason")
 	await process_frame
 	await _mouse_click(attack)
 	check(snapshot(owner) == before, "Actual disabled Attack mouse click cannot spend anything")
 	(main.get_node("%EntityCard") as Button).pressed.emit()
-	var search: Button = hand.get_child(owner.run_state.deck_state.hand.find(hand_card(owner, SEARCH))) as Button
+	var search: Button = hand.get_child(owner.run_state.player.deck.hand.find(hand_card(owner, SEARCH))) as Button
 	check(search.disabled and search.tooltip_text.contains("不能以实体为搜索目标"), "Selected Hound disables environment Search with concise feedback")
 	await process_frame
 	await _mouse_click(search)
@@ -276,8 +276,8 @@ func _test_target_ui() -> void:
 
 func claim_ui(main: Control, kinds: Array[int]) -> void:
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
-	while not owner.run_state.pending_rewards.is_empty():
-		var opportunity: CardReward = owner.run_state.pending_rewards[0]
+	while not owner.run_state.flow.pending_rewards.is_empty():
+		var opportunity: CardReward = owner.run_state.flow.pending_rewards[0]
 		kinds.append(opportunity.definition.kind)
 		var options: VBoxContainer = main.get_node("%RewardPanel/Margin/Layout/Scroll/Options") as VBoxContainer
 		check((main.get_node("%RewardPanel") as Control).visible and (main.get_node("%EndTurn") as Button).disabled, "Actual opportunity shows modal Chinese panel and blocks normal lifecycle")
@@ -299,8 +299,8 @@ func _test_production_ui_run() -> void:
 	root.add_child(main)
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
 	var state: RunState = owner.run_state
-	var deck: DeckState = state.deck_state
-	var equipment: Array[EquipmentInstance] = state.equipment_slots.duplicate()
+	var deck: DeckState = state.player.deck
+	var equipment: Array[EquipmentInstance] = state.player.equipment.slots.duplicate()
 	var kinds: Array[int] = []
 	for turn: int in range(20):
 		for action: int in range(4):
@@ -310,7 +310,7 @@ func _test_production_ui_run() -> void:
 				break
 			var chosen: CardData
 			for card: CardInstance in deck.hand:
-				if card.source == CardData.Source.NORMAL and card.definition.explore_amount > 0 and RuleResolver.card_ap_cost(card.definition, state, owner.floor_data) <= state.ap:
+				if card.source == CardData.Source.NORMAL and card.definition.explore_amount > 0 and RuleResolver.card_ap_cost(card.definition, state, owner.floor_data) <= state.player.ap:
 					chosen = card.definition
 					break
 			if chosen == null:
@@ -322,14 +322,14 @@ func _test_production_ui_run() -> void:
 		(main.get_node("%EndTurn") as Button).pressed.emit()
 	check(kinds.count(0) == 1 and kinds.count(1) == 1 and kinds.count(2) == 1, "Normal production Level 0 route receives add/upgrade/remove through three declared Situations")
 	check(deck.get_card_count() == DECK.cards.size(), "One gain plus one removal preserve expected run deck size")
-	if state.ap < 1:
+	if state.player.ap < 1:
 		(main.get_node("%EndTurn") as Button).pressed.emit()
 	click_generated(main, &"safe")
-	check(state.floor_state.floor_id == LEVEL_6.id and owner.run_state == state and state.deck_state == deck, "Reward-adjusted deck continues naturally into Level 6 with same Run/deck/AP")
+	check(state.floor_state.floor_id == LEVEL_6.id and owner.run_state == state and state.player.deck == deck, "Reward-adjusted deck continues naturally into Level 6 with same Run/deck/AP")
 	var hound: EntityInstance = state.floor_state.entity
 	for turn: int in range(16):
 		await claim_ui(main, kinds)
-		if not hound.active or state.player_hp <= 0:
+		if not hound.active or state.player.hp <= 0:
 			break
 		for action: int in range(4):
 			var chosen: CardInstance
@@ -338,17 +338,17 @@ func _test_production_ui_run() -> void:
 			# 先抑制环境压力，再用同一手牌防御／攻击；没有 AP 或牌区注入。
 			if event != null and not event.resolved and event.last_progress_turn != state.floor_state.turn_count:
 				for card: CardInstance in deck.hand:
-					if card.source == CardData.Source.NORMAL and card.definition.explore_amount > 0 and RuleResolver.card_ap_cost(card.definition, state, owner.floor_data) <= state.ap:
+					if card.source == CardData.Source.NORMAL and card.definition.explore_amount > 0 and RuleResolver.card_ap_cost(card.definition, state, owner.floor_data) <= state.player.ap:
 						chosen = card
 						break
-			if chosen == null and hound.intent in [&"bite", &"lunge"] and state.floor_state.player_block < 4:
+			if chosen == null and hound.intent in [&"bite", &"lunge"] and state.player.block < 4:
 				for card: CardInstance in deck.hand:
-					if card.definition.effect_type == CardData.EffectType.BLOCK and card.definition.ap_cost <= state.ap:
+					if card.definition.effect_type == CardData.EffectType.BLOCK and card.definition.ap_cost <= state.player.ap:
 						chosen = card
 						break
 			if chosen == null:
 				for card: CardInstance in deck.hand:
-					if card.definition.effect_type == CardData.EffectType.ATTACK and card.definition.ap_cost <= state.ap:
+					if card.definition.effect_type == CardData.EffectType.ATTACK and card.definition.ap_cost <= state.player.ap:
 						chosen = card
 						target_entity = true
 						if card.source == CardData.Source.EQUIPMENT:
@@ -363,16 +363,16 @@ func _test_production_ui_run() -> void:
 		if not hound.active:
 			break
 		(main.get_node("%EndTurn") as Button).pressed.emit()
-	check(state.player_hp > 0 and not hound.alive and state.floor_state.entity == null and not (main.get_node("%EntityCard") as Button).visible, "Actual card UI defeats Hound and immediately hides retired World Card")
+	check(state.player.hp > 0 and not hound.alive and state.floor_state.entity == null and not (main.get_node("%EntityCard") as Button).visible, "Actual card UI defeats Hound and immediately hides retired World Card")
 	check(kinds.count(0) == 2, "Hound offers and UI claims exactly one additional three-card opportunity")
 	for turn: int in range(8):
-		if generated(owner, &"light") != null and state.ap >= 1:
+		if generated(owner, &"light") != null and state.player.ap >= 1:
 			click_generated(main, &"light")
 			break
 		(main.get_node("%EndTurn") as Button).pressed.emit()
 	var smiler: EntityInstance = state.floor_state.entity
 	check(smiler != null and smiler.entity_id == LEVEL_6.followup_entity.id, "Post-retirement LIGHT spawns Smiler through existing world rule")
-	if generated(owner, &"extinguish") != null and state.ap >= 1:
+	if generated(owner, &"extinguish") != null and state.player.ap >= 1:
 		click_generated(main, &"extinguish")
 	(main.get_node("%EndTurn") as Button).pressed.emit()
 	if smiler != null and smiler.active:
@@ -381,11 +381,11 @@ func _test_production_ui_run() -> void:
 	for attempt: int in range(12):
 		if owner.floor_data.is_placeholder:
 			break
-		if state.ap >= 1:
+		if state.player.ap >= 1:
 			click_generated(main, &"safe" if generated(owner, &"safe") != null else &"rushed")
 		if not owner.floor_data.is_placeholder:
 			(main.get_node("%EndTurn") as Button).pressed.emit()
-	check(owner.floor_data.is_placeholder and state.player_hp > 0 and state.equipment_slots == equipment and state.deck_state == deck, "Production UI completes Level 0 -> rewards/upgrade/removal -> Level 6/Hound/Smiler -> exit")
+	check(owner.floor_data.is_placeholder and state.player.hp > 0 and state.player.equipment.slots == equipment and state.player.deck == deck, "Production UI completes Level 0 -> rewards/upgrade/removal -> Level 6/Hound/Smiler -> exit")
 	for pile: Array[CardInstance] in [deck.draw_pile, deck.discard_pile]:
 		check(pile.all(func(card: CardInstance) -> bool: return card.source == CardData.Source.NORMAL), "Reward/upgrade/removal never pollute normal piles with generated cards")
 	check(not (main.get_node("%DebugPanel") as Control).visible, "Continuous run never uses debug tools")

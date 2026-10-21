@@ -34,7 +34,7 @@ func _test_draw_play_and_rejection() -> void:
 	var manager: TurnManager = TurnManager.new()
 	root.add_child(manager)
 	var state: RunState = manager.run_state
-	var deck: DeckState = state.deck_state
+	var deck: DeckState = state.player.deck
 	var inventory: Array[CardInstance] = deck.hand.duplicate()
 	inventory.append_array(deck.draw_pile)
 	_check(deck.hand.size() == 5 and deck.draw_pile.size() == 4, "Initial draw fills the hand to 5")
@@ -45,16 +45,16 @@ func _test_draw_play_and_rejection() -> void:
 	var second_observe: CardInstance = deck.hand[2]
 	var wait: CardInstance = deck.hand[4]
 	_check(manager.request_play_card(observe).success, "Observe succeeds")
-	_check(state.ap == 2, "One AP card deducts exactly 1 AP")
+	_check(state.player.ap == 2, "One AP card deducts exactly 1 AP")
 	_check(not deck.hand.has(observe) and deck.discard_pile.has(observe), "Played card moves from hand to discard")
 	_check_inventory(deck, inventory)
 	_check(manager.request_play_card(struggle).success, "Struggle succeeds")
 	_check(struggle.definition.placeholder_damage == 2, "Struggle reports 2 placeholder damage")
-	_check(state.ap == 1, "Struggle costs 1 AP")
-	_check(manager.request_play_card(second_observe).success and state.ap == 0, "Final available AP can be spent")
-	_check(manager.request_play_card(wait).success and state.ap == 0, "Wait costs zero and can be played at zero AP")
-	_check(state.cognition == 0, "Observe never directly changes Cognition")
-	_check(state.player_hp == 30 and state.stress == 0 and state.threat == 0, "Prototype plays apply no future gameplay effects")
+	_check(state.player.ap == 1, "Struggle costs 1 AP")
+	_check(manager.request_play_card(second_observe).success and state.player.ap == 0, "Final available AP can be spent")
+	_check(manager.request_play_card(wait).success and state.player.ap == 0, "Wait costs zero and can be played at zero AP")
+	_check(state.floor_state == null, "Observe never directly changes Cognition before a floor exists")
+	_check(state.player.hp == 30 and state.player.stress == 0, "Prototype plays apply no player effects before a floor exists")
 	var remaining: CardInstance = deck.hand[0]
 	var hand_before: Array[CardInstance] = deck.hand.duplicate()
 	var draw_before: Array[CardInstance] = deck.draw_pile.duplicate()
@@ -64,7 +64,7 @@ func _test_draw_play_and_rejection() -> void:
 	_check(not manager.request_play_card(null).success, "Null command is rejected")
 	_check(not manager.request_play_card(CardInstance.new(OBSERVE)).success, "An instance outside the hand is rejected")
 	_check(not manager.request_play_card(wait).success, "A discarded card cannot be played again")
-	_check(state.ap == 0, "Rejected plays do not alter AP")
+	_check(state.player.ap == 0, "Rejected plays do not alter AP")
 	_check(deck.hand == hand_before, "Rejected plays preserve the entire hand and order")
 	_check(deck.draw_pile == draw_before and deck.discard_pile == discard_before, "Rejected plays preserve both piles")
 	_check(state.rng.state == rng_before, "Rejected plays do not consume RNG")
@@ -79,7 +79,7 @@ func _test_discard_and_short_decks() -> void:
 	var state: RunState = RunState.new(202)
 	var definitions: Array[CardData] = [OBSERVE, WAIT, STRUGGLE]
 	var system: CardSystem = CardSystem.new(state, definitions)
-	var deck: DeckState = state.deck_state
+	var deck: DeckState = state.player.deck
 	var inventory: Array[CardInstance] = deck.draw_pile.duplicate()
 	system.draw_to_hand_size()
 	_check(deck.hand.size() == 3 and deck.draw_pile.is_empty(), "A short deck stops when no cards remain to draw")
@@ -99,13 +99,13 @@ func _test_discard_and_short_decks() -> void:
 	var empty_system: CardSystem = CardSystem.new(empty_state, empty_definitions)
 	empty_system.draw_to_hand_size()
 	empty_system.discard_hand()
-	_check(empty_state.deck_state.get_card_count() == 0, "Empty deck draw/discard terminates without creating cards")
+	_check(empty_state.player.deck.get_card_count() == 0, "Empty deck draw/discard terminates without creating cards")
 
 
 func _shuffle_order(seed_value: int) -> Array[int]:
 	var state: RunState = RunState.new(seed_value)
 	var system: CardSystem = CardSystem.new(state, STARTER_DECK.cards)
-	var deck: DeckState = state.deck_state
+	var deck: DeckState = state.player.deck
 	var inventory: Array[CardInstance] = deck.draw_pile.duplicate()
 	system.draw_to_hand_size(inventory.size())
 	system.discard_hand()
@@ -125,22 +125,22 @@ func _test_seeded_shuffle() -> void:
 	_check(first_order != different_order, "The deck uses the supplied run seed")
 	var state: RunState = RunState.new()
 	var other_state: RunState = RunState.new()
-	_check(state.deck_state != other_state.deck_state and state.rng != other_state.rng, "Deck and RNG are isolated between runs")
+	_check(state.player.deck != other_state.player.deck and state.rng != other_state.rng, "Deck and RNG are isolated between runs")
 
 
 func _test_turn_integration() -> void:
 	var manager: TurnManager = TurnManager.new()
 	root.add_child(manager)
 	var state: RunState = manager.run_state
-	var deck: DeckState = state.deck_state
+	var deck: DeckState = state.player.deck
 	var inventory: Array[CardInstance] = []
 	inventory.append_array(deck.hand)
 	inventory.append_array(deck.draw_pile)
-	_check(state.turn_number == 1 and state.ap == 3 and deck.hand.size() == 5, "Turn 1 starts with 3 AP and a hand of 5")
+	_check(state.flow.turn_number == 1 and state.player.ap == 3 and deck.hand.size() == 5, "Turn 1 starts with 3 AP and a hand of 5")
 	var draw_before: Array[CardInstance] = deck.draw_pile.duplicate()
 	_check(manager.request_play_card(deck.hand[0]).success, "TurnManager forwards validated play commands")
 	manager.end_turn()
-	_check(state.turn_number == 2 and state.ap == 3, "Next turn advances once and restores 3 AP")
+	_check(state.flow.turn_number == 2 and state.player.ap == 3, "Next turn advances once and restores 3 AP")
 	_check(deck.hand.size() == 5, "Next turn draws back to 5")
 	for index: int in range(draw_before.size()):
 		_check(deck.hand[index] == draw_before[index], "Partial draw consumes existing pile before reshuffling discard")
@@ -152,9 +152,9 @@ func _test_turn_integration() -> void:
 			manager.request_play_card(card)
 			_check_inventory(deck, inventory)
 		manager.end_turn()
-		_check(state.turn_number == expected_turn and state.ap == 3 and deck.hand.size() == 5, "Repeated turns restore AP and refill the hand")
+		_check(state.flow.turn_number == expected_turn and state.player.ap == 3 and deck.hand.size() == 5, "Repeated turns restore AP and refill the hand")
 		_check_inventory(deck, inventory)
-	_check(state.cognition == 0 and state.threat == 0, "Turn/card integration adds no floor or insight rules")
+	_check(state.floor_state == null, "Turn/card integration adds no floor or insight rules without floor data")
 	manager.free()
 
 
@@ -174,13 +174,13 @@ func _test_debug_ui() -> void:
 	_check((hand.get_child(0) as Button).text.contains("观察") and (hand.get_child(0) as Button).text.contains("行动点：1"), "Player Card shows its name and cost")
 	for expected_ap: int in [2, 1]:
 		(hand.get_child(0) as Button).pressed.emit()
-		_check(manager.run_state.ap == expected_ap and stats.text.contains("行动点：%d" % expected_ap), "Real card commands deduct AP exactly once and refresh UI")
+		_check(manager.run_state.player.ap == expected_ap and stats.text.contains("行动点：%d" % expected_ap), "Real card commands deduct AP exactly once and refresh UI")
 	_check(hand.get_child_count() == 4 and counts.text == "抽牌堆：5｜弃牌堆：2", "Normal plays enter discard; first Insight also generates a retained exit")
-	var card_count: int = manager.run_state.deck_state.get_card_count()
+	var card_count: int = manager.run_state.player.deck.get_card_count()
 	(hand.get_child(0) as Button).pressed.emit()
-	_check(hand.get_child_count() == 4 and manager.run_state.ap == 1 and card_count == 10, "Resolved-target rejection preserves AP and the ten-card normal inventory (hand=%d ap=%d cards=%d)" % [hand.get_child_count(), manager.run_state.ap, manager.run_state.deck_state.get_card_count()])
+	_check(hand.get_child_count() == 4 and manager.run_state.player.ap == 1 and card_count == 10, "Resolved-target rejection preserves AP and the ten-card normal inventory (hand=%d ap=%d cards=%d)" % [hand.get_child_count(), manager.run_state.player.ap, manager.run_state.player.deck.get_card_count()])
 	end_turn.pressed.emit()
-	_check(manager.run_state.turn_number == 2 and manager.run_state.ap == 3, "UI End Turn preserves Phase 1 lifecycle")
+	_check(manager.run_state.flow.turn_number == 2 and manager.run_state.player.ap == 3, "UI End Turn preserves Phase 1 lifecycle")
 	_check(hand.get_child_count() == 5 and stats.text.contains("回合：2"), "Same deck redraws five cards for the next Situation")
 	main.free()
 

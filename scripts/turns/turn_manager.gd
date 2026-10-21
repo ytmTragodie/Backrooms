@@ -20,11 +20,13 @@ var card_system: CardSystem
 
 
 func _ready() -> void:
-	var equipment_error: StringName = EquipmentSystem.initialize(run_state, starting_equipment)
+	var equipment_error: StringName = EquipmentSystem.initialize(run_state.player.equipment, starting_equipment)
 	if not equipment_error.is_empty():
 		push_error("Cannot initialize carry slots: %s" % equipment_error)
 		return
 	card_system = CardSystem.new(run_state, starter_deck.cards)
+	# 回合生命周期由本节点安排；AP 的权威写入仍交给 PlayerSystem。
+	PlayerSystem.begin_turn(run_state)
 	if floor_data != null:
 		run_state.floor_state = FloorState.new(floor_data)
 		if OS.is_debug_build():
@@ -46,16 +48,16 @@ func end_turn() -> ActionResult:
 		action_resolved.emit(result)
 		return result
 	# 致命意图已完整提交；不再给死亡角色恢复 AP 或开启下一回合。
-	if run_state.player_hp <= 0:
+	if run_state.player.hp <= 0:
 		state_changed.emit()
 		action_resolved.emit(result)
 		return result
-	var ended_turn: int = run_state.turn_number
+	var ended_turn: int = run_state.flow.turn_number
 	if OS.is_debug_build():
 		print("[TURN] end turn=%d" % ended_turn)
 	card_system.discard_hand()
-	run_state.turn_number += 1
-	run_state.ap = RunState.AP_PER_TURN
+	run_state.flow.turn_number += 1
+	PlayerSystem.begin_turn(run_state)
 	if run_state.floor_state != null:
 		ResourceNodeSystem.finish_turn(run_state.floor_state)
 		run_state.floor_state.turn_count += 1
@@ -94,10 +96,10 @@ func _announce_turn_start() -> void:
 		if options >= 2:
 			run_state.metrics.multiple_option_hands += 1
 		if OS.is_debug_build():
-			print("[BALANCE] hand options=%d cards=%d turn=%d" % [options, run_state.deck_state.hand.size(), run_state.turn_number])
+			print("[BALANCE] hand options=%d cards=%d turn=%d" % [options, run_state.player.deck.hand.size(), run_state.flow.turn_number])
 	if OS.is_debug_build():
-		print("[TURN] start turn=%d ap=%d" % [run_state.turn_number, run_state.ap])
-	turn_started.emit(run_state.turn_number)
+		print("[TURN] start turn=%d ap=%d" % [run_state.flow.turn_number, run_state.player.ap])
+	turn_started.emit(run_state.flow.turn_number)
 	state_changed.emit()
 
 

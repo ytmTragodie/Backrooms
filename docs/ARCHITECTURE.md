@@ -30,22 +30,22 @@
 
 ```text
 RunState                       # 一局游戏的聚合根、跨层引用与运行流程
-├── player: PlayerState        # HP、Stress、Supply 等个人持有状态
+├── player: PlayerState        # HP/max_hp、Stress/Supply、AP/Block 等个人持有状态
 │   ├── deck: DeckState        # NORMAL 牌组与手牌/牌区的唯一所有者
-│   └── equipment: EquipmentState  # 携带槽与物品实例；不混入抽牌堆
-├── floor: FloorState          # 本次楼层访问的 Threat、Cognition、规则与资源
-│   ├── board: BoardState      # 最多 2 Event + 1 Objective + 当前 1 Entity
-│   └── cutout: CutOutState
-├── map: RunMapState           # 跨楼层的已访问/已发现路线（目标设计）
-├── pending_rewards           # Run 流程中唯一待领取奖励队列
-└── rng / metrics             # 确定性随机源和已提交事实
+│   └── equipment: EquipmentState  # 携带槽、物品实例与装备牌生成调度
+├── floor_state: FloorState    # 本次楼层访问的 Threat、Cognition、规则与资源
+│   ├── board_state: BoardState # 最多 2 Event + 1 Objective + 当前 1 Entity
+│   └── cutout_state: CutOutState
+├── flow: RunFlowState         # 回合号、待领取奖励队列、最近切出记录
+├── metrics                    # 已提交事实
+└── rng / rng_seed             # 确定性随机源
 ```
 
-- 当前代码可能仍以 `RunState.player_hp / deck_state / equipment_slots` 或 `FloorState.player_block` 存储：**在真正迁移并更新全部调用者之前，这些就是权威字段**。不准直接添加另一份同义可写字段；迁移要有适配窗口、测试和移除计划。
-- 玩家**持有** `DeckState / EquipmentState` 的引用，牌区与装备内部数据由各自 State 管；“玩家有牌组”不等于“玩家类里平铺 draw/hand/discard 每个数组”。
-- 作用域要明确：Supply/HP/Stress 属于玩家；Threat/Cognition/本层环境属于 Floor；AP 的回合恢复由 TurnManager 管，具体字段迁移前沿用当前权威位置；临时 Guard/LIGHT 亦以仓库当前所有者为准。
+- `RunState` 中不再保留 `player_hp / stress / supply / ap / deck_state / equipment_slots / pending_rewards / turn_number / last_cutout_attempt` 等平铺业务字段；`FloorState` 也不再保留 `player_block`。不要为了过渡重新添加同义可写字段。
+- 玩家**持有** `DeckState / EquipmentState` 的引用，牌区与装备内部数据由各自 State 管；“玩家有牌组”不等于“玩家类里平铺 draw/hand/discard 每个数组”。`EquipmentState` 只保存槽位引用与生成调度，耐久/电量/次数只在 `EquipmentInstance` 上。
+- 作用域要明确：Supply/HP/Stress/AP/Block 属于玩家，由 `PlayerSystem` 提交；Threat/Cognition/本层环境属于 Floor；`TurnManager` 只安排回合生命周期并调用 `PlayerSystem.begin_turn`，不直接写玩家字段。
 - `FloorData` 是层型配置，`FloorState` 是本次访问；回到同一层一般创建新状态。BoardState 才是活动世界对象的唯一所有者；ID/历史记录不是活动实例的替代品。
-- 跨层地图持久信息归 RunMapState，不归本层 FloorState；Reward Opportunity 归 Run 的队列，真正加入/升级/移除的牌归 DeckState。
+- 跨层地图持久信息归 RunMapState，不归本层 FloorState；Reward Opportunity 归 `RunFlowState.pending_rewards`，真正加入/升级/移除的牌归 DeckState。
 
 ### 2.2 控制大型类的增长
 

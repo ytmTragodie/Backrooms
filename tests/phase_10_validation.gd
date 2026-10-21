@@ -75,14 +75,14 @@ func _test_content_and_economy() -> void:
 			check(result.success and result.objective.newly_resolved and owner.run_state.floor_state.board_state.active_objective == null, "Completed Situation leaves active slot after result commit")
 			if event.completion_reward != null:
 				budget += 1
-				check(event.completion_reward.kind == CardRewardData.Kind.ADD_CARD and owner.run_state.pending_rewards.size() == 1, "Only selected major Situation gives three-card reward")
-				var reward: CardReward = owner.run_state.pending_rewards[0]
+				check(event.completion_reward.kind == CardRewardData.Kind.ADD_CARD and owner.run_state.flow.pending_rewards.size() == 1, "Only selected major Situation gives three-card reward")
+				var reward: CardReward = owner.run_state.flow.pending_rewards[0]
 				owner.submit_reward_command(CardRewardCommand.new(reward, reward.choices[0]))
 			else:
-				check(owner.run_state.pending_rewards.is_empty(), "Normal Situation never automatically offers a deck modification")
+				check(owner.run_state.flow.pending_rewards.is_empty(), "Normal Situation never automatically offers a deck modification")
 			var before: Dictionary = full_snapshot(owner)
 			var stale: ActionResult = owner.request_play_card(hand_card(owner, OBSERVE), old, owner.run_state.floor_state.board_state)
-			check(not stale.success and full_snapshot(owner) == before and owner.run_state.pending_rewards.is_empty(), "Stale resolved target cannot repeat reward or consume costs")
+			check(not stale.success and full_snapshot(owner) == before and owner.run_state.flow.pending_rewards.is_empty(), "Stale resolved target cannot repeat reward or consume costs")
 			owner.free()
 		for entity: EntityData in [source.entry_entity, source.followup_entity]:
 			if entity != null and entity.resolution_reward != null:
@@ -96,17 +96,17 @@ func _test_content_and_economy() -> void:
 	smiler_floor.intro_objective = null
 	var owner: TurnManager = live_owner(smiler_floor, [], false)
 	owner.end_turn()
-	check(owner.run_state.pending_rewards.is_empty(), "Unobserved hidden Smiler withdrawal gives no trivial card reward")
+	check(owner.run_state.flow.pending_rewards.is_empty(), "Unobserved hidden Smiler withdrawal gives no trivial card reward")
 	owner.free()
 	owner = live_owner(smiler_floor)
 	play_generated(owner, &"light")
 	play_generated(owner, &"extinguish")
 	owner.end_turn()
-	check(owner.run_state.pending_rewards.size() == 1, "Actual LIGHT then correct behavior gives meaningful Smiler reward")
-	var opportunity: CardReward = owner.run_state.pending_rewards[0]
+	check(owner.run_state.flow.pending_rewards.size() == 1, "Actual LIGHT then correct behavior gives meaningful Smiler reward")
+	var opportunity: CardReward = owner.run_state.flow.pending_rewards[0]
 	owner.submit_reward_command(CardRewardCommand.new(opportunity, opportunity.choices[0]))
 	owner.end_turn()
-	check(owner.run_state.pending_rewards.is_empty() and owner.run_state.metrics.cards_rewarded == 1, "Smiler resolution cannot repeatedly award cards")
+	check(owner.run_state.flow.pending_rewards.is_empty() and owner.run_state.metrics.cards_rewarded == 1, "Smiler resolution cannot repeatedly award cards")
 	owner.free()
 
 
@@ -131,10 +131,10 @@ func _test_safe_points() -> void:
 	var point: SafePointState = state.floor_state.safe_point
 	var board: BoardState = state.floor_state.board_state
 	reject_safe(owner, SafePointCommand.new(board, point, SafePointCommand.Choice.REST), &"nothing_to_restore")
-	state.player_hp = 20
-	state.stress = 5
-	var ap: int = state.ap
-	check(owner.submit_safe_point_command(SafePointCommand.new(board, point, SafePointCommand.Choice.REST)).success and state.player_hp == 26 and state.stress == 2 and point.consumed and state.ap == ap, "Rest commits configured HP/Stress and consumes exactly one opportunity without AP reset")
+	state.player.hp = 20
+	state.player.stress = 5
+	var ap: int = state.player.ap
+	check(owner.submit_safe_point_command(SafePointCommand.new(board, point, SafePointCommand.Choice.REST)).success and state.player.hp == 26 and state.player.stress == 2 and point.consumed and state.player.ap == ap, "Rest commits configured HP/Stress and consumes exactly one opportunity without AP reset")
 	var card: CardInstance = CardRewardSystem.eligible_cards(state, CardRewardData.Kind.UPGRADE_CARD)[0]
 	reject_safe(owner, SafePointCommand.new(board, point, SafePointCommand.Choice.UPGRADE, card), &"safe_point_unavailable")
 	owner.free()
@@ -153,7 +153,7 @@ func _test_safe_points() -> void:
 	point = state.floor_state.safe_point
 	board = state.floor_state.board_state
 	var generated_count: int = 0
-	for value: CardInstance in state.deck_state.hand:
+	for value: CardInstance in state.player.deck.hand:
 		if value.source == CardData.Source.NORMAL:
 			continue
 		generated_count += 1
@@ -161,18 +161,18 @@ func _test_safe_points() -> void:
 			reject_safe(owner, SafePointCommand.new(board, point, choice, value), &"invalid_reward_card")
 	check(generated_count == 2, "Actual equipment and retained floor cards both excluded from Safe Point flows")
 	selected = CardRewardSystem.eligible_cards(state, CardRewardData.Kind.REMOVE_CARD)[0]
-	check(owner.submit_safe_point_command(SafePointCommand.new(board, point, SafePointCommand.Choice.REMOVE, selected)).success and state.deck_state.get_card_count() == 5 and state.metrics.cards_removed == 1 and CardRewardSystem.eligible_cards(state, CardRewardData.Kind.REMOVE_CARD).is_empty(), "Removal preserves minimum five NORMAL cards and cannot grant a second choice")
+	check(owner.submit_safe_point_command(SafePointCommand.new(board, point, SafePointCommand.Choice.REMOVE, selected)).success and state.player.deck.get_card_count() == 5 and state.metrics.cards_removed == 1 and CardRewardSystem.eligible_cards(state, CardRewardData.Kind.REMOVE_CARD).is_empty(), "Removal preserves minimum five NORMAL cards and cannot grant a second choice")
 	owner.free()
 	owner = safe_fixture()
 	state = owner.run_state
 	owner.end_turn()
 	point = state.floor_state.safe_point
 	board = state.floor_state.board_state
-	var old_equipment: Array[EquipmentInstance] = state.equipment_slots.duplicate()
-	var old_deck: DeckState = state.deck_state
+	var old_equipment: Array[EquipmentInstance] = state.player.equipment.slots.duplicate()
+	var old_deck: DeckState = state.player.deck
 	var exit_card: CardInstance = generated(owner, &"safe")
 	check(exit_card != null and play_generated(owner, &"safe").success and not point.consumed and state.floor_state.floor_id == LIVE_6.id, "Player may leave without consuming optional Safe Point")
-	check(state.deck_state == old_deck and state.equipment_slots == old_equipment and not state.deck_state.hand.has(exit_card), "Run deck/equipment survive, old temporary exit does not")
+	check(state.player.deck == old_deck and state.player.equipment.slots == old_equipment and not state.player.deck.hand.has(exit_card), "Run deck/equipment survive, old temporary exit does not")
 	reject_safe(owner, SafePointCommand.new(board, point, SafePointCommand.Choice.REST), &"invalid_safe_point")
 	owner.free()
 
@@ -186,7 +186,7 @@ func _test_resource_feedback() -> void:
 	data.resource_nodes = [LIVE_6.resource_nodes[0]]
 	var owner: TurnManager = live_owner(data, [SEARCH, SEARCH, SEARCH, SEARCH, SEARCH])
 	var state: RunState = owner.run_state
-	var battery: EquipmentInstance = state.equipment_slots[0]
+	var battery: EquipmentInstance = state.player.equipment.slots[0]
 	var command_value: PlayCardCommand = PlayCardCommand.new(hand_card(owner, SEARCH), null, state.floor_state.board_state)
 	reject(owner, command_value, &"resources_exhausted")
 	check(state.floor_state.resource_nodes[0].status == ResourceNode.Status.UNDISCOVERED, "Full equipment does not waste a finite battery cache")
@@ -203,7 +203,7 @@ func _test_resource_feedback() -> void:
 		data.followup_entity = null
 		data.resource_nodes = [LIVE_6.resource_nodes[index]]
 		owner = live_owner(data, [SEARCH, SEARCH, SEARCH, SEARCH, SEARCH])
-		var item: EquipmentInstance = owner.run_state.equipment_slots[index]
+		var item: EquipmentInstance = owner.run_state.player.equipment.slots[index]
 		item.remaining_uses = 0
 		result = play(owner, SEARCH)
 		check(result.success and result.equipment.resource_equipment == item and item.remaining_uses == 1, "Declared finite searches restore Crowbar durability / Almond Water count")
@@ -228,7 +228,7 @@ func _test_exit_guarantee() -> void:
 				check(generated(owner, &"rushed") == null, "No immediate entry exit; empty floor waits configured fallback")
 				owner.end_turn()
 			var retained: CardInstance = generated(owner, &"rushed")
-			check(retained != null and owner.run_state.cognition == 0 and owner.run_state.floor_state.turn_count == 6, "Empty/missed-content floor has independent retained exit by fallback")
+			check(retained != null and owner.run_state.floor_state.cognition == 0 and owner.run_state.floor_state.turn_count == 6, "Empty/missed-content floor has independent retained exit by fallback")
 			for attempt: int in range(20):
 				var before: FloorState = owner.run_state.floor_state
 				var result: ActionResult = play_generated(owner, &"rushed")
@@ -250,13 +250,13 @@ func _test_threat() -> void:
 	state.floor_state.threat = 4
 	check(EntitySystem.intent_damage(entity, LIVE_6.entry_entity, state.floor_state, LIVE_6) == 5, "Level 6 Threat increases published intent damage")
 	var result: ActionResult = owner.end_turn()
-	check(result.player.damage_taken == 5 and result.player.pressure_damage == 1 and state.player_hp == 24, "Published Threat-enhanced damage resolves through original Pressure/intent pipeline")
+	check(result.player.damage_taken == 5 and result.player.pressure_damage == 1 and state.player.hp == 24, "Published Threat-enhanced damage resolves through original Pressure/intent pipeline")
 	owner.free()
 
 
 func ui_button(main: Control, card: CardInstance) -> Button:
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
-	return (main.get_node("%Hand") as HBoxContainer).get_child(owner.run_state.deck_state.hand.find(card)) as Button
+	return (main.get_node("%Hand") as HBoxContainer).get_child(owner.run_state.player.deck.hand.find(card)) as Button
 
 
 func request_for(owner: TurnManager, card: CardInstance, entity: bool = false) -> PlayCardCommand:
@@ -266,11 +266,11 @@ func request_for(owner: TurnManager, card: CardInstance, entity: bool = false) -
 
 func candidates(owner: TurnManager, effect: int, explore: bool = false) -> Array[CardInstance]:
 	var legal: Array[CardInstance] = []
-	for card: CardInstance in owner.run_state.deck_state.hand:
+	for card: CardInstance in owner.run_state.player.deck.hand:
 		if (explore and card.definition.explore_amount <= 0) or (not explore and card.definition.effect_type != effect):
 			continue
 		var request: PlayCardCommand = request_for(owner, card, not explore and effect in [CardData.EffectType.ATTACK, CardData.EffectType.RUN])
-		if RuleResolver.command_ap_cost(request, owner.run_state, owner.floor_data) <= owner.run_state.ap and RuleResolver.validate_card_target(request, owner.run_state.floor_state, owner.floor_data, owner.run_state).is_empty():
+		if RuleResolver.command_ap_cost(request, owner.run_state, owner.floor_data) <= owner.run_state.player.ap and RuleResolver.validate_card_target(request, owner.run_state.floor_state, owner.floor_data, owner.run_state).is_empty():
 			legal.append(card)
 	legal.sort_custom(func(a: CardInstance, b: CardInstance) -> bool: return a.definition.effect_value > b.definition.effect_value if not explore else float(a.definition.explore_amount) / RuleResolver.card_ap_cost(a.definition, owner.run_state, owner.floor_data) > float(b.definition.explore_amount) / RuleResolver.card_ap_cost(b.definition, owner.run_state, owner.floor_data))
 	return legal
@@ -288,7 +288,7 @@ func checkpoint(_main: Control, _name_text: String) -> void:
 
 func _claim(main: Control) -> void:
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
-	while not owner.run_state.pending_rewards.is_empty():
+	while not owner.run_state.flow.pending_rewards.is_empty():
 		await checkpoint(main, "card_reward")
 		var options: VBoxContainer = main.get_node("%RewardPanel/Margin/Layout/Scroll/Options") as VBoxContainer
 		check(options.get_child_count() == 3, "Actual reward panel preserves three NORMAL choices")
@@ -325,15 +325,15 @@ func full_run(seed_value: int = 1) -> void:
 	owner.run_state.rng.seed = seed_value
 	root.add_child(main)
 	var state: RunState = owner.run_state
-	var deck: DeckState = state.deck_state
-	var gear: Array[EquipmentInstance] = state.equipment_slots.duplicate()
+	var deck: DeckState = state.player.deck
+	var gear: Array[EquipmentInstance] = state.player.equipment.slots.duplicate()
 	var rewarded_instances: Array[CardInstance] = []
 	var drawn_reward: Array[CardInstance] = []
 	owner.action_resolved.connect(func(result: ActionResult) -> void:
 		if result.deck.change_kind == &"added": rewarded_instances.append(result.deck.card_changed))
 	await checkpoint(main, "level0_targeting")
 	for global_turn: int in range(80):
-		if owner.floor_data.is_placeholder or state.player_hp <= 0:
+		if owner.floor_data.is_placeholder or state.player.hp <= 0:
 			break
 		for card: CardInstance in deck.hand:
 			if rewarded_instances.has(card) and not drawn_reward.has(card): drawn_reward.append(card)
@@ -347,7 +347,7 @@ func full_run(seed_value: int = 1) -> void:
 		await _claim(main)
 		await _use_safe(main, SafePointCommand.Choice.UPGRADE if owner.floor_data.id == LIVE_0.id else SafePointCommand.Choice.REMOVE)
 		for action: int in range(5):
-			if state.ap == 0:
+			if state.player.ap == 0:
 				break
 			var floor: FloorState = state.floor_state
 			var entity: EntityInstance = floor.entity
@@ -366,14 +366,14 @@ func full_run(seed_value: int = 1) -> void:
 			if chosen == null and entity != null:
 				var damage: int = EntitySystem.intent_damage(entity, owner.floor_data.find_entity(entity.entity_id), floor, owner.floor_data)
 				var guards: Array[CardInstance] = candidates(owner, CardData.EffectType.BLOCK)
-				if damage > floor.player_block and not guards.is_empty(): chosen = guards[0]
+				if damage > owner.run_state.player.block and not guards.is_empty(): chosen = guards[0]
 			if chosen == null and entity != null:
 				var attacks: Array[CardInstance] = candidates(owner, CardData.EffectType.ATTACK)
 				if not attacks.is_empty(): chosen = attacks[0]
-			if chosen == null and entity == null and floor.resolved_entity_ids.has(LIVE_6.entry_entity.id) and not floor.resolved_entity_ids.has(LIVE_6.followup_entity.id) and state.ap >= 2:
+			if chosen == null and entity == null and floor.resolved_entity_ids.has(LIVE_6.entry_entity.id) and not floor.resolved_entity_ids.has(LIVE_6.followup_entity.id) and state.player.ap >= 2:
 				var lights: Array[CardInstance] = candidates(owner, CardData.EffectType.LIGHT)
 				if not lights.is_empty(): chosen = lights[0]
-			if chosen == null and state.stress >= 2:
+			if chosen == null and state.player.stress >= 2:
 				var water: Array[CardInstance] = candidates(owner, CardData.EffectType.RECOVER)
 				if not water.is_empty(): chosen = water[0]
 			if chosen == null and event != null:
@@ -402,17 +402,17 @@ func full_run(seed_value: int = 1) -> void:
 				var old_card: CardInstance = exits[0]
 				ui_button(main, old_card).pressed.emit()
 				if state.floor_state.board_state != old_board:
-					check(state.deck_state == deck and state.equipment_slots == gear and not deck.hand.has(old_card), "Live floor transition preserves persistent objects and removes old exit instance")
+					check(state.player.deck == deck and state.player.equipment.slots == gear and not deck.hand.has(old_card), "Live floor transition preserves persistent objects and removes old exit instance")
 					await checkpoint(main, "transition" if not owner.floor_data.is_placeholder else "summary")
 		if not owner.floor_data.is_placeholder:
 			(main.get_node("%EndTurn") as Button).pressed.emit()
-	check(owner.floor_data.is_placeholder and state.player_hp > 0, "Deterministic production UI path reaches Demo Complete alive")
+	check(owner.floor_data.is_placeholder and state.player.hp > 0, "Deterministic production UI path reaches Demo Complete alive")
 	check(state.metrics.cards_rewarded == 3 and state.metrics.cards_upgraded == 1 and state.metrics.cards_removed == 1, "Full route follows three card rewards and exactly one chosen branch per floor Safe Point")
 	check(state.metrics.floor_exits.size() == 2 and state.metrics.insights.size() >= 6 and state.metrics.defeated.has("猎犬") and state.metrics.resolved_alive.has("笑魇"), "Summary contains both floors, unique discoveries, kill and alive resolution")
 	check(not drawn_reward.is_empty(), "New persistent reward is actually drawn and experienced before demo ends")
 	check(state.metrics.dead_hands == 0 and state.metrics.multiple_option_hands * 2 > state.metrics.hands_checked, "Measured production hands avoid full dead hands and usually offer multiple options")
 	check((main.get_node("%RunSummary") as Control).visible and not (main.get_node("Margin") as Control).visible and (main.get_node("%RunSummary/Margin/Layout/Information") as Label).text.contains("最终威胁"), "Chinese final summary replaces reset live counters and reads persistent run facts")
-	print("[DEMO] seed=%d turns=%d cards=%d deck=%d hp=%d stress=%d dead_hands=%d/%d multiple=%d encounters=%s" % [seed_value, state.turn_number, state.metrics.cards_rewarded, deck.get_card_count(), state.player_hp, state.stress, state.metrics.dead_hands, state.metrics.hands_checked, state.metrics.multiple_option_hands, state.metrics.entity_encounters])
+	print("[DEMO] seed=%d turns=%d cards=%d deck=%d hp=%d stress=%d dead_hands=%d/%d multiple=%d encounters=%s" % [seed_value, state.flow.turn_number, state.metrics.cards_rewarded, deck.get_card_count(), state.player.hp, state.player.stress, state.metrics.dead_hands, state.metrics.hands_checked, state.metrics.multiple_option_hands, state.metrics.entity_encounters])
 	await checkpoint(main, "summary")
 	(main.get_node("%RunSummary/Margin/Layout/NewRun") as Button).pressed.emit()
 	check((main.get_node("TurnManager") as TurnManager).run_state != state and not (main.get_node("%RunSummary") as Control).visible, "Completion screen starts a normal fresh run without prototype switching")

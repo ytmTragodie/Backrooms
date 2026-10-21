@@ -70,7 +70,7 @@ static func valid_definition(data: ResourceNodeData) -> bool:
 
 static func recipient(data: ResourceNodeData, state: RunState) -> EquipmentInstance:
 	if state != null and data.uses_reward > 0:
-		for item: EquipmentInstance in state.equipment_slots:
+		for item: EquipmentInstance in state.player.equipment.slots:
 			if item != null and item.definition.id == data.equipment_id:
 				return item
 	return null

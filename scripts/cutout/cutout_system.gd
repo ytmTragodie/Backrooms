@@ -154,7 +154,7 @@ static func commit(result: ActionResult, state: RunState) -> void:
 		result.debug_lines.append("[CUTOUT] stability +%d knowledge +%d reason=%s" % [result.cutout.stability_delta, result.cutout.knowledge_delta, result.cutout.preparation_reason])
 	if result.cutout.attempt == null:
 		return
-	state.last_cutout_attempt = result.cutout.attempt
+	state.flow.last_cutout_attempt = result.cutout.attempt
 	# RNG 由 RuleResolver 与奖励草案一起提交，避免两个系统分别写同一随机状态。
 	result.debug_lines.append("[CUTOUT] attempt type=%s roll=%d stress=+%d" % [result.cutout.attempt.attempt_type, result.cutout.attempt.roll, result.player.stress_delta])
 	if result.cutout.attempt.succeeded:

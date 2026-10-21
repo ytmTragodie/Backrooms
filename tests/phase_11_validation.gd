@@ -52,7 +52,7 @@ func _test_taxonomy() -> void:
 			check(not event.get_property_list().any(func(p: Dictionary) -> bool: return p.name in ["progress_threshold", "explore_progress"]), "Events have no Explore HP")
 		var owner: TurnManager = manager(CURRENT_DECK.cards, data)
 		check(owner.run_state.floor_state.board_state.active_events.size() <= 2 and owner.run_state.floor_state.current_objective != null, "Events and Objective coexist")
-		for pile: Array[CardInstance] in [owner.run_state.deck_state.hand, owner.run_state.deck_state.draw_pile, owner.run_state.deck_state.discard_pile]:
+		for pile: Array[CardInstance] in [owner.run_state.player.deck.hand, owner.run_state.player.deck.draw_pile, owner.run_state.player.deck.discard_pile]:
 			for card: CardInstance in pile: check(card is CardInstance, "Player piles contain only actual Player Cards")
 		owner.free()
 
@@ -72,12 +72,12 @@ func _test_capacity_and_modifiers() -> void:
 	var old: EventInstance = state.floor_state.board_state.active_events[0]
 	check(state.floor_state.seen_event_ids == [first.id, second.id] and state.floor_state.board_state.active_events.size() == 2, "Deterministic capacity defers third Event")
 	check(RuleResolver.card_ap_cost(OBSERVE, state, data) == 2, "Active tag modifier applies to final AP")
-	check(play(owner, OBSERVE).success and state.ap == 1, "Card commits modified AP and Objective together")
+	check(play(owner, OBSERVE).success and state.player.ap == 1, "Card commits modified AP and Objective together")
 	var before: Dictionary = extended_snapshot(owner)
 	var failed: ActionResult = play(owner, OBSERVE)
 	check(not failed.success and extended_snapshot(owner) == before and failed.event.changes.is_empty(), "Failed AP changes no timers/conditions/charges/AP/RNG")
 	owner.end_turn()
-	check(state.stress == 2 and state.player_hp == 28 and old.retired, "Both active debuffs resolve in one lifecycle, then expire")
+	check(state.player.stress == 2 and state.player.hp == 28 and old.retired, "Both active debuffs resolve in one lifecycle, then expire")
 	check(state.floor_state.seen_event_ids == [first.id, second.id, third.id] and state.floor_state.board_state.active_events[1].definition == third, "Overflow fills first free slot without replacing survivor")
 	check(RuleResolver.card_ap_cost(OBSERVE, state, data) == 1, "Retired Event no longer modifies cards")
 	before = extended_snapshot(owner)
@@ -92,7 +92,7 @@ func _test_capacity_and_modifiers() -> void:
 	owner = manager([GUARD, OBSERVE, OBSERVE, OBSERVE, OBSERVE], data)
 	check(play(owner, GUARD).success, "Guard is useful against Event-only environmental damage")
 	var result: ActionResult = owner.end_turn()
-	check(result.player.pressure_blocked == 2 and result.player.pressure_damage == 0 and owner.run_state.player_hp == 30, "Environmental Event consumes same Guard before entities")
+	check(result.player.pressure_blocked == 2 and result.player.pressure_damage == 0 and owner.run_state.player.hp == 30, "Environmental Event consumes same Guard before entities")
 	owner.free()
 	data = clean_floor(CURRENT_6)
 	data.entry_entity_automatic = true
@@ -104,7 +104,7 @@ func _test_capacity_and_modifiers() -> void:
 	check(play(owner, GUARD).success, "Mixed encounter defense uses normal card/AP")
 	result = owner.end_turn()
 	check(result.player.pressure_blocked == 2 and result.player.damage_blocked == 2 and result.player.damage_taken == 2, "Event pressure consumes Guard before Hound intent; remainder is not counted twice")
-	check(owner.run_state.floor_state.board_state == same_board and same_board.entity != null and owner.run_state.ap == 3, "Event and Entity keep one board/AP/turn lifecycle")
+	check(owner.run_state.floor_state.board_state == same_board and same_board.entity != null and owner.run_state.player.ap == 3, "Event and Entity keep one board/AP/turn lifecycle")
 	owner.free()
 
 
@@ -115,11 +115,11 @@ func _test_omen() -> void:
 	data.events = [omen]
 	var owner: TurnManager = manager([OBSERVE, ATTACK, GUARD, DEEP, SEARCH], data)
 	var state: RunState = owner.run_state
-	state.ap = 1
+	state.player.ap = 1
 	var unchanged: Dictionary = extended_snapshot(owner)
 	var invalid_noise: ActionResult = play(owner, DEEP)
 	check(not invalid_noise.success and extended_snapshot(owner) == unchanged, "Failed NOISE card cannot accelerate Omen")
-	state.ap = 3
+	state.player.ap = 3
 	check(state.floor_state.entity == null, "Hound has a readable warning before entry")
 	owner.end_turn()
 	var hound: EntityInstance = state.floor_state.entity
@@ -148,11 +148,11 @@ func _test_omen() -> void:
 	var smiler: EntityInstance = state.floor_state.entity
 	check(smiler != null and smiler.entity_id == data.followup_entity.id and smiler.light_exposed, "Omen spawns Smiler with actual light exposure")
 	owner.end_turn()
-	check(smiler.alive and smiler.state == &"WITHDRAWN" and state.floor_state.entity == null and state.cognition == 1, "Respect darkness resolves Smiler alive and confirms unique Insight")
-	check(state.pending_rewards.size() == 1, "Meaningful behavior offers existing reward exactly once")
-	owner.submit_reward_command(CardRewardCommand.new(state.pending_rewards[0], state.pending_rewards[0].choices[0]))
+	check(smiler.alive and smiler.state == &"WITHDRAWN" and state.floor_state.entity == null and state.floor_state.cognition == 1, "Respect darkness resolves Smiler alive and confirms unique Insight")
+	check(state.flow.pending_rewards.size() == 1, "Meaningful behavior offers existing reward exactly once")
+	owner.submit_reward_command(CardRewardCommand.new(state.flow.pending_rewards[0], state.flow.pending_rewards[0].choices[0]))
 	owner.end_turn()
-	check(state.floor_state.entity == null and state.pending_rewards.is_empty() and state.cognition == 1, "Expired Omen and Insight cannot trigger twice")
+	check(state.floor_state.entity == null and state.flow.pending_rewards.is_empty() and state.floor_state.cognition == 1, "Expired Omen and Insight cannot trigger twice")
 	owner.free()
 	# A ready Omen waits rather than replacing an occupied entity slot.
 	data = clean_floor(CURRENT_6)
@@ -173,16 +173,17 @@ func _test_opportunity() -> void:
 	var state: RunState = owner.run_state
 	var event: EventInstance = state.floor_state.board_state.active_events[0]
 	check(play(owner, SEARCH).success and event.matching_actions == 1, "Opportunity listens to a real card targeting Objective, not Event")
-	check(play(owner, SEARCH).success and event.retired and state.pending_rewards.size() == 1 and state.cognition == 1, "Second matching card commits reward/Insight/retirement once")
-	owner.submit_reward_command(CardRewardCommand.new(state.pending_rewards[0], state.pending_rewards[0].choices[0]))
-	check(play(owner, SEARCH).success and state.pending_rewards.is_empty() and event.matching_actions == 2 and state.cognition == 1, "Further cards do not re-award retired Opportunity")
+	check(play(owner, SEARCH).success and event.retired and state.flow.pending_rewards.size() == 1 and state.floor_state.cognition == 1, "Second matching card commits reward/Insight/retirement once")
+	owner.submit_reward_command(CardRewardCommand.new(state.flow.pending_rewards[0], state.flow.pending_rewards[0].choices[0]))
+	var third: ActionResult = play(owner, SEARCH)
+	check(third.success and state.flow.pending_rewards.is_empty() and event.matching_actions == 2 and state.floor_state.cognition >= 1, "Further cards do not re-award retired Opportunity")
 	owner.free()
 	var expired: EventData = CURRENT_0.events[1].duplicate(false) as EventData
 	expired.duration = 1
 	data.events = [expired]
 	owner = manager([], data)
 	owner.end_turn()
-	check(owner.run_state.floor_state.board_state.active_events.is_empty() and owner.run_state.pending_rewards.is_empty(), "Missed Opportunity expires without reward or blocking exit")
+	check(owner.run_state.floor_state.board_state.active_events.is_empty() and owner.run_state.flow.pending_rewards.is_empty(), "Missed Opportunity expires without reward or blocking exit")
 	owner.free()
 
 
@@ -199,7 +200,7 @@ func _test_current_exit_fallback() -> void:
 		var owner: TurnManager = manager(CURRENT_DECK.cards, first, false, seed_value)
 		for floor_index: int in range(2):
 			for turn: int in range(5): owner.end_turn()
-			check(generated(owner, &"rushed") != null and owner.run_state.cognition == 0, "Current floors retain exit without any Event/Objective/resource/Insight/equipment")
+			check(generated(owner, &"rushed") != null and owner.run_state.floor_state.cognition == 0, "Current floors retain exit without any Event/Objective/resource/Insight/equipment")
 			for attempt: int in range(20):
 				var result: ActionResult = play_generated(owner, &"rushed")
 				if result.cutout.attempt != null and result.cutout.attempt.succeeded: break
@@ -258,16 +259,16 @@ func production_run() -> void:
 	root.add_child(main)
 	var owner: TurnManager = main.get_node("TurnManager") as TurnManager
 	var state: RunState = owner.run_state
-	var deck: DeckState = state.deck_state
+	var deck: DeckState = state.player.deck
 	var encountered_hound: bool = false
 	var encountered_smiler: bool = false
 	await capture(main, "level0_events_objective")
 	for turn: int in range(65):
-		if owner.floor_data.is_placeholder or state.player_hp <= 0: break
+		if owner.floor_data.is_placeholder or state.player.hp <= 0: break
 		await _claim(main)
 		await _use_safe(main, SafePointCommand.Choice.UPGRADE if owner.floor_data.id == CURRENT_0.id else SafePointCommand.Choice.REMOVE)
 		for action: int in range(5):
-			if state.ap == 0: break
+			if state.player.ap == 0: break
 			var floor: FloorState = state.floor_state
 			var entity: EntityInstance = floor.entity
 			var chosen: CardInstance
@@ -279,14 +280,14 @@ func production_run() -> void:
 					var extinguish: Array[CardInstance] = candidates(owner, CardData.EffectType.EXTINGUISH)
 					if not extinguish.is_empty(): chosen = extinguish[0]
 					# Expose once if possible, then extinguish using the same real equipment opportunity.
-					if chosen == null and not entity.light_exposed and state.ap >= 2:
+					if chosen == null and not entity.light_exposed and state.player.ap >= 2:
 						var light: Array[CardInstance] = candidates(owner, CardData.EffectType.LIGHT)
 						if not light.is_empty(): chosen = light[0]
 				else:
 					var attacks: Array[CardInstance] = candidates(owner, CardData.EffectType.ATTACK)
 					var guards: Array[CardInstance] = candidates(owner, CardData.EffectType.BLOCK)
 					if not attacks.is_empty() and attacks[0].definition.effect_value >= entity.hp: chosen = attacks[0]
-					elif floor.player_block < EntitySystem.intent_damage(entity, owner.floor_data.find_entity(entity.entity_id), floor, owner.floor_data) and not guards.is_empty(): chosen = guards[0]
+					elif owner.run_state.player.block < EntitySystem.intent_damage(entity, owner.floor_data.find_entity(entity.entity_id), floor, owner.floor_data) and not guards.is_empty(): chosen = guards[0]
 					elif not attacks.is_empty(): chosen = attacks[0]
 			if chosen == null:
 				var explores: Array[CardInstance] = candidates(owner, -1, true)
@@ -306,9 +307,9 @@ func production_run() -> void:
 				ui_button(main, exits[0]).pressed.emit()
 				await capture(main, "level6_entry" if not owner.floor_data.is_placeholder else "summary")
 		if not owner.floor_data.is_placeholder: (main.get_node("%EndTurn") as Button).pressed.emit()
-	check(owner.floor_data.is_placeholder and state.player_hp > 0 and state.deck_state == deck and state.metrics.floor_exits.size() == 2, "Current production Level 0 → Level 6 → exit completes alive in one run/hand/AP loop")
+	check(owner.floor_data.is_placeholder and state.player.hp > 0 and state.player.deck == deck and state.metrics.floor_exits.size() == 2, "Current production Level 0 → Level 6 → exit completes alive in one run/hand/AP loop")
 	check(encountered_hound and encountered_smiler and state.metrics.resolved_alive.has("笑魇"), "Both Omen encounters occur and Smiler resolves alive")
 	check(not (main.get_node("%DebugPanel") as Control).visible, "No developer controls in production UI")
-	print("[PHASE11] turns=%d hp=%d rewards=%d dead=%d/%d entities=%s" % [state.turn_number, state.player_hp, state.metrics.cards_rewarded, state.metrics.dead_hands, state.metrics.hands_checked, state.metrics.entity_encounters])
+	print("[PHASE11] turns=%d hp=%d rewards=%d dead=%d/%d entities=%s" % [state.flow.turn_number, state.player.hp, state.metrics.cards_rewarded, state.metrics.dead_hands, state.metrics.hands_checked, state.metrics.entity_encounters])
 	await capture(main, "summary")
 	main.free()
