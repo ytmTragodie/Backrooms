@@ -1,163 +1,46 @@
 # AGENTS.md
 
-## Project
+## Current direction
 
-This repository contains a Godot 4.x card-roguelike game prototype set in the Backrooms.
+Godot 4.x 后室卡牌 Roguelike，当前正式方向是 **Phase 14：地图驱动的战斗 Roguelike**。
+设计主源：`docs/Phase14_GAMEPLAY _Redesign.md`。当前实现契约见 `docs/PHASE_14_ARCHITECTURE.md`，迁移记录见 `docs/PHASE_14_MIGRATION.md`。
+发生冲突时：当前用户任务 → Phase 14 设计与已确认规则 → 本文件 → 当前架构/编码规则 → 历史 GDD/Phase。
 
-**Current authoritative direction: CARD-FIRST V2.1, Phase 11 event reframe (2026-10-18).**
-Phase 1-8 is the existing legacy prototype, not proof that v2 is implemented.
-The design-direction task changes documentation only. Do not migrate gameplay,
-content Resources, scenes, tests, or project settings without a subsequent task.
+## Required reading
 
-Current goal:
-Build a playable vertical slice proving the core loop:
+修改前阅读 Phase 14 设计、当前架构、`docs/ARCHITECTURE.md`、`docs/CODING_RULES.md`；按内容补读 `docs/GDD.md` 和迁移记录。
+必须检查真实脚本、调用者、测试与 `.tres`，不能把文档中“建议”当作已存在的 API。
 
-Level 0
--> explore
--> gain insight/resources
--> prepare cut-out
--> Level 6
--> entity encounter
--> fight / evade
--> cut out
--> run result
+## Gameplay contracts
 
-## Card-First v2 constraints
+- MAP → 节点遭遇（COMBAT / ELITE / EVENT / REST / REWARD / SHOP / EXIT）→ 结算 → MAP。
+- 卡牌的主要使用场景是战斗。真实手牌来自 NORMAL 持有牌的战斗副本及装备生成行动；没有观察/搜索进度式楼层推进。
+- 战斗基础 3 AP、每回合抽至五张基础手牌，最多额外一张装备机会；单敌人。所有角色公开当前锁定意图；M.E.G. 使用战斗 Intel。
+- 永久 DeckState 只保存持有牌；CombatDeckState 持有抽/手/弃/消耗。玩家长期状态不保存 AP/Block/Intel/Noise。
+- 三个物理装备槽跨战斗、跨楼层保留；物品不进入永久牌组。成功动作才消费次数。
+- 非战斗事件通过选项，休息/交易/奖励通过实际节点机会；它们不是免费编辑器。
+- 战斗撤离是常驻操作：1 AP、无成功率、承受公开区间内随机 HP 损失与压力；致死为 DEFEAT，否则 ESCAPE。无胜利奖励，不改变 Level。
+- CutOut 只在 EXIT；普通切出必定成功，目的地按最终权重随机；预览不消耗 RNG。
+- 地图是向前的非线性 DAG；节点及连接公开，内容有迷雾。所有节点可达出口，所有楼层网络可达终局。
+- FloorHistoryState 保留同一局的楼层地图；尽量避免重返。重返采用原图入口，已结算节点只通行不重复给收益，不重新生成。
+- Knowledge 为长期已知信息集合，不是 Intel 或可消费的统一点数。Noise/状态/光源仅在当前战斗。
+- 共用 EntityInstance HP 模型，但允许活着退去；行为与弱点通过标签/条件/效果数据表达，不按具体实体 ID 写分支。
 
-- Player-initiated gameplay actions must originate from actual Player Cards in
-  the unified hand: NORMAL cards drawn from the deck, EQUIPMENT-generated action
-  cards, or FLOOR_TEMPORARY cards. Only pure system controls such as End Turn, Pause, read-only
-  deck inspection, and settings may remain independent controls.
-- Inspect, Search, Deep Search, Attack, Guard, Run, Stealth, active equipment use,
-  light switching and cut-out attempts are gameplay effects, even at zero AP.
-  Search grants finite resources in its resolution; world rules trigger encounters
-  and exploration milestones improve cut-out preparation automatically.
-  They must not gain a parallel standalone gameplay-button path.
-- Every normal deck card needs useful baseline behavior using reusable mechanics
-  such as Explore, Damage, Guard, Threat, Draw and Discard. Retain/Exhaust may be
-  added when needed. A missing specific Event, Entity or equipment item must not
-  turn a normal card into a dead card or a successful no-op.
-- Events and Entities are World Cards in a separate board zone. They never enter
-  the player's hand, draw pile or discard pile.
-- Phase 11 BoardState owns up to two temporary EventInstances, one active
-  ObjectiveInstance and the existing single EntityInstance. Scene Rules are
-  persistent floor definitions, never targets. Events have timers/conditions,
-  not Explore HP; Objective owns Explore/milestones. No multi-entity combat.
-- Keep EventData/EventInstance and EntityData/EntityInstance. CardData describes
-  Player Cards; do not merge all domains into one universal CardData hierarchy.
-- Three physical equipment slots remain run-persistent and outside the deck.
-  Equipment generates real action cards; physical items never enter normal piles.
-  At most one equipment action is generated per global turn, beyond the five-card
-  base target. Failed resolution cannot consume its uses.
-- Floor-generated cut-out cards occupy base hand slots and Retain across turns.
-  Rushed upgrades in place to Safe; failed attempts retain the exit, and successful
-  transition removes old-floor cards. Equipment/cut-out are no longer normal-card
-  menu branches. UI never generates cards or grants gameplay through selection.
-- Single-Semantic Card Rule: one card has one clear gameplay semantic. Target
-  selection and conditional numeric modifiers are allowed; verb/mode menus are
-  forbidden. Different verbs require separate CardData definitions.
-- Lighting and Extinguish are separate equipment definitions, replaced in the
-  same flashlight opportunity according to actual LIGHT state. Search collects
-  finite rewards directly. Smiler is world-triggered; no pursue/landmark/prepare
-  command or preparation card remains.
-- Phase 9 earned deckbuilding choices consume an actual run-owned pending reward:
-  add one offered NORMAL card, upgrade one owned NORMAL instance, or remove one
-  eligible NORMAL instance. Reward UI sends validated commands; it is never a free
-  deck editor or a parallel exploration/combat/equipment/cut-out input.
-- Phase 10 moves ordinary upgrade/removal opportunities to one optional floor-local
-  Safe Point. Rest/remove/upgrade consume the same once-per-visit opportunity only
-  after a valid final choice. Opening, reviewing or postponing it grants nothing.
-  Ordinary Situations do not all award cards; major content declares rare rewards.
-- Keep one exploration/combat turn loop, unique Insight rewards, finite resources,
-  common entity HP with behavioral solutions, and an anti-soft-lock exit route.
-  Exit availability must be solved within the card rules, not by restoring a
-  gameplay-button exception.
-- Player-facing text defaults to Simplified Chinese; internal identifiers remain
-  English. Preserve typed GDScript, Compatibility renderer and no unapproved plugins.
+## Engineering
 
-## Required context
+- Godot 4.x / Compatibility / typed GDScript；不引入未经批准的插件/依赖。
+- Resource 是只读静态配置；RefCounted 保存运行时；UI 只读并提交带实例上下文的 GameCommand。
+- Validate → Plan → 分域 ActionResult → Commit → Notify。失败不改变 AP/资源/牌区/装备/地图/奖励/RNG。
+- 每个状态字段一个所有者。RunState 是组合根；Result 是短期草案，不是持久状态或万能兜底桶。
+- 显式提交/回合顺序；Signal/动画不触发隐含规则。公开意图与实际执行读取同一份锁定效果。
+- 有限、可维护的 Effect/Condition 类型；不创建万能 DSL、大量空 Manager 或按行数拆类。
+- 玩家文本简体中文；稳定 ID/代码英文，关键字段、所有权与顺序使用中文注释。
+- 素材走 AssetCatalog 稳定映射，缺图默认封面/本地 SVG，缺音静音；素材不驱动规则。
+- `archive/phase13c_before_phase14/` 是排除导入的历史原始快照，不是可启动的兼容模式。
 
-Before modifying gameplay code, read:
+## Workflow
 
-- `docs/GDD_CARD_FIRST_V2_1.md`
-- `docs/ARCHITECTURE_CARD_FIRST_V2_1.md`
-- `docs/CODING_RULES_CARD_FIRST_V2_1.md`
-- `docs/MIGRATION_PLAN_CARD_FIRST_V2_1.md` when assessing or migrating the legacy implementation
-
-These documents are authoritative.
-
-Priority when instructions conflict:
-
-1. Current user task
-2. `AGENTS.md`
-3. `docs/ARCHITECTURE_CARD_FIRST_V2_1.md`
-4. `docs/CODING_RULES_CARD_FIRST_V2_1.md`
-5. `docs/GDD_CARD_FIRST_V2_1.md`
-6. Existing implementation assumptions
-
-`docs/GDD_CARD_FIRST_V2_1.md` is the current Card-First v2 design source. The retained
-`docs/Backrooms_Card_Roguelike_GDD_v0.4_Demo_Baseline.docx` is historical reference;
-its old claims of being canonical do not override these Markdown documents.
-Readme.md describes the legacy build and does not authorize deprecated mechanics.
-Unresolved choices in MIGRATION_PLAN.md are not approved implementation rules.
-
-If the implementation conflicts with the documents, do not silently choose a new design.
-
-## Tech stack
-
-- Godot 4.x
-- Compatibility renderer
-- GDScript
-- Windows PC first
-- Git
-
-## Development principles
-
-- Work in small, testable increments.
-- Do not implement unrelated features.
-- Avoid speculative abstractions.
-- Prefer data-driven content.
-- UI is never the source of truth.
-- Player Cards are the gameplay action entry; World Cards are board content/targets.
-- Keep one owner for runtime state; board rendering must not duplicate it.
-- Gameplay state changes must follow the architecture.
-- Do not hard-code floor/card/entity-specific behavior if reusable data can express it.
-- Do not introduce plugins or dependencies without approval.
-
-## Task workflow
-
-Before coding:
-
-1. Inspect the relevant existing files.
-2. State the intended minimal change.
-3. Identify files to modify.
-4. Check architectural compatibility.
-
-After coding:
-
-1. Run relevant tests/checks.
-2. Run the project if possible.
-3. Inspect errors.
-4. Report changed files.
-5. Report verification performed.
-6. Report known limitations.
-
-## Scope
-
-Current Phase A only includes:
-
-- M.E.G.
-- Level 0
-- Level 6
-- Hound
-- Smiler
-- 18-24 cards
-- 3-4 equipment items
-- Threat
-- Cognition / Insight
-- Fresh / Residual Events
-- basic combat
-- cut-out
-- simple run result
-
-Do not implement later-scope content unless explicitly requested.
+先说明影响范围、状态归属与最小步骤，再修改。保护开发者现有修改。
+运行 `tests/run_validation.ps1`、检查错误日志、实际打开窗口验证 UI；headless 不能替代视觉验收。
+交付需报告变化、验证命令/结果、未完成事项。新内容必须接入池并验证，不只生成空文件。
+当前只实际支持 Level 0/6、单敌人、基础状态与构筑；不顺带实现 Boss、多职业、元进度、制作或复杂环境模拟。

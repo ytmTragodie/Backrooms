@@ -1,38 +1,49 @@
-[gd_resource type="Resource" script_class="FloorData" format=3]
+[gd_resource type="Resource" script_class="FloorData" load_steps=32 format=3]
 
-[ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="script"]
-[ext_resource type="Script" path="res://scripts/objectives/objective_data.gd" id="event_type"]
-[ext_resource type="Script" path="res://scripts/floors/resource_node_data.gd" id="node_type"]
-[ext_resource type="Resource" path="res://data/safe_points/safe_level0.tres" id="safe"]
-[ext_resource type="Resource" path="res://data/floors/floor_level_6.tres" id="destination"]
-[ext_resource type="Resource" path="res://data/resources/resource_level0_supply.tres" id="n0"]
-[ext_resource type="Resource" path="res://data/resources/resource_level0_battery.tres" id="n1"]
-[ext_resource type="Resource" path="res://data/resources/resource_level0_scrap.tres" id="n2"]
-[ext_resource type="Resource" path="res://data/resources/resource_level0_water.tres" id="n3"]
-
-[ext_resource type="Resource" path="res://data/objectives/objective_level0_wrong_corner.tres" id="o0"]
-[ext_resource type="Resource" path="res://data/objectives/objective_level0_damp_wall.tres" id="o1"]
-[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="new_event_type"]
-[ext_resource type="Script" path="res://scripts/floors/scene_rule_data.gd" id="rule_type"]
-[ext_resource type="Resource" path="res://data/events/event_level0_humming.tres" id="t0"]
-[ext_resource type="Resource" path="res://data/events/event_level0_meg_signal.tres" id="t1"]
-[ext_resource type="Resource" path="res://data/scene_rules/rule_level0_repetition.tres" id="scene_rule"]
+[ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/maps/floor_level_0.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/entity_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/entities/entity_hound.tres" id="4"]
+[ext_resource type="Resource" path="res://data/entities/entity_duller.tres" id="5"]
+[ext_resource type="Resource" path="res://data/entities/entity_skinstealer.tres" id="6"]
+[ext_resource type="Resource" path="res://data/entities/entity_crawler.tres" id="7"]
+[ext_resource type="Resource" path="res://data/entities/entity_starved_hound.tres" id="8"]
+[ext_resource type="Resource" path="res://data/entities/entity_dense_clump.tres" id="9"]
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="10"]
+[ext_resource type="Resource" path="res://data/events/event_cache.tres" id="11"]
+[ext_resource type="Resource" path="res://data/events/event_meg.tres" id="12"]
+[ext_resource type="Resource" path="res://data/events/event_faceling.tres" id="13"]
+[ext_resource type="Resource" path="res://data/events/event_hum.tres" id="14"]
+[ext_resource type="Resource" path="res://data/events/event_battery.tres" id="15"]
+[ext_resource type="Resource" path="res://data/events/event_medic.tres" id="16"]
+[ext_resource type="Resource" path="res://data/events/event_ration.tres" id="17"]
+[ext_resource type="Resource" path="res://data/events/event_insulation.tres" id="18"]
+[ext_resource type="Resource" path="res://data/events/event_sleep.tres" id="19"]
+[ext_resource type="Resource" path="res://data/events/event_diary.tres" id="20"]
+[ext_resource type="Resource" path="res://data/events/event_checkpoint.tres" id="21"]
+[ext_resource type="Resource" path="res://data/events/event_locked_room.tres" id="22"]
+[ext_resource type="Resource" path="res://data/rewards/cache.tres" id="23"]
+[ext_resource type="Script" path="res://scripts/rewards/shop_data.gd" id="24"]
+[ext_resource type="Resource" path="res://data/shops/meg_exchange.tres" id="25"]
+[ext_resource type="Resource" path="res://data/shops/wanderer.tres" id="26"]
+[ext_resource type="Resource" path="res://data/shops/maintenance.tres" id="27"]
+[ext_resource type="Script" path="res://scripts/cutout/cutout_route_data.gd" id="28"]
+[ext_resource type="Resource" path="res://data/cutout/level0_service.tres" id="29"]
+[ext_resource type="Resource" path="res://data/cutout/level0_seam.tres" id="30"]
+[ext_resource type="Resource" path="res://data/cutout/level0_marked.tres" id="31"]
 
 [resource]
-script = ExtResource("script")
-id = &"floor_level_0"
+script = ExtResource("1")
+id = "floor_level_0"
 display_name = "零层"
-card_first_exploration = true
-retire_resolved_objectives = true
-intro_objective = ExtResource("o0")
-fresh_objectives = Array[ExtResource("event_type")]([ExtResource("o0"), ExtResource("o1")])
-resource_nodes = Array[ExtResource("node_type")]([ExtResource("n0"), ExtResource("n1"), ExtResource("n2"), ExtResource("n3")])
-safe_point = ExtResource("safe")
-cutout_destinations = Array[Resource]([ExtResource("destination")])
-minimum_exit_turn = 3
-minimum_exit_explore = 6
-fallback_exit_turn = 6
-overstay_start_turn = 6
-overstay_interval = 3
-events = Array[ExtResource("new_event_type")]([ExtResource("t0"), ExtResource("t1")])
-scene_rules = Array[ExtResource("rule_type")]([ExtResource("scene_rule")])
+description = "重复的黄色走廊；补给、交换与路线信息较多。"
+asset_id = "floor_level_0"
+map_config = ExtResource("2")
+encounter_pool = Array[ExtResource("3")]([ExtResource("4"), ExtResource("5"), ExtResource("6"), ExtResource("7")])
+elite_pool = Array[ExtResource("3")]([ExtResource("8"), ExtResource("9")])
+event_pool = Array[ExtResource("10")]([ExtResource("11"), ExtResource("12"), ExtResource("13"), ExtResource("14"), ExtResource("15"), ExtResource("16"), ExtResource("17"), ExtResource("18"), ExtResource("19"), ExtResource("20"), ExtResource("21"), ExtResource("22")])
+reward_pool = ExtResource("23")
+shops = Array[ExtResource("24")]([ExtResource("25"), ExtResource("26"), ExtResource("27")])
+cutout_route_pool = Array[ExtResource("28")]([ExtResource("29"), ExtResource("30"), ExtResource("31")])
+noise_damage_threshold = 0
+noise_damage_bonus = 0

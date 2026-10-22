@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RewardEntryData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/rewards/reward_entry_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/equipment/equip_crowbar.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+kind = 2
+amount = 1
+equipment = ExtResource("2")

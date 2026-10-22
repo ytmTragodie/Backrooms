@@ -1,291 +1,83 @@
 class_name EntitySystem
 extends RefCounted
+## 数据条件、行为选取和意图锁定。没有按 entity_id 区分规则。
+static func spawn(data: EntityData, instance_id: int) -> EntityInstance:
+	var enemy: EntityInstance = EntityInstance.new()
+	enemy.instance_id = instance_id
+	enemy.definition = data
+	enemy.hp = data.max_hp
+	enemy.state = data.initial_state
+	return enemy
 
-const INTENTS: Dictionary = {
-	&"WATCHING": &"approach", &"APPROACHING": &"bite", &"CHASING": &"lunge",
-	&"STAGGERED": &"recover", &"DEFEATED": &"none", &"DISENGAGED": &"none",
-	&"HIDDEN": &"remain_hidden", &"OBSERVING": &"watch_light", &"AGITATED": &"warn_light",
-	&"ATTACKING": &"light_strike", &"WITHDRAWN": &"none",
-}
-const PURSUIT_STATES: Array[StringName] = [&"WATCHING", &"APPROACHING", &"CHASING", &"STAGGERED", &"DEFEATED", &"DISENGAGED"]
-const LIGHT_STATES: Array[StringName] = [&"HIDDEN", &"OBSERVING", &"AGITATED", &"ATTACKING", &"WITHDRAWN", &"DEFEATED"]
+static func conditions_match(conditions: Array[ConditionData], enemy: EntityInstance, combat: CombatState) -> bool:
+	for condition: ConditionData in conditions:
+		if not condition_matches(condition, enemy, combat): return false
+	return true
 
+static func condition_matches(condition: ConditionData, enemy: EntityInstance, combat: CombatState) -> bool:
+	var value: float = 0
+	match condition.type:
+		ConditionData.ConditionType.HP_RATIO: value = float(enemy.hp) / enemy.definition.max_hp
+		ConditionData.ConditionType.TURN: value = combat.turn_number
+		ConditionData.ConditionType.NOISE: value = combat.noise
+		ConditionData.ConditionType.LIGHT_ACTIVE: value = 1 if combat.light_active else 0
+		ConditionData.ConditionType.PREV_ACTION: value = 1 if enemy.previous_action == condition.reference_id else 0
+		ConditionData.ConditionType.STATE: value = 1 if enemy.state == condition.reference_id else 0
+		ConditionData.ConditionType.STATUS_STACK:
+			for status: StatusInstance in enemy.statuses:
+				if status.definition.id == condition.reference_id: value = status.stacks
+	match condition.operator:
+		ConditionData.CompareOp.EQ: return is_equal_approx(value, condition.numeric_value)
+		ConditionData.CompareOp.NE: return not is_equal_approx(value, condition.numeric_value)
+		ConditionData.CompareOp.GT: return value > condition.numeric_value
+		ConditionData.CompareOp.GTE: return value >= condition.numeric_value
+		ConditionData.CompareOp.LT: return value < condition.numeric_value
+		ConditionData.CompareOp.LTE: return value <= condition.numeric_value
+	return false
 
-static func validate_definition(data: EntityData) -> StringName:
-	if data == null or data.id.is_empty() or data.max_hp <= 0 or data.normal_damage < 0 or data.aggressive_damage < 0:
-		return &"invalid_entity_definition"
-	var reward_error: StringName = CardRewardSystem.validate_definition(data.resolution_reward)
-	if not reward_error.is_empty():
-		return reward_error
-	if data.behavior_type not in [EntityData.BehaviorType.PURSUIT, EntityData.BehaviorType.LIGHT_REACTIVE]:
-		return &"invalid_entity_definition"
-	if data.behavior_type == EntityData.BehaviorType.PURSUIT and data.initial_state not in [&"WATCHING", &"APPROACHING"]:
-		return &"invalid_entity_definition"
-	if data.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE and data.initial_state != &"HIDDEN":
-		return &"invalid_entity_definition"
-	if data.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE:
-		return InsightSystem.validate_definition(data.rule_insight)
-	if data.analysis_threshold < 0 or (data.analysis_threshold > 0 and data.analysis_rule.is_empty()):
-		return &"invalid_entity_definition"
-	if data.analysis_threshold > 0:
-		return InsightSystem.validate_definition(data.rule_insight)
-	return &""
+static func lock_intent(enemy: EntityInstance, combat: CombatState, floor: FloorData, rng: RandomNumberGenerator) -> void:
+	var candidates: Array[EntityActionData] = []
+	var priority: int = -2147483648
+	for action: EntityActionData in enemy.definition.behavior_data.actions:
+		if not conditions_match(action.conditions, enemy, combat): continue
+		if enemy.last_actions.has(action.id) and combat.turn_number - int(enemy.last_actions[action.id]) <= action.cooldown: continue
+		if action.priority > priority:
+			priority = action.priority
+			candidates.clear()
+		if action.priority == priority: candidates.append(action)
+	var intent: EnemyIntent = EnemyIntent.new()
+	intent.display_name = "观察动静"
+	if not candidates.is_empty():
+		var total: int = 0
+		for action: EntityActionData in candidates: total += action.weight
+		var roll: int = rng.randi_range(1, total)
+		var chosen: EntityActionData = candidates[0]
+		for action: EntityActionData in candidates:
+			roll -= action.weight
+			if roll <= 0:
+				chosen = action
+				break
+		intent.action_id = chosen.id
+		intent.display_name = chosen.display_name
+		intent.escape_damage_modifier = chosen.escape_damage_modifier
+		intent.state_after = chosen.state_after
+		for effect: EffectData in chosen.effects:
+			# 锁定数值副本；Noise/状态的改变只影响下次意图，不能悄改已公开伤害。
+			var locked: EffectData = effect.duplicate(true) as EffectData
+			if locked.effect_type == EffectData.EffectType.DAMAGE:
+				locked.amount = maxi(0, locked.amount + EffectSystem.status_bonus(enemy.statuses, &"outgoing_damage_bonus"))
+				if floor.noise_damage_threshold > 0 and combat.noise >= floor.noise_damage_threshold: locked.amount += floor.noise_damage_bonus
+			intent.effects.append(locked)
+	enemy.current_intent = intent
 
-
-static func spawn(data: EntityData) -> EntityInstance:
-	assert(validate_definition(data).is_empty(), "Invalid entity definition")
-	var entity: EntityInstance = EntityInstance.new()
-	entity.entity_id = data.id
-	entity.max_hp = data.max_hp
-	entity.hp = data.max_hp
-	entity.state = data.initial_state
-	entity.intent = INTENTS[entity.state]
-	return entity
-
-
-static func validate(floor: FloorState, data: FloorData) -> StringName:
-	var entity: EntityInstance = floor.entity
-	# 两种遭遇共用当前实例槽；不允许用后续定义覆盖仍活跃的前一个实体。
-	for definition: EntityData in [data.entry_entity, data.followup_entity]:
-		if definition != null:
-			var error: StringName = validate_definition(definition)
-			if not error.is_empty():
-				return error
-			if definition.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE and not floor.floor_flags.has(&"darkness"):
-				return &"invalid_entity_context"
-	if data.entry_entity != null and data.followup_entity != null and data.entry_entity.id == data.followup_entity.id:
-		return &"invalid_entity_definition"
-	if data.entry_entity == null:
-		return &"" if entity == null else &"invalid_entity_context"
-	if entity == null:
-		return &"" if data.card_first_exploration else &"invalid_entity_context"
-	var definition: EntityData = data.find_entity(entity.entity_id)
-	if definition == null or entity.max_hp != definition.max_hp:
-		return &"invalid_entity_context"
-	if entity.hp < 0 or entity.hp > entity.max_hp or not INTENTS.has(entity.state) or entity.intent != INTENTS.get(entity.state):
-		return &"invalid_entity_state"
-	var states: Array[StringName] = PURSUIT_STATES if definition.behavior_type == EntityData.BehaviorType.PURSUIT else LIGHT_STATES
-	if not states.has(entity.state):
-		return &"invalid_entity_state"
-	if (definition.behavior_type == EntityData.BehaviorType.PURSUIT and entity.light_exposed) or (entity.state in [&"OBSERVING", &"AGITATED"] and not entity.light_exposed):
-		return &"invalid_entity_state"
-	if definition.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE and not floor.floor_flags.has(&"darkness"):
-		return &"invalid_entity_context"
-	if (entity.hp == 0) != (entity.state == &"DEFEATED"):
-		return &"invalid_entity_state"
-	if entity.analysis_progress < 0 or entity.analysis_progress > definition.analysis_threshold:
-		return &"invalid_entity_state"
-	var revealed: bool = definition.analysis_threshold > 0 and entity.analysis_progress == definition.analysis_threshold
-	if entity.revealed_rules != ([definition.analysis_rule] if revealed else []):
-		return &"invalid_entity_state"
-	return &""
-
-
-static func validate_target(command: PlayCardCommand, floor: FloorState) -> StringName:
-	# 定义 ID 相同也不等于本次访问中仍然存活的同一个目标。
-	if command.target_board != floor.board_state or command.target_entity == null or command.target_entity != floor.board_state.entity:
-		return &"invalid_entity_target"
-	return &"" if command.target_entity.active else &"no_active_entity"
-
-
-static func plan_analysis(result: ActionResult, card: CardData, floor: FloorState, data: FloorData) -> void:
-	var entity: EntityInstance = floor.board_state.entity
-	var definition: EntityData = data.find_entity(entity.entity_id)
-	result.action_id = &"analyze"
-	result.entity.target = entity
-	result.entity.analysis_after = mini(definition.analysis_threshold, entity.analysis_progress + card.explore_amount)
-	result.entity.analysis_applied = result.entity.analysis_after - entity.analysis_progress
-	if result.entity.analysis_after == definition.analysis_threshold:
-		result.entity.rule_revealed = definition.analysis_rule
-		InsightSystem.plan_confirmation(result, definition.rule_insight, floor)
-
-
-static func plan_noise_reaction(result: ActionResult, tags: Array[StringName], floor: FloorState, data: FloorData) -> void:
-	var entity: EntityInstance = floor.board_state.entity
-	if not tags.has(&"NOISE") or entity == null or not entity.active or result.entity.defeated:
-		return
-	if data.find_entity(entity.entity_id).behavior_type == EntityData.BehaviorType.PURSUIT:
-		_set_next_state(result, &"CHASING")
-		result.entity.state_reason = &"resolved_noise"
-
-
-static func plan_card(result: ActionResult, definition: CardData, state: RunState, data: FloorData) -> StringName:
-	var entity: EntityInstance = state.floor_state.entity
-	var entity_data: EntityData = data.find_entity(entity.entity_id) if entity != null else null
-	match definition.effect_type:
-		CardData.EffectType.BLOCK:
-			result.player.block_delta += definition.effect_value
-		CardData.EffectType.RUN:
-			result.floor.threat_delta = mini(1, FloorState.MAX_THREAT - state.floor_state.threat)
-			result.floor.threat_reason = &"player_ran"
-			if entity != null and entity.active and entity_data.behavior_type == EntityData.BehaviorType.PURSUIT:
-				_set_next_state(result, &"DISENGAGED" if entity.state == &"STAGGERED" else &"CHASING")
-		CardData.EffectType.ATTACK, CardData.EffectType.PLACEHOLDER_DAMAGE:
-			var analyzed: bool = entity != null and not entity.revealed_rules.is_empty()
-			var damage: int = definition.effect_value + definition.contextual_bonus(state.player.block, state.floor_state.threat, analyzed) if definition.effect_type == CardData.EffectType.ATTACK else definition.placeholder_damage
-			return plan_attack(result, damage, state, entity_data)
-	return &""
-
-
-static func plan_attack(result: ActionResult, damage: int, state: RunState, data: EntityData) -> StringName:
-	var entity: EntityInstance = state.floor_state.entity
-	if entity == null or not entity.active:
-		return &"no_active_entity"
-	result.card.damage_requested = damage
-	result.entity.damage = mini(damage, entity.hp)
-	result.entity.hp_after = entity.hp - result.entity.damage
-	result.entity.defeated = result.entity.hp_after == 0
-	var reaction: StringName = &"ATTACKING" if data.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE else (&"APPROACHING" if entity.state == &"WATCHING" else entity.state)
-	_set_next_state(result, &"DEFEATED" if result.entity.defeated else reaction)
-	result.entity.state_reason = &"player_attack"
-	return &""
-
-
-static func plan_world_followup(result: ActionResult, state: RunState, data: FloorData) -> void:
-	var floor: FloorState = state.floor_state
-	var entity: EntityInstance = floor.entity
-	if result.cutout.destination != null or not data.followup_on_light or data.entry_entity == null or data.followup_entity == null:
-		return
-	# 入口实体已经退场时读楼层事实；仍在场时读本次尚未提交的解决计划。
-	if entity != null and entity.entity_id != data.entry_entity.id:
-		return
-	if floor.resolved_entity_ids.has(data.followup_entity.id):
-		return
-	var resolved: bool = floor.resolved_entity_ids.has(data.entry_entity.id) or (entity != null and (not entity.active or result.entity.defeated or result.entity.state_after == &"DISENGAGED"))
-	if not resolved or result.floor.light_extinguished or not (floor.light_active or result.floor.light_activated):
-		return
-	result.entity.spawned = spawn(data.followup_entity)
-	result.entity.spawned.spawned_turn = floor.turn_count
-	# 声明式世界条件在当前动作的计划上判断，击败／脱离与 LIGHT 可同次触发。
-	if data.followup_entity.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE:
-		result.entity.spawned.state = &"OBSERVING"
-		result.entity.spawned.intent = INTENTS[&"OBSERVING"]
-		result.entity.spawned.light_exposed = true
-
-
-static func plan_light_reaction(result: ActionResult, state: RunState, data: FloorData) -> void:
-	var entity: EntityInstance = state.floor_state.entity
-	if entity == null or not entity.active or data.find_entity(entity.entity_id).behavior_type != EntityData.BehaviorType.LIGHT_REACTIVE:
-		return
-	# 普通原型手电即强光；同一回合反复开关也会升级，失败开灯不会到达此入口。
-	var next_state: StringName = &"OBSERVING" if entity.state == &"HIDDEN" else (&"AGITATED" if entity.state == &"OBSERVING" else &"ATTACKING")
-	_set_next_state(result, next_state)
-	result.entity.state_reason = &"strong_light"
-	result.entity.light_exposed = true
-	if next_state in [&"AGITATED", &"ATTACKING"]:
-		result.floor.threat_delta = mini(1, FloorState.MAX_THREAT - state.floor_state.threat)
-		result.floor.threat_reason = &"repeated_strong_light"
-
-
-static func plan_end_turn(result: ActionResult, state: RunState, data: FloorData) -> void:
-	var entity: EntityInstance = state.floor_state.entity
-	result.player.expire_block = true
-	var remaining_hp: int = maxi(0, state.player.hp + result.player.hp_delta)
-	if entity == null or not entity.active or remaining_hp <= 0:
-		return
-	# 只执行界面已经公示的意图，每次 End Turn 一次；不用随机 AI 或第二套时钟。
-	result.entity.intent_resolved = entity.intent
-	result.entity.target = entity
-	var definition: EntityData = data.find_entity(entity.entity_id)
-	if definition.behavior_type == EntityData.BehaviorType.LIGHT_REACTIVE:
-		_plan_light_end_turn(result, state, definition, data)
-		return
-	var damage: int = 0
-	var next_state: StringName = entity.state
-	match entity.intent:
-		&"approach":
-			next_state = &"APPROACHING"
-		&"bite":
-			damage = intent_damage(entity, definition, state.floor_state, data)
-			next_state = &"CHASING"
-		&"lunge":
-			damage = intent_damage(entity, definition, state.floor_state, data)
-		&"recover":
-			next_state = &"WATCHING"
-	# 局势先消耗同一份 Guard；实体只使用余额，避免一份防护抵挡两次。
-	var remaining_block: int = maxi(0, state.player.block + result.player.block_delta)
-	var blocked: int = mini(remaining_block, damage)
-	var hp_loss: int = mini(remaining_hp, maxi(0, damage - blocked))
-	result.player.damage_blocked += blocked
-	result.player.block_delta -= blocked
-	result.player.damage_taken += hp_loss
-	result.player.hp_delta -= hp_loss
-	if damage > 0 and blocked == damage:
-		next_state = &"STAGGERED"
-	_set_next_state(result, next_state)
-
-
-static func _plan_light_end_turn(result: ActionResult, state: RunState, data: EntityData, floor_data: FloorData) -> void:
-	var entity: EntityInstance = state.floor_state.entity
-	# 先读取本回合实际照明，再由统一提交清除临时光源；不会在熄灯后执行过期攻击。
-	if not state.floor_state.light_active:
-		_set_next_state(result, &"WITHDRAWN")
-		result.entity.state_reason = &"darkness_respected"
-		if entity.light_exposed:
-			InsightSystem.plan_confirmation(result, data.rule_insight, state.floor_state)
-		return
-	if entity.state == &"AGITATED":
-		_set_next_state(result, &"ATTACKING")
-		result.entity.state_reason = &"light_warning_ignored"
-	elif entity.state == &"ATTACKING":
-		var damage: int = intent_damage(entity, data, state.floor_state, floor_data)
-		var remaining_hp: int = maxi(0, state.player.hp + result.player.hp_delta)
-		var remaining_block: int = maxi(0, state.player.block + result.player.block_delta)
-		var blocked: int = mini(remaining_block, damage)
-		var hp_loss: int = mini(remaining_hp, maxi(0, damage - blocked))
-		result.player.damage_blocked += blocked
-		result.player.block_delta -= blocked
-		result.player.damage_taken += hp_loss
-		result.player.hp_delta -= hp_loss
-		# 格挡仍然有效，但规则型实体不会套用猎犬的踉跄状态机。
-		_set_next_state(result, &"ATTACKING")
-		result.entity.state_reason = &"light_strike"
-
-
-static func _set_next_state(result: ActionResult, next_state: StringName) -> void:
-	result.entity.state_after = next_state
-	result.entity.intent_after = INTENTS[next_state]
-
-
-static func intent_damage(entity: EntityInstance, definition: EntityData, floor: FloorState, data: FloorData) -> int:
-	var base: int = definition.aggressive_damage if entity.intent in [&"lunge", &"light_strike"] else (definition.normal_damage if entity.intent == &"bite" else 0)
-	if base > 0 and data.threat_damage_step > 0:
-		base += mini(data.max_threat_damage_bonus, floor.threat / data.threat_damage_step)
-	return base
-
-
-
-
-
-static func commit(result: ActionResult, state: RunState) -> void:
-	var floor: FloorState = state.floor_state
-	var entity: EntityInstance = floor.entity
-	if not result.entity.intent_resolved.is_empty():
-		result.debug_lines.append("[ENTITY] intent=%s damage=%d blocked=%d" % [result.entity.intent_resolved, result.player.damage_taken, result.player.damage_blocked])
-	if entity != null and result.entity.analysis_after >= 0:
-		entity.analysis_progress = result.entity.analysis_after
-		if not result.entity.rule_revealed.is_empty():
-			entity.revealed_rules.append(result.entity.rule_revealed)
-		result.debug_lines.append("[ENTITY] analysis %s +%d total=%d" % [entity.entity_id, result.entity.analysis_applied, entity.analysis_progress])
-	if entity != null and result.entity.light_exposed:
-		entity.light_exposed = true
-	if entity != null and result.entity.hp_after >= 0:
-		entity.hp = result.entity.hp_after
-		result.debug_lines.append("[DAMAGE] %s -%d hp=%d" % [entity.entity_id, result.entity.damage, entity.hp])
-	if entity != null and not result.entity.state_after.is_empty():
-		if entity.state != result.entity.state_after:
-			result.debug_lines.append("[ENTITY] %s state %s -> %s reason=%s" % [entity.entity_id, entity.state, result.entity.state_after, result.entity.state_reason])
-		entity.state = result.entity.state_after
-		entity.intent = result.entity.intent_after
-	if entity != null and result.entity.defeated:
-		result.debug_lines.append("[ENTITY] defeated %s" % entity.entity_id)
-	if entity != null and not entity.active:
-		# 最终状态与奖励已提交后，才清空可选的活动槽；旧引用仍可检查最终事实。
-		if not floor.resolved_entity_ids.has(entity.entity_id):
-			floor.resolved_entity_ids.append(entity.entity_id)
-		floor.entity = null
-		result.debug_lines.append("[ENTITY] retired %s" % entity.entity_id)
-	if result.entity.spawned != null:
-		# 先把旧目标的 HP／状态完整提交，再替换槽位，避免把猎犬的致命伤写入笑魇。
-		floor.entity = result.entity.spawned
-		result.debug_lines.append("[ENTITY] spawn %s hp=%d state=%s reason=resolved_entry_and_light" % [floor.entity.entity_id, floor.entity.hp, floor.entity.state])
+static func react(trigger: TriggerData.TriggerType, tags: Array[StringName], enemy: EntityInstance, result: ActionResult, state: RunState, rng: RandomNumberGenerator) -> void:
+	if not enemy.active: return
+	var combat: CombatState = result.combat.after
+	for weakness: WeaknessData in enemy.definition.weaknesses:
+		if weakness.trigger.trigger_type != trigger: continue
+		if not weakness.trigger.effect_tag.is_empty() and not tags.has(weakness.trigger.effect_tag): continue
+		if enemy.weakness_turns.has(weakness.id) and combat.turn_number - int(enemy.weakness_turns[weakness.id]) < maxi(1, weakness.cooldown): continue
+		if not conditions_match(weakness.conditions, enemy, combat): continue
+		enemy.weakness_turns[weakness.id] = combat.turn_number
+		if not weakness.state_after.is_empty(): enemy.state = weakness.state_after
+		EffectSystem.apply(weakness.effects, result, state, enemy, true, rng, false)

@@ -1,19 +1,24 @@
-[gd_resource type="Resource" script_class="EntityData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="EntityData" load_steps=6 format=3]
 
-[ext_resource type="Script" path="res://scripts/entities/entity_data.gd" id="1_entity"]
-[ext_resource type="Resource" path="res://data/insights/insight_level6_noise_pursuit.tres" id="2_insight"]
-
-[ext_resource type="Resource" path="res://data/rewards/reward_cards.tres" id="reward"]
+[ext_resource type="Script" path="res://scripts/entities/entity_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/entities/behaviors/entity_hound.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/weakness_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/entities/reactions/noise.tres" id="4"]
+[ext_resource type="Resource" path="res://data/rewards/combat.tres" id="5"]
 
 [resource]
-script = ExtResource("1_entity")
-id = &"entity_hound"
+script = ExtResource("1")
+id = "entity_hound"
 display_name = "猎犬"
+description = "爪声追着噪音靠近。留意它从警戒转为扑击的时机。"
+asset_id = "entity_hound"
 max_hp = 18
-initial_state = &"WATCHING"
-normal_damage = 4
-aggressive_damage = 5
-analysis_threshold = 4
-analysis_rule = "噪音会使猎犬立即追逐；完全格挡攻击可令它踉跄，随后奔跑可脱离。"
-rule_insight = ExtResource("2_insight")
-resolution_reward = ExtResource("reward")
+behavior_data = ExtResource("2")
+weaknesses = Array[ExtResource("3")]([ExtResource("4")])
+reward_data = ExtResource("5")
+escape_damage_min = 2
+escape_damage_max = 4
+escape_stress = 2
+damage_reduction = 0
+initial_state = "WATCHING"
+behavior_knowledge = ""

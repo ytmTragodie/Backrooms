@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EntityData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/entities/behaviors/entity_skinstealer.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/weakness_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/rewards/combat.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "entity_skinstealer"
+display_name = "窃皮者"
+description = "它模仿人的轮廓，却在接近时露出异常的步幅。"
+asset_id = "entity_skinstealer"
+max_hp = 22
+behavior_data = ExtResource("2")
+weaknesses = Array[ExtResource("3")]([])
+reward_data = ExtResource("4")
+escape_damage_min = 3
+escape_damage_max = 5
+escape_stress = 2
+damage_reduction = 0
+initial_state = "WATCHING"
+behavior_knowledge = ""

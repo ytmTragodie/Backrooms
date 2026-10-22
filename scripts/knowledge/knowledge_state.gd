@@ -1,13 +1,10 @@
 class_name KnowledgeState
 extends RefCounted
+## 长期知识集合，既不是 Intel，也没有可消费的通用点数。
+var floors: Array[StringName] = []
+var entities: Array[StringName] = []
+var exits: Array[StringName] = []
+var rules: Array[StringName] = []
 
-# 知识状态聚合根。这里只持有各领域状态对象和知识元数据；不保存 HP/AP/牌区/装备槽/奖励队列等具体业务字段。
-# 知识状态跨楼层保留，只有新开一局才整体替换。知识状态的身份在整局中保持不变，领域对象随之获得独立身份。
-# 已知楼层
-var known_floors : Dictionary[StringName, FloorData] = {}
-# 已知实体
-var known_entities : Dictionary[StringName, EntityData] = {}
-# 已知出口
-# var known_exits : Dictionary[StringName, ExitData] = {}
-# 已知特殊规则（暂不实现）
-
+func has(id: StringName) -> bool:
+	return floors.has(id) or entities.has(id) or exits.has(id) or rules.has(id)

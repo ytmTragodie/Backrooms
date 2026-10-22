@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/events/options/cache_pay.tres" id="3"]
+[ext_resource type="Resource" path="res://data/events/options/cache_force.tres" id="4"]
+[ext_resource type="Resource" path="res://data/events/options/cache_leave.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = "event_cache"
+display_name = "潮湿补给柜"
+description = "柜门下渗出水迹，一枚生锈挂锁仍挂在门上。"
+asset_id = "event_cache"
+actor_name = ""
+relation = 0
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5")])

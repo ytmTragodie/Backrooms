@@ -1,5 +1,7 @@
 # ARCHITECTURE｜后室卡牌游戏架构规范
 
+> **Phase 14 当前覆盖**：状态与事务的当前实现契约见 [PHASE_14_ARCHITECTURE.md](PHASE_14_ARCHITECTURE.md)，设计主源为 [Phase14_GAMEPLAY _Redesign.md](<Phase14_GAMEPLAY _Redesign.md>)。本文件中探索/战斗同回合、玩家 AP、换层重建 FloorState、Objective 与临时切出牌等冲突段落属于历史；单一所有者、静态/实例分离、分域计划和统一提交原则仍有效。
+
 > 版本：2026-10-20，精简重构版。**本文件是目标架构约束，不代表所有模块已实现。** 技术现状以仓库代码为准，玩法目标以 `GDD.md` 为准。修改前先检查 `AGENTS.md`、现有调用方、测试及 `.tres` 引用。
 >
 > 优先级：用户本次指令 → 仓库 `AGENTS.md` → 本文件 → `CODING_RULES.md` → `GDD.md`。旧 Phase 记录、迁移计划和审计文档只供追溯，不能恢复被废弃的玩法。

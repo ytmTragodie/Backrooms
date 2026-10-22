@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/events/options/pipe_follow.tres" id="3"]
+[ext_resource type="Resource" path="res://data/events/options/pipe_strike.tres" id="4"]
+[ext_resource type="Resource" path="res://data/events/options/pipe_leave.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = "event_water_pipe"
+display_name = "温热水管"
+description = "水管上的振动沿墙角向前延伸，能听见微弱的金属敲击。"
+asset_id = "event_water_pipe"
+actor_name = ""
+relation = 0
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5")])

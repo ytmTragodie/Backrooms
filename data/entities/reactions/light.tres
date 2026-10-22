@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaknessData" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/weakness_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/entities/triggers/light.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/entity_condition_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/conditions/light.tres" id="4"]
+[ext_resource type="Script" path="res://scripts/effects/effect_data.gd" id="5"]
+[ext_resource type="Resource" path="res://data/effects/enraged_0.tres" id="6"]
+
+[resource]
+script = ExtResource("1")
+id = "light_agitation"
+trigger = ExtResource("2")
+conditions = Array[ExtResource("3")]([ExtResource("4")])
+effects = Array[ExtResource("5")]([ExtResource("6")])
+state_after = "AGITATED"

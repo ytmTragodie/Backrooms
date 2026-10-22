@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ShopData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/rewards/shop_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/rewards/shop_offer_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/shops/offers/meg_exchange_medical.tres" id="3"]
+[ext_resource type="Resource" path="res://data/shops/offers/meg_exchange_tactics.tres" id="4"]
+[ext_resource type="Resource" path="res://data/shops/offers/meg_exchange_water.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = "meg_exchange"
+display_name = "M.E.G. 交换箱"
+offers = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5")])

@@ -1,19 +1,25 @@
-[gd_resource type="Resource" script_class="EntityData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="EntityData" load_steps=7 format=3]
 
-[ext_resource type="Script" path="res://scripts/entities/entity_data.gd" id="1_entity"]
-[ext_resource type="Resource" path="res://data/insights/insight_level6_light_attracts.tres" id="2_insight"]
-
-[ext_resource type="Resource" path="res://data/rewards/reward_cards.tres" id="reward"]
+[ext_resource type="Script" path="res://scripts/entities/entity_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/entities/behaviors/entity_smiler.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/weakness_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/entities/reactions/light.tres" id="4"]
+[ext_resource type="Resource" path="res://data/entities/reactions/dark.tres" id="5"]
+[ext_resource type="Resource" path="res://data/rewards/elite.tres" id="6"]
 
 [resource]
-script = ExtResource("1_entity")
-id = &"entity_smiler"
+script = ExtResource("1")
+id = "entity_smiler"
 display_name = "笑魇"
+description = "笑脸停在黑暗里。强光会激怒它，持续保持黑暗或许能让它离开。"
+asset_id = "entity_smiler"
 max_hp = 120
-initial_state = &"HIDDEN"
-normal_damage = 0
-aggressive_damage = 6
-behavior_type = 1
-rule_insight = ExtResource("2_insight")
-resolution_reward = ExtResource("reward")
-reward_requires_light_exposure = true
+behavior_data = ExtResource("2")
+weaknesses = Array[ExtResource("3")]([ExtResource("4"), ExtResource("5")])
+reward_data = ExtResource("6")
+escape_damage_min = 4
+escape_damage_max = 7
+escape_stress = 3
+damage_reduction = 5
+initial_state = "HIDDEN"
+behavior_knowledge = "light_attracts"

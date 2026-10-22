@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/events/options/lights_note.tres" id="3"]
+[ext_resource type="Resource" path="res://data/events/options/lights_stare.tres" id="4"]
+[ext_resource type="Resource" path="res://data/events/options/lights_leave.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = "event_lights"
+display_name = "不该亮起的指示灯"
+description = "黑暗尽头有一盏持续发亮的灯，灯光旁的笑脸正在变大。"
+asset_id = "event_lights"
+actor_name = ""
+relation = 0
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5")])

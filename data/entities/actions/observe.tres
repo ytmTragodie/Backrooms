@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EntityActionData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_action_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/effects/effect_data.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/entity_condition_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/conditions/dark.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "observe"
+display_name = "注视黑暗"
+effects = Array[ExtResource("2")]([])
+conditions = Array[ExtResource("3")]([ExtResource("4")])
+priority = 2

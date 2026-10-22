@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EventOptionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "blackout_learn"
+display_name = "确认避光规律"
+knowledge = Array[StringName]([&"light_attracts"])
+reveal_nodes = 1

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EventOptionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "seam_map"
+display_name = "消耗 1 补给标记出口"
+supply_cost = 1
+knowledge = Array[StringName]([&"seam_route", &"route_floor_level_0"])
+reveal_nodes = 2

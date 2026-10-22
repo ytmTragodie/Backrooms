@@ -1,22 +1,31 @@
 class_name EntityInstance
 extends RefCounted
-
-# 状态、HP 和意图都属于本次遭遇；Data 不保存任何可变生命值。
-var entity_id: StringName
+## 战斗实例，HP/防护/状态/冷却唯一所有者。
+var instance_id: int
+var definition: EntityData
 var hp: int
-var max_hp: int
-var block: int # 防御
-var statuses: Array[StringName] = [] #状态
+var block: int = 0
 var state: StringName
-var intent: StringName
-# 区分“主动攻击惹怒”与“实际观察到光照反应”，前者不能凭空验证避光 Insight。
-var light_exposed: bool = false
-var spawned_turn: int = 1
-var analysis_progress: int = 0
-var revealed_rules: Array[String] = []
+var current_intent: EnemyIntent
+var statuses: Array[StatusInstance] = []
+var last_actions: Dictionary = {}
+var weakness_turns: Dictionary = {}
+var previous_action: StringName
 var alive: bool:
-	get:
-		return hp > 0
+	get: return hp > 0
 var active: bool:
-	get:
-		return alive and state not in [&"DISENGAGED", &"WITHDRAWN"]
+	get: return alive and state != &"WITHDRAWN"
+
+func copy() -> EntityInstance:
+	var next: EntityInstance = EntityInstance.new()
+	next.instance_id = instance_id
+	next.definition = definition
+	next.hp = hp
+	next.block = block
+	next.state = state
+	next.current_intent = current_intent
+	for status: StatusInstance in statuses: next.statuses.append(status.copy())
+	next.last_actions = last_actions.duplicate()
+	next.weakness_turns = weakness_turns.duplicate()
+	next.previous_action = previous_action
+	return next

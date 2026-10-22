@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RewardTableData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/rewards/reward_table_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/rewards/reward_entry_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/rewards/entries/heal8.tres" id="3"]
+[ext_resource type="Resource" path="res://data/rewards/entries/calm3.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "reward_medical"
+guaranteed_rewards = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])
+random_rewards = Array[ExtResource("2")]([])
+random_count = 0

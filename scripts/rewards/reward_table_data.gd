@@ -1,8 +1,7 @@
 class_name RewardTableData
 extends Resource
-
-# 奖励表数据，包含了奖励的类型和对应的奖励数据
+## guaranteed 全发；random_rewards 按权重无放回抽 random_count 项。
+@export var id: StringName
 @export var guaranteed_rewards: Array[RewardEntryData] = []
-@export var random_groups: Array[RewardEntryData] = []
-# 权重用于在随机奖励中确定该奖励的出现概率，权重越高，出现的概率越大,需要在资源文件中好好定义
-@export var weights: Array[float] = []
+@export var random_rewards: Array[RewardEntryData] = []
+@export var random_count: int = 0

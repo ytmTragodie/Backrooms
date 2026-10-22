@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/events/options/sleep_rest.tres" id="3"]
+[ext_resource type="Resource" path="res://data/events/options/sleep_leave.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "event_sleep"
+display_name = "无法关上的门"
+description = "门后的小房间暂时没有嗡鸣，地面有折叠的纸毯。"
+asset_id = "event_sleep"
+actor_name = ""
+relation = 0
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])

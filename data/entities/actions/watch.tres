@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EntityActionData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_action_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/effects/effect_data.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/entity_condition_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/conditions/first_turn.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "watch"
+display_name = "警戒靠近"
+effects = Array[ExtResource("2")]([])
+conditions = Array[ExtResource("3")]([ExtResource("4")])
+priority = 2
+state_after = "APPROACHING"

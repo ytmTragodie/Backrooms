@@ -1,119 +1,35 @@
 class_name TurnManager
 extends Node
-
-signal turn_started(turn_number: int)
+## 薄应用入口：创建 Run、接收命令、完整提交后通知。没有第二套回合算法。
 signal state_changed
 signal action_resolved(result: ActionResult)
-
-@export var starter_deck: DeckData = preload("res://data/cards/starter_deck.tres")
-@export var floor_data: FloorData
-@export var starting_equipment: Array[EquipmentData] = []
-
-# 本节点与 CardSystem 始终绑定同一局状态；新一局应创建新的 TurnManager。
-var _run_state: RunState = RunState.new()
-var run_state: RunState:
-	get:
-		return _run_state
-	set(_value):
-		push_error("RunState cannot be replaced; create a new TurnManager for a new run")
-var card_system: CardSystem
-
+@export var game_data: GameData
+@export var seed_value: int = 1
+var run_state: RunState
 
 func _ready() -> void:
-	var equipment_error: StringName = EquipmentSystem.initialize(run_state.player.equipment, starting_equipment)
-	if not equipment_error.is_empty():
-		push_error("Cannot initialize carry slots: %s" % equipment_error)
+	start_run(seed_value)
+
+func start_run(seed: int) -> void:
+	var errors: Array[String] = ContentValidator.validate(game_data)
+	if not errors.is_empty():
+		push_error("Content invalid: " + "; ".join(errors))
 		return
-	card_system = CardSystem.new(run_state, starter_deck.cards)
-	# 回合生命周期由本节点安排；AP 的权威写入仍交给 PlayerSystem。
-	PlayerSystem.begin_turn(run_state)
-	if floor_data != null:
-		run_state.floor_state = FloorState.new(floor_data)
-		if OS.is_debug_build():
-			print("[FLOOR] enter %s" % floor_data.id)
-			if run_state.floor_state.entity != null:
-				print("[ENTITY] spawn %s hp=%d state=%s" % [run_state.floor_state.entity.entity_id, run_state.floor_state.entity.hp, run_state.floor_state.entity.state])
-		ObjectiveSystem.draw_fresh(floor_data, run_state.floor_state, run_state.rng)
-		EventSystem.fill_slots(run_state.floor_state, floor_data)
-	card_system.begin_hand(floor_data)
-	if OS.is_debug_build():
-		print("[RUN] seed=%d" % run_state.rng_seed)
-	_announce_turn_start()
-
-
-func end_turn() -> ActionResult:
-	# 解析器固定结算局势 -> 实体 -> 滞留 -> 清理；本节点仅推进计数与抽弃牌。
-	var result: ActionResult = RuleResolver.resolve_end_turn(run_state, floor_data)
-	if not result.success:
-		action_resolved.emit(result)
-		return result
-	# 致命意图已完整提交；不再给死亡角色恢复 AP 或开启下一回合。
-	if run_state.player.hp <= 0:
-		state_changed.emit()
-		action_resolved.emit(result)
-		return result
-	var ended_turn: int = run_state.flow.turn_number
-	if OS.is_debug_build():
-		print("[TURN] end turn=%d" % ended_turn)
-	card_system.discard_hand()
-	run_state.flow.turn_number += 1
-	PlayerSystem.begin_turn(run_state)
-	if run_state.floor_state != null:
-		ResourceNodeSystem.finish_turn(run_state.floor_state)
-		run_state.floor_state.turn_count += 1
-		# 仅已解决事件在新回合推进；未完成事件及其交互记录继续保留。
-		ObjectiveSystem.draw_fresh(floor_data, run_state.floor_state, run_state.rng)
-		EventSystem.fill_slots(run_state.floor_state, floor_data)
-	card_system.begin_hand(floor_data)
-	_announce_turn_start()
-	action_resolved.emit(result)
-	return result
-
-
-func request_play_card(card: CardInstance, objective: ObjectiveInstance = null, board: BoardState = null, entity: EntityInstance = null) -> ActionResult:
-	return submit_card_command(PlayCardCommand.new(card, objective, board, entity))
-
-
-func submit_card_command(command: PlayCardCommand) -> ActionResult:
-	# 所有对外出牌请求统一经过这里，避免提交成功却漏发界面通知。
-	var result: ActionResult = RuleResolver.resolve(command, run_state, card_system, floor_data)
-	if result.success and result.cutout.destination != null:
-		# 换层只同步定义；不重建 Run、牌组、装备或恢复 AP。
-		floor_data = result.cutout.destination
-	# 完整提交后才通知；失败仅发布结果，不伪装成一次状态变化。
-	if result.success:
-		state_changed.emit()
-	action_resolved.emit(result)
-	return result
-
-
-func _announce_turn_start() -> void:
-	if floor_data != null and not floor_data.is_placeholder:
-		var options: int = RuleResolver.legal_hand_options(run_state, floor_data)
-		run_state.metrics.hands_checked += 1
-		if options == 0:
-			run_state.metrics.dead_hands += 1
-		if options >= 2:
-			run_state.metrics.multiple_option_hands += 1
-		if OS.is_debug_build():
-			print("[BALANCE] hand options=%d cards=%d turn=%d" % [options, run_state.player.deck.hand.size(), run_state.flow.turn_number])
-	if OS.is_debug_build():
-		print("[TURN] start turn=%d ap=%d" % [run_state.flow.turn_number, run_state.player.ap])
-	turn_started.emit(run_state.flow.turn_number)
+	run_state = RunState.new(seed)
+	run_state.player.supply = game_data.starting_supply
+	CardSystem.initialize(run_state.player.deck, game_data.starter_deck)
+	EquipmentSystem.initialize(run_state.player.equipment, game_data.starting_equipment)
+	run_state.floor_state = MapSystem.generate(game_data.find_floor(game_data.starting_floor), run_state.rng)
+	run_state.history.floors[run_state.floor_state.floor_id] = run_state.floor_state
+	run_state.history.visits[run_state.floor_state.floor_id] = 1
+	run_state.player.knowledge.floors.append(run_state.floor_state.floor_id)
 	state_changed.emit()
 
-
-func submit_reward_command(command: CardRewardCommand) -> ActionResult:
-	var result: ActionResult = RuleResolver.resolve_reward(command, run_state)
-	if result.success:
-		state_changed.emit()
+func submit(command: GameCommand) -> ActionResult:
+	var result: ActionResult = RuleResolver.resolve(command, run_state, game_data)
+	if result.success: state_changed.emit()
 	action_resolved.emit(result)
 	return result
 
-
-func submit_safe_point_command(command: SafePointCommand) -> ActionResult:
-	var result: ActionResult = RuleResolver.resolve_safe_point(command, run_state)
-	if result.success:
-		state_changed.emit()
-	action_resolved.emit(result)
-	return result
+func end_turn() -> ActionResult:
+	return submit(GameCommand.new(GameCommand.Kind.END_TURN, run_state))

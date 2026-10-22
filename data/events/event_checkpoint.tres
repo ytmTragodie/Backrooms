@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/events/options/checkpoint_swap.tres" id="3"]
+[ext_resource type="Resource" path="res://data/events/options/checkpoint_leave.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "event_checkpoint"
+display_name = "遗弃的检查站"
+description = "墙上留有可辨认的 M.E.G. 标志，路线记录被分开保存。"
+asset_id = "event_checkpoint"
+actor_name = "M.E.G. 留守小队"
+relation = 2
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])

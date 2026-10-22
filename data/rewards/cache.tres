@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RewardTableData" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/rewards/reward_table_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/rewards/reward_entry_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/rewards/entries/supply2.tres" id="3"]
+[ext_resource type="Resource" path="res://data/rewards/entries/heal4.tres" id="4"]
+[ext_resource type="Resource" path="res://data/rewards/entries/calm3.tres" id="5"]
+[ext_resource type="Resource" path="res://data/rewards/entries/equip_almond_water.tres" id="6"]
+[ext_resource type="Resource" path="res://data/rewards/entries/equip_flashlight.tres" id="7"]
+
+[resource]
+script = ExtResource("1")
+id = "reward_cache"
+guaranteed_rewards = Array[ExtResource("2")]([ExtResource("3")])
+random_rewards = Array[ExtResource("2")]([ExtResource("4"), ExtResource("5"), ExtResource("6"), ExtResource("7")])
+random_count = 1

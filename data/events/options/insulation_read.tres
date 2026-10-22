@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EventOptionData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/rewards/intel.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = "insulation_read"
+display_name = "阅读记录，取得战术选择"
+required_knowledge = "layout_repeats"
+rewards = ExtResource("2")

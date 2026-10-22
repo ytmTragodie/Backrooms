@@ -1,18 +1,10 @@
 class_name EquipmentData
 extends Resource
-
-enum EffectType { LIGHT, ATTACK, RECOVER }
-
+## 三格物品跨战斗保留，每战斗回合至多生成一张真实行动牌。
 @export var id: StringName
 @export var display_name: String
-@export var action_name: String
-@export var tags: Array[StringName] = []
 @export var counter_kind: StringName = &"charges"
-@export var capacity: int = 1
-@export var ap_cost: int = 1
-@export var effect_type: EffectType = EffectType.LIGHT
-@export var effect_value: int = 0
-@export var conditional_heal: int = 0
-@export var heal_stress_threshold: int = 7
+@export var capacity: int = 3
 @export var action_card: CardData
+# 有此定义的物品按 CombatState.light_active 原位选择开/关灯动作。
 @export var active_action_card: CardData

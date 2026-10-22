@@ -1,5 +1,7 @@
 # CARD-FIRST V2.1 — Migration Plan
 
+> Phase 14 已替换正式探索玩法；当前迁移映射见 [PHASE_14_MIGRATION.md](PHASE_14_MIGRATION.md)。以下是历史记录，不再授权恢复旧玩法或旧测试 API。
+
 > **Phase 11 当前覆盖规则（2026-10-18）**：Scene Rule／临时 Event／可调查 Objective 已分离。Board 为最多 2 Event＋1 Objective＋现有单 Entity；Event 不再使用 Explore 进度。后文 Phase 10 及更早的单 Situation 记录属于历史，不能恢复旧分类。当前完整分类与验证见 [PHASE_11_VALIDATION.md](PHASE_11_VALIDATION.md)。
 
 日期：2026-10-18。状态：**REWORK A／B／C、Phase 9–10 及 Phase 11 事件重分类／素材管线已实现**。当前分类与规则见 §0.8；以下保留迁移历史。

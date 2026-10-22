@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="EntityData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/entities/behaviors/entity_starved_hound.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/weakness_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/entities/reactions/noise.tres" id="4"]
+[ext_resource type="Resource" path="res://data/rewards/elite.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = "entity_starved_hound"
+display_name = "饥饿猎犬"
+description = "瘦削的身形不断前探，每一点噪音都让它更加兴奋。"
+asset_id = "entity_starved_hound"
+max_hp = 26
+behavior_data = ExtResource("2")
+weaknesses = Array[ExtResource("3")]([ExtResource("4")])
+reward_data = ExtResource("5")
+escape_damage_min = 4
+escape_damage_max = 7
+escape_stress = 3
+damage_reduction = 0
+initial_state = "WATCHING"
+behavior_knowledge = ""

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ShopData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/rewards/shop_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/rewards/shop_offer_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/shops/offers/wanderer_crowbar.tres" id="3"]
+[ext_resource type="Resource" path="res://data/shops/offers/wanderer_beacon.tres" id="4"]
+[ext_resource type="Resource" path="res://data/shops/offers/wanderer_calm.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = "wanderer"
+display_name = "流浪者临时摊位"
+offers = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5")])

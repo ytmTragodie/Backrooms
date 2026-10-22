@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StatusData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/effects/status_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "enraged"
+display_name = "躁怒"
+description = "下次锁定的意图伤害增加 2。"
+outgoing_damage_bonus = 2

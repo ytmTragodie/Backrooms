@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EquipmentData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/equipment/equipment_data.gd" id="1_equipment"]
+[ext_resource type="Resource" path="res://data/cards/generated/card_crowbar.tres" id="card"]
+
+[resource]
+script = ExtResource("1_equipment")
+action_card = ExtResource("card")
+id = &"equip_crowbar"
+display_name = "撬棍"
+action_name = "撬击"
+tags = Array[StringName]([&"tool", &"attack"])
+counter_kind = &"durability"
+capacity = 3
+ap_cost = 1
+effect_type = 1
+effect_value = 4
+conditional_heal = 0
+heal_stress_threshold = 7

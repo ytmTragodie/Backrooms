@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EventOptionData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/entities/entity_skinstealer.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = "foot_call"
+display_name = "出声回应，遭遇窃皮者"
+encounter = ExtResource("2")

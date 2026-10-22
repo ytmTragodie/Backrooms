@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EventOptionData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/rewards/intel.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = "checkpoint_swap"
+display_name = "消耗 2 补给，换取地图与战术"
+supply_cost = 2
+rewards = ExtResource("2")
+knowledge = Array[StringName]([&"route_floor_level_6"])
+reveal_nodes = 2

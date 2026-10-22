@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ShopOfferData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/rewards/shop_offer_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/rewards/entries/equip_almond_water.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = "meg_exchange_water"
+display_name = "杏仁水"
+price = 3
+reward = ExtResource("2")

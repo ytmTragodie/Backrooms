@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/effects/effect_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/effects/intel2.tres" id="3"]
+[ext_resource type="Resource" path="res://data/effects/draw1.tres" id="4"]
+[ext_resource type="Resource" path="res://data/cards/card_recon_plus.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = "card_recon"
+display_name = "战场侦察"
+ap_cost = 1
+intel_cost = 0
+target_kind = 0
+effects = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])
+description = "M.E.G. 原型战术；数值由效果列表定义。"
+rarity = 0
+upgrade_to = ExtResource("5")

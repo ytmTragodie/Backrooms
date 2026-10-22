@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="FloorData" format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="script"]
+[ext_resource type="Script" path="res://scripts/objectives/objective_data.gd" id="event_type"]
+[ext_resource type="Script" path="res://scripts/floors/resource_node_data.gd" id="node_type"]
+[ext_resource type="Resource" path="res://data/safe_points/safe_level0.tres" id="safe"]
+[ext_resource type="Resource" path="res://data/floors/floor_level_6.tres" id="destination"]
+[ext_resource type="Resource" path="res://data/resources/resource_level0_supply.tres" id="n0"]
+[ext_resource type="Resource" path="res://data/resources/resource_level0_battery.tres" id="n1"]
+[ext_resource type="Resource" path="res://data/resources/resource_level0_scrap.tres" id="n2"]
+[ext_resource type="Resource" path="res://data/resources/resource_level0_water.tres" id="n3"]
+
+[ext_resource type="Resource" path="res://data/objectives/objective_level0_wrong_corner.tres" id="o0"]
+[ext_resource type="Resource" path="res://data/objectives/objective_level0_damp_wall.tres" id="o1"]
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="new_event_type"]
+[ext_resource type="Script" path="res://scripts/floors/scene_rule_data.gd" id="rule_type"]
+[ext_resource type="Resource" path="res://data/events/event_level0_humming.tres" id="t0"]
+[ext_resource type="Resource" path="res://data/events/event_level0_meg_signal.tres" id="t1"]
+[ext_resource type="Resource" path="res://data/scene_rules/rule_level0_repetition.tres" id="scene_rule"]
+
+[resource]
+script = ExtResource("script")
+id = &"floor_level_0"
+display_name = "零层"
+card_first_exploration = true
+retire_resolved_objectives = true
+intro_objective = ExtResource("o0")
+fresh_objectives = Array[ExtResource("event_type")]([ExtResource("o0"), ExtResource("o1")])
+resource_nodes = Array[ExtResource("node_type")]([ExtResource("n0"), ExtResource("n1"), ExtResource("n2"), ExtResource("n3")])
+safe_point = ExtResource("safe")
+cutout_destinations = Array[Resource]([ExtResource("destination")])
+minimum_exit_turn = 3
+minimum_exit_explore = 6
+fallback_exit_turn = 6
+overstay_start_turn = 6
+overstay_interval = 3
+events = Array[ExtResource("new_event_type")]([ExtResource("t0"), ExtResource("t1")])
+scene_rules = Array[ExtResource("rule_type")]([ExtResource("scene_rule")])

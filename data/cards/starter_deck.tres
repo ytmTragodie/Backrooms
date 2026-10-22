@@ -1,13 +1,13 @@
-[gd_resource type="Resource" script_class="DeckData" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="DeckData" load_steps=8 format=3]
 
-[ext_resource type="Script" path="res://scripts/cards/deck_data.gd" id="1_deck"]
-[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="2_card"]
-[ext_resource type="Resource" path="res://data/cards/card_observe.tres" id="3_observe"]
-[ext_resource type="Resource" path="res://data/cards/card_wait.tres" id="4_wait"]
-[ext_resource type="Resource" path="res://data/cards/card_struggle.tres" id="5_struggle"]
-
-[ext_resource type="Resource" path="res://data/cards/card_deep_search.tres" id="6_deep_search"]
+[ext_resource type="Script" path="res://scripts/cards/deck_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/cards/card_attack.tres" id="3"]
+[ext_resource type="Resource" path="res://data/cards/card_defend.tres" id="4"]
+[ext_resource type="Resource" path="res://data/cards/card_recon.tres" id="5"]
+[ext_resource type="Resource" path="res://data/cards/card_quick_draw.tres" id="6"]
+[ext_resource type="Resource" path="res://data/cards/card_precision.tres" id="7"]
 
 [resource]
-script = ExtResource("1_deck")
-cards = Array[ExtResource("2_card")]([ExtResource("3_observe"), ExtResource("5_struggle"), ExtResource("3_observe"), ExtResource("6_deep_search"), ExtResource("4_wait"), ExtResource("3_observe"), ExtResource("4_wait"), ExtResource("6_deep_search"), ExtResource("4_wait")])
+script = ExtResource("1")
+cards = Array[ExtResource("2")]([ExtResource("3"), ExtResource("3"), ExtResource("3"), ExtResource("3"), ExtResource("4"), ExtResource("4"), ExtResource("4"), ExtResource("4"), ExtResource("5"), ExtResource("5"), ExtResource("6"), ExtResource("7")])

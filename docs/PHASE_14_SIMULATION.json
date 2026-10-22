@@ -1,0 +1,14 @@
+{
+  "cards_played": 3510,
+  "combat_end_turns": 793,
+  "deaths": 0,
+  "floor_transitions": 421,
+  "hand_samples_at_3_ap": 1261,
+  "mean_survivor_hp": 26.385,
+  "policy": "Deterministic greedy cards; full hidden-node information for route selection. Structural smoke test, not human difficulty or final balance.",
+  "rejected_policy_actions": 0,
+  "samples_with_no_legal_card": 0,
+  "seeds": 200,
+  "unfinished_after_400_commands": 0,
+  "wins": 200
+}

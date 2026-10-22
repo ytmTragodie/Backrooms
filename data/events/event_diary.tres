@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/events/options/diary_read.tres" id="3"]
+[ext_resource type="Resource" path="res://data/events/options/diary_leave.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "event_diary"
+display_name = "褪色日志"
+description = "最后一页只剩几条简短标记：不要把战斗撤离当作离层。"
+asset_id = "event_diary"
+actor_name = ""
+relation = 0
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ConditionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_condition_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+type = 6
+operator = 0
+numeric_value = 0
+reference_id = ""

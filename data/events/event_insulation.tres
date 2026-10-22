@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/events/options/insulation_read.tres" id="3"]
+[ext_resource type="Resource" path="res://data/events/options/insulation_leave.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "event_insulation"
+display_name = "绝缘维修间"
+description = "检修台留着带编号的绝缘夹和一张记录卡。"
+asset_id = "event_insulation"
+actor_name = ""
+relation = 0
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])

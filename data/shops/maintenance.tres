@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ShopData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/rewards/shop_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/rewards/shop_offer_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/shops/offers/maintenance_flashlight.tres" id="3"]
+[ext_resource type="Resource" path="res://data/shops/offers/maintenance_baton.tres" id="4"]
+[ext_resource type="Resource" path="res://data/shops/offers/maintenance_supply.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = "maintenance"
+display_name = "维修员物资箱"
+offers = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5")])

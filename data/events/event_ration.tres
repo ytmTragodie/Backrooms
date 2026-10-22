@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/events/options/ration_take.tres" id="3"]
+[ext_resource type="Resource" path="res://data/events/options/ration_leave.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "event_ration"
+display_name = "遗留口粮"
+description = "包装上的日期无法辨认，密封条却仍完好。"
+asset_id = "event_ration"
+actor_name = ""
+relation = 0
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])

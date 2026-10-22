@@ -1,5 +1,7 @@
 # CODING_RULES｜AI 编程与代码审查规范
 
+> **Phase 14 当前覆盖**：遵循 [PHASE_14_ARCHITECTURE.md](PHASE_14_ARCHITECTURE.md)。AP/Block/Intel/Noise 属于 CombatState，持有牌属于 DeckState、四牌区属于 CombatDeckState。有限 EffectData 列表、文本事件选项、地图节点和常驻战斗撤离是本次已授权设计，不应受下文旧“所有主动行为来自统一探索手牌”的历史规则阻挡。单写入者、原子计划、类型和中文注释规范继续适用。
+
 > 版本：2026-10-20。适用于 Godot 4.x / GDScript。以 `ARCHITECTURE.md` 规定的权威状态、领域边界和事务流程为准。**先读仓库现有代码，不能把文档示例当作已存在的类/字段/API。**
 
 ## 1. 目标：让人能读、能改、能扩展

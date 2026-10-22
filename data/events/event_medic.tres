@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/events/options/med_open.tres" id="3"]
+[ext_resource type="Resource" path="res://data/events/options/med_leave.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "event_medic"
+display_name = "应急医疗箱"
+description = "一张纸条提示不要同时打开所有储物格。"
+asset_id = "event_medic"
+actor_name = ""
+relation = 0
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])

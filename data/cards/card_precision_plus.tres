@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/effects/effect_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/effects/hit12.tres" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = "card_precision_plus"
+display_name = "精确打击＋"
+ap_cost = 1
+intel_cost = 2
+target_kind = 1
+effects = Array[ExtResource("2")]([ExtResource("3")])
+description = "强化后的同一主语义。"
+exhaust = false

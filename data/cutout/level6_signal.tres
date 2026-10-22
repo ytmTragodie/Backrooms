@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CutOutRouteData" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/cutout/cutout_route_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/cutout/cutout_destination_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/cutout/destinations/level6_signal_0.tres" id="3"]
+[ext_resource type="Resource" path="res://data/cutout/destinations/level6_signal_1.tres" id="4"]
+[ext_resource type="Script" path="res://scripts/cutout/cutout_modifier_data.gd" id="5"]
+[ext_resource type="Resource" path="res://data/cutout/modifiers/level6_signal_knowledge.tres" id="6"]
+[ext_resource type="Resource" path="res://data/cutout/modifiers/level6_signal_beacon.tres" id="7"]
+
+[resource]
+script = ExtResource("1")
+id = "level6_signal"
+display_name = "广播坐标"
+destinations = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])
+modifiers = Array[ExtResource("5")]([ExtResource("6"), ExtResource("7")])

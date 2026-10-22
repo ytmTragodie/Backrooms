@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/events/options/face_trade.tres" id="3"]
+[ext_resource type="Resource" path="res://data/events/options/face_leave.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "event_faceling"
+display_name = "沉默的无面行商"
+description = "一个没有面孔的身影将密封水瓶摆在桌上。"
+asset_id = "event_faceling"
+actor_name = "无面行商"
+relation = 1
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])

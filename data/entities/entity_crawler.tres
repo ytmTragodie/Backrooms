@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="EntityData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/entities/behaviors/entity_crawler.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/weakness_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/entities/reactions/blunt.tres" id="4"]
+[ext_resource type="Resource" path="res://data/rewards/combat.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = "entity_crawler"
+display_name = "墙隙爬行者"
+description = "阴影贴着墙缝移动，爪尖在地面留下细痕。"
+asset_id = "entity_crawler"
+max_hp = 16
+behavior_data = ExtResource("2")
+weaknesses = Array[ExtResource("3")]([ExtResource("4")])
+reward_data = ExtResource("5")
+escape_damage_min = 2
+escape_damage_max = 4
+escape_stress = 2
+damage_reduction = 0
+initial_state = "WATCHING"
+behavior_knowledge = ""

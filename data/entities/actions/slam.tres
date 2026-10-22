@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EntityActionData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_action_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/effects/effect_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/effects/intent_slam.tres" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = "slam"
+display_name = "沉重撞击"
+effects = Array[ExtResource("2")]([ExtResource("3")])
+escape_damage_modifier = 1

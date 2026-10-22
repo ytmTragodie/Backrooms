@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaknessData" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/weakness_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/entities/triggers/end.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/entity_condition_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/conditions/dark.tres" id="4"]
+[ext_resource type="Resource" path="res://data/conditions/turn2.tres" id="5"]
+[ext_resource type="Script" path="res://scripts/effects/effect_data.gd" id="6"]
+[ext_resource type="Resource" path="res://data/effects/withdraw.tres" id="7"]
+
+[resource]
+script = ExtResource("1")
+id = "dark_withdrawal"
+trigger = ExtResource("2")
+conditions = Array[ExtResource("3")]([ExtResource("4"), ExtResource("5")])
+effects = Array[ExtResource("6")]([ExtResource("7")])
+cooldown = 1

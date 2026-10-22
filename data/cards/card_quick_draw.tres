@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/effects/effect_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/effects/draw1.tres" id="3"]
+[ext_resource type="Resource" path="res://data/cards/card_quick_draw_plus.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "card_quick_draw"
+display_name = "快速整备"
+ap_cost = 0
+intel_cost = 0
+target_kind = 0
+effects = Array[ExtResource("2")]([ExtResource("3")])
+description = "M.E.G. 原型战术；数值由效果列表定义。"
+rarity = 0
+upgrade_to = ExtResource("4")
+exhaust = true

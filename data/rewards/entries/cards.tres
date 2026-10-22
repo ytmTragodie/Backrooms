@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="RewardEntryData" load_steps=27 format=3]
+
+[ext_resource type="Script" path="res://scripts/rewards/reward_entry_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/cards/card_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/cards/card_attack.tres" id="3"]
+[ext_resource type="Resource" path="res://data/cards/card_defend.tres" id="4"]
+[ext_resource type="Resource" path="res://data/cards/card_recon.tres" id="5"]
+[ext_resource type="Resource" path="res://data/cards/card_quick_draw.tres" id="6"]
+[ext_resource type="Resource" path="res://data/cards/card_calm.tres" id="7"]
+[ext_resource type="Resource" path="res://data/cards/card_precision.tres" id="8"]
+[ext_resource type="Resource" path="res://data/cards/card_intel_guard.tres" id="9"]
+[ext_resource type="Resource" path="res://data/cards/card_expose.tres" id="10"]
+[ext_resource type="Resource" path="res://data/cards/card_feint.tres" id="11"]
+[ext_resource type="Resource" path="res://data/cards/card_heavy_strike.tres" id="12"]
+[ext_resource type="Resource" path="res://data/cards/card_counter_strike.tres" id="13"]
+[ext_resource type="Resource" path="res://data/cards/card_steady_guard.tres" id="14"]
+[ext_resource type="Resource" path="res://data/cards/card_signal.tres" id="15"]
+[ext_resource type="Resource" path="res://data/cards/card_plan.tres" id="16"]
+[ext_resource type="Resource" path="res://data/cards/card_quiet.tres" id="17"]
+[ext_resource type="Resource" path="res://data/cards/card_focus.tres" id="18"]
+[ext_resource type="Resource" path="res://data/cards/card_disrupt.tres" id="19"]
+[ext_resource type="Resource" path="res://data/cards/card_burst.tres" id="20"]
+[ext_resource type="Resource" path="res://data/cards/card_light_bomb.tres" id="21"]
+[ext_resource type="Resource" path="res://data/cards/card_first_aid.tres" id="22"]
+[ext_resource type="Resource" path="res://data/cards/card_pressure.tres" id="23"]
+[ext_resource type="Resource" path="res://data/cards/card_risky.tres" id="24"]
+[ext_resource type="Resource" path="res://data/cards/card_brace.tres" id="25"]
+[ext_resource type="Resource" path="res://data/cards/card_thermal.tres" id="26"]
+
+[resource]
+script = ExtResource("1")
+kind = 0
+amount = 1
+cards = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6"), ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), ExtResource("12"), ExtResource("13"), ExtResource("14"), ExtResource("15"), ExtResource("16"), ExtResource("17"), ExtResource("18"), ExtResource("19"), ExtResource("20"), ExtResource("21"), ExtResource("22"), ExtResource("23"), ExtResource("24"), ExtResource("25"), ExtResource("26")])

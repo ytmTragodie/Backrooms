@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CutOutRouteData" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/cutout/cutout_route_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/cutout/cutout_destination_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/cutout/destinations/level0_service_0.tres" id="3"]
+[ext_resource type="Resource" path="res://data/cutout/destinations/level0_service_1.tres" id="4"]
+[ext_resource type="Script" path="res://scripts/cutout/cutout_modifier_data.gd" id="5"]
+[ext_resource type="Resource" path="res://data/cutout/modifiers/level0_service_knowledge.tres" id="6"]
+[ext_resource type="Resource" path="res://data/cutout/modifiers/level0_service_beacon.tres" id="7"]
+
+[resource]
+script = ExtResource("1")
+id = "level0_service"
+display_name = "维修通道"
+destinations = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])
+modifiers = Array[ExtResource("5")]([ExtResource("6"), ExtResource("7")])

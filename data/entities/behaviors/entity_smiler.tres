@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EntityBehaviorData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_behavior_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/entities/entity_action_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/entities/actions/observe.tres" id="3"]
+[ext_resource type="Resource" path="res://data/entities/actions/light_strike.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+actions = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])

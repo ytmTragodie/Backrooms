@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StatusData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/effects/status_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bleed"
+display_name = "流血"
+description = "回合末每层失去 1 点生命。"
+turn_end_damage = 1

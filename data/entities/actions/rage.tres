@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EntityActionData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_action_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/effects/effect_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/effects/intent_rage.tres" id="3"]
+[ext_resource type="Script" path="res://scripts/entities/entity_condition_data.gd" id="4"]
+[ext_resource type="Resource" path="res://data/conditions/low_hp.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = "rage"
+display_name = "濒死狂扑"
+effects = Array[ExtResource("2")]([ExtResource("3")])
+conditions = Array[ExtResource("4")]([ExtResource("5")])
+priority = 4
+escape_damage_modifier = 1

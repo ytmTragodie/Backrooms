@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ShopOfferData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/rewards/shop_offer_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/rewards/entries/calm3.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = "wanderer_calm"
+display_name = "镇静物资"
+price = 2
+reward = ExtResource("2")

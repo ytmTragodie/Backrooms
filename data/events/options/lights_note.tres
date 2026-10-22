@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EventOptionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "lights_note"
+display_name = "遮住视线，记住强光反应"
+knowledge = Array[StringName]([&"light_attracts"])

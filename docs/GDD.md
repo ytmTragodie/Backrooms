@@ -1,5 +1,7 @@
 # GDD｜BACKROOMS: CUT OUT（卡牌优先，精简设计版）
 
+> **Phase 14 当前覆盖**：正式实现已改为地图驱动战斗，设计以 [Phase14_GAMEPLAY _Redesign.md](<Phase14_GAMEPLAY _Redesign.md>) 为准，实际边界见 [PHASE_14_ARCHITECTURE.md](PHASE_14_ARCHITECTURE.md)。下文冲突的探索回合、Objective 推进和切出牌规则为历史目标，不再是正式玩法合同。
+
 > 更新：2026-10-20-13:34。**这是接下来的游戏设计目标，不是“全部已实现”的声明。** 当前可运行代码与本版目标的差异，应在后续任务中逐项迁移并测试；旧 Phase、旧 DOCX 和审计快照仅供追溯。
 
 ## 1. 体验目标

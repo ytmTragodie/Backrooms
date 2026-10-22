@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EntityActionData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_action_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/effects/effect_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/effects/intent_claw.tres" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = "claw"
+display_name = "抓挠"
+effects = Array[ExtResource("2")]([ExtResource("3")])

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CutOutModifierData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/cutout/cutout_modifier_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+display_name = "已确认路线标记"
+knowledge_id = "seam_route"
+destination_id = "floor_level_6"
+multiplier = 1.4

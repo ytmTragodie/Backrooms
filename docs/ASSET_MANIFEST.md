@@ -1,5 +1,7 @@
 # Phase 12 素材清单与审计
 
+> 当前 Phase 14 内容及新增缺图见 [PHASE_14_ASSETS.md](PHASE_14_ASSETS.md)。本文件保留 Phase 12 逐文件审计，不意味着旧 Objective/探索牌仍属于正式玩法。运行映射仍使用 assets/asset_manifest.json。
+
 运行清单：`assets/asset_manifest.json`。素材优先级：专用主路径 → 明确 `fallback_path` → 内置 SVG；音频缺失静音，字体缺失使用 Godot/系统中文后备。**PLACEHOLDER 表示专用素材仍 missing，并非已完成美术。**
 
 ## 运行素材映射

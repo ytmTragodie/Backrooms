@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RewardTableData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/rewards/reward_table_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/rewards/reward_entry_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/rewards/entries/equip_almond_water.tres" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = "reward_water"
+guaranteed_rewards = Array[ExtResource("2")]([ExtResource("3")])
+random_rewards = Array[ExtResource("2")]([])
+random_count = 0

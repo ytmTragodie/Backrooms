@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EquipmentData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/equipment/equipment_data.gd" id="1_equipment"]
+[ext_resource type="Resource" path="res://data/cards/generated/card_light.tres" id="card"]
+[ext_resource type="Resource" path="res://data/cards/generated/card_extinguish.tres" id="off"]
+
+[resource]
+script = ExtResource("1_equipment")
+action_card = ExtResource("card")
+active_action_card = ExtResource("off")
+id = &"equip_flashlight"
+display_name = "手电筒"
+action_name = "开启照明"
+tags = Array[StringName]([&"light", &"tool"])
+counter_kind = &"battery"
+capacity = 3
+ap_cost = 1
+effect_type = 0
+effect_value = 0
+conditional_heal = 0
+heal_stress_threshold = 7

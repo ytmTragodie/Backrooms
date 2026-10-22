@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EventOptionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "meg_listen"
+display_name = "校对坐标：揭示路线与六层信息"
+knowledge = Array[StringName]([&"map_survey"])
+known_floors = Array[StringName]([&"floor_level_6"])
+known_exits = Array[StringName]([&"level0_service"])
+reveal_nodes = 3

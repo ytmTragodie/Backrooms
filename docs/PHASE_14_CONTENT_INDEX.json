@@ -1,0 +1,1706 @@
+[
+  {
+    "id": "weak",
+    "type": "StatusData",
+    "path": "res://data/statuses/weak.tres",
+    "name": "虚弱"
+  },
+  {
+    "id": "vulnerable",
+    "type": "StatusData",
+    "path": "res://data/statuses/vulnerable.tres",
+    "name": "暴露"
+  },
+  {
+    "id": "burn",
+    "type": "StatusData",
+    "path": "res://data/statuses/burn.tres",
+    "name": "灼伤"
+  },
+  {
+    "id": "stun",
+    "type": "StatusData",
+    "path": "res://data/statuses/stun.tres",
+    "name": "失衡"
+  },
+  {
+    "id": "focused",
+    "type": "StatusData",
+    "path": "res://data/statuses/focused.tres",
+    "name": "专注"
+  },
+  {
+    "id": "braced",
+    "type": "StatusData",
+    "path": "res://data/statuses/braced.tres",
+    "name": "稳固"
+  },
+  {
+    "id": "enraged",
+    "type": "StatusData",
+    "path": "res://data/statuses/enraged.tres",
+    "name": "躁怒"
+  },
+  {
+    "id": "bleed",
+    "type": "StatusData",
+    "path": "res://data/statuses/bleed.tres",
+    "name": "流血"
+  },
+  {
+    "id": "data/effects/hit4.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/hit4.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/hit6.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/hit6.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/hit8.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/hit8.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/hit10.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/hit10.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/hit12.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/hit12.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/hit3.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/hit3.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/hit2.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/hit2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/block4.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/block4.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/block6.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/block6.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/block8.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/block8.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/draw1.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/draw1.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/draw2.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/draw2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/intel1.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/intel1.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/intel2.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/intel2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/intel3.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/intel3.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/ap1.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/ap1.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/heal3.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/heal3.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/heal5.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/heal5.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/calm2.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/calm2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/stress1.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/stress1.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/noise1.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/noise1.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/quiet2.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/quiet2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/weak_0.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/weak_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/weak_2.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/weak_2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/vulnerable_0.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/vulnerable_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/vulnerable_2.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/vulnerable_2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/burn_0.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/burn_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/burn_2.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/burn_2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/stun_0.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/stun_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/stun_2.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/stun_2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/focused_0.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/focused_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/braced_0.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/braced_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/enraged_0.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/enraged_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/bleed_0.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/bleed_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/bleed_2.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/bleed_2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/strong_light.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/strong_light.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/extinguish.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/extinguish.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/withdraw.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/withdraw.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/blunt8.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/blunt8.tres",
+    "name": ""
+  },
+  {
+    "id": "card_attack_plus",
+    "type": "CardData",
+    "path": "res://data/cards/card_attack_plus.tres",
+    "name": "攻击＋"
+  },
+  {
+    "id": "card_defend_plus",
+    "type": "CardData",
+    "path": "res://data/cards/card_defend_plus.tres",
+    "name": "防御＋"
+  },
+  {
+    "id": "card_recon_plus",
+    "type": "CardData",
+    "path": "res://data/cards/card_recon_plus.tres",
+    "name": "战场侦察＋"
+  },
+  {
+    "id": "card_quick_draw_plus",
+    "type": "CardData",
+    "path": "res://data/cards/card_quick_draw_plus.tres",
+    "name": "快速整备＋"
+  },
+  {
+    "id": "card_calm_plus",
+    "type": "CardData",
+    "path": "res://data/cards/card_calm_plus.tres",
+    "name": "控制呼吸＋"
+  },
+  {
+    "id": "card_precision_plus",
+    "type": "CardData",
+    "path": "res://data/cards/card_precision_plus.tres",
+    "name": "精确打击＋"
+  },
+  {
+    "id": "card_attack",
+    "type": "CardData",
+    "path": "res://data/cards/card_attack.tres",
+    "name": "攻击"
+  },
+  {
+    "id": "card_defend",
+    "type": "CardData",
+    "path": "res://data/cards/card_defend.tres",
+    "name": "防御"
+  },
+  {
+    "id": "card_recon",
+    "type": "CardData",
+    "path": "res://data/cards/card_recon.tres",
+    "name": "战场侦察"
+  },
+  {
+    "id": "card_quick_draw",
+    "type": "CardData",
+    "path": "res://data/cards/card_quick_draw.tres",
+    "name": "快速整备"
+  },
+  {
+    "id": "card_calm",
+    "type": "CardData",
+    "path": "res://data/cards/card_calm.tres",
+    "name": "控制呼吸"
+  },
+  {
+    "id": "card_precision",
+    "type": "CardData",
+    "path": "res://data/cards/card_precision.tres",
+    "name": "精确打击"
+  },
+  {
+    "id": "card_intel_guard",
+    "type": "CardData",
+    "path": "res://data/cards/card_intel_guard.tres",
+    "name": "预判防线"
+  },
+  {
+    "id": "card_expose",
+    "type": "CardData",
+    "path": "res://data/cards/card_expose.tres",
+    "name": "识破弱点"
+  },
+  {
+    "id": "card_feint",
+    "type": "CardData",
+    "path": "res://data/cards/card_feint.tres",
+    "name": "佯攻"
+  },
+  {
+    "id": "card_heavy_strike",
+    "type": "CardData",
+    "path": "res://data/cards/card_heavy_strike.tres",
+    "name": "有力打击"
+  },
+  {
+    "id": "card_counter_strike",
+    "type": "CardData",
+    "path": "res://data/cards/card_counter_strike.tres",
+    "name": "防守反击"
+  },
+  {
+    "id": "card_steady_guard",
+    "type": "CardData",
+    "path": "res://data/cards/card_steady_guard.tres",
+    "name": "稳固防御"
+  },
+  {
+    "id": "card_signal",
+    "type": "CardData",
+    "path": "res://data/cards/card_signal.tres",
+    "name": "信号研判"
+  },
+  {
+    "id": "card_plan",
+    "type": "CardData",
+    "path": "res://data/cards/card_plan.tres",
+    "name": "提前部署"
+  },
+  {
+    "id": "card_quiet",
+    "type": "CardData",
+    "path": "res://data/cards/card_quiet.tres",
+    "name": "静默行动"
+  },
+  {
+    "id": "card_focus",
+    "type": "CardData",
+    "path": "res://data/cards/card_focus.tres",
+    "name": "瞄准姿态"
+  },
+  {
+    "id": "card_disrupt",
+    "type": "CardData",
+    "path": "res://data/cards/card_disrupt.tres",
+    "name": "打断节奏"
+  },
+  {
+    "id": "card_burst",
+    "type": "CardData",
+    "path": "res://data/cards/card_burst.tres",
+    "name": "临机应变"
+  },
+  {
+    "id": "card_light_bomb",
+    "type": "CardData",
+    "path": "res://data/cards/card_light_bomb.tres",
+    "name": "闪光标记"
+  },
+  {
+    "id": "card_first_aid",
+    "type": "CardData",
+    "path": "res://data/cards/card_first_aid.tres",
+    "name": "现场包扎"
+  },
+  {
+    "id": "card_pressure",
+    "type": "CardData",
+    "path": "res://data/cards/card_pressure.tres",
+    "name": "压制射击"
+  },
+  {
+    "id": "card_risky",
+    "type": "CardData",
+    "path": "res://data/cards/card_risky.tres",
+    "name": "背水一击"
+  },
+  {
+    "id": "card_brace",
+    "type": "CardData",
+    "path": "res://data/cards/card_brace.tres",
+    "name": "固定阵位"
+  },
+  {
+    "id": "card_thermal",
+    "type": "CardData",
+    "path": "res://data/cards/card_thermal.tres",
+    "name": "热源诱导"
+  },
+  {
+    "id": "card_equipment_light",
+    "type": "CardData",
+    "path": "res://data/cards/card_equipment_light.tres",
+    "name": "照明"
+  },
+  {
+    "id": "card_equipment_extinguish",
+    "type": "CardData",
+    "path": "res://data/cards/card_equipment_extinguish.tres",
+    "name": "熄灯"
+  },
+  {
+    "id": "card_equipment_crowbar",
+    "type": "CardData",
+    "path": "res://data/cards/card_equipment_crowbar.tres",
+    "name": "撬棍猛击"
+  },
+  {
+    "id": "card_equipment_water",
+    "type": "CardData",
+    "path": "res://data/cards/card_equipment_water.tres",
+    "name": "饮用杏仁水"
+  },
+  {
+    "id": "card_equipment_baton",
+    "type": "CardData",
+    "path": "res://data/cards/card_equipment_baton.tres",
+    "name": "电击控制"
+  },
+  {
+    "id": "equip_flashlight",
+    "type": "EquipmentData",
+    "path": "res://data/equipment/equip_flashlight.tres",
+    "name": "手电筒"
+  },
+  {
+    "id": "equip_crowbar",
+    "type": "EquipmentData",
+    "path": "res://data/equipment/equip_crowbar.tres",
+    "name": "撬棍"
+  },
+  {
+    "id": "equip_almond_water",
+    "type": "EquipmentData",
+    "path": "res://data/equipment/equip_almond_water.tres",
+    "name": "杏仁水"
+  },
+  {
+    "id": "equip_baton",
+    "type": "EquipmentData",
+    "path": "res://data/equipment/equip_baton.tres",
+    "name": "便携电击棒"
+  },
+  {
+    "id": "equip_beacon",
+    "type": "EquipmentData",
+    "path": "res://data/equipment/equip_beacon.tres",
+    "name": "路线信标"
+  },
+  {
+    "id": "data/rewards/entries/supply2.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/supply2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/rewards/entries/supply4.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/supply4.tres",
+    "name": ""
+  },
+  {
+    "id": "data/rewards/entries/heal4.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/heal4.tres",
+    "name": ""
+  },
+  {
+    "id": "data/rewards/entries/heal8.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/heal8.tres",
+    "name": ""
+  },
+  {
+    "id": "data/rewards/entries/calm3.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/calm3.tres",
+    "name": ""
+  },
+  {
+    "id": "data/rewards/entries/cards.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/cards.tres",
+    "name": ""
+  },
+  {
+    "id": "data/rewards/entries/tactics.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/tactics.tres",
+    "name": ""
+  },
+  {
+    "id": "data/rewards/entries/equip_flashlight.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/equip_flashlight.tres",
+    "name": ""
+  },
+  {
+    "id": "data/rewards/entries/equip_crowbar.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/equip_crowbar.tres",
+    "name": ""
+  },
+  {
+    "id": "data/rewards/entries/equip_almond_water.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/equip_almond_water.tres",
+    "name": ""
+  },
+  {
+    "id": "data/rewards/entries/equip_baton.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/equip_baton.tres",
+    "name": ""
+  },
+  {
+    "id": "data/rewards/entries/equip_beacon.tres",
+    "type": "RewardEntryData",
+    "path": "res://data/rewards/entries/equip_beacon.tres",
+    "name": ""
+  },
+  {
+    "id": "reward_combat",
+    "type": "RewardTableData",
+    "path": "res://data/rewards/combat.tres",
+    "name": ""
+  },
+  {
+    "id": "reward_elite",
+    "type": "RewardTableData",
+    "path": "res://data/rewards/elite.tres",
+    "name": ""
+  },
+  {
+    "id": "reward_cache",
+    "type": "RewardTableData",
+    "path": "res://data/rewards/cache.tres",
+    "name": ""
+  },
+  {
+    "id": "reward_supplies",
+    "type": "RewardTableData",
+    "path": "res://data/rewards/supplies.tres",
+    "name": ""
+  },
+  {
+    "id": "reward_medical",
+    "type": "RewardTableData",
+    "path": "res://data/rewards/medical.tres",
+    "name": ""
+  },
+  {
+    "id": "reward_water",
+    "type": "RewardTableData",
+    "path": "res://data/rewards/water.tres",
+    "name": ""
+  },
+  {
+    "id": "reward_tool",
+    "type": "RewardTableData",
+    "path": "res://data/rewards/tool.tres",
+    "name": ""
+  },
+  {
+    "id": "reward_intel",
+    "type": "RewardTableData",
+    "path": "res://data/rewards/intel.tres",
+    "name": ""
+  },
+  {
+    "id": "reward_beacon",
+    "type": "RewardTableData",
+    "path": "res://data/rewards/beacon.tres",
+    "name": ""
+  },
+  {
+    "id": "reward_calm",
+    "type": "RewardTableData",
+    "path": "res://data/rewards/calm.tres",
+    "name": ""
+  },
+  {
+    "id": "data/conditions/first_turn.tres",
+    "type": "ConditionData",
+    "path": "res://data/conditions/first_turn.tres",
+    "name": ""
+  },
+  {
+    "id": "data/conditions/noise_high.tres",
+    "type": "ConditionData",
+    "path": "res://data/conditions/noise_high.tres",
+    "name": ""
+  },
+  {
+    "id": "data/conditions/light.tres",
+    "type": "ConditionData",
+    "path": "res://data/conditions/light.tres",
+    "name": ""
+  },
+  {
+    "id": "data/conditions/dark.tres",
+    "type": "ConditionData",
+    "path": "res://data/conditions/dark.tres",
+    "name": ""
+  },
+  {
+    "id": "data/conditions/turn2.tres",
+    "type": "ConditionData",
+    "path": "res://data/conditions/turn2.tres",
+    "name": ""
+  },
+  {
+    "id": "data/conditions/low_hp.tres",
+    "type": "ConditionData",
+    "path": "res://data/conditions/low_hp.tres",
+    "name": ""
+  },
+  {
+    "id": "watch",
+    "type": "EntityActionData",
+    "path": "res://data/entities/actions/watch.tres",
+    "name": "警戒靠近"
+  },
+  {
+    "id": "data/effects/intent_bite.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/intent_bite.tres",
+    "name": ""
+  },
+  {
+    "id": "bite",
+    "type": "EntityActionData",
+    "path": "res://data/entities/actions/bite.tres",
+    "name": "撕咬"
+  },
+  {
+    "id": "data/effects/intent_lunge.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/intent_lunge.tres",
+    "name": ""
+  },
+  {
+    "id": "lunge",
+    "type": "EntityActionData",
+    "path": "res://data/entities/actions/lunge.tres",
+    "name": "噪声追猎"
+  },
+  {
+    "id": "observe",
+    "type": "EntityActionData",
+    "path": "res://data/entities/actions/observe.tres",
+    "name": "注视黑暗"
+  },
+  {
+    "id": "data/effects/intent_light_strike.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/intent_light_strike.tres",
+    "name": ""
+  },
+  {
+    "id": "light_strike",
+    "type": "EntityActionData",
+    "path": "res://data/entities/actions/light_strike.tres",
+    "name": "袭击光源"
+  },
+  {
+    "id": "data/effects/intent_claw.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/intent_claw.tres",
+    "name": ""
+  },
+  {
+    "id": "claw",
+    "type": "EntityActionData",
+    "path": "res://data/entities/actions/claw.tres",
+    "name": "抓挠"
+  },
+  {
+    "id": "data/effects/intent_slam.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/intent_slam.tres",
+    "name": ""
+  },
+  {
+    "id": "slam",
+    "type": "EntityActionData",
+    "path": "res://data/entities/actions/slam.tres",
+    "name": "沉重撞击"
+  },
+  {
+    "id": "data/effects/intent_rage.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/intent_rage.tres",
+    "name": ""
+  },
+  {
+    "id": "rage",
+    "type": "EntityActionData",
+    "path": "res://data/entities/actions/rage.tres",
+    "name": "濒死狂扑"
+  },
+  {
+    "id": "data/effects/enemy_block.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/enemy_block.tres",
+    "name": ""
+  },
+  {
+    "id": "guard",
+    "type": "EntityActionData",
+    "path": "res://data/entities/actions/guard.tres",
+    "name": "收拢肢体"
+  },
+  {
+    "id": "data/effects/enemy_bleed.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/enemy_bleed.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/intent_bleed.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/intent_bleed.tres",
+    "name": ""
+  },
+  {
+    "id": "bleed",
+    "type": "EntityActionData",
+    "path": "res://data/entities/actions/bleed.tres",
+    "name": "撕裂"
+  },
+  {
+    "id": "data/effects/enemy_weak.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/enemy_weak.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/enemy_stress.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/enemy_stress.tres",
+    "name": ""
+  },
+  {
+    "id": "data/effects/intent_dust.tres",
+    "type": "EffectData",
+    "path": "res://data/effects/intent_dust.tres",
+    "name": ""
+  },
+  {
+    "id": "dust",
+    "type": "EntityActionData",
+    "path": "res://data/entities/actions/dust.tres",
+    "name": "鳞粉侵扰"
+  },
+  {
+    "id": "data/entities/triggers/noise.tres",
+    "type": "TriggerData",
+    "path": "res://data/entities/triggers/noise.tres",
+    "name": ""
+  },
+  {
+    "id": "data/entities/triggers/light.tres",
+    "type": "TriggerData",
+    "path": "res://data/entities/triggers/light.tres",
+    "name": ""
+  },
+  {
+    "id": "data/entities/triggers/end.tres",
+    "type": "TriggerData",
+    "path": "res://data/entities/triggers/end.tres",
+    "name": ""
+  },
+  {
+    "id": "data/entities/triggers/blunt.tres",
+    "type": "TriggerData",
+    "path": "res://data/entities/triggers/blunt.tres",
+    "name": ""
+  },
+  {
+    "id": "noise_chase",
+    "type": "WeaknessData",
+    "path": "res://data/entities/reactions/noise.tres",
+    "name": ""
+  },
+  {
+    "id": "light_agitation",
+    "type": "WeaknessData",
+    "path": "res://data/entities/reactions/light.tres",
+    "name": ""
+  },
+  {
+    "id": "dark_withdrawal",
+    "type": "WeaknessData",
+    "path": "res://data/entities/reactions/dark.tres",
+    "name": ""
+  },
+  {
+    "id": "blunt_stagger",
+    "type": "WeaknessData",
+    "path": "res://data/entities/reactions/blunt.tres",
+    "name": ""
+  },
+  {
+    "id": "data/entities/behaviors/entity_hound.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_hound.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_hound",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_hound.tres",
+    "name": "猎犬"
+  },
+  {
+    "id": "data/entities/behaviors/entity_smiler.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_smiler.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_smiler",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_smiler.tres",
+    "name": "笑魇"
+  },
+  {
+    "id": "data/entities/behaviors/entity_deathmoth.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_deathmoth.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_deathmoth",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_deathmoth.tres",
+    "name": "死亡飞蛾"
+  },
+  {
+    "id": "data/entities/behaviors/entity_duller.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_duller.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_duller",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_duller.tres",
+    "name": "钝人"
+  },
+  {
+    "id": "data/entities/behaviors/entity_clump.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_clump.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_clump",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_clump.tres",
+    "name": "肢团"
+  },
+  {
+    "id": "data/entities/behaviors/entity_skinstealer.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_skinstealer.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_skinstealer",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_skinstealer.tres",
+    "name": "窃皮者"
+  },
+  {
+    "id": "data/entities/behaviors/entity_wretch.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_wretch.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_wretch",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_wretch.tres",
+    "name": "悲尸"
+  },
+  {
+    "id": "data/entities/behaviors/entity_crawler.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_crawler.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_crawler",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_crawler.tres",
+    "name": "墙隙爬行者"
+  },
+  {
+    "id": "data/entities/behaviors/entity_starved_hound.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_starved_hound.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_starved_hound",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_starved_hound.tres",
+    "name": "饥饿猎犬"
+  },
+  {
+    "id": "data/entities/behaviors/entity_moth_matriarch.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_moth_matriarch.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_moth_matriarch",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_moth_matriarch.tres",
+    "name": "巨型死亡飞蛾"
+  },
+  {
+    "id": "data/entities/behaviors/entity_dense_clump.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_dense_clump.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_dense_clump",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_dense_clump.tres",
+    "name": "密集肢团"
+  },
+  {
+    "id": "data/entities/behaviors/entity_frenzied_wretch.tres",
+    "type": "EntityBehaviorData",
+    "path": "res://data/entities/behaviors/entity_frenzied_wretch.tres",
+    "name": ""
+  },
+  {
+    "id": "entity_frenzied_wretch",
+    "type": "EntityData",
+    "path": "res://data/entities/entity_frenzied_wretch.tres",
+    "name": "狂躁悲尸"
+  },
+  {
+    "id": "cache_pay",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/cache_pay.tres",
+    "name": "消耗 2 补给，安全拆锁"
+  },
+  {
+    "id": "cache_force",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/cache_force.tres",
+    "name": "徒手撬开：生命 -3，获得补给"
+  },
+  {
+    "id": "cache_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/cache_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_cache",
+    "type": "EventData",
+    "path": "res://data/events/event_cache.tres",
+    "name": "潮湿补给柜"
+  },
+  {
+    "id": "meg_listen",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/meg_listen.tres",
+    "name": "校对坐标：揭示路线与六层信息"
+  },
+  {
+    "id": "meg_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/meg_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_meg",
+    "type": "EventData",
+    "path": "res://data/events/event_meg.tres",
+    "name": "断续的 M.E.G. 信号"
+  },
+  {
+    "id": "face_trade",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/face_trade.tres",
+    "name": "交付 3 补给，交换杏仁水"
+  },
+  {
+    "id": "face_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/face_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_faceling",
+    "type": "EventData",
+    "path": "res://data/events/event_faceling.tres",
+    "name": "沉默的无面行商"
+  },
+  {
+    "id": "hum_mark",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/hum_mark.tres",
+    "name": "记录重复节奏，揭示前方两节点"
+  },
+  {
+    "id": "hum_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/hum_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_hum",
+    "type": "EventData",
+    "path": "res://data/events/event_hum.tres",
+    "name": "异常嗡鸣"
+  },
+  {
+    "id": "bag_take",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/bag_take.tres",
+    "name": "取走工具：压力 +1"
+  },
+  {
+    "id": "bag_follow",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/bag_follow.tres",
+    "name": "追寻抓痕，遭遇猎犬"
+  },
+  {
+    "id": "bag_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/bag_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_battery",
+    "type": "EventData",
+    "path": "res://data/events/event_battery.tres",
+    "name": "遗落的工具袋"
+  },
+  {
+    "id": "med_open",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/med_open.tres",
+    "name": "消耗 2 补给，取出药品"
+  },
+  {
+    "id": "med_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/med_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_medic",
+    "type": "EventData",
+    "path": "res://data/events/event_medic.tres",
+    "name": "应急医疗箱"
+  },
+  {
+    "id": "lights_note",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/lights_note.tres",
+    "name": "遮住视线，记住强光反应"
+  },
+  {
+    "id": "lights_stare",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/lights_stare.tres",
+    "name": "靠近灯光，遭遇笑魇"
+  },
+  {
+    "id": "lights_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/lights_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_lights",
+    "type": "EventData",
+    "path": "res://data/events/event_lights.tres",
+    "name": "不该亮起的指示灯"
+  },
+  {
+    "id": "seam_map",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/seam_map.tres",
+    "name": "消耗 1 补给标记出口"
+  },
+  {
+    "id": "seam_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/seam_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_seam",
+    "type": "EventData",
+    "path": "res://data/events/event_seam.tres",
+    "name": "呼吸的墙缝"
+  },
+  {
+    "id": "ration_take",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/ration_take.tres",
+    "name": "取走一份有限补给"
+  },
+  {
+    "id": "ration_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/ration_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_ration",
+    "type": "EventData",
+    "path": "res://data/events/event_ration.tres",
+    "name": "遗留口粮"
+  },
+  {
+    "id": "foot_wait",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/foot_wait.tres",
+    "name": "耐心等候：压力 +1，获得喘息"
+  },
+  {
+    "id": "foot_call",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/foot_call.tres",
+    "name": "出声回应，遭遇窃皮者"
+  },
+  {
+    "id": "foot_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/foot_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_footsteps",
+    "type": "EventData",
+    "path": "res://data/events/event_footsteps.tres",
+    "name": "错拍脚步"
+  },
+  {
+    "id": "insulation_read",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/insulation_read.tres",
+    "name": "阅读记录，取得战术选择"
+  },
+  {
+    "id": "insulation_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/insulation_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_insulation",
+    "type": "EventData",
+    "path": "res://data/events/event_insulation.tres",
+    "name": "绝缘维修间"
+  },
+  {
+    "id": "sleep_rest",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/sleep_rest.tres",
+    "name": "短暂休息：补给 -1，恢复状态"
+  },
+  {
+    "id": "sleep_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/sleep_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_sleep",
+    "type": "EventData",
+    "path": "res://data/events/event_sleep.tres",
+    "name": "无法关上的门"
+  },
+  {
+    "id": "moth_take",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/moth_take.tres",
+    "name": "与飞蛾交战，争取物资"
+  },
+  {
+    "id": "moth_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/moth_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_moth_nest",
+    "type": "EventData",
+    "path": "res://data/events/event_moth_nest.tres",
+    "name": "墙角鳞粉"
+  },
+  {
+    "id": "diary_read",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/diary_read.tres",
+    "name": "记录地图测绘法"
+  },
+  {
+    "id": "diary_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/diary_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_diary",
+    "type": "EventData",
+    "path": "res://data/events/event_diary.tres",
+    "name": "褪色日志"
+  },
+  {
+    "id": "beacon_buy",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/beacon_buy.tres",
+    "name": "消耗 4 补给，带走路线信标"
+  },
+  {
+    "id": "beacon_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/beacon_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_beacon",
+    "type": "EventData",
+    "path": "res://data/events/event_beacon.tres",
+    "name": "废弃信标"
+  },
+  {
+    "id": "blackout_learn",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/blackout_learn.tres",
+    "name": "确认避光规律"
+  },
+  {
+    "id": "blackout_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/blackout_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_blackout",
+    "type": "EventData",
+    "path": "res://data/events/event_blackout.tres",
+    "name": "停电间隙"
+  },
+  {
+    "id": "checkpoint_swap",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/checkpoint_swap.tres",
+    "name": "消耗 2 补给，换取地图与战术"
+  },
+  {
+    "id": "checkpoint_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/checkpoint_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_checkpoint",
+    "type": "EventData",
+    "path": "res://data/events/event_checkpoint.tres",
+    "name": "遗弃的检查站"
+  },
+  {
+    "id": "inner_take",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/inner_take.tres",
+    "name": "抓紧取走补给：压力 +2"
+  },
+  {
+    "id": "inner_fight",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/inner_fight.tres",
+    "name": "打开隔板，与钝人交战"
+  },
+  {
+    "id": "inner_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/inner_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_supply_inner",
+    "type": "EventData",
+    "path": "res://data/events/event_supply_inner.tres",
+    "name": "柜内的第二层"
+  },
+  {
+    "id": "room_enter",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/room_enter.tres",
+    "name": "查看内层，不立即领取奖励"
+  },
+  {
+    "id": "room_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/room_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_locked_room",
+    "type": "EventData",
+    "path": "res://data/events/event_locked_room.tres",
+    "name": "双层储藏室"
+  },
+  {
+    "id": "pipe_follow",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/pipe_follow.tres",
+    "name": "按敲击节奏测绘：压力 +1"
+  },
+  {
+    "id": "pipe_strike",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/pipe_strike.tres",
+    "name": "敲击回应，遭遇肢团"
+  },
+  {
+    "id": "pipe_leave",
+    "type": "EventOptionData",
+    "path": "res://data/events/options/pipe_leave.tres",
+    "name": "保持距离，继续前进"
+  },
+  {
+    "id": "event_water_pipe",
+    "type": "EventData",
+    "path": "res://data/events/event_water_pipe.tres",
+    "name": "温热水管"
+  },
+  {
+    "id": "meg_exchange_medical",
+    "type": "ShopOfferData",
+    "path": "res://data/shops/offers/meg_exchange_medical.tres",
+    "name": "医疗包"
+  },
+  {
+    "id": "meg_exchange_tactics",
+    "type": "ShopOfferData",
+    "path": "res://data/shops/offers/meg_exchange_tactics.tres",
+    "name": "战术卡选择"
+  },
+  {
+    "id": "meg_exchange_water",
+    "type": "ShopOfferData",
+    "path": "res://data/shops/offers/meg_exchange_water.tres",
+    "name": "杏仁水"
+  },
+  {
+    "id": "meg_exchange",
+    "type": "ShopData",
+    "path": "res://data/shops/meg_exchange.tres",
+    "name": "M.E.G. 交换箱"
+  },
+  {
+    "id": "wanderer_crowbar",
+    "type": "ShopOfferData",
+    "path": "res://data/shops/offers/wanderer_crowbar.tres",
+    "name": "撬棍"
+  },
+  {
+    "id": "wanderer_beacon",
+    "type": "ShopOfferData",
+    "path": "res://data/shops/offers/wanderer_beacon.tres",
+    "name": "路线信标"
+  },
+  {
+    "id": "wanderer_calm",
+    "type": "ShopOfferData",
+    "path": "res://data/shops/offers/wanderer_calm.tres",
+    "name": "镇静物资"
+  },
+  {
+    "id": "wanderer",
+    "type": "ShopData",
+    "path": "res://data/shops/wanderer.tres",
+    "name": "流浪者临时摊位"
+  },
+  {
+    "id": "maintenance_flashlight",
+    "type": "ShopOfferData",
+    "path": "res://data/shops/offers/maintenance_flashlight.tres",
+    "name": "手电筒"
+  },
+  {
+    "id": "maintenance_baton",
+    "type": "ShopOfferData",
+    "path": "res://data/shops/offers/maintenance_baton.tres",
+    "name": "电击棒"
+  },
+  {
+    "id": "maintenance_supply",
+    "type": "ShopOfferData",
+    "path": "res://data/shops/offers/maintenance_supply.tres",
+    "name": "打折补给"
+  },
+  {
+    "id": "maintenance",
+    "type": "ShopData",
+    "path": "res://data/shops/maintenance.tres",
+    "name": "维修员物资箱"
+  },
+  {
+    "id": "data/cutout/destinations/level0_service_0.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level0_service_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/destinations/level0_service_1.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level0_service_1.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/modifiers/level0_service_knowledge.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level0_service_knowledge.tres",
+    "name": "已确认路线标记"
+  },
+  {
+    "id": "data/cutout/modifiers/level0_service_beacon.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level0_service_beacon.tres",
+    "name": "携带路线信标"
+  },
+  {
+    "id": "level0_service",
+    "type": "CutOutRouteData",
+    "path": "res://data/cutout/level0_service.tres",
+    "name": "维修通道"
+  },
+  {
+    "id": "data/cutout/destinations/level0_seam_0.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level0_seam_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/destinations/level0_seam_1.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level0_seam_1.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/modifiers/level0_seam_knowledge.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level0_seam_knowledge.tres",
+    "name": "已确认路线标记"
+  },
+  {
+    "id": "data/cutout/modifiers/level0_seam_beacon.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level0_seam_beacon.tres",
+    "name": "携带路线信标"
+  },
+  {
+    "id": "level0_seam",
+    "type": "CutOutRouteData",
+    "path": "res://data/cutout/level0_seam.tres",
+    "name": "错位墙缝"
+  },
+  {
+    "id": "data/cutout/destinations/level0_marked_0.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level0_marked_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/destinations/level0_marked_1.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level0_marked_1.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/modifiers/level0_marked_knowledge.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level0_marked_knowledge.tres",
+    "name": "已确认路线标记"
+  },
+  {
+    "id": "data/cutout/modifiers/level0_marked_beacon.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level0_marked_beacon.tres",
+    "name": "携带路线信标"
+  },
+  {
+    "id": "level0_marked",
+    "type": "CutOutRouteData",
+    "path": "res://data/cutout/level0_marked.tres",
+    "name": "标记出口"
+  },
+  {
+    "id": "data/cutout/destinations/level6_signal_0.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level6_signal_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/destinations/level6_signal_1.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level6_signal_1.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/modifiers/level6_signal_knowledge.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level6_signal_knowledge.tres",
+    "name": "已确认路线标记"
+  },
+  {
+    "id": "data/cutout/modifiers/level6_signal_beacon.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level6_signal_beacon.tres",
+    "name": "携带路线信标"
+  },
+  {
+    "id": "level6_signal",
+    "type": "CutOutRouteData",
+    "path": "res://data/cutout/level6_signal.tres",
+    "name": "广播坐标"
+  },
+  {
+    "id": "data/cutout/destinations/level6_seam_0.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level6_seam_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/destinations/level6_seam_1.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level6_seam_1.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/modifiers/level6_seam_knowledge.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level6_seam_knowledge.tres",
+    "name": "已确认路线标记"
+  },
+  {
+    "id": "data/cutout/modifiers/level6_seam_beacon.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level6_seam_beacon.tres",
+    "name": "携带路线信标"
+  },
+  {
+    "id": "level6_seam",
+    "type": "CutOutRouteData",
+    "path": "res://data/cutout/level6_seam.tres",
+    "name": "暗处裂缝"
+  },
+  {
+    "id": "data/cutout/destinations/level6_emergency_0.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level6_emergency_0.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/destinations/level6_emergency_1.tres",
+    "type": "CutOutDestinationData",
+    "path": "res://data/cutout/destinations/level6_emergency_1.tres",
+    "name": ""
+  },
+  {
+    "id": "data/cutout/modifiers/level6_emergency_knowledge.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level6_emergency_knowledge.tres",
+    "name": "已确认路线标记"
+  },
+  {
+    "id": "data/cutout/modifiers/level6_emergency_beacon.tres",
+    "type": "CutOutModifierData",
+    "path": "res://data/cutout/modifiers/level6_emergency_beacon.tres",
+    "name": "携带路线信标"
+  },
+  {
+    "id": "level6_emergency",
+    "type": "CutOutRouteData",
+    "path": "res://data/cutout/level6_emergency.tres",
+    "name": "应急通道"
+  },
+  {
+    "id": "data/maps/floor_level_0.tres",
+    "type": "MapGenerationData",
+    "path": "res://data/maps/floor_level_0.tres",
+    "name": ""
+  },
+  {
+    "id": "floor_level_0",
+    "type": "FloorData",
+    "path": "res://data/floors/floor_level_0.tres",
+    "name": "零层"
+  },
+  {
+    "id": "data/maps/floor_level_6.tres",
+    "type": "MapGenerationData",
+    "path": "res://data/maps/floor_level_6.tres",
+    "name": ""
+  },
+  {
+    "id": "floor_level_6",
+    "type": "FloorData",
+    "path": "res://data/floors/floor_level_6.tres",
+    "name": "六层"
+  },
+  {
+    "id": "data/cards/starter_deck.tres",
+    "type": "DeckData",
+    "path": "res://data/cards/starter_deck.tres",
+    "name": ""
+  },
+  {
+    "id": "data/game.tres",
+    "type": "GameData",
+    "path": "res://data/game.tres",
+    "name": ""
+  }
+]
