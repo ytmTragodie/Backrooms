@@ -6,5 +6,5 @@
 script = ExtResource("1")
 display_name = "携带路线信标"
 equipment_id = "equip_beacon"
-destination_id = "run_end"
+destination_id = "level6_signal_0"
 multiplier = 1.6

@@ -8,3 +8,4 @@ var reenter: bool = false
 var move_to: StringName
 var resolve_current: bool = false
 var reveal: Array[StringName] = []
+var event_outcome: StringName

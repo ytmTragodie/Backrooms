@@ -54,14 +54,17 @@ static func _plan_move(command: GameCommand, result: ActionResult, state: RunSta
 			result.flow.phase_after = RunFlowState.Phase.EVENT
 		MapNodeState.Kind.REST: result.flow.phase_after = RunFlowState.Phase.REST
 		MapNodeState.Kind.REWARD:
-			RewardSystem.plan(floor.reward_pool, result, state, rng)
+			RewardSystem.plan(floor.find_reward(node.content_id), result, state, rng)
 			result.floor.resolve_current = true
 			RewardSystem.next_phase(result, state)
 		MapNodeState.Kind.SHOP:
 			for data: ShopData in floor.shops:
 				if data.id == node.content_id: result.flow.shop_after = data
 			result.flow.phase_after = RunFlowState.Phase.SHOP
-		MapNodeState.Kind.EXIT: result.flow.phase_after = RunFlowState.Phase.CUTOUT
+		MapNodeState.Kind.EXIT:
+			result.flow.phase_after = RunFlowState.Phase.CUTOUT
+			for data: CutOutRouteData in floor.cutout_route_pool:
+				if data.id == node.content_id: CutOutSystem.observe(result,floor,data,state)
 	return &""
 
 static func _plan_rest(command: GameCommand, result: ActionResult, state: RunState) -> StringName:

@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="FloorData" load_steps=23 format=3]
+
+[ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/phase15/map_level7.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/entity_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/phase15/entity_thing7.tres" id="4"]
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="5"]
+[ext_resource type="Resource" path="res://data/phase15/event_slanted_room.tres" id="6"]
+[ext_resource type="Resource" path="res://data/phase15/event_bathroom.tres" id="7"]
+[ext_resource type="Resource" path="res://data/phase15/event_toy_room.tres" id="8"]
+[ext_resource type="Resource" path="res://data/phase15/event_diver_notes.tres" id="9"]
+[ext_resource type="Resource" path="res://data/phase15/event_seabed_bones.tres" id="10"]
+[ext_resource type="Resource" path="res://data/phase15/event_cave_chart.tres" id="11"]
+[ext_resource type="Resource" path="res://data/phase15/event_fire_door.tres" id="12"]
+[ext_resource type="Resource" path="res://data/rewards/cache.tres" id="13"]
+[ext_resource type="Script" path="res://scripts/rewards/reward_table_data.gd" id="14"]
+[ext_resource type="Resource" path="res://data/phase15/salvage_supplies.tres" id="15"]
+[ext_resource type="Script" path="res://scripts/rewards/shop_data.gd" id="16"]
+[ext_resource type="Resource" path="res://data/shops/meg_exchange.tres" id="17"]
+[ext_resource type="Script" path="res://scripts/cutout/cutout_route_data.gd" id="18"]
+[ext_resource type="Resource" path="res://data/phase15/level7_fire_door.tres" id="19"]
+[ext_resource type="Resource" path="res://data/phase15/level7_cave.tres" id="20"]
+[ext_resource type="Script" path="res://scripts/floors/floor_entrance_data.gd" id="21"]
+[ext_resource type="Resource" path="res://data/phase15/entrance_7.tres" id="22"]
+
+[resource]
+script = ExtResource("1")
+id = "floor_level_7"
+display_name = "七层 · 恐海"
+description = "先经过房屋，再进入冰冷海洋。海中巨影可借强光驱离；末端出口公开生命与压力代价。"
+asset_id = "floor_level_7"
+map_config = ExtResource("2")
+encounter_pool = Array[ExtResource("3")]([ExtResource("4")])
+elite_pool = Array[ExtResource("3")]([ExtResource("4")])
+event_pool = Array[ExtResource("5")]([ExtResource("6"), ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), ExtResource("12")])
+reward_pool = ExtResource("13")
+additional_rewards = Array[ExtResource("14")]([ExtResource("15")])
+shops = Array[ExtResource("16")]([ExtResource("17")])
+cutout_route_pool = Array[ExtResource("18")]([ExtResource("19"), ExtResource("20")])
+entrances = Array[ExtResource("21")]([ExtResource("22")])

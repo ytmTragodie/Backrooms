@@ -5,6 +5,9 @@ var nodes: Array[MapNodeState] = []
 var edges: Array[Vector2i] = []
 var current_node_id: StringName = &"entry"
 var generation_seed: int
+var generation_version: int = 15
+var rule_records: Array[MapRuleRecord] = []
+var validation_errors: Array[String] = []
 func find(id: StringName) -> MapNodeState:
 	for node: MapNodeState in nodes:
 		if node.id == id: return node

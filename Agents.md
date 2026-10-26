@@ -2,7 +2,7 @@
 
 ## Current direction
 
-Godot 4.x 后室卡牌 Roguelike，当前正式方向是 **Phase 14：地图驱动的战斗 Roguelike**。
+Godot 4.x 后室卡牌 Roguelike，正式方向为 **Phase 14：地图驱动的战斗 Roguelike**；当前 Phase 15 增量契约见 `docs/PHASE_15_ARCHITECTURE.md`。
 设计主源：`docs/Phase14_GAMEPLAY _Redesign.md`。当前实现契约见 `docs/PHASE_14_ARCHITECTURE.md`，迁移记录见 `docs/PHASE_14_MIGRATION.md`。
 发生冲突时：当前用户任务 → Phase 14 设计与已确认规则 → 本文件 → 当前架构/编码规则 → 历史 GDD/Phase。
 
@@ -43,4 +43,4 @@ Godot 4.x 后室卡牌 Roguelike，当前正式方向是 **Phase 14：地图驱�
 先说明影响范围、状态归属与最小步骤，再修改。保护开发者现有修改。
 运行 `tests/run_validation.ps1`、检查错误日志、实际打开窗口验证 UI；headless 不能替代视觉验收。
 交付需报告变化、验证命令/结果、未完成事项。新内容必须接入池并验证，不只生成空文件。
-当前只实际支持 Level 0/6、单敌人、基础状态与构筑；不顺带实现 Boss、多职业、元进度、制作或复杂环境模拟。
+当前实际支持 Level 0/6/7、单敌人、基础状态与构筑；末端是零代价/代价出口，每条出口保留无条件候选，不以条件门软锁。不顺带实现 Boss、多职业、元进度、制作或复杂环境模拟。

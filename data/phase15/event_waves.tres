@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/phase15/event_waves_read.tres" id="3"]
+[ext_resource type="Resource" path="res://data/phase15/event_waves_leave.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "event_waves"
+display_name = "黑暗中的潮声"
+description = "阶梯下传来微弱海浪声。记录上写着：先到客厅，再看见海。"
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])
+asset_id = "event_waves"

@@ -1831,5 +1831,93 @@
     "priority": "P1",
     "transparency_requirement": "否",
     "notes": "Phase 14 新内容专用插画缺失；使用开发者默认封面。"
+  },
+  "event_waves": {
+    "path": "",
+    "status": "PLACEHOLDER",
+    "category": "插画",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
+    "missing_priority": "P1"
+  },
+  "event_slanted_room": {
+    "path": "",
+    "status": "PLACEHOLDER",
+    "category": "插画",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
+    "missing_priority": "P1"
+  },
+  "event_bathroom": {
+    "path": "",
+    "status": "PLACEHOLDER",
+    "category": "插画",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
+    "missing_priority": "P1"
+  },
+  "event_toy_room": {
+    "path": "",
+    "status": "PLACEHOLDER",
+    "category": "插画",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
+    "missing_priority": "P1"
+  },
+  "event_diver_notes": {
+    "path": "",
+    "status": "PLACEHOLDER",
+    "category": "插画",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
+    "missing_priority": "P1"
+  },
+  "event_seabed_bones": {
+    "path": "",
+    "status": "PLACEHOLDER",
+    "category": "插画",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
+    "missing_priority": "P1"
+  },
+  "event_cave_chart": {
+    "path": "",
+    "status": "PLACEHOLDER",
+    "category": "插画",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
+    "missing_priority": "P1"
+  },
+  "event_fire_door": {
+    "path": "",
+    "status": "PLACEHOLDER",
+    "category": "插画",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
+    "missing_priority": "P1"
+  },
+  "entity_thing7": {
+    "path": "",
+    "status": "PLACEHOLDER",
+    "category": "插画",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
+    "missing_priority": "P1"
+  },
+  "event_warning_tracks": {
+    "path": "",
+    "status": "PLACEHOLDER",
+    "category": "插画",
+    "fallback_path": "res://assets/cards/default-cardcover.png",
+    "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
+    "missing_priority": "P1"
+  },
+  "floor_level_7": {
+    "path": "",
+    "status": "PLACEHOLDER",
+    "category": "背景",
+    "fallback_path": "res://assets/placeholders/background.svg",
+    "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
+    "missing_priority": "P1"
   }
 }

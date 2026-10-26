@@ -33,6 +33,11 @@ func _ready() -> void:
 	_layout.add_theme_constant_override("separation", 10)
 	margin.add_child(_layout)
 	_status = GameUITheme.label(_layout, "", 18)
+	var network: Button = Button.new()
+	network.text = "楼层网络"
+	network.size_flags_horizontal = SIZE_SHRINK_END
+	_layout.add_child(network)
+	network.pressed.connect(_show_network)
 	_content = VBoxContainer.new()
 	_content.size_flags_vertical = SIZE_EXPAND_FILL
 	_layout.add_child(_content)
@@ -85,6 +90,12 @@ func refresh() -> void:
 		RunFlowState.Phase.CUTOUT: _cutout(state)
 		RunFlowState.Phase.RESULT: _summary(state)
 	if state.flow.phase != RunFlowState.Phase.REST: _rest_mode = 0
+
+func _show_network() -> void:
+	if get_node_or_null("LevelNetwork") != null: return
+	var view: LevelNetworkView = LevelNetworkView.new()
+	add_child(view)
+	view.present(manager.run_state,manager.game_data)
 
 func _heading(title: String, subtitle: String = "") -> void:
 	GameUITheme.label(_content, title, 25)
@@ -216,7 +227,8 @@ func _shop(state: RunState) -> void:
 
 func _cutout(state: RunState) -> void:
 	var preview: CutOutPreview = CutOutSystem.preview(state, manager.game_data)
-	_heading("出口 · " + CutOutSystem.route(state).display_name, "普通切出必定成功；目的地依以下概率确定。")
+	_heading("出口 · " + CutOutSystem.route(state).display_name, "无条件出口；承担公开代价后切出，目的地依以下概率确定。")
+	GameUITheme.label(_content,"代价：生命 -%d　压力 +%d%s" % [preview.hp_cost,preview.stress_cost,"　警告：当前生命不足以承受，本局将结束" if state.player.hp <= preview.hp_cost else ""],18,GameUITheme.RED if preview.hp_cost > 0 else GameUITheme.GREEN)
 	for index: int in range(preview.labels.size()): GameUITheme.label(_content, "%s　%.1f%%" % [preview.labels[index], preview.probabilities[index] * 100], 24)
 	GameUITheme.label(_content, "已生效：" + (" / ".join(preview.modifiers) if not preview.modifiers.is_empty() else "基础分布"), 15)
 	_button(_content, "确认切出", _command(GameCommand.Kind.CUTOUT))

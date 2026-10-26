@@ -6,5 +6,5 @@
 script = ExtResource("1")
 display_name = "已确认路线标记"
 knowledge_id = "seam_route"
-destination_id = "run_end"
+destination_id = "level6_signal_0"
 multiplier = 1.4

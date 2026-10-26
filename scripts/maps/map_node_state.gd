@@ -13,3 +13,5 @@ var position: Vector2
 var visibility: Visibility = Visibility.UNKNOWN
 # 揭示与结算状态正交，重返已结算节点只通行。
 var resolution: Resolution = Resolution.UNVISITED
+# 主题分区只是生成元数据；未来动态实体占用不得覆盖 content_id/一次性结算。
+var region_id: StringName

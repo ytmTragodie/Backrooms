@@ -6,3 +6,4 @@
 script = ExtResource("1")
 floor_id = "floor_level_0"
 base_weight = 1.0
+id = "level0_service_1"

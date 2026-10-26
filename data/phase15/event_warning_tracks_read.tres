@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EventOptionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "event_warning_tracks_read"
+display_name = "记录线索，继续前进"
+knowledge = Array[StringName]([&"hound_noise"])
+known_floors = Array[StringName]([])
+known_exits = Array[StringName]([])

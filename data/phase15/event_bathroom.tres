@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/phase15/event_bathroom_read.tres" id="3"]
+[ext_resource type="Resource" path="res://data/phase15/event_bathroom_leave.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "event_bathroom"
+display_name = "渗水的白窗"
+description = "浅海水从破窗渗进浴室。墙上的警告：淋浴温度不定，不要冒险取暖。"
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])
+asset_id = "event_bathroom"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MapRegionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/maps/map_region_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "ocean"
+display_name = "海洋"
+first_layer = 3
+last_layer = 6
+node_weights = PackedInt32Array(28, 15, 30, 10, 12, 5)
+event_ids = Array[StringName]([&"event_seabed_bones", &"event_cave_chart", &"event_fire_door"])
+encounter_ids = Array[StringName]([&"entity_thing7"])
+elite_ids = Array[StringName]([&"entity_thing7"])

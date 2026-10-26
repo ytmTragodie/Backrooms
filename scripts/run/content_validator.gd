@@ -39,6 +39,7 @@ static func validate(game: GameData) -> Array[String]:
 			errors.append("缺少地图配置")
 			continue
 		if floor.map_config.depth < 3 or floor.map_config.lanes < 2 or floor.map_config.node_weights.size() != 6: errors.append("非法 DAG 配置")
+		Phase15Validator.validate_floor(floor,game,errors)
 		var total: int = 0
 		for weight: int in floor.map_config.node_weights:
 			if weight < 0: errors.append("节点权重为负")
@@ -59,8 +60,8 @@ static func validate(game: GameData) -> Array[String]:
 			for destination: CutOutDestinationData in route.destinations:
 				if destination.base_weight <= 0 or not is_finite(destination.base_weight): errors.append("非法切出权重")
 				if destination.floor_id != &"run_end" and game.find_floor(destination.floor_id) == null: errors.append("不存在的目的地")
-				if destinations.has(destination.floor_id): errors.append("重复目的地")
-				destinations.append(destination.floor_id)
+				if destination.id.is_empty() or destinations.has(destination.id): errors.append("重复/空连接身份")
+				destinations.append(destination.id)
 			for modifier: CutOutModifierData in route.modifiers:
 				if modifier.multiplier <= 0 or not is_finite(modifier.multiplier) or not destinations.has(modifier.destination_id): errors.append("非法出口修正")
 	# 楼层网络允许环，但每个已配置 Level 都必须有通向终局的正权重路线。
@@ -70,7 +71,10 @@ static func validate(game: GameData) -> Array[String]:
 			if floor == null or reaches_end.has(floor.id): continue
 			for route: CutOutRouteData in floor.cutout_route_pool:
 				for destination: CutOutDestinationData in route.destinations:
-					if reaches_end.has(destination.floor_id) and destination.base_weight > 0:
+					var target: FloorData = game.find_floor(destination.floor_id)
+					var entrance: FloorEntranceData = target.find_entrance(destination.entrance_id) if target != null else null
+					var unconditional: bool = destination.requirements.is_empty() and (destination.floor_id == &"run_end" or (entrance != null and entrance.requirements.is_empty()))
+					if unconditional and reaches_end.has(destination.floor_id) and destination.base_weight > 0:
 						if not reaches_end.has(floor.id): reaches_end.append(floor.id)
 	for floor: FloorData in game.floors:
 		if floor != null and not reaches_end.has(floor.id): errors.append("楼层网络无法抵达撤收点：" + String(floor.id))

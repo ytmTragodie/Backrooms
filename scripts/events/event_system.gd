@@ -12,6 +12,7 @@ static func plan(command: GameCommand, result: ActionResult, state: RunState, rn
 	var option: EventOptionData = event.options[command.choice]
 	var error: StringName = option_error(option, state)
 	if not error.is_empty(): return error
+	result.floor.event_outcome = option.id
 	result.player.supply_delta -= option.supply_cost
 	result.player.hp_delta -= option.hp_cost
 	result.player.stress_delta += option.stress_cost

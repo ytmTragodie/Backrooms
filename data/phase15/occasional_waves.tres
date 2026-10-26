@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MapRuleData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/maps/map_rule_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "occasional_waves"
+kind = 0
+probability = 0.6
+target_kind = 2
+target_content_id = "event_waves"
+min_layer = 2
+max_layer = 3

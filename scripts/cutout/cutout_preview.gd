@@ -5,3 +5,5 @@ var allowed: bool = false
 var labels: Array[String] = []
 var probabilities: Array[float] = []
 var modifiers: Array[String] = []
+var hp_cost: int = 0
+var stress_cost: int = 0

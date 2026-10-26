@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 465.89 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce MX250
+
+[PHASE15 RUN] seed=1 hp=24 transitions=3
+[TEST] PASS Phase 15: 5033 checks; seeded maps, mixed intel, network, paid exits, Level 7, atomic failure, UI

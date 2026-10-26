@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MapRegionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/maps/map_region_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "house"
+display_name = "房屋"
+first_layer = 1
+last_layer = 2
+node_weights = PackedInt32Array(0, 0, 65, 20, 10, 5)
+event_ids = Array[StringName]([&"event_slanted_room", &"event_bathroom", &"event_toy_room", &"event_diver_notes"])

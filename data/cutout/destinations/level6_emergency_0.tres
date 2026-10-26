@@ -6,3 +6,4 @@
 script = ExtResource("1")
 floor_id = "run_end"
 base_weight = 9.0
+id = "level6_emergency_0"

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="FloorData" load_steps=32 format=3]
+[gd_resource type="Resource" script_class="FloorData" load_steps=36 format=3]
 
 [ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="1"]
 [ext_resource type="Resource" path="res://data/maps/floor_level_6.tres" id="2"]
@@ -32,6 +32,14 @@
 [ext_resource type="Resource" path="res://data/cutout/level6_seam.tres" id="30"]
 [ext_resource type="Resource" path="res://data/cutout/level6_emergency.tres" id="31"]
 
+[ext_resource type="Resource" path="res://data/phase15/entrance_6.tres" id="p15_entrances_0"]
+
+[ext_resource type="Script" path="res://scripts/floors/floor_entrance_data.gd" id="p15_type_entrances"]
+
+[ext_resource type="Resource" path="res://data/phase15/event_waves.tres" id="p15_event_pool_0"]
+
+[ext_resource type="Resource" path="res://data/phase15/level6_waves.tres" id="p15_cutout_route_pool_0"]
+
 [resource]
 script = ExtResource("1")
 id = "floor_level_6"
@@ -41,9 +49,10 @@ asset_id = "floor_level_6"
 map_config = ExtResource("2")
 encounter_pool = Array[ExtResource("3")]([ExtResource("4"), ExtResource("5"), ExtResource("6"), ExtResource("7"), ExtResource("8")])
 elite_pool = Array[ExtResource("3")]([ExtResource("9"), ExtResource("10"), ExtResource("11")])
-event_pool = Array[ExtResource("12")]([ExtResource("13"), ExtResource("14"), ExtResource("15"), ExtResource("16"), ExtResource("17"), ExtResource("18"), ExtResource("19"), ExtResource("20"), ExtResource("21"), ExtResource("22")])
+event_pool = Array[ExtResource("12")]([ExtResource("13"), ExtResource("14"), ExtResource("15"), ExtResource("16"), ExtResource("17"), ExtResource("18"), ExtResource("19"), ExtResource("20"), ExtResource("21"), ExtResource("22"), ExtResource("p15_event_pool_0")])
 reward_pool = ExtResource("23")
 shops = Array[ExtResource("24")]([ExtResource("25"), ExtResource("26"), ExtResource("27")])
-cutout_route_pool = Array[ExtResource("28")]([ExtResource("29"), ExtResource("30"), ExtResource("31")])
+cutout_route_pool = Array[ExtResource("28")]([ExtResource("29"), ExtResource("30"), ExtResource("31"), ExtResource("p15_cutout_route_pool_0")])
 noise_damage_threshold = 3
 noise_damage_bonus = 1
+entrances = Array[ExtResource("p15_type_entrances")]([ExtResource("p15_entrances_0")])

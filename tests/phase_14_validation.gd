@@ -351,7 +351,9 @@ func _maps() -> void:
 			var floor: FloorState = MapSystem.generate(data,rng)
 			var map: FloorMapState = floor.map
 			var incoming: Dictionary = {0:true}
-			var to_exit: Dictionary = {map.nodes.size()-1:true}
+			var to_exit: Dictionary = {}
+			for index: int in range(map.nodes.size()):
+				if map.nodes[index].kind == MapNodeState.Kind.EXIT: to_exit[index] = true
 			for edge: Vector2i in map.edges:
 				check(map.nodes[edge.x].layer < map.nodes[edge.y].layer, "DAG edges strictly forward")
 				if incoming.has(edge.x): incoming[edge.y] = true
@@ -560,7 +562,9 @@ func _fixture_game(kind: MapNodeState.Kind, enemy_id: String = "entity_hound") -
 	floor.encounter_pool = [enemy(enemy_id)]
 	floor.event_pool = [load("res://data/events/event_lights.tres") as EventData]
 	floor.reward_pool = load("res://data/rewards/combat.tres") as RewardTableData
-	game.floors = [floor,GAME.floors[1]]
+	floor.map_config.rules = []
+	game.floors = GAME.floors.duplicate()
+	game.floors[0] = floor
 	return game
 
 func _mouse_click(control: Control) -> void:

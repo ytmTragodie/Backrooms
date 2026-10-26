@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/phase15/event_cave_chart_read.tres" id="3"]
+[ext_resource type="Resource" path="res://data/phase15/event_cave_chart_leave.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "event_cave_chart"
+display_name = "水下洞穴草图"
+description = "草图将洞穴标成通往八层的传闻。此路线尚未开放；附近的撤收绳索才是当前能走的路。"
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])
+asset_id = "event_cave_chart"

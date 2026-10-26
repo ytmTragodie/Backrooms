@@ -14,3 +14,9 @@ static func commit(result: ActionResult, state: RunState) -> void:
 		if not player.knowledge.floors.has(id): player.knowledge.floors.append(id)
 	for id: StringName in result.player.knowledge_exits:
 		if not player.knowledge.exits.has(id): player.knowledge.exits.append(id)
+	for connection: KnownConnection in result.player.connections:
+		var existing: KnownConnection
+		for known: KnownConnection in player.knowledge.connections:
+			if known.key() == connection.key(): existing = known
+		if existing == null: player.knowledge.connections.append(connection)
+		elif connection.traversed: existing.traversed = true

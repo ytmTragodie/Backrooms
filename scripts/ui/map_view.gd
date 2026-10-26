@@ -18,6 +18,9 @@ func present(state: RunState) -> void:
 		button.name = String(node.id)
 		var known: bool = node.visibility == MapNodeState.Visibility.REVEALED
 		button.text = NAMES[node.kind] if known else "？"
+		if node.kind == MapNodeState.Kind.ENTRY:
+			var entrance: FloorEntranceData = state.floor_state.definition.find_entrance(&"entry")
+			if entrance != null: button.text = entrance.display_name
 		if node.resolution == MapNodeState.Resolution.RESOLVED: button.text += " · 已过"
 		if node.id == state.floor_state.map.current_node_id: button.text += "\n当前位置"
 		button.custom_minimum_size = Vector2(90, 44)
@@ -26,6 +29,14 @@ func present(state: RunState) -> void:
 		if node.kind == MapNodeState.Kind.EXIT and state.player.knowledge.exits.has(node.content_id):
 			for route: CutOutRouteData in state.floor_state.definition.cutout_route_pool:
 				if route.id == node.content_id: button.tooltip_text = "已知出口：" + route.display_name
+		if node.kind == MapNodeState.Kind.EXIT:
+			for route: CutOutRouteData in state.floor_state.definition.cutout_route_pool:
+				if route.id == node.content_id:
+					button.text = "代价出口" if route.hp_cost > 0 or route.stress_cost > 0 else "零代价出口"
+					button.tooltip_text += "\n生命 -%d / 压力 +%d；抵达后确认" % [route.hp_cost,route.stress_cost]
+		if not node.region_id.is_empty():
+			var region: MapRegionData = state.floor_state.definition.map_config.region_at(node.layer)
+			if region != null: button.tooltip_text += "\n区域："+region.display_name
 		if not button.disabled: button.add_theme_stylebox_override("normal", GameUITheme.panel(Color("27352f"), GameUITheme.GREEN, 2))
 		var command: GameCommand = GameCommand.new(GameCommand.Kind.MOVE, state)
 		command.node_id = node.id

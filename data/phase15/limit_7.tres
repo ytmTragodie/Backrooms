@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MapRuleData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/maps/map_rule_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "limit_7"
+kind = 3
+required = true
+max_consecutive = 3

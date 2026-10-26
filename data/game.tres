@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="GameData" load_steps=44 format=3]
+[gd_resource type="Resource" script_class="GameData" load_steps=45 format=3]
 
 [ext_resource type="Script" path="res://scripts/run/game_data.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/floors/floor_data.gd" id="2"]
@@ -44,9 +44,11 @@
 [ext_resource type="Resource" path="res://data/cards/card_brace.tres" id="42"]
 [ext_resource type="Resource" path="res://data/cards/card_thermal.tres" id="43"]
 
+[ext_resource type="Resource" path="res://data/floors/floor_level_7.tres" id="p15_floors_0"]
+
 [resource]
 script = ExtResource("1")
-floors = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])
+floors = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("p15_floors_0")])
 starting_floor = "floor_level_0"
 starter_deck = ExtResource("5")
 starting_equipment = Array[ExtResource("6")]([ExtResource("7"), ExtResource("8"), ExtResource("9")])

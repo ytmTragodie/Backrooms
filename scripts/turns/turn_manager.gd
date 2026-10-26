@@ -15,14 +15,19 @@ func start_run(seed: int) -> void:
 	if not errors.is_empty():
 		push_error("Content invalid: " + "; ".join(errors))
 		return
-	run_state = RunState.new(seed)
-	run_state.player.supply = game_data.starting_supply
-	CardSystem.initialize(run_state.player.deck, game_data.starter_deck)
-	EquipmentSystem.initialize(run_state.player.equipment, game_data.starting_equipment)
-	run_state.floor_state = MapSystem.generate(game_data.find_floor(game_data.starting_floor), run_state.rng)
-	run_state.history.floors[run_state.floor_state.floor_id] = run_state.floor_state
-	run_state.history.visits[run_state.floor_state.floor_id] = 1
-	run_state.player.knowledge.floors.append(run_state.floor_state.floor_id)
+	# 新局也先验证私有地图，失败不能替换当前正在玩的 RunState。
+	var next: RunState = RunState.new(seed)
+	next.player.supply = game_data.starting_supply
+	CardSystem.initialize(next.player.deck, game_data.starter_deck)
+	EquipmentSystem.initialize(next.player.equipment, game_data.starting_equipment)
+	next.floor_state = MapSystem.generate(game_data.find_floor(game_data.starting_floor), next.rng)
+	if not next.floor_state.map.validation_errors.is_empty():
+		push_error("Map invalid: "+"; ".join(next.floor_state.map.validation_errors))
+		return
+	next.history.floors[next.floor_state.floor_id] = next.floor_state
+	next.history.visits[next.floor_state.floor_id] = 1
+	next.player.knowledge.floors.append(next.floor_state.floor_id)
+	run_state = next
 	state_changed.emit()
 
 func submit(command: GameCommand) -> ActionResult:

@@ -1,10 +1,15 @@
-[gd_resource type="Resource" script_class="MapGenerationData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="MapGenerationData" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/maps/map_generation_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/maps/map_rule_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/phase15/limit_0.tres" id="3"]
+[ext_resource type="Resource" path="res://data/phase15/hound_intel.tres" id="4"]
 
 [resource]
 script = ExtResource("1")
 depth = 5
 lanes = 3
-node_weights = PackedInt32Array(25, 5, 35, 15, 12, 8)
+node_weights = PackedInt32Array(35, 8, 30, 12, 10, 5)
 reveal_depth = 1
+exit_count = 3
+rules = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])

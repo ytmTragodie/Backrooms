@@ -22,17 +22,28 @@ static func generate(data: FloorData, rng: RandomNumberGenerator) -> FloorState:
 	entry.visibility = MapNodeState.Visibility.REVEALED
 	entry.resolution = MapNodeState.Resolution.RESOLVED
 	floor.map.nodes.append(entry)
+	# 出口池超出末层容量时抽取不重复路线；第一条基准路线保留，其余可随种子变化。
+	var exits: Array[CutOutRouteData] = data.cutout_route_pool.duplicate()
+	if exits.size() > data.map_config.exit_count:
+		for index: int in range(exits.size()-1,1,-1):
+			var other: int = rng.randi_range(1,index)
+			var swap: CutOutRouteData = exits[index]
+			exits[index] = exits[other]
+			exits[other] = swap
 	var previous: Array[int] = [0]
 	for layer: int in range(1, data.map_config.depth + 2):
 		var current: Array[int] = []
-		var count: int = 1 if layer == data.map_config.depth + 1 else rng.randi_range(2, data.map_config.lanes)
+		var last: bool = layer == data.map_config.depth + 1
+		var count: int = data.map_config.exit_count if last else rng.randi_range(2, data.map_config.lanes)
+		var region: MapRegionData = data.map_config.region_at(layer)
 		for lane: int in range(count):
 			var node: MapNodeState = MapNodeState.new()
 			node.id = StringName("node_%d_%d" % [layer, lane])
 			node.layer = layer
 			node.position = Vector2(0.035 + 0.93 * layer / (data.map_config.depth + 1), (lane + 1.0) / (count + 1) + rng.randf_range(-0.035, 0.035))
-			node.kind = MapNodeState.Kind.EXIT if count == 1 else weighted_index(data.map_config.node_weights, rng) as MapNodeState.Kind
-			node.content_id = _content(data, node.kind, rng)
+			node.region_id = region.id if region != null else &""
+			node.kind = MapNodeState.Kind.EXIT if last else weighted_index(region.node_weights if region != null else data.map_config.node_weights, rng) as MapNodeState.Kind
+			node.content_id = exits[lane].id if last else _content(data, node.kind, rng, region)
 			if layer <= data.map_config.reveal_depth or node.kind == MapNodeState.Kind.EXIT: node.visibility = MapNodeState.Visibility.REVEALED
 			current.append(floor.map.nodes.size())
 			floor.map.nodes.append(node)
@@ -47,13 +58,20 @@ static func generate(data: FloorData, rng: RandomNumberGenerator) -> FloorState:
 				if edge.y == current[index]: incoming = true
 			if not incoming: _connect(floor.map, previous[mini(previous.size() - 1, index)], current[index])
 		previous = current
+	MapGenerationRules.apply(floor,rng)
 	return floor
 
 static func _connect(map: FloorMapState, from: int, to: int) -> void:
 	var edge: Vector2i = Vector2i(from, to)
 	if not map.edges.has(edge): map.edges.append(edge)
 
-static func _content(data: FloorData, kind: MapNodeState.Kind, rng: RandomNumberGenerator) -> StringName:
+static func _content(data: FloorData, kind: MapNodeState.Kind, rng: RandomNumberGenerator, region: MapRegionData = null) -> StringName:
+	if region != null:
+		var ids: Array[StringName] = []
+		if kind == MapNodeState.Kind.EVENT: ids = region.event_ids
+		elif kind == MapNodeState.Kind.COMBAT: ids = region.encounter_ids
+		elif kind == MapNodeState.Kind.ELITE: ids = region.elite_ids
+		if not ids.is_empty(): return ids[rng.randi_range(0,ids.size()-1)]
 	match kind:
 		MapNodeState.Kind.COMBAT: return data.encounter_pool[rng.randi_range(0, data.encounter_pool.size() - 1)].id
 		MapNodeState.Kind.ELITE: return data.elite_pool[rng.randi_range(0, data.elite_pool.size() - 1)].id
@@ -84,6 +102,7 @@ static func commit(result: ActionResult, state: RunState) -> void:
 		var node: MapNodeState = map.find(result.floor.move_to)
 		node.visibility = MapNodeState.Visibility.REVEALED
 		if node.resolution == MapNodeState.Resolution.UNVISITED: node.resolution = MapNodeState.Resolution.ACTIVE
+	if not result.floor.event_outcome.is_empty() and not state.floor_state.event_outcomes.has(result.floor.event_outcome): state.floor_state.event_outcomes.append(result.floor.event_outcome)
 	if result.floor.resolve_current: map.find(map.current_node_id).resolution = MapNodeState.Resolution.RESOLVED
 	for id: StringName in result.floor.reveal: map.find(id).visibility = MapNodeState.Visibility.REVEALED
 	if result.floor.activate != null:
