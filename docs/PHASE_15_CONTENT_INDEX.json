@@ -1,311 +1,311 @@
 [
   {
-    "path": "res://data/phase15/reward_salvage_supplies.tres",
+    "path": "res://data/rewards/entries/reward_salvage_supplies.tres",
     "type": "RewardEntryData",
     "id": ""
   },
   {
-    "path": "res://data/phase15/salvage_supplies.tres",
+    "path": "res://data/rewards/salvage_supplies.tres",
     "type": "RewardTableData",
     "id": "salvage_supplies"
   },
   {
-    "path": "res://data/phase15/reward_shelter_calm.tres",
+    "path": "res://data/rewards/entries/reward_shelter_calm.tres",
     "type": "RewardEntryData",
     "id": ""
   },
   {
-    "path": "res://data/phase15/shelter_calm.tres",
+    "path": "res://data/rewards/shelter_calm.tres",
     "type": "RewardTableData",
     "id": "shelter_calm"
   },
   {
-    "path": "res://data/phase15/reward_toy_cache.tres",
+    "path": "res://data/rewards/entries/reward_toy_cache.tres",
     "type": "RewardEntryData",
     "id": ""
   },
   {
-    "path": "res://data/phase15/toy_cache.tres",
+    "path": "res://data/rewards/toy_cache.tres",
     "type": "RewardTableData",
     "id": "toy_cache"
   },
   {
-    "path": "res://data/phase15/event_waves_read.tres",
+    "path": "res://data/events/options/event_waves_read.tres",
     "type": "EventOptionData",
     "id": "event_waves_read"
   },
   {
-    "path": "res://data/phase15/event_waves_leave.tres",
+    "path": "res://data/events/options/event_waves_leave.tres",
     "type": "EventOptionData",
     "id": "event_waves_leave"
   },
   {
-    "path": "res://data/phase15/event_waves.tres",
+    "path": "res://data/events/event_waves.tres",
     "type": "EventData",
     "id": "event_waves"
   },
   {
-    "path": "res://data/phase15/event_slanted_room_read.tres",
+    "path": "res://data/events/options/event_slanted_room_read.tres",
     "type": "EventOptionData",
     "id": "event_slanted_room_read"
   },
   {
-    "path": "res://data/phase15/event_slanted_room_leave.tres",
+    "path": "res://data/events/options/event_slanted_room_leave.tres",
     "type": "EventOptionData",
     "id": "event_slanted_room_leave"
   },
   {
-    "path": "res://data/phase15/event_slanted_room.tres",
+    "path": "res://data/events/event_slanted_room.tres",
     "type": "EventData",
     "id": "event_slanted_room"
   },
   {
-    "path": "res://data/phase15/event_bathroom_read.tres",
+    "path": "res://data/events/options/event_bathroom_read.tres",
     "type": "EventOptionData",
     "id": "event_bathroom_read"
   },
   {
-    "path": "res://data/phase15/event_bathroom_leave.tres",
+    "path": "res://data/events/options/event_bathroom_leave.tres",
     "type": "EventOptionData",
     "id": "event_bathroom_leave"
   },
   {
-    "path": "res://data/phase15/event_bathroom.tres",
+    "path": "res://data/events/event_bathroom.tres",
     "type": "EventData",
     "id": "event_bathroom"
   },
   {
-    "path": "res://data/phase15/event_toy_room_read.tres",
+    "path": "res://data/events/options/event_toy_room_read.tres",
     "type": "EventOptionData",
     "id": "event_toy_room_read"
   },
   {
-    "path": "res://data/phase15/event_toy_room_leave.tres",
+    "path": "res://data/events/options/event_toy_room_leave.tres",
     "type": "EventOptionData",
     "id": "event_toy_room_leave"
   },
   {
-    "path": "res://data/phase15/event_toy_room.tres",
+    "path": "res://data/events/event_toy_room.tres",
     "type": "EventData",
     "id": "event_toy_room"
   },
   {
-    "path": "res://data/phase15/event_diver_notes_read.tres",
+    "path": "res://data/events/options/event_diver_notes_read.tres",
     "type": "EventOptionData",
     "id": "event_diver_notes_read"
   },
   {
-    "path": "res://data/phase15/event_diver_notes_leave.tres",
+    "path": "res://data/events/options/event_diver_notes_leave.tres",
     "type": "EventOptionData",
     "id": "event_diver_notes_leave"
   },
   {
-    "path": "res://data/phase15/event_diver_notes.tres",
+    "path": "res://data/events/event_diver_notes.tres",
     "type": "EventData",
     "id": "event_diver_notes"
   },
   {
-    "path": "res://data/phase15/event_seabed_bones_read.tres",
+    "path": "res://data/events/options/event_seabed_bones_read.tres",
     "type": "EventOptionData",
     "id": "event_seabed_bones_read"
   },
   {
-    "path": "res://data/phase15/event_seabed_bones_leave.tres",
+    "path": "res://data/events/options/event_seabed_bones_leave.tres",
     "type": "EventOptionData",
     "id": "event_seabed_bones_leave"
   },
   {
-    "path": "res://data/phase15/event_seabed_bones.tres",
+    "path": "res://data/events/event_seabed_bones.tres",
     "type": "EventData",
     "id": "event_seabed_bones"
   },
   {
-    "path": "res://data/phase15/event_cave_chart_read.tres",
+    "path": "res://data/events/options/event_cave_chart_read.tres",
     "type": "EventOptionData",
     "id": "event_cave_chart_read"
   },
   {
-    "path": "res://data/phase15/event_cave_chart_leave.tres",
+    "path": "res://data/events/options/event_cave_chart_leave.tres",
     "type": "EventOptionData",
     "id": "event_cave_chart_leave"
   },
   {
-    "path": "res://data/phase15/event_cave_chart.tres",
+    "path": "res://data/events/event_cave_chart.tres",
     "type": "EventData",
     "id": "event_cave_chart"
   },
   {
-    "path": "res://data/phase15/event_fire_door_read.tres",
+    "path": "res://data/events/options/event_fire_door_read.tres",
     "type": "EventOptionData",
     "id": "event_fire_door_read"
   },
   {
-    "path": "res://data/phase15/event_fire_door_leave.tres",
+    "path": "res://data/events/options/event_fire_door_leave.tres",
     "type": "EventOptionData",
     "id": "event_fire_door_leave"
   },
   {
-    "path": "res://data/phase15/event_fire_door.tres",
+    "path": "res://data/events/event_fire_door.tres",
     "type": "EventData",
     "id": "event_fire_door"
   },
   {
-    "path": "res://data/phase15/abyss_hit.tres",
+    "path": "res://data/effects/abyss_hit.tres",
     "type": "EffectData",
     "id": ""
   },
   {
-    "path": "res://data/phase15/abyss_surge.tres",
+    "path": "res://data/entities/actions/abyss_surge.tres",
     "type": "EntityActionData",
     "id": "abyss_surge"
   },
   {
-    "path": "res://data/phase15/abyss_behavior.tres",
+    "path": "res://data/entities/behaviors/abyss_behavior.tres",
     "type": "EntityBehaviorData",
     "id": ""
   },
   {
-    "path": "res://data/phase15/abyss_light_trigger.tres",
+    "path": "res://data/entities/triggers/abyss_light_trigger.tres",
     "type": "TriggerData",
     "id": ""
   },
   {
-    "path": "res://data/phase15/abyss_light_reaction.tres",
+    "path": "res://data/entities/reactions/abyss_light_reaction.tres",
     "type": "WeaknessData",
     "id": "abyss_light_withdraw"
   },
   {
-    "path": "res://data/phase15/entity_thing7.tres",
+    "path": "res://data/entities/entity_thing7.tres",
     "type": "EntityData",
     "id": "entity_thing7"
   },
   {
-    "path": "res://data/phase15/entrance_0.tres",
+    "path": "res://data/floors/entrances/entrance_0.tres",
     "type": "FloorEntranceData",
     "id": "entry"
   },
   {
-    "path": "res://data/phase15/entrance_6.tres",
+    "path": "res://data/floors/entrances/entrance_6.tres",
     "type": "FloorEntranceData",
     "id": "entry"
   },
   {
-    "path": "res://data/phase15/entrance_7.tres",
+    "path": "res://data/floors/entrances/entrance_7.tres",
     "type": "FloorEntranceData",
     "id": "entry"
   },
   {
-    "path": "res://data/phase15/waves_house.tres",
+    "path": "res://data/cutout/destinations/waves_house.tres",
     "type": "CutOutDestinationData",
     "id": "waves_house"
   },
   {
-    "path": "res://data/phase15/level6_waves.tres",
+    "path": "res://data/cutout/level6_waves.tres",
     "type": "CutOutRouteData",
     "id": "level6_waves"
   },
   {
-    "path": "res://data/phase15/crowbar_requirement.tres",
+    "path": "res://data/cutout/requirements/crowbar_requirement.tres",
     "type": "TravelRequirementData",
     "id": "equip_crowbar"
   },
   {
-    "path": "res://data/phase15/cave_requirement.tres",
+    "path": "res://data/cutout/requirements/cave_requirement.tres",
     "type": "TravelRequirementData",
     "id": "lore_level_8"
   },
   {
-    "path": "res://data/phase15/fire_evac.tres",
+    "path": "res://data/cutout/destinations/fire_evac.tres",
     "type": "CutOutDestinationData",
     "id": "fire_evac"
   },
   {
-    "path": "res://data/phase15/fire_maintenance.tres",
+    "path": "res://data/cutout/destinations/fire_maintenance.tres",
     "type": "CutOutDestinationData",
     "id": "fire_maintenance"
   },
   {
-    "path": "res://data/phase15/level7_fire_door.tres",
+    "path": "res://data/cutout/level7_fire_door.tres",
     "type": "CutOutRouteData",
     "id": "level7_fire_door"
   },
   {
-    "path": "res://data/phase15/cave_evac.tres",
+    "path": "res://data/cutout/destinations/cave_evac.tres",
     "type": "CutOutDestinationData",
     "id": "cave_evac"
   },
   {
-    "path": "res://data/phase15/cave_stairs.tres",
+    "path": "res://data/cutout/destinations/cave_stairs.tres",
     "type": "CutOutDestinationData",
     "id": "cave_stairs"
   },
   {
-    "path": "res://data/phase15/level7_cave.tres",
+    "path": "res://data/cutout/level7_cave.tres",
     "type": "CutOutRouteData",
     "id": "level7_cave"
   },
   {
-    "path": "res://data/phase15/limit_0.tres",
+    "path": "res://data/maps/rules/limit_0.tres",
     "type": "MapRuleData",
     "id": "limit_0"
   },
   {
-    "path": "res://data/phase15/limit_6.tres",
+    "path": "res://data/maps/rules/limit_6.tres",
     "type": "MapRuleData",
     "id": "limit_6"
   },
   {
-    "path": "res://data/phase15/limit_7.tres",
+    "path": "res://data/maps/rules/limit_7.tres",
     "type": "MapRuleData",
     "id": "limit_7"
   },
   {
-    "path": "res://data/phase15/preferred_pacing.tres",
+    "path": "res://data/maps/rules/preferred_pacing.tres",
     "type": "MapRuleData",
     "id": "preferred_pacing"
   },
   {
-    "path": "res://data/phase15/abyss_anchor.tres",
+    "path": "res://data/maps/rules/abyss_anchor.tres",
     "type": "MapRuleData",
     "id": "abyss_anchor"
   },
   {
-    "path": "res://data/phase15/abyss_intel.tres",
+    "path": "res://data/maps/rules/abyss_intel.tres",
     "type": "MapRuleData",
     "id": "abyss_intel"
   },
   {
-    "path": "res://data/phase15/abyss_salvage.tres",
+    "path": "res://data/maps/rules/abyss_salvage.tres",
     "type": "MapRuleData",
     "id": "abyss_salvage"
   },
   {
-    "path": "res://data/phase15/occasional_bones.tres",
+    "path": "res://data/maps/rules/occasional_bones.tres",
     "type": "MapRuleData",
     "id": "occasional_bones"
   },
   {
-    "path": "res://data/phase15/occasional_waves.tres",
+    "path": "res://data/maps/rules/occasional_waves.tres",
     "type": "MapRuleData",
     "id": "occasional_waves"
   },
   {
-    "path": "res://data/phase15/event_warning_tracks_read.tres",
+    "path": "res://data/events/options/event_warning_tracks_read.tres",
     "type": "EventOptionData",
     "id": "event_warning_tracks_read"
   },
   {
-    "path": "res://data/phase15/event_warning_tracks_leave.tres",
+    "path": "res://data/events/options/event_warning_tracks_leave.tres",
     "type": "EventOptionData",
     "id": "event_warning_tracks_leave"
   },
   {
-    "path": "res://data/phase15/event_warning_tracks.tres",
+    "path": "res://data/events/event_warning_tracks.tres",
     "type": "EventData",
     "id": "event_warning_tracks"
   },
   {
-    "path": "res://data/phase15/hound_intel.tres",
+    "path": "res://data/maps/rules/hound_intel.tres",
     "type": "MapRuleData",
     "id": "hound_intel"
   },
@@ -320,17 +320,17 @@
     "id": ""
   },
   {
-    "path": "res://data/phase15/house_region.tres",
+    "path": "res://data/maps/regions/house_region.tres",
     "type": "MapRegionData",
     "id": "house"
   },
   {
-    "path": "res://data/phase15/ocean_region.tres",
+    "path": "res://data/maps/regions/ocean_region.tres",
     "type": "MapRegionData",
     "id": "ocean"
   },
   {
-    "path": "res://data/phase15/map_level7.tres",
+    "path": "res://data/maps/floor_level_7.tres",
     "type": "MapGenerationData",
     "id": ""
   },

@@ -20,6 +20,8 @@ function Check-Godot([string]$Name, [string[]]$Arguments, [bool]$RequirePass=$fa
 Check-Godot 'import' @('--import')
 Check-Godot 'phase_14' @('--script','res://tests/phase_14_validation.gd') $true
 Check-Godot 'phase_15' @('--script','res://tests/phase_15_validation.gd') $true
+Check-Godot 'phase_16' @('--script','res://tests/phase_16_validation.gd') $true
+Check-Godot 'quit' @('--script','res://tests/phase_16_quit_validation.gd') $true
 Check-Godot 'simulation' @('--script','res://tests/phase_14_simulation.gd') $true
 Check-Godot 'main' @('--quit-after','5')
 Write-Output "Logs: $logDirectory"

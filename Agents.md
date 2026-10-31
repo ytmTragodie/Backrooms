@@ -3,6 +3,7 @@
 ## Current direction
 
 Godot 4.x 后室卡牌 Roguelike，正式方向为 **Phase 14：地图驱动的战斗 Roguelike**；当前 Phase 15 增量契约见 `docs/PHASE_15_ARCHITECTURE.md`。
+Phase 16 的资源、启动导航、主题与声音增量见 `docs/PHASE_16_ARCHITECTURE.md`；正式入口为 `scenes/main/Start.tscn`，原 Main 为游戏视图与回归夹具。
 设计主源：`docs/Phase14_GAMEPLAY _Redesign.md`。当前实现契约见 `docs/PHASE_14_ARCHITECTURE.md`，迁移记录见 `docs/PHASE_14_MIGRATION.md`。
 发生冲突时：当前用户任务 → Phase 14 设计与已确认规则 → 本文件 → 当前架构/编码规则 → 历史 GDD/Phase。
 
@@ -36,6 +37,7 @@ Godot 4.x 后室卡牌 Roguelike，正式方向为 **Phase 14：地图驱动的�
 - 有限、可维护的 Effect/Condition 类型；不创建万能 DSL、大量空 Manager 或按行数拆类。
 - 玩家文本简体中文；稳定 ID/代码英文，关键字段、所有权与顺序使用中文注释。
 - 素材走 AssetCatalog 稳定映射，缺图默认封面/本地 SVG，缺音静音；素材不驱动规则。
+- 待许可字体/音频只按用户授权在本地开发预览启用，发布前替换或补齐许可；原始 UI Pack/ref 的删除需按 `docs/PHASE_16_CLEANUP_PLAN.json` 再经用户确认。
 - `archive/phase13c_before_phase14/` 是排除导入的历史原始快照，不是可启动的兼容模式。
 
 ## Workflow

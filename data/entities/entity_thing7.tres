@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="EntityData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/entity_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/entities/behaviors/abyss_behavior.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/entities/weakness_data.gd" id="3"]
+[ext_resource type="Resource" path="res://data/entities/reactions/abyss_light_reaction.tres" id="4"]
+[ext_resource type="Resource" path="res://data/rewards/salvage_supplies.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = "entity_thing7"
+display_name = "七层之物 · 逼近的巨影"
+description = "巨影遮住了去路，难以靠正面伤害压倒。先前的防水笔记或许能派上用场；也可承受公开代价撤离。"
+asset_id = "entity_thing7"
+max_hp = 90
+damage_reduction = 2
+initial_state = "APPROACHING"
+behavior_data = ExtResource("2")
+weaknesses = Array[ExtResource("3")]([ExtResource("4")])
+reward_data = ExtResource("5")
+escape_damage_min = 4
+escape_damage_max = 7
+escape_stress = 3
+behavior_knowledge = "abyss_light"

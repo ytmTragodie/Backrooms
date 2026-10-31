@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CutOutRouteData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/cutout/cutout_route_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/cutout/cutout_destination_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/cutout/destinations/fire_evac.tres" id="3"]
+[ext_resource type="Resource" path="res://data/cutout/destinations/fire_maintenance.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "level7_fire_door"
+display_name = "防火门撤收索"
+destinations = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])
+hp_cost = 0
+stress_cost = 0

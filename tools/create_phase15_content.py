@@ -4,6 +4,7 @@
 from pathlib import Path
 import json
 import re
+from migrate_phase15_resources import path_for_resource
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = {
@@ -50,7 +51,7 @@ def resource(path,cls,**props):
  INDEX.append({'path':'res://'+path,'type':cls,'id':props.get('id','')})
  return Ref(path)
 
-def make(name,cls,**props): return resource('data/phase15/'+name+'.tres',cls,**props)
+def make(name,cls,**props): return resource(path_for_resource(name,cls),cls,**props)
 def old(category,id): return Ref(f'data/{category}/{id}.tres')
 def array(cls,refs): return Arr(cls,refs)
 def table(name,kind,amount):

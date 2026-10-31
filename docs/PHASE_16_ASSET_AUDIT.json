@@ -1,0 +1,4354 @@
+{
+  "data_inventory": [
+    {
+      "path": "data/cards/card_attack.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_attack_plus.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_brace.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_burst.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_calm.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_calm_plus.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_counter_strike.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_defend.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_defend_plus.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_disrupt.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_equipment_baton.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_equipment_crowbar.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_equipment_extinguish.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_equipment_light.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_equipment_water.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_expose.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_feint.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_first_aid.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_focus.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_heavy_strike.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_intel_guard.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_light_bomb.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_plan.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_precision.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_precision_plus.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_pressure.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_quick_draw.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_quick_draw_plus.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_quiet.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_recon.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_recon_plus.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_risky.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_signal.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_steady_guard.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/card_thermal.tres",
+      "class": "CardData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cards/starter_deck.tres",
+      "class": "DeckData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/conditions/dark.tres",
+      "class": "ConditionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/conditions/first_turn.tres",
+      "class": "ConditionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/conditions/light.tres",
+      "class": "ConditionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/conditions/low_hp.tres",
+      "class": "ConditionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/conditions/noise_high.tres",
+      "class": "ConditionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/conditions/turn2.tres",
+      "class": "ConditionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/cave_evac.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/cave_stairs.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/fire_evac.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/fire_maintenance.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level0_marked_0.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level0_marked_1.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level0_seam_0.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level0_seam_1.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level0_service_0.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level0_service_1.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level6_emergency_0.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level6_emergency_1.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level6_seam_0.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level6_seam_1.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level6_signal_0.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/level6_signal_1.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/destinations/waves_house.tres",
+      "class": "CutOutDestinationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/level0_marked.tres",
+      "class": "CutOutRouteData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/level0_seam.tres",
+      "class": "CutOutRouteData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/level0_service.tres",
+      "class": "CutOutRouteData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/level6_emergency.tres",
+      "class": "CutOutRouteData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/level6_seam.tres",
+      "class": "CutOutRouteData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/level6_signal.tres",
+      "class": "CutOutRouteData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/level6_waves.tres",
+      "class": "CutOutRouteData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/level7_cave.tres",
+      "class": "CutOutRouteData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/level7_fire_door.tres",
+      "class": "CutOutRouteData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level0_marked_beacon.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level0_marked_knowledge.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level0_seam_beacon.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level0_seam_knowledge.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level0_service_beacon.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level0_service_knowledge.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level6_emergency_beacon.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level6_emergency_knowledge.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level6_seam_beacon.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level6_seam_knowledge.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level6_signal_beacon.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/modifiers/level6_signal_knowledge.tres",
+      "class": "CutOutModifierData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/requirements/cave_requirement.tres",
+      "class": "TravelRequirementData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/cutout/requirements/crowbar_requirement.tres",
+      "class": "TravelRequirementData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/abyss_hit.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/ap1.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/bleed_0.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/bleed_2.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/block4.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/block6.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/block8.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/blunt8.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/braced_0.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/burn_0.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/burn_2.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/calm2.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/draw1.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/draw2.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/enemy_bleed.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/enemy_block.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/enemy_stress.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/enemy_weak.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/enraged_0.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/extinguish.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/focused_0.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/heal3.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/heal5.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/hit10.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/hit12.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/hit2.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/hit3.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/hit4.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/hit6.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/hit8.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/intel1.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/intel2.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/intel3.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/intent_bite.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/intent_bleed.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/intent_claw.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/intent_dust.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/intent_light_strike.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/intent_lunge.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/intent_rage.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/intent_slam.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/noise1.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/quiet2.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/stress1.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/strong_light.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/stun_0.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/stun_2.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/vulnerable_0.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/vulnerable_2.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/weak_0.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/weak_2.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/effects/withdraw.tres",
+      "class": "EffectData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/abyss_surge.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/bite.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/bleed.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/claw.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/dust.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/guard.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/light_strike.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/lunge.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/observe.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/rage.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/slam.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/actions/watch.tres",
+      "class": "EntityActionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/abyss_behavior.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_clump.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_crawler.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_deathmoth.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_dense_clump.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_duller.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_frenzied_wretch.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_hound.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_moth_matriarch.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_skinstealer.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_smiler.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_starved_hound.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/behaviors/entity_wretch.tres",
+      "class": "EntityBehaviorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_clump.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_crawler.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_deathmoth.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_dense_clump.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_duller.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_frenzied_wretch.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_hound.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_moth_matriarch.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_skinstealer.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_smiler.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_starved_hound.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_thing7.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/entity_wretch.tres",
+      "class": "EntityData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/reactions/abyss_light_reaction.tres",
+      "class": "WeaknessData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/reactions/blunt.tres",
+      "class": "WeaknessData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/reactions/dark.tres",
+      "class": "WeaknessData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/reactions/light.tres",
+      "class": "WeaknessData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/reactions/noise.tres",
+      "class": "WeaknessData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/triggers/abyss_light_trigger.tres",
+      "class": "TriggerData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/triggers/blunt.tres",
+      "class": "TriggerData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/triggers/end.tres",
+      "class": "TriggerData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/triggers/light.tres",
+      "class": "TriggerData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/entities/triggers/noise.tres",
+      "class": "TriggerData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/equipment/equip_almond_water.tres",
+      "class": "EquipmentData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/equipment/equip_baton.tres",
+      "class": "EquipmentData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/equipment/equip_beacon.tres",
+      "class": "EquipmentData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/equipment/equip_crowbar.tres",
+      "class": "EquipmentData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/equipment/equip_flashlight.tres",
+      "class": "EquipmentData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_bathroom.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_battery.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_beacon.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_blackout.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_cache.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_cave_chart.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_checkpoint.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_diary.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_diver_notes.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_faceling.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_fire_door.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_footsteps.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_hum.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_insulation.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_lights.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_locked_room.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_medic.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_meg.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_moth_nest.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_ration.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_seabed_bones.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_seam.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_slanted_room.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_sleep.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_supply_inner.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_toy_room.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_warning_tracks.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_water_pipe.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/event_waves.tres",
+      "class": "EventData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/bag_follow.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/bag_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/bag_take.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/beacon_buy.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/beacon_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/blackout_learn.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/blackout_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/cache_force.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/cache_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/cache_pay.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/checkpoint_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/checkpoint_swap.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/diary_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/diary_read.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_bathroom_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_bathroom_read.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_cave_chart_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_cave_chart_read.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_diver_notes_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_diver_notes_read.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_fire_door_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_fire_door_read.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_seabed_bones_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_seabed_bones_read.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_slanted_room_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_slanted_room_read.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_toy_room_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_toy_room_read.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_warning_tracks_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_warning_tracks_read.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_waves_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/event_waves_read.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/face_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/face_trade.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/foot_call.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/foot_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/foot_wait.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/hum_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/hum_mark.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/inner_fight.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/inner_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/inner_take.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/insulation_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/insulation_read.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/lights_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/lights_note.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/lights_stare.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/med_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/med_open.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/meg_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/meg_listen.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/moth_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/moth_take.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/pipe_follow.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/pipe_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/pipe_strike.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/ration_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/ration_take.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/room_enter.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/room_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/seam_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/seam_map.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/sleep_leave.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/events/options/sleep_rest.tres",
+      "class": "EventOptionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/floors/entrances/entrance_0.tres",
+      "class": "FloorEntranceData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/floors/entrances/entrance_6.tres",
+      "class": "FloorEntranceData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/floors/entrances/entrance_7.tres",
+      "class": "FloorEntranceData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/floors/floor_level_0.tres",
+      "class": "FloorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/floors/floor_level_6.tres",
+      "class": "FloorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/floors/floor_level_7.tres",
+      "class": "FloorData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/game.tres",
+      "class": "GameData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/floor_level_0.tres",
+      "class": "MapGenerationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/floor_level_6.tres",
+      "class": "MapGenerationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/floor_level_7.tres",
+      "class": "MapGenerationData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/regions/house_region.tres",
+      "class": "MapRegionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/regions/ocean_region.tres",
+      "class": "MapRegionData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/rules/abyss_anchor.tres",
+      "class": "MapRuleData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/rules/abyss_intel.tres",
+      "class": "MapRuleData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/rules/abyss_salvage.tres",
+      "class": "MapRuleData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/rules/hound_intel.tres",
+      "class": "MapRuleData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/rules/limit_0.tres",
+      "class": "MapRuleData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/rules/limit_6.tres",
+      "class": "MapRuleData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/rules/limit_7.tres",
+      "class": "MapRuleData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/rules/occasional_bones.tres",
+      "class": "MapRuleData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/rules/occasional_waves.tres",
+      "class": "MapRuleData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/maps/rules/preferred_pacing.tres",
+      "class": "MapRuleData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/beacon.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/cache.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/calm.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/combat.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/elite.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/calm3.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/cards.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/equip_almond_water.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/equip_baton.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/equip_beacon.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/equip_crowbar.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/equip_flashlight.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/heal4.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/heal8.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/reward_salvage_supplies.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/reward_shelter_calm.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/reward_toy_cache.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/supply2.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/supply4.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/entries/tactics.tres",
+      "class": "RewardEntryData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/intel.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/medical.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/salvage_supplies.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/shelter_calm.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/supplies.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/tool.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/toy_cache.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/rewards/water.tres",
+      "class": "RewardTableData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/maintenance.tres",
+      "class": "ShopData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/meg_exchange.tres",
+      "class": "ShopData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/offers/maintenance_baton.tres",
+      "class": "ShopOfferData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/offers/maintenance_flashlight.tres",
+      "class": "ShopOfferData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/offers/maintenance_supply.tres",
+      "class": "ShopOfferData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/offers/meg_exchange_medical.tres",
+      "class": "ShopOfferData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/offers/meg_exchange_tactics.tres",
+      "class": "ShopOfferData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/offers/meg_exchange_water.tres",
+      "class": "ShopOfferData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/offers/wanderer_beacon.tres",
+      "class": "ShopOfferData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/offers/wanderer_calm.tres",
+      "class": "ShopOfferData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/offers/wanderer_crowbar.tres",
+      "class": "ShopOfferData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/shops/wanderer.tres",
+      "class": "ShopData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/statuses/bleed.tres",
+      "class": "StatusData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/statuses/braced.tres",
+      "class": "StatusData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/statuses/burn.tres",
+      "class": "StatusData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/statuses/enraged.tres",
+      "class": "StatusData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/statuses/focused.tres",
+      "class": "StatusData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/statuses/stun.tres",
+      "class": "StatusData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/statuses/vulnerable.tres",
+      "class": "StatusData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/statuses/weak.tres",
+      "class": "StatusData",
+      "authored_uid": null
+    },
+    {
+      "path": "data/ui/opening_story.tres",
+      "class": "OpeningStoryData",
+      "authored_uid": null
+    }
+  ],
+  "fonts": [
+    {
+      "path": "assets/ui/fonts/bahnschrift.ttf",
+      "names": {
+        "0": [
+          "© 2018 Microsoft Corporation. All rights reserved."
+        ],
+        "1": [
+          "Bahnschrift"
+        ],
+        "2": [
+          "Regular"
+        ],
+        "4": [
+          "Bahnschrift"
+        ],
+        "6": [
+          "Bahnschrift"
+        ],
+        "8": [
+          "Microsoft Corporation"
+        ],
+        "9": [
+          "Aaron Bell"
+        ],
+        "11": [
+          "http://www.microsoft.com/typography/fonts/"
+        ],
+        "13": [
+          "Microsoft supplied font. You may use this font to create, display, and print content as permitted by the license terms or terms of use, of the Microsoft product, service, or content in which this font was included. You may only (i) embed this font in content as permitted by the embedding restrictions included in this font; and (ii) temporarily download this font to a printer or other output device to help print content. Any other use is prohibited."
+        ],
+        "14": [
+          "https://docs.microsoft.com/typography/about"
+        ]
+      },
+      "mapped_codepoints": 896,
+      "sample_present": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "sample_missing": "后室切出生命压力补给行动点情报噪音探索结束回合→＋－？："
+    },
+    {
+      "path": "assets/ui/fonts/HARLOWSI.TTF",
+      "names": {
+        "0": [
+          "URW Software, Copyright 1993 by URW"
+        ],
+        "1": [
+          "Harlow Solid Italic"
+        ],
+        "2": [
+          "Italic"
+        ],
+        "4": [
+          "Harlow Solid Italic"
+        ],
+        "6": [
+          "HarlowSolid"
+        ]
+      },
+      "mapped_codepoints": 240,
+      "sample_present": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "sample_missing": "后室切出生命压力补给行动点情报噪音探索结束回合→＋－？："
+    },
+    {
+      "path": "assets/ui/fonts/Inkfree.ttf",
+      "names": {
+        "0": [
+          "Copyright © 2005-2018 Ascender Corporation. All rights reserved."
+        ],
+        "1": [
+          "Ink Free"
+        ],
+        "2": [
+          "Regular",
+          "Normal",
+          "obyčejné",
+          "normal",
+          "Standard",
+          "Κανονικά",
+          "Normaali",
+          "Normál",
+          "Normale",
+          "Standaard",
+          "Normalny",
+          "Обычный",
+          "Normálne",
+          "Navadno",
+          "Arrunta"
+        ],
+        "4": [
+          "Ink Free"
+        ],
+        "6": [
+          "InkFree"
+        ],
+        "8": [
+          "Monotype Imaging Inc."
+        ],
+        "9": [
+          "Steve Matteson"
+        ],
+        "11": [
+          "http://www.monotype.com"
+        ],
+        "13": [
+          "Microsoft supplied font. You may use this font to create, display, and print content as permitted by the license terms or terms of use, of the Microsoft product, service, or content in which this font was included. You may only (i) embed this font in content as permitted by the embedding restrictions included in this font; and (ii) temporarily download this font to a printer or other output device to help print content. Any other use is prohibited."
+        ]
+      },
+      "mapped_codepoints": 1050,
+      "sample_present": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "sample_missing": "后室切出生命压力补给行动点情报噪音探索结束回合→＋－？："
+    },
+    {
+      "path": "assets/ui/fonts/ShinsyokuMincho-Regular.ttf",
+      "names": {
+        "0": [
+          "Copyright © 2017 Adobe Systems Incorporated (http://www.adobe.com/), with Reserved Font Name 'Source'."
+        ],
+        "1": [
+          "ShinsyokuMincho"
+        ],
+        "2": [
+          "Regular"
+        ],
+        "4": [
+          "ShinsyokuMincho-Regular"
+        ],
+        "6": [
+          "ShinsyokuMincho-Regular"
+        ],
+        "8": [
+          "Adobe Systems Incorporated"
+        ],
+        "9": [
+          "Ryoko NISHIZUKA 西塚涼子 (kana & ideographs); Frank Grießhammer (Latin, Greek & Cyrillic); Wenlong ZHANG 张文龙 (bopomofo); Sandoll Communications 산돌커뮤니케이션, Soohyun PARK 박수현, Yejin WE 위예진 & Donghoon HAN 한동훈 (hangul elements, letters & syllables)"
+        ],
+        "11": [
+          "http://www.adobe.com/type/"
+        ],
+        "13": [
+          "This Font Software is licensed under the SIL Open Font License, Version 1.1. This Font Software is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the SIL Open Font License for the specific language, permissions and limitations governing your use of this Font Software."
+        ],
+        "14": [
+          "http://scripts.sil.org/OFL"
+        ]
+      },
+      "mapped_codepoints": 16691,
+      "sample_present": "后室切出生命力行点情噪音探索束回合0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ→＋－？：",
+      "sample_missing": "压补给动报结"
+    },
+    {
+      "path": "assets/ui/fonts/STXINWEI.TTF",
+      "names": {
+        "0": [
+          "Copyright (c) 1991-1998, Changzhou SinoType Technology Co., Ltd.  All rights reserved.",
+          "Ｃｏｐｙｒｉｇｈｔ（ｃ）１９９１－１９９８，Ｃｈａｎｇｚｈｏｕ　ＳｉｎｏＴｙｐｅ　Ｔｅｃｈｎｏｌｏｇｙ　Ｃｏ．，Ｌｔｄ．　Ａｌｌ　ｒｉｇｈｔｓ　ｒｅｓｅｒｖｅｄ．　常州华文印刷新技术有限公司　版权所有　"
+        ],
+        "1": [
+          "STXinwei",
+          "华文新魏"
+        ],
+        "2": [
+          "Regular"
+        ],
+        "4": [
+          "STXinwei",
+          "华文新魏"
+        ],
+        "6": [
+          "STXinwei",
+          "ＳＴＸｉｎｗｅｉ"
+        ]
+      },
+      "mapped_codepoints": 7819,
+      "sample_present": "后室切出生命压力补给行动点情报噪音探索结束回合0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ→＋－？：",
+      "sample_missing": ""
+    },
+    {
+      "path": "assets/ui/fonts/おそろしげ明朝.ttf",
+      "names": {
+        "0": [
+          "(c) Yattyann,2017-2024 Adobe (http://www.adobe.com/)."
+        ],
+        "1": [
+          "OsorosigeMincho",
+          "Ç®ÇªÇÎÇµÇ∞ñæí©",
+          "おそろしげ明朝"
+        ],
+        "2": [
+          "Black",
+          "Ç®ÇªÇÎÇµÇ∞ñæí©",
+          "おそろしげ明朝"
+        ],
+        "4": [
+          "OsorosigeMincho",
+          "Ç®ÇªÇÎÇµÇ∞ñæí©",
+          "おそろしげ明朝"
+        ],
+        "6": [
+          "OsorosigeMincho"
+        ]
+      },
+      "mapped_codepoints": 16728,
+      "sample_present": "后室切出生命力行点情噪音探索束回合0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ→＋－？：",
+      "sample_missing": "压补给动报结"
+    },
+    {
+      "path": "assets/ui_asset_pack/Font/Kenney Future Narrow.ttf",
+      "names": {
+        "0": [
+          "Copyright Kenney 2013“Kenney Future",
+          "Copyright Kenney 2013\n“Kenney Future"
+        ],
+        "1": [
+          "Kenney Future Narrow"
+        ],
+        "2": [
+          "Regular"
+        ],
+        "4": [
+          "Kenney Future Narrow Regular"
+        ],
+        "6": [
+          "Kenney-Future-Narrow"
+        ],
+        "8": [
+          "https://fontstruct.com"
+        ],
+        "9": [
+          "Kenney"
+        ],
+        "11": [
+          "https://fontstruct.com/fontstructions/show/904448/kenney-future-narrow"
+        ],
+        "13": [
+          "Creative Commons Attribution Share Alike"
+        ],
+        "14": [
+          "http://creativecommons.org/licenses/by-sa/3.0/"
+        ]
+      },
+      "mapped_codepoints": 214,
+      "sample_present": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "sample_missing": "后室切出生命压力补给行动点情报噪音探索结束回合→＋－？："
+    },
+    {
+      "path": "assets/ui_asset_pack/Font/Kenney Future.ttf",
+      "names": {
+        "0": [
+          "Copyright Kenney 2013"
+        ],
+        "1": [
+          "Kenney Future"
+        ],
+        "2": [
+          "Regular"
+        ],
+        "4": [
+          "Kenney Future Regular"
+        ],
+        "6": [
+          "Kenney-Future"
+        ],
+        "8": [
+          "https://fontstruct.com"
+        ],
+        "9": [
+          "Kenney"
+        ],
+        "11": [
+          "https://fontstruct.com/fontstructions/show/904375/kenney-future"
+        ],
+        "13": [
+          "Creative Commons Attribution Share Alike"
+        ],
+        "14": [
+          "http://creativecommons.org/licenses/by-sa/3.0/"
+        ]
+      },
+      "mapped_codepoints": 214,
+      "sample_present": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "sample_missing": "后室切出生命压力补给行动点情报噪音探索结束回合→＋－？："
+    }
+  ],
+  "audio": [
+    {
+      "path": "assets/audio/ambience/Beige_Nocturne_loop_L.ogg",
+      "bytes": 1102591,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/DamplyDry_loop1_L.ogg",
+      "bytes": 945781,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/Drea_Ambient_Loop_L.ogg",
+      "bytes": 1138166,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/grass_in_the_heights_loop_L.ogg",
+      "bytes": 2481738,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/hum_loop_L.ogg",
+      "bytes": 929043,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/Mormo_loop_L.ogg",
+      "bytes": 975995,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/Mushrooms_loop_L.ogg",
+      "bytes": 582214,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/NETosis_loop_L.ogg",
+      "bytes": 780919,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/not_from_here_loop_L.ogg",
+      "bytes": 978432,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/owner_of_my_dreams_loop_L.ogg",
+      "bytes": 1043412,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/Unusable_Eyelid_loop_L.ogg",
+      "bytes": 1154234,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/where_is_the_door_loop_L.ogg",
+      "bytes": 1907725,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/ambience/you_shouldn't_be_here_loop_L.ogg",
+      "bytes": 1687682,
+      "vendor": "Xiph.Org libVorbis I 20150105 (⛄⛄⛄⛄)",
+      "comments": [
+        "ENCODER=libsndfile",
+        "TITLE=Mormo",
+        "ARTIST=Crow Shade"
+      ]
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 1.wav",
+      "bytes": 446270,
+      "seconds": 2.529,
+      "channels": 2,
+      "rate": 44100,
+      "metadata_strings": []
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 2.wav",
+      "bytes": 464082,
+      "seconds": 2.63,
+      "channels": 2,
+      "rate": 44100,
+      "metadata_strings": []
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 3.wav",
+      "bytes": 496306,
+      "seconds": 2.812,
+      "channels": 2,
+      "rate": 44100,
+      "metadata_strings": []
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 4.wav",
+      "bytes": 640482,
+      "seconds": 3.63,
+      "channels": 2,
+      "rate": 44100,
+      "metadata_strings": []
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 5.wav",
+      "bytes": 666770,
+      "seconds": 3.779,
+      "channels": 2,
+      "rate": 44100,
+      "metadata_strings": []
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 6.wav",
+      "bytes": 351286,
+      "seconds": 1.99,
+      "channels": 2,
+      "rate": 44100,
+      "metadata_strings": []
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 7.wav",
+      "bytes": 304642,
+      "seconds": 1.726,
+      "channels": 2,
+      "rate": 44100,
+      "metadata_strings": []
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 8.wav",
+      "bytes": 1075542,
+      "seconds": 6.096,
+      "channels": 2,
+      "rate": 44100,
+      "metadata_strings": []
+    },
+    {
+      "path": "assets/audio/ui/card.ogg",
+      "bytes": 9433,
+      "vendor": "Xiph.Org libVorbis I 20120203 (Omnipresent)",
+      "comments": []
+    },
+    {
+      "path": "assets/audio/ui/click.ogg",
+      "bytes": 10945,
+      "vendor": "Xiph.Org libVorbis I 20120203 (Omnipresent)",
+      "comments": []
+    },
+    {
+      "path": "assets/audio/ui/confirm.ogg",
+      "bytes": 6119,
+      "vendor": "Xiph.Org libVorbis I 20120203 (Omnipresent)",
+      "comments": []
+    },
+    {
+      "path": "assets/audio/ui/hover.ogg",
+      "bytes": 7043,
+      "vendor": "Xiph.Org libVorbis I 20120203 (Omnipresent)",
+      "comments": []
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/click-a.ogg",
+      "bytes": 10945,
+      "vendor": "Xiph.Org libVorbis I 20120203 (Omnipresent)",
+      "comments": []
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/click-b.ogg",
+      "bytes": 6157,
+      "vendor": "Xiph.Org libVorbis I 20120203 (Omnipresent)",
+      "comments": []
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/switch-a.ogg",
+      "bytes": 9433,
+      "vendor": "Xiph.Org libVorbis I 20120203 (Omnipresent)",
+      "comments": []
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/switch-b.ogg",
+      "bytes": 10138,
+      "vendor": "Xiph.Org libVorbis I 20120203 (Omnipresent)",
+      "comments": []
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/tap-a.ogg",
+      "bytes": 7043,
+      "vendor": "Xiph.Org libVorbis I 20120203 (Omnipresent)",
+      "comments": []
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/tap-b.ogg",
+      "bytes": 6119,
+      "vendor": "Xiph.Org libVorbis I 20120203 (Omnipresent)",
+      "comments": []
+    }
+  ],
+  "license_files": [
+    "assets/ui_asset_pack/License.txt",
+    "assets/ref/backrooms_card_template_v1/README.md"
+  ],
+  "identical_files": [
+    [
+      "assets/defaults/art_flicker.png",
+      "assets/ref/backrooms_card_template_v1/assets/art_flicker.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_flicker.png"
+    ],
+    [
+      "assets/defaults/art_hallway.png",
+      "assets/cards/events/art_hallway.png",
+      "assets/ref/backrooms_card_template_v1/assets/art_hallway.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_hallway.png"
+    ],
+    [
+      "assets/defaults/icon_alert.png",
+      "assets/ref/backrooms_card_template_v1/assets/icon_alert.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_alert.png",
+      "assets/ui/icons/noise.png",
+      "assets/ui/icons/threat.png"
+    ],
+    [
+      "assets/defaults/icon_arrow.png",
+      "assets/ref/backrooms_card_template_v1/assets/icon_arrow.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_arrow.png",
+      "assets/ui/buttons/primary.png"
+    ],
+    [
+      "assets/defaults/icon_gear.png",
+      "assets/ref/backrooms_card_template_v1/assets/icon_gear.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_gear.png",
+      "assets/ui/icons/icon_gear.png"
+    ],
+    [
+      "assets/defaults/icon_search.png",
+      "assets/ref/backrooms_card_template_v1/assets/icon_search.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_search.png",
+      "assets/ui/icons/cognition.png",
+      "assets/ui/icons/search.png"
+    ],
+    [
+      "assets/defaults/icon_shield.png",
+      "assets/ref/backrooms_card_template_v1/assets/icon_shield.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_shield.png",
+      "assets/ui/icons/guard.png"
+    ],
+    [
+      "assets/defaults/icon_stack.png",
+      "assets/ref/backrooms_card_template_v1/assets/icon_stack.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_stack.png",
+      "assets/ui/icons/retain.png"
+    ],
+    [
+      "assets/entities/hound.png",
+      "assets/cards/entities/entity_hound.png",
+      "assets/ref/backrooms_card_template_v1/assets/实体-Hound.png"
+    ],
+    [
+      "assets/entities/smiler.png",
+      "assets/cards/entities/entity_smiler.png",
+      "assets/ref/backrooms_card_template_v1/assets/实体：笑魇.png"
+    ],
+    [
+      "assets/licenses/Kenney-UI-Pack.txt",
+      "assets/ui_asset_pack/License.txt"
+    ],
+    [
+      "assets/ref/.gdignore",
+      "assets/ui_asset_pack/.gdignore"
+    ],
+    [
+      "assets/audio/ui/card.ogg",
+      "assets/ui_asset_pack/Sounds/switch-a.ogg"
+    ],
+    [
+      "assets/audio/ui/click.ogg",
+      "assets/ui_asset_pack/Sounds/click-a.ogg"
+    ],
+    [
+      "assets/audio/ui/confirm.ogg",
+      "assets/ui_asset_pack/Sounds/tap-b.ogg"
+    ],
+    [
+      "assets/audio/ui/hover.ogg",
+      "assets/ui_asset_pack/Sounds/tap-a.ogg"
+    ],
+    [
+      "assets/backgrounds/level_0/background.png",
+      "assets/ref/backrooms_card_template_v1/assets/art_level0.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_level0.png"
+    ],
+    [
+      "assets/cards/events/art_listener.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_listener.png"
+    ],
+    [
+      "assets/cards/player/card_careful_observe.png",
+      "assets/cards/player/行动-仔细检查.png"
+    ],
+    [
+      "assets/cards/player/card_crowbar.png",
+      "assets/ref/backrooms_card_template_v1/assets/物品-撬棍.png"
+    ],
+    [
+      "assets/cards/player/card_cutout_rushed.png",
+      "assets/ref/backrooms_card_template_v1/assets/切出-仓促切出.png"
+    ],
+    [
+      "assets/cards/player/card_cutout_safe.png",
+      "assets/ref/backrooms_card_template_v1/assets/切出-安全切出.png"
+    ],
+    [
+      "assets/cards/player/card_extinguish.png",
+      "assets/cards/player/card_light.png",
+      "assets/ref/backrooms_card_template_v1/assets/art_flashlight.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_flashlight.png"
+    ],
+    [
+      "assets/cards/player/card_water.png",
+      "assets/ref/backrooms_card_template_v1/assets/物品-杏仁水.png"
+    ],
+    [
+      "assets/cards/player/行动-挣扎.png",
+      "assets/ref/backrooms_card_template_v1/assets/行动-挣扎.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/cards.example.json",
+      "assets/ref/backrooms_card_template_v1/godot_demo/data/cards.json"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/background_grunge.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/background_grunge.png",
+      "assets/ui/overlays/card_paper.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/blank_ui_overlay.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/blank_ui_overlay.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/cost_medallion.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/cost_medallion.png",
+      "assets/ui/icons/cost_medallion.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/frame_entity.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_entity.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/frame_entity_a.png",
+      "assets/ui/frames/entity.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/frame_event.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_event.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/frame_event_a.png",
+      "assets/ui/frames/event.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/frame_item.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_item.png",
+      "assets/ui/frames/equipment.png",
+      "assets/ui/frames/objective.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/frame_location.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_location.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/frame_location_a.png",
+      "assets/ui/frames/frame_location_a.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/frame_skill.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_skill.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/frame_skill_a.png",
+      "assets/ui/frames/player.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/icon_event_category.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_event_category.png",
+      "assets/ui/icons/icon_event_category.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/icon_flashlight.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_flashlight.png",
+      "assets/ui/icons/light.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/icon_heart.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_heart.png",
+      "assets/ui/icons/aahp.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/icon_item_category.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_item_category.png",
+      "assets/ui/icons/icon_item_category.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/icon_skill_category.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_skill_category.png",
+      "assets/ui/icons/icon_skill_category.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/icon_status_category.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_status_category.png",
+      "assets/ui/icons/icon_status_category.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/panel_description.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_description.png",
+      "assets/ui/frames/description_panel.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/panel_name.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_name.png",
+      "assets/ui/frames/name_panel.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/panel_stat.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_stat.png",
+      "assets/ui/frames/stat_panel.png"
+    ],
+    [
+      "assets/ref/backrooms_card_template_v1/assets/panel_type.png",
+      "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_type.png",
+      "assets/ui/frames/type_panel.png"
+    ],
+    [
+      "assets/ui/buttons/archive_hover.svg",
+      "assets/ui_asset_pack/Vector/Grey/button_rectangle_border.svg"
+    ],
+    [
+      "assets/ui/buttons/archive_normal.svg",
+      "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_flat.svg"
+    ],
+    [
+      "assets/ui/buttons/archive_pressed.svg",
+      "assets/ui_asset_pack/Vector/Grey/button_rectangle_flat.svg"
+    ],
+    [
+      "assets/ui/icons/navigation_arrow.svg",
+      "assets/ui_asset_pack/Vector/Grey/arrow_basic_e.svg"
+    ],
+    [
+      "assets/ui_asset_pack/Vector/Grey/check_round_grey.svg",
+      "assets/ui_asset_pack/Vector/Red/check_round_grey.svg"
+    ],
+    [
+      "assets/ui_asset_pack/Vector/Grey/check_square_grey.svg",
+      "assets/ui_asset_pack/Vector/Red/check_square_grey.svg"
+    ],
+    [
+      "assets/ui_asset_pack/Vector/Grey/slide_horizontal_grey_section.svg",
+      "assets/ui_asset_pack/Vector/Red/slide_horizontal_grey_section.svg"
+    ],
+    [
+      "assets/ui_asset_pack/Vector/Grey/slide_horizontal_grey_section_wide.svg",
+      "assets/ui_asset_pack/Vector/Red/slide_horizontal_grey_section_wide.svg"
+    ],
+    [
+      "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey.svg",
+      "assets/ui_asset_pack/Vector/Red/slide_vertical_grey.svg"
+    ],
+    [
+      "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey_section.svg",
+      "assets/ui_asset_pack/Vector/Red/slide_vertical_grey_section.svg"
+    ],
+    [
+      "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey_section_wide.svg",
+      "assets/ui_asset_pack/Vector/Red/slide_vertical_grey_section_wide.svg"
+    ],
+    [
+      "assets/ui_asset_pack/Vector/Grey/star_outline.svg",
+      "assets/ui_asset_pack/Vector/Red/star_outline.svg"
+    ],
+    [
+      "assets/ui_asset_pack/Vector/Grey/star_outline_depth.svg",
+      "assets/ui_asset_pack/Vector/Red/star_outline_depth.svg"
+    ]
+  ],
+  "inventory": [
+    {
+      "path": "assets/asset_manifest.json",
+      "bytes": 70591
+    },
+    {
+      "path": "assets/cards/default-cardcover.png",
+      "bytes": 4910459
+    },
+    {
+      "path": "assets/defaults/art_flicker.png",
+      "bytes": 501269
+    },
+    {
+      "path": "assets/defaults/art_hallway.png",
+      "bytes": 560447
+    },
+    {
+      "path": "assets/defaults/icon_alert.png",
+      "bytes": 4777
+    },
+    {
+      "path": "assets/defaults/icon_arrow.png",
+      "bytes": 4096
+    },
+    {
+      "path": "assets/defaults/icon_gear.png",
+      "bytes": 5583
+    },
+    {
+      "path": "assets/defaults/icon_search.png",
+      "bytes": 3874
+    },
+    {
+      "path": "assets/defaults/icon_shield.png",
+      "bytes": 5399
+    },
+    {
+      "path": "assets/defaults/icon_stack.png",
+      "bytes": 6310
+    },
+    {
+      "path": "assets/entities/hound.png",
+      "bytes": 2267631
+    },
+    {
+      "path": "assets/entities/smiler.png",
+      "bytes": 3368242
+    },
+    {
+      "path": "assets/licenses/Kenney-UI-Pack.txt",
+      "bytes": 565
+    },
+    {
+      "path": "assets/placeholders/background.svg",
+      "bytes": 273
+    },
+    {
+      "path": "assets/placeholders/card.svg",
+      "bytes": 282
+    },
+    {
+      "path": "assets/placeholders/frame.svg",
+      "bytes": 192
+    },
+    {
+      "path": "assets/placeholders/icon.svg",
+      "bytes": 166
+    },
+    {
+      "path": "assets/ref/.gdignore",
+      "bytes": 1
+    },
+    {
+      "path": "assets/ui_asset_pack/.gdignore",
+      "bytes": 1
+    },
+    {
+      "path": "assets/ui_asset_pack/License.txt",
+      "bytes": 565
+    },
+    {
+      "path": "assets/ui_asset_pack/Preview.png",
+      "bytes": 28908
+    },
+    {
+      "path": "assets/ui_asset_pack/Sample.png",
+      "bytes": 30629
+    },
+    {
+      "path": "assets/ui_asset_pack/Visit Kenney.url",
+      "bytes": 44
+    },
+    {
+      "path": "assets/ui_asset_pack/Visit Patreon.url",
+      "bytes": 54
+    },
+    {
+      "path": "assets/audio/ambience/Beige_Nocturne_loop_L.ogg",
+      "bytes": 1102591
+    },
+    {
+      "path": "assets/audio/ambience/DamplyDry_loop1_L.ogg",
+      "bytes": 945781
+    },
+    {
+      "path": "assets/audio/ambience/Drea_Ambient_Loop_L.ogg",
+      "bytes": 1138166
+    },
+    {
+      "path": "assets/audio/ambience/grass_in_the_heights_loop_L.ogg",
+      "bytes": 2481738
+    },
+    {
+      "path": "assets/audio/ambience/hum_loop_L.ogg",
+      "bytes": 929043
+    },
+    {
+      "path": "assets/audio/ambience/Mormo_loop_L.ogg",
+      "bytes": 975995
+    },
+    {
+      "path": "assets/audio/ambience/Mushrooms_loop_L.ogg",
+      "bytes": 582214
+    },
+    {
+      "path": "assets/audio/ambience/NETosis_loop_L.ogg",
+      "bytes": 780919
+    },
+    {
+      "path": "assets/audio/ambience/not_from_here_loop_L.ogg",
+      "bytes": 978432
+    },
+    {
+      "path": "assets/audio/ambience/owner_of_my_dreams_loop_L.ogg",
+      "bytes": 1043412
+    },
+    {
+      "path": "assets/audio/ambience/Unusable_Eyelid_loop_L.ogg",
+      "bytes": 1154234
+    },
+    {
+      "path": "assets/audio/ambience/where_is_the_door_loop_L.ogg",
+      "bytes": 1907725
+    },
+    {
+      "path": "assets/audio/ambience/you_shouldn't_be_here_loop_L.ogg",
+      "bytes": 1687682
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 1.wav",
+      "bytes": 446270
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 2.wav",
+      "bytes": 464082
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 3.wav",
+      "bytes": 496306
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 4.wav",
+      "bytes": 640482
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 5.wav",
+      "bytes": 666770
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 6.wav",
+      "bytes": 351286
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 7.wav",
+      "bytes": 304642
+    },
+    {
+      "path": "assets/audio/sfx/juanjo_sound - Backrooms Entity 8.wav",
+      "bytes": 1075542
+    },
+    {
+      "path": "assets/audio/ui/card.ogg",
+      "bytes": 9433
+    },
+    {
+      "path": "assets/audio/ui/click.ogg",
+      "bytes": 10945
+    },
+    {
+      "path": "assets/audio/ui/confirm.ogg",
+      "bytes": 6119
+    },
+    {
+      "path": "assets/audio/ui/hover.ogg",
+      "bytes": 7043
+    },
+    {
+      "path": "assets/backgrounds/level_0/background.png",
+      "bytes": 559295
+    },
+    {
+      "path": "assets/backgrounds/level_6/background.png",
+      "bytes": 3345319
+    },
+    {
+      "path": "assets/cards/entities/entity_clump.png",
+      "bytes": 1310247
+    },
+    {
+      "path": "assets/cards/entities/entity_crawler.png",
+      "bytes": 1238775
+    },
+    {
+      "path": "assets/cards/entities/entity_deathmoth.png",
+      "bytes": 1323358
+    },
+    {
+      "path": "assets/cards/entities/entity_dense_clump.png",
+      "bytes": 1268997
+    },
+    {
+      "path": "assets/cards/entities/entity_duller.png",
+      "bytes": 1142764
+    },
+    {
+      "path": "assets/cards/entities/entity_frenzied_wretch.png",
+      "bytes": 1270944
+    },
+    {
+      "path": "assets/cards/entities/entity_hound.png",
+      "bytes": 2267631
+    },
+    {
+      "path": "assets/cards/entities/entity_moth_matriarch.png",
+      "bytes": 1197423
+    },
+    {
+      "path": "assets/cards/entities/entity_skinstealer.png",
+      "bytes": 1154251
+    },
+    {
+      "path": "assets/cards/entities/entity_smiler.png",
+      "bytes": 3368242
+    },
+    {
+      "path": "assets/cards/entities/entity_wretch.png",
+      "bytes": 1211305
+    },
+    {
+      "path": "assets/cards/events/art_hallway.png",
+      "bytes": 560447
+    },
+    {
+      "path": "assets/cards/events/art_listener.png",
+      "bytes": 528352
+    },
+    {
+      "path": "assets/cards/events/event_battery.png",
+      "bytes": 542085
+    },
+    {
+      "path": "assets/cards/events/event_beacon.png",
+      "bytes": 502351
+    },
+    {
+      "path": "assets/cards/events/event_blackout.png",
+      "bytes": 393095
+    },
+    {
+      "path": "assets/cards/events/event_cache.png",
+      "bytes": 512994
+    },
+    {
+      "path": "assets/cards/events/event_checkpoint.png",
+      "bytes": 486567
+    },
+    {
+      "path": "assets/cards/events/event_diary.png",
+      "bytes": 495198
+    },
+    {
+      "path": "assets/cards/events/event_faceling.png",
+      "bytes": 494246
+    },
+    {
+      "path": "assets/cards/events/event_footsteps.png",
+      "bytes": 537928
+    },
+    {
+      "path": "assets/cards/events/event_hum.png",
+      "bytes": 515291
+    },
+    {
+      "path": "assets/cards/events/event_insulation.png",
+      "bytes": 551522
+    },
+    {
+      "path": "assets/cards/events/event_lights.png",
+      "bytes": 481431
+    },
+    {
+      "path": "assets/cards/events/event_locked_room.png",
+      "bytes": 502472
+    },
+    {
+      "path": "assets/cards/events/event_medic.png",
+      "bytes": 505015
+    },
+    {
+      "path": "assets/cards/events/event_meg.png",
+      "bytes": 516072
+    },
+    {
+      "path": "assets/cards/events/event_moth_nest.png",
+      "bytes": 542549
+    },
+    {
+      "path": "assets/cards/events/event_ration.png",
+      "bytes": 480275
+    },
+    {
+      "path": "assets/cards/events/event_seam.png",
+      "bytes": 523315
+    },
+    {
+      "path": "assets/cards/events/event_sleep.png",
+      "bytes": 448050
+    },
+    {
+      "path": "assets/cards/events/event_supply_inner.png",
+      "bytes": 538007
+    },
+    {
+      "path": "assets/cards/events/event_water_pipe.png",
+      "bytes": 468787
+    },
+    {
+      "path": "assets/cards/objectives/objective_level0_damp_wall.png",
+      "bytes": 4804048
+    },
+    {
+      "path": "assets/cards/objectives/objective_level0_wrong_corner.jpeg",
+      "bytes": 4831659
+    },
+    {
+      "path": "assets/cards/objectives/objective_level6_emergency_light.jpeg",
+      "bytes": 5764453
+    },
+    {
+      "path": "assets/cards/player/card_attack.png",
+      "bytes": 3771447
+    },
+    {
+      "path": "assets/cards/player/card_brace.png",
+      "bytes": 506210
+    },
+    {
+      "path": "assets/cards/player/card_burst.png",
+      "bytes": 476467
+    },
+    {
+      "path": "assets/cards/player/card_calm.png",
+      "bytes": 475405
+    },
+    {
+      "path": "assets/cards/player/card_careful_observe.png",
+      "bytes": 4531527
+    },
+    {
+      "path": "assets/cards/player/card_counter_strike.png",
+      "bytes": 459363
+    },
+    {
+      "path": "assets/cards/player/card_crowbar.png",
+      "bytes": 6435011
+    },
+    {
+      "path": "assets/cards/player/card_cutout_rushed.png",
+      "bytes": 5738408
+    },
+    {
+      "path": "assets/cards/player/card_cutout_safe.png",
+      "bytes": 5217426
+    },
+    {
+      "path": "assets/cards/player/card_defend.png",
+      "bytes": 3306097
+    },
+    {
+      "path": "assets/cards/player/card_disrupt.png",
+      "bytes": 477982
+    },
+    {
+      "path": "assets/cards/player/card_equipment_baton.png",
+      "bytes": 489682
+    },
+    {
+      "path": "assets/cards/player/card_expose.png",
+      "bytes": 434936
+    },
+    {
+      "path": "assets/cards/player/card_extinguish.png",
+      "bytes": 277009
+    },
+    {
+      "path": "assets/cards/player/card_feint.png",
+      "bytes": 473345
+    },
+    {
+      "path": "assets/cards/player/card_first_aid.png",
+      "bytes": 446528
+    },
+    {
+      "path": "assets/cards/player/card_focus.png",
+      "bytes": 471945
+    },
+    {
+      "path": "assets/cards/player/card_heavy_strike.png",
+      "bytes": 518003
+    },
+    {
+      "path": "assets/cards/player/card_intel_guard.png",
+      "bytes": 468845
+    },
+    {
+      "path": "assets/cards/player/card_light.png",
+      "bytes": 277009
+    },
+    {
+      "path": "assets/cards/player/card_light_bomb.png",
+      "bytes": 534797
+    },
+    {
+      "path": "assets/cards/player/card_observe.png",
+      "bytes": 4683120
+    },
+    {
+      "path": "assets/cards/player/card_plan.png",
+      "bytes": 492462
+    },
+    {
+      "path": "assets/cards/player/card_precision.png",
+      "bytes": 424374
+    },
+    {
+      "path": "assets/cards/player/card_pressure.png",
+      "bytes": 469601
+    },
+    {
+      "path": "assets/cards/player/card_quick_draw.png",
+      "bytes": 489867
+    },
+    {
+      "path": "assets/cards/player/card_quiet.png",
+      "bytes": 534830
+    },
+    {
+      "path": "assets/cards/player/card_risky.png",
+      "bytes": 519342
+    },
+    {
+      "path": "assets/cards/player/card_run.png",
+      "bytes": 4414915
+    },
+    {
+      "path": "assets/cards/player/card_signal.png",
+      "bytes": 461218
+    },
+    {
+      "path": "assets/cards/player/card_steady_guard.png",
+      "bytes": 480926
+    },
+    {
+      "path": "assets/cards/player/card_thermal.png",
+      "bytes": 456390
+    },
+    {
+      "path": "assets/cards/player/card_water.png",
+      "bytes": 291732
+    },
+    {
+      "path": "assets/cards/player/行动-仔细检查.png",
+      "bytes": 4531527
+    },
+    {
+      "path": "assets/cards/player/行动-挣扎.png",
+      "bytes": 5034610
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/cards.example.json",
+      "bytes": 2311
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/layout.json",
+      "bytes": 1487
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/LAYOUT_GUIDE.png",
+      "bytes": 9052
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/PREVIEW_5_CARDS.png",
+      "bytes": 1073647
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/README.md",
+      "bytes": 2456
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_flashlight.png",
+      "bytes": 277009
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_flicker.png",
+      "bytes": 501269
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_hallway.png",
+      "bytes": 560447
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_level0.png",
+      "bytes": 559295
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/background_grunge.png",
+      "bytes": 1191654
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/blank_ui_overlay.png",
+      "bytes": 769806
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/cost_medallion.png",
+      "bytes": 19004
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_entity.png",
+      "bytes": 541892
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_entity_a.png",
+      "bytes": 689776
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_event.png",
+      "bytes": 541960
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_event_a.png",
+      "bytes": 708832
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_item.png",
+      "bytes": 541929
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_location.png",
+      "bytes": 541939
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_location_a.png",
+      "bytes": 710465
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_skill.png",
+      "bytes": 541858
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_skill_a.png",
+      "bytes": 549764
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_alert.png",
+      "bytes": 4777
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_arrow.png",
+      "bytes": 4096
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_event_category.png",
+      "bytes": 7998
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_flashlight.png",
+      "bytes": 6312
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_gear.png",
+      "bytes": 5583
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_heart.png",
+      "bytes": 3752
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_item_category.png",
+      "bytes": 7234
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_search.png",
+      "bytes": 3874
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_shield.png",
+      "bytes": 5399
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_skill_category.png",
+      "bytes": 8056
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_stack.png",
+      "bytes": 6310
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_status_category.png",
+      "bytes": 6760
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_description.png",
+      "bytes": 194153
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_name.png",
+      "bytes": 103552
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_stat.png",
+      "bytes": 30861
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_type.png",
+      "bytes": 18764
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/切出-仓促切出.png",
+      "bytes": 5738408
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/切出-安全切出.png",
+      "bytes": 5217426
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/实体-Hound.png",
+      "bytes": 2267631
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/实体：笑魇.png",
+      "bytes": 3368242
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/物品-撬棍.png",
+      "bytes": 6435011
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/物品-杏仁水.png",
+      "bytes": 291732
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/行动-挣扎.png",
+      "bytes": 5034610
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/main.tscn",
+      "bytes": 290
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/project.godot",
+      "bytes": 436
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/flashlight.png",
+      "bytes": 1352537
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/flashlight_cost_0.png",
+      "bytes": 1354494
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/flicker.png",
+      "bytes": 1350736
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/level0.png",
+      "bytes": 1401685
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/listener.png",
+      "bytes": 1374655
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/stealth.png",
+      "bytes": 1400731
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_flashlight.png",
+      "bytes": 277009
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_flicker.png",
+      "bytes": 501269
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_hallway.png",
+      "bytes": 560447
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_level0.png",
+      "bytes": 559295
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_listener.png",
+      "bytes": 528352
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/background_grunge.png",
+      "bytes": 1191654
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/blank_ui_overlay.png",
+      "bytes": 769806
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/cost_medallion.png",
+      "bytes": 19004
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_entity.png",
+      "bytes": 541892
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_event.png",
+      "bytes": 541960
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_item.png",
+      "bytes": 541929
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_location.png",
+      "bytes": 541939
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_skill.png",
+      "bytes": 541858
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_alert.png",
+      "bytes": 4777
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_arrow.png",
+      "bytes": 4096
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_event_category.png",
+      "bytes": 7998
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_flashlight.png",
+      "bytes": 6312
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_gear.png",
+      "bytes": 5583
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_heart.png",
+      "bytes": 3752
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_item_category.png",
+      "bytes": 7234
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_search.png",
+      "bytes": 3874
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_shield.png",
+      "bytes": 5399
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_skill_category.png",
+      "bytes": 8056
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_stack.png",
+      "bytes": 6310
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_status_category.png",
+      "bytes": 6760
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_description.png",
+      "bytes": 194153
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_name.png",
+      "bytes": 103552
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_stat.png",
+      "bytes": 30861
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_type.png",
+      "bytes": 18764
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/data/cards.json",
+      "bytes": 2311
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/scripts/card_view.gd",
+      "bytes": 4201
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/scripts/main.gd",
+      "bytes": 2816
+    },
+    {
+      "path": "assets/ui/buttons/archive_hover.svg",
+      "bytes": 1010
+    },
+    {
+      "path": "assets/ui/buttons/archive_normal.svg",
+      "bytes": 1002
+    },
+    {
+      "path": "assets/ui/buttons/archive_pressed.svg",
+      "bytes": 854
+    },
+    {
+      "path": "assets/ui/buttons/primary.png",
+      "bytes": 4096
+    },
+    {
+      "path": "assets/ui/fonts/bahnschrift.ttf",
+      "bytes": 361564
+    },
+    {
+      "path": "assets/ui/fonts/HARLOWSI.TTF",
+      "bytes": 56596
+    },
+    {
+      "path": "assets/ui/fonts/Inkfree.ttf",
+      "bytes": 198972
+    },
+    {
+      "path": "assets/ui/fonts/ShinsyokuMincho-Regular.ttf",
+      "bytes": 16076324
+    },
+    {
+      "path": "assets/ui/fonts/STXINWEI.TTF",
+      "bytes": 4051204
+    },
+    {
+      "path": "assets/ui/fonts/おそろしげ明朝.ttf",
+      "bytes": 16573820
+    },
+    {
+      "path": "assets/ui/frames/description_panel.png",
+      "bytes": 194153
+    },
+    {
+      "path": "assets/ui/frames/entity.png",
+      "bytes": 689776
+    },
+    {
+      "path": "assets/ui/frames/equipment.png",
+      "bytes": 541929
+    },
+    {
+      "path": "assets/ui/frames/event.png",
+      "bytes": 708832
+    },
+    {
+      "path": "assets/ui/frames/frame_location_a.png",
+      "bytes": 710465
+    },
+    {
+      "path": "assets/ui/frames/name_panel.png",
+      "bytes": 103552
+    },
+    {
+      "path": "assets/ui/frames/objective.png",
+      "bytes": 541929
+    },
+    {
+      "path": "assets/ui/frames/player.png",
+      "bytes": 549764
+    },
+    {
+      "path": "assets/ui/frames/stat_panel.png",
+      "bytes": 30861
+    },
+    {
+      "path": "assets/ui/frames/type_panel.png",
+      "bytes": 18764
+    },
+    {
+      "path": "assets/ui/icons/aahp.png",
+      "bytes": 3752
+    },
+    {
+      "path": "assets/ui/icons/ap.png",
+      "bytes": 4231
+    },
+    {
+      "path": "assets/ui/icons/cognition.png",
+      "bytes": 3874
+    },
+    {
+      "path": "assets/ui/icons/cost_medallion.png",
+      "bytes": 19004
+    },
+    {
+      "path": "assets/ui/icons/guard.png",
+      "bytes": 5399
+    },
+    {
+      "path": "assets/ui/icons/hp.png",
+      "bytes": 3793
+    },
+    {
+      "path": "assets/ui/icons/icon_event_category.png",
+      "bytes": 7998
+    },
+    {
+      "path": "assets/ui/icons/icon_gear.png",
+      "bytes": 5583
+    },
+    {
+      "path": "assets/ui/icons/icon_item_category.png",
+      "bytes": 7234
+    },
+    {
+      "path": "assets/ui/icons/icon_skill_category.png",
+      "bytes": 8056
+    },
+    {
+      "path": "assets/ui/icons/icon_status_category.png",
+      "bytes": 6760
+    },
+    {
+      "path": "assets/ui/icons/light.png",
+      "bytes": 6312
+    },
+    {
+      "path": "assets/ui/icons/navigation_arrow.svg",
+      "bytes": 1355
+    },
+    {
+      "path": "assets/ui/icons/noise.png",
+      "bytes": 4777
+    },
+    {
+      "path": "assets/ui/icons/retain.png",
+      "bytes": 6310
+    },
+    {
+      "path": "assets/ui/icons/search.png",
+      "bytes": 3874
+    },
+    {
+      "path": "assets/ui/icons/stress.png",
+      "bytes": 6541
+    },
+    {
+      "path": "assets/ui/icons/thread.png",
+      "bytes": 6547
+    },
+    {
+      "path": "assets/ui/icons/threat.png",
+      "bytes": 4777
+    },
+    {
+      "path": "assets/ui/overlays/card_paper.png",
+      "bytes": 1191654
+    },
+    {
+      "path": "assets/ui_asset_pack/Font/Kenney Future Narrow.ttf",
+      "bytes": 34180
+    },
+    {
+      "path": "assets/ui_asset_pack/Font/Kenney Future.ttf",
+      "bytes": 34160
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/click-a.ogg",
+      "bytes": 10945
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/click-b.ogg",
+      "bytes": 6157
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/switch-a.ogg",
+      "bytes": 9433
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/switch-b.ogg",
+      "bytes": 10138
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/tap-a.ogg",
+      "bytes": 7043
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/tap-b.ogg",
+      "bytes": 6119
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_rectangle_depth_line.svg",
+      "bytes": 1890
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_rectangle_line.svg",
+      "bytes": 938
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_round_depth_line.svg",
+      "bytes": 2314
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_round_line.svg",
+      "bytes": 1331
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_square_depth_line.svg",
+      "bytes": 1795
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_square_line.svg",
+      "bytes": 898
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/divider.svg",
+      "bytes": 275
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/divider_edges.svg",
+      "bytes": 273
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_down_dark.svg",
+      "bytes": 355
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_down_light.svg",
+      "bytes": 355
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_down_outline.svg",
+      "bytes": 837
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_up_dark.svg",
+      "bytes": 376
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_up_light.svg",
+      "bytes": 376
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_up_outline.svg",
+      "bytes": 927
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_play_dark.svg",
+      "bytes": 420
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_play_light.svg",
+      "bytes": 420
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_play_outline.svg",
+      "bytes": 1003
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_repeat_dark.svg",
+      "bytes": 816
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_repeat_light.svg",
+      "bytes": 816
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_repeat_outline.svg",
+      "bytes": 2296
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_outline_rectangle.svg",
+      "bytes": 773
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_outline_square.svg",
+      "bytes": 763
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_rectangle.svg",
+      "bytes": 825
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_square.svg",
+      "bytes": 786
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_e.svg",
+      "bytes": 1355
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_e_small.svg",
+      "bytes": 1029
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_n.svg",
+      "bytes": 1458
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_n_small.svg",
+      "bytes": 1084
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_s.svg",
+      "bytes": 1432
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_s_small.svg",
+      "bytes": 1069
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_w.svg",
+      "bytes": 1401
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_w_small.svg",
+      "bytes": 1012
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_e.svg",
+      "bytes": 2480
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_e_small.svg",
+      "bytes": 1535
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_n.svg",
+      "bytes": 2598
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_n_small.svg",
+      "bytes": 1704
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_s.svg",
+      "bytes": 2472
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_s_small.svg",
+      "bytes": 1587
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_w.svg",
+      "bytes": 2557
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_w_small.svg",
+      "bytes": 1604
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_border.svg",
+      "bytes": 1010
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_border.svg",
+      "bytes": 2236
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_flat.svg",
+      "bytes": 1002
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_gloss.svg",
+      "bytes": 886
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_gradient.svg",
+      "bytes": 1316
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_line.svg",
+      "bytes": 2236
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_flat.svg",
+      "bytes": 854
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_gloss.svg",
+      "bytes": 738
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_gradient.svg",
+      "bytes": 1168
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_line.svg",
+      "bytes": 1010
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_border.svg",
+      "bytes": 2211
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_border.svg",
+      "bytes": 2991
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_flat.svg",
+      "bytes": 1772
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_gloss.svg",
+      "bytes": 1417
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_gradient.svg",
+      "bytes": 2063
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_line.svg",
+      "bytes": 2988
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_flat.svg",
+      "bytes": 1009
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_gloss.svg",
+      "bytes": 875
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_gradient.svg",
+      "bytes": 1476
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_line.svg",
+      "bytes": 1745
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_border.svg",
+      "bytes": 984
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_border.svg",
+      "bytes": 2121
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_flat.svg",
+      "bytes": 1872
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_gloss.svg",
+      "bytes": 837
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_gradient.svg",
+      "bytes": 1302
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_line.svg",
+      "bytes": 2121
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_flat.svg",
+      "bytes": 1207
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_gloss.svg",
+      "bytes": 1241
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_gradient.svg",
+      "bytes": 1992
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_line.svg",
+      "bytes": 984
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_color.svg",
+      "bytes": 985
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_grey.svg",
+      "bytes": 985
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_grey_circle.svg",
+      "bytes": 1659
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_round_circle.svg",
+      "bytes": 1661
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color.svg",
+      "bytes": 642
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color_checkmark.svg",
+      "bytes": 1610
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color_cross.svg",
+      "bytes": 1978
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color_square.svg",
+      "bytes": 875
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey.svg",
+      "bytes": 642
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey_checkmark.svg",
+      "bytes": 1610
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey_cross.svg",
+      "bytes": 1978
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey_square.svg",
+      "bytes": 875
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_checkmark.svg",
+      "bytes": 996
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_circle.svg",
+      "bytes": 740
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_cross.svg",
+      "bytes": 1403
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_checkmark.svg",
+      "bytes": 996
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_circle.svg",
+      "bytes": 748
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_cross.svg",
+      "bytes": 1403
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_square.svg",
+      "bytes": 352
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_square.svg",
+      "bytes": 352
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_hangle.svg",
+      "bytes": 1202
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_color.svg",
+      "bytes": 1094
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_color_section.svg",
+      "bytes": 924
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_color_section_wide.svg",
+      "bytes": 919
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_grey.svg",
+      "bytes": 1094
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_grey_section.svg",
+      "bytes": 924
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_grey_section_wide.svg",
+      "bytes": 918
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_color.svg",
+      "bytes": 1081
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_color_section.svg",
+      "bytes": 912
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_color_section_wide.svg",
+      "bytes": 910
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey.svg",
+      "bytes": 1081
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey_section.svg",
+      "bytes": 912
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey_section_wide.svg",
+      "bytes": 909
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/star.svg",
+      "bytes": 2465
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/star_outline.svg",
+      "bytes": 2717
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/star_outline_depth.svg",
+      "bytes": 1322
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_e.svg",
+      "bytes": 1355
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_e_small.svg",
+      "bytes": 1029
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_n.svg",
+      "bytes": 1458
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_n_small.svg",
+      "bytes": 1084
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_s.svg",
+      "bytes": 1432
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_s_small.svg",
+      "bytes": 1069
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_w.svg",
+      "bytes": 1401
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_w_small.svg",
+      "bytes": 1012
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_e.svg",
+      "bytes": 2480
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_e_small.svg",
+      "bytes": 1535
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_n.svg",
+      "bytes": 2598
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_n_small.svg",
+      "bytes": 1704
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_s.svg",
+      "bytes": 2472
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_s_small.svg",
+      "bytes": 1587
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_w.svg",
+      "bytes": 2557
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_w_small.svg",
+      "bytes": 1604
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_border.svg",
+      "bytes": 1100
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_border.svg",
+      "bytes": 2326
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_flat.svg",
+      "bytes": 1002
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_gloss.svg",
+      "bytes": 886
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_gradient.svg",
+      "bytes": 1316
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_line.svg",
+      "bytes": 2281
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_flat.svg",
+      "bytes": 854
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_gloss.svg",
+      "bytes": 738
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_gradient.svg",
+      "bytes": 1168
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_line.svg",
+      "bytes": 1055
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_border.svg",
+      "bytes": 2301
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_border.svg",
+      "bytes": 3078
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_flat.svg",
+      "bytes": 1772
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_gloss.svg",
+      "bytes": 1417
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_gradient.svg",
+      "bytes": 2063
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_line.svg",
+      "bytes": 3035
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_flat.svg",
+      "bytes": 1009
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_gloss.svg",
+      "bytes": 875
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_gradient.svg",
+      "bytes": 1476
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_line.svg",
+      "bytes": 1780
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_border.svg",
+      "bytes": 1074
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_border.svg",
+      "bytes": 2211
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_flat.svg",
+      "bytes": 1872
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_gloss.svg",
+      "bytes": 837
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_gradient.svg",
+      "bytes": 1301
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_line.svg",
+      "bytes": 2166
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_flat.svg",
+      "bytes": 1207
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_gloss.svg",
+      "bytes": 1241
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_gradient.svg",
+      "bytes": 1991
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_line.svg",
+      "bytes": 1029
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_color.svg",
+      "bytes": 985
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_grey.svg",
+      "bytes": 985
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_grey_circle.svg",
+      "bytes": 1659
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_round_circle.svg",
+      "bytes": 1661
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color.svg",
+      "bytes": 642
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color_checkmark.svg",
+      "bytes": 1610
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color_cross.svg",
+      "bytes": 1978
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color_square.svg",
+      "bytes": 875
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey.svg",
+      "bytes": 642
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey_checkmark.svg",
+      "bytes": 1610
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey_cross.svg",
+      "bytes": 1978
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey_square.svg",
+      "bytes": 875
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_checkmark.svg",
+      "bytes": 996
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_circle.svg",
+      "bytes": 740
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_cross.svg",
+      "bytes": 1403
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_checkmark.svg",
+      "bytes": 996
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_circle.svg",
+      "bytes": 748
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_cross.svg",
+      "bytes": 1403
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_square.svg",
+      "bytes": 352
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_square.svg",
+      "bytes": 352
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_hangle.svg",
+      "bytes": 1202
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_color.svg",
+      "bytes": 1094
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_color_section.svg",
+      "bytes": 924
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_color_section_wide.svg",
+      "bytes": 918
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_grey.svg",
+      "bytes": 1094
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_grey_section.svg",
+      "bytes": 924
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_grey_section_wide.svg",
+      "bytes": 918
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_color.svg",
+      "bytes": 1081
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_color_section.svg",
+      "bytes": 911
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_color_section_wide.svg",
+      "bytes": 909
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_grey.svg",
+      "bytes": 1081
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_grey_section.svg",
+      "bytes": 912
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_grey_section_wide.svg",
+      "bytes": 909
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/star.svg",
+      "bytes": 2465
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/star_outline.svg",
+      "bytes": 2717
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/star_outline_depth.svg",
+      "bytes": 1322
+    }
+  ]
+}

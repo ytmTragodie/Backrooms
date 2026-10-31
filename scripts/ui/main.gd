@@ -1,6 +1,7 @@
 class_name MainGameView
 extends Control
 ## 展示地图/节点/战斗阶段。只持有 UI 选择，所有收益都提交给 TurnManager。
+signal return_to_menu_requested
 @onready var manager: TurnManager = $TurnManager
 var _layout: VBoxContainer
 var _content: VBoxContainer
@@ -9,11 +10,12 @@ var _feedback: Label
 var _background: TextureRect
 var _rest_mode: int = 0
 var _audio: AssetAudio
+var _last_encounter: CombatState
+var _status_icons: HBoxContainer
 
 func _ready() -> void:
 	theme = GameUITheme.build()
-	_audio = AssetAudio.new()
-	add_child(_audio)
+	_audio = get_node("/root/GameAudio") as AssetAudio
 	_background = TextureRect.new()
 	_background.mouse_filter = MOUSE_FILTER_IGNORE
 	_background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -32,7 +34,13 @@ func _ready() -> void:
 	_layout = VBoxContainer.new()
 	_layout.add_theme_constant_override("separation", 10)
 	margin.add_child(_layout)
-	_status = GameUITheme.label(_layout, "", 18)
+	var status_row: HBoxContainer = HBoxContainer.new()
+	status_row.add_theme_constant_override("separation",20)
+	_layout.add_child(status_row)
+	_status = GameUITheme.label(status_row, "", 18)
+	_status_icons = HBoxContainer.new()
+	_status_icons.add_theme_constant_override("separation",15)
+	status_row.add_child(_status_icons)
 	var network: Button = Button.new()
 	network.text = "楼层网络"
 	network.size_flags_horizontal = SIZE_SHRINK_END
@@ -51,7 +59,11 @@ static func error_text(reason: StringName) -> String:
 
 func _show_result(result: ActionResult) -> void:
 	_feedback.text = result.message if result.success and not result.message.is_empty() else "操作完成" if result.success else "无法执行：" + error_text(result.failure_reason)
-	if result.success: _audio.cue(&"audio_cutout" if not result.flow.destination.is_empty() else &"audio_card_play" if result.combat.cards_played > 0 else &"audio_button_click")
+	if not result.success: return
+	if not result.flow.destination.is_empty(): _audio.cue(&"audio_cutout")
+	elif result.flow.claim_reward != null or not result.flow.rewards.is_empty(): _audio.cue(&"audio_reward")
+	elif result.player.hp_delta < 0: _audio.cue(&"audio_hit")
+	elif result.combat.cards_played > 0: _audio.cue(&"audio_card_play")
 
 func _button(parent: Node, text_value: String, command: GameCommand, error: StringName = &"") -> Button:
 	var button: Button = Button.new()
@@ -78,8 +90,19 @@ func refresh() -> void:
 		_content.remove_child(child)
 		child.queue_free()
 	_background.texture = AssetCatalog.texture(state.floor_state.definition.asset_id, &"background")
-	_audio.floor_changed(state.floor_state.floor_id)
-	_status.text = "%s　｜　生命 %d/%d　压力 %d　补给 %d　已知规律 %d" % [state.floor_state.definition.display_name, state.player.hp, state.player.max_hp, state.player.stress, state.player.supply, state.player.knowledge.rules.size()]
+	_audio.play_context(&"music_combat" if state.flow.phase == RunFlowState.Phase.COMBAT else StringName(String(state.floor_state.floor_id).replace("floor_","ambience_")))
+	if state.combat != null and state.combat != _last_encounter:
+		_audio.cue(StringName("audio_"+String(state.combat.enemies[0].definition.id).trim_prefix("entity_")))
+	_last_encounter = state.combat
+	_status.text = state.floor_state.definition.display_name
+	GameUITheme.apply_role(_status,&"display")
+	for child: Node in _status_icons.get_children():
+		_status_icons.remove_child(child)
+		child.queue_free()
+	GameUITheme.icon_label(_status_icons,&"icon_hp","生命 %d/%d" % [state.player.hp,state.player.max_hp])
+	GameUITheme.icon_label(_status_icons,&"icon_stress","压力 %d" % state.player.stress)
+	GameUITheme.icon_label(_status_icons,&"icon_supply","补给 %d" % state.player.supply)
+	GameUITheme.icon_label(_status_icons,&"icon_intel","已知规律 %d" % state.player.knowledge.rules.size())
 	match state.flow.phase:
 		RunFlowState.Phase.MAP: _map(state)
 		RunFlowState.Phase.COMBAT: _combat(state)
@@ -98,7 +121,8 @@ func _show_network() -> void:
 	view.present(manager.run_state,manager.game_data)
 
 func _heading(title: String, subtitle: String = "") -> void:
-	GameUITheme.label(_content, title, 25)
+	var heading: Label = GameUITheme.label(_content, title, 25)
+	GameUITheme.apply_role(heading,&"display")
 	if not subtitle.is_empty(): GameUITheme.label(_content, subtitle, 14, GameUITheme.GREEN)
 
 func _map(state: RunState) -> void:
@@ -118,13 +142,21 @@ func _equipment(state: RunState) -> void:
 
 func _combat(state: RunState) -> void:
 	var combat: CombatState = state.combat
-	_heading("遭遇战斗", "行动点 %d/%d　防护 %d　情报 %d　噪音 %d　战斗回合 %d　%s" % [combat.ap, combat.max_ap, combat.block, combat.intel, combat.noise, combat.turn_number, "光源已开启" if combat.light_active else "光源关闭"])
+	_heading("遭遇战斗")
+	var battle_stats: HBoxContainer = HBoxContainer.new()
+	battle_stats.add_theme_constant_override("separation",15)
+	_content.add_child(battle_stats)
+	GameUITheme.icon_label(battle_stats,&"icon_ap","行动点 %d/%d" % [combat.ap,combat.max_ap])
+	GameUITheme.icon_label(battle_stats,&"icon_guard","防护 %d" % combat.block)
+	GameUITheme.icon_label(battle_stats,&"icon_intel","情报 %d" % combat.intel)
+	GameUITheme.icon_label(battle_stats,&"icon_noise","噪音 %d" % combat.noise)
+	GameUITheme.label(battle_stats,"回合 %d · %s" % [combat.turn_number,"光源开启" if combat.light_active else "光源关闭"],14)
 	var row: HBoxContainer = HBoxContainer.new()
 	row.size_flags_vertical = SIZE_EXPAND_FILL
 	_content.add_child(row)
 	var enemy: EntityInstance = combat.enemies[0]
 	var art: TextureRect = GameUITheme.texture(row, enemy.definition.asset_id)
-	art.custom_minimum_size = Vector2(180, 120)
+	art.custom_minimum_size = Vector2(150, 100)
 	var information: VBoxContainer = VBoxContainer.new()
 	information.size_flags_horizontal = SIZE_EXPAND_FILL
 	row.add_child(information)
@@ -140,10 +172,12 @@ func _combat(state: RunState) -> void:
 	var statuses: PackedStringArray = []
 	for status: StatusInstance in enemy.statuses: statuses.append("%s%d（%d回合）" % [status.definition.display_name, status.stacks, status.remaining_turns])
 	var state_name: String = {&"WATCHING":"警戒",&"APPROACHING":"靠近",&"CHASING":"追逐",&"HIDDEN":"隐藏",&"AGITATED":"躁动",&"STAGGERED":"失衡",&"WITHDRAWN":"退去",&"DEFEATED":"击败"}.get(enemy.state,"活动")
-	GameUITheme.label(information, "实体状态：" + state_name + "　" + " / ".join(statuses), 13)
+	if statuses.is_empty(): GameUITheme.label(information,"实体状态："+state_name,13)
+	else: GameUITheme.icon_label(information,&"icon_status","实体状态："+state_name+"　"+" / ".join(statuses))
 	var player_statuses: PackedStringArray = []
 	for status: StatusInstance in combat.statuses: player_statuses.append("%s%d（%d回合）" % [status.definition.display_name,status.stacks,status.remaining_turns])
-	GameUITheme.label(information,"自身状态：" + (" / ".join(player_statuses) if not player_statuses.is_empty() else "无"),13,GameUITheme.GREEN)
+	if player_statuses.is_empty(): GameUITheme.label(information,"自身状态：无",13,GameUITheme.GREEN)
+	else: GameUITheme.icon_label(information,&"icon_status","自身状态："+" / ".join(player_statuses),GameUITheme.GREEN)
 	_equipment(state)
 	var hand_scroll: ScrollContainer = ScrollContainer.new()
 	hand_scroll.custom_minimum_size.y = 238
@@ -159,7 +193,7 @@ func _combat(state: RunState) -> void:
 		var view: PlayerCardView = PlayerCardView.new()
 		hand.add_child(view)
 		view.present(card, CombatSystem.card_error(command, state))
-		view.pressed.connect(manager.submit.bind(command))
+		view.pressed.connect(_play_card.bind(command))
 	var controls: HBoxContainer = HBoxContainer.new()
 	_content.add_child(controls)
 	GameUITheme.label(controls, "抽牌 %d　弃牌 %d　消耗 %d　" % [combat.deck.draw_pile.size(), combat.deck.discard_pile.size(), combat.deck.exhaust_pile.size()], 14)
@@ -167,11 +201,29 @@ func _combat(state: RunState) -> void:
 	var preview: EscapePreview = EscapeSystem.preview(state)
 	_button(controls, "撤离 · 1行动点 · 生命损失 %d–%d / 压力+%d" % [preview.damage_min, preview.damage_max, preview.stress_gain], _command(GameCommand.Kind.ESCAPE), &"" if preview.allowed else preview.reason)
 
+func _play_card(command: GameCommand) -> void:
+	var result: ActionResult = manager.submit(command)
+	if not result.success: return
+	for effect: EffectData in command.definition.effects:
+		match effect.effect_type:
+			EffectData.EffectType.DAMAGE: _audio.cue(&"audio_attack")
+			EffectData.EffectType.BLOCK: _audio.cue(&"audio_block")
+			EffectData.EffectType.DRAW: _audio.cue(&"audio_card_draw")
+			EffectData.EffectType.APPLY_STATUS: _audio.cue(&"audio_status")
+
 func _event(state: RunState) -> void:
 	var event: EventData = state.flow.active_event
 	_heading(event.display_name, "事件 · 选项结算，不使用战斗手牌")
 	if not event.actor_name.is_empty(): GameUITheme.label(_content,"%s · %s" % [event.actor_name,["未知关系","中立","友善","敌对"][event.relation]],14,GameUITheme.GREEN)
+	# 插画与文字并排，不把事件选项向屏幕下方推走。
+	var row: HBoxContainer = HBoxContainer.new()
+	_content.add_child(row)
+	var illustration: TextureRect = GameUITheme.texture(row,event.asset_id)
+	illustration.custom_minimum_size = Vector2(190,126)
 	var story: Label = GameUITheme.label(_content, event.description, 19)
+	_content.remove_child(story)
+	row.add_child(story)
+	story.size_flags_horizontal = SIZE_EXPAND_FILL
 	story.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for index: int in range(event.options.size()):
 		var option: EventOptionData = event.options[index]
@@ -237,7 +289,7 @@ func _summary(state: RunState) -> void:
 	_heading(state.flow.result_text)
 	GameUITheme.label(_content, "胜利 %d　撤离 %d　存活解决 %d\n出牌 %d　领取奖励 %d　切出 %d\n最终牌组 %d 张　随机种子 %d" % [state.metrics.victories, state.metrics.escapes, state.metrics.resolved_alive, state.metrics.cards_played, state.metrics.rewards_claimed, state.metrics.floor_transitions, state.player.deck.cards.size(), state.rng_seed], 20)
 	var button: Button = Button.new()
-	button.text = "开始新局"
+	button.text = "返回主菜单"
 	button.custom_minimum_size.y = 48
 	_content.add_child(button)
-	button.pressed.connect(func() -> void: manager.start_run(state.rng_seed + 1))
+	button.pressed.connect(func() -> void: return_to_menu_requested.emit())

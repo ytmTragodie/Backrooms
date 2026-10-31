@@ -37,12 +37,16 @@ func present(instance: CardInstance, error: StringName) -> void:
 	body_paper.size = Vector2(124, 61)
 	var primary: String = CardText.effects_text(card.definition.effects)
 	if card.definition.source == CardData.Source.EQUIPMENT and card.definition.equipment_cost > 0: primary += "\n装备次数 -%d" % card.definition.equipment_cost
-	var body: Label = GameUITheme.label(_face, primary, 12, GameUITheme.INK)
+	var body: Label = GameUITheme.label(_face, primary, 13, GameUITheme.INK)
 	body.position = Vector2(17, 138)
 	body.size = Vector2(116, 59)
 	body.clip_text = true
 	body.max_lines_visible = 3
+	var medallion: TextureRect = GameUITheme.texture(_face,&"ui_cost")
+	medallion.position = Vector2(3,1)
+	medallion.size = Vector2(35,35)
 	var cost: Label = GameUITheme.label(_face, str(card.definition.ap_cost), 20)
+	GameUITheme.apply_role(cost,&"numbers")
 	cost.position = Vector2(12, 4)
 	var keyword: Label = GameUITheme.label(_face, "情报 %d" % card.definition.intel_cost if card.definition.intel_cost > 0 else "消耗" if card.definition.exhaust else "保留" if card.definition.retain else "", 11)
 	keyword.position = Vector2(55, 9)

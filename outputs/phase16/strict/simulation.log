@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+[SIMULATION] {"cards_played":3747,"combat_end_turns":856,"deaths":23,"floor_transitions":422,"hand_samples_at_3_ap":1315,"mean_survivor_hp":27.8248587570621,"policy":"Deterministic greedy cards; full hidden-node information for route selection. Structural smoke test, not human difficulty or final balance.","rejected_policy_actions":0,"samples_with_no_legal_card":0,"seeds":200,"unfinished_after_400_commands":0,"wins":177}
+[TEST] PASS Phase 14 simulation: 14516 checks

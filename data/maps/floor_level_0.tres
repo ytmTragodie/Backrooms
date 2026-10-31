@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/maps/map_generation_data.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/maps/map_rule_data.gd" id="2"]
-[ext_resource type="Resource" path="res://data/phase15/limit_0.tres" id="3"]
-[ext_resource type="Resource" path="res://data/phase15/hound_intel.tres" id="4"]
+[ext_resource type="Resource" path="res://data/maps/rules/limit_0.tres" id="3"]
+[ext_resource type="Resource" path="res://data/maps/rules/hound_intel.tres" id="4"]
 
 [resource]
 script = ExtResource("1")

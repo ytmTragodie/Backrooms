@@ -1,0 +1,14 @@
+{
+  "source": "assets/ui_asset_pack",
+  "license": "assets/licenses/Kenney-UI-Pack.txt",
+  "copies": {
+    "Vector/Grey/button_rectangle_depth_flat.svg": "ui/buttons/archive_normal.svg",
+    "Vector/Grey/button_rectangle_border.svg": "ui/buttons/archive_hover.svg",
+    "Vector/Grey/button_rectangle_flat.svg": "ui/buttons/archive_pressed.svg",
+    "Vector/Grey/arrow_basic_e.svg": "ui/icons/navigation_arrow.svg",
+    "Sounds/click-a.ogg": "audio/ui/click.ogg",
+    "Sounds/tap-a.ogg": "audio/ui/hover.ogg",
+    "Sounds/switch-a.ogg": "audio/ui/card.ogg",
+    "Sounds/tap-b.ogg": "audio/ui/confirm.ogg"
+  }
+}

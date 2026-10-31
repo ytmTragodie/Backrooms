@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/events/event_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/events/event_option_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/events/options/event_slanted_room_read.tres" id="3"]
+[ext_resource type="Resource" path="res://data/events/options/event_slanted_room_leave.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = "event_slanted_room"
+display_name = "倾斜的客厅"
+description = "荧光灯下的地板看似倾斜，脚下的重力却很正常。门外是冰冷的海。"
+options = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4")])
+asset_id = "event_slanted_room"

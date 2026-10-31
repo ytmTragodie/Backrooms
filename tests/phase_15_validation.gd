@@ -104,7 +104,7 @@ func _conditions_and_failure() -> void:
 	check(not requirement.satisfied(run),"Unchosen event is not completed outcome")
 	var event_result: ActionResult = ActionResult.new()
 	run.flow.phase = RunFlowState.Phase.EVENT
-	run.flow.active_event = load("res://data/phase15/event_bathroom.tres") as EventData
+	run.flow.active_event = load("res://data/events/event_bathroom.tres") as EventData
 	var request: GameCommand = command(run,GameCommand.Kind.EVENT_CHOICE)
 	var planned: ActionResult = RuleResolver.plan(request,run,GAME)
 	check(planned.success and not requirement.satisfied(run),"Event outcome waits for commit")
@@ -186,7 +186,7 @@ func _revisit_level7() -> void:
 
 func _level7_behavior() -> void:
 	var run: RunState = state(27,&"floor_level_7")
-	var definition: EntityData = load("res://data/phase15/entity_thing7.tres") as EntityData
+	var definition: EntityData = load("res://data/entities/entity_thing7.tres") as EntityData
 	start_combat(run,definition)
 	check(run.combat.enemies[0].hp == 90 and run.combat.ap == 3,"Thing uses common HP and AP system")
 	var light: CardData = load("res://data/cards/card_light_bomb.tres") as CardData

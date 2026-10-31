@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="OpeningStoryData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/opening_story_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+lines = PackedStringArray("你记得，那条走廊本该有一扇门。", "灯管轻轻闪了一下。\n熟悉的脚步声，忽然少了一拍。", "脚下不再是原来的地面。", "潮湿的地毯。泛黄的墙。\n还有一直没有停下的嗡鸣。", "保持冷静。\n找到离开的路。")
+characters_per_second = 18.0
+hold_seconds = 1.6

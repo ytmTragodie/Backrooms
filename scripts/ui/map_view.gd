@@ -18,6 +18,11 @@ func present(state: RunState) -> void:
 		button.name = String(node.id)
 		var known: bool = node.visibility == MapNodeState.Visibility.REVEALED
 		button.text = NAMES[node.kind] if known else "？"
+		if known:
+			var icons: Array[StringName] = [&"icon_combat",&"icon_combat",&"icon_event",&"icon_hp",&"icon_reward",&"icon_shop",&"icon_navigation",&"icon_navigation"]
+			button.icon = AssetCatalog.texture(icons[node.kind],&"icon")
+			button.expand_icon = true
+			button.add_theme_constant_override("icon_max_width",16)
 		if node.kind == MapNodeState.Kind.ENTRY:
 			var entrance: FloorEntranceData = state.floor_state.definition.find_entrance(&"entry")
 			if entrance != null: button.text = entrance.display_name

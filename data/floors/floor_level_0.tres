@@ -32,11 +32,11 @@
 [ext_resource type="Resource" path="res://data/cutout/level0_seam.tres" id="30"]
 [ext_resource type="Resource" path="res://data/cutout/level0_marked.tres" id="31"]
 
-[ext_resource type="Resource" path="res://data/phase15/entrance_0.tres" id="p15_entrances_0"]
+[ext_resource type="Resource" path="res://data/floors/entrances/entrance_0.tres" id="p15_entrances_0"]
 
 [ext_resource type="Script" path="res://scripts/floors/floor_entrance_data.gd" id="p15_type_entrances"]
 
-[ext_resource type="Resource" path="res://data/phase15/event_warning_tracks.tres" id="p15_event_pool_0"]
+[ext_resource type="Resource" path="res://data/events/event_warning_tracks.tres" id="p15_event_pool_0"]
 
 [resource]
 script = ExtResource("1")

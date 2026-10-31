@@ -48,7 +48,7 @@ func _new_ui() -> void:
 	await capture(main,"phase15_network_known")
 	main.get_node("LevelNetwork").free()
 	var encounter: RunState = state(31,&"floor_level_7")
-	start_combat(encounter,load("res://data/phase15/entity_thing7.tres") as EntityData)
+	start_combat(encounter,load("res://data/entities/entity_thing7.tres") as EntityData)
 	main.manager.run_state = encounter
 	main.refresh()
 	await capture(main,"phase15_thing7_combat")

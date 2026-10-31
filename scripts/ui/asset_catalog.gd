@@ -7,6 +7,8 @@ const BACKGROUND_PLACEHOLDER: Texture2D = preload("res://assets/placeholders/bac
 const FRAME_PLACEHOLDER: Texture2D = preload("res://assets/placeholders/frame.svg")
 const ICON_PLACEHOLDER: Texture2D = preload("res://assets/placeholders/icon.svg")
 static var _entries: Dictionary = {}
+# 用户仅授权未知许可素材作本地开发预览；导出运行时不启用这些条目。
+static var development_preview: bool = OS.has_feature("editor")
 
 
 static func entries() -> Dictionary:
@@ -19,6 +21,7 @@ static func entries() -> Dictionary:
 static func path_for(id: StringName) -> String:
 	if _entries.is_empty(): entries()
 	var entry: Dictionary = _entries.get(String(id), {})
+	if entry.get("usage_scope", "project") == "development_preview" and not development_preview: return ""
 	var path: String = entry.get("path", "")
 	# 清单也不能成为加载本机任意文件的后门；缺失文件不交给 load 报错。
 	return path if path.begins_with("res://assets/") and not path.contains("..") else ""

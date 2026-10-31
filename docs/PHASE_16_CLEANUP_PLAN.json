@@ -1,0 +1,3890 @@
+{
+  "status": "AWAITING_USER_APPROVAL_NO_DELETION",
+  "proposed": [
+    {
+      "path": "assets/ui_asset_pack/.gdignore",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Font/Kenney Future Narrow.ttf",
+      "bytes": 34180,
+      "sha256": "17e182587a3264dcf9e5b17c055715d5597187546ce81925c64e9184c26d597f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Font/Kenney Future Narrow.ttf.import",
+      "bytes": 811,
+      "sha256": "f4f6c1fc552b09aae77a62f546959d2fb27e2e8718236c8d794fb452a645bb9d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Font/Kenney Future.ttf",
+      "bytes": 34160,
+      "sha256": "7a55b07f5968fac872648a7c5e959bd2b93e06f63153b585d56e4d5298ddff61",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Font/Kenney Future.ttf.import",
+      "bytes": 790,
+      "sha256": "daa87404f3ae69b6d84c22bf3af961dd89b2e99c414fddf03ac1cc0a818e2e2a",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/License.txt",
+      "bytes": 565,
+      "sha256": "69f7eaa5e05913b4d09cf5848f75390b5c3c9a409ef8555777803d9ca0c171fb",
+      "formal_duplicates": [
+        "assets/licenses/Kenney-UI-Pack.txt"
+      ],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Preview.png",
+      "bytes": 28908,
+      "sha256": "41bcfd350a94201ab741d219ae794fd3cfc917f4f4decbea1fbf188b6367f561",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Preview.png.import",
+      "bytes": 945,
+      "sha256": "ac10a35a3794a4c544e3f060035923d119ae90a69c83e28bdcc3a760ab980d40",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sample.png",
+      "bytes": 30629,
+      "sha256": "653c84028dd03c368ec35451689585756b6a1f2d9a5e37b4986eeca2637d4fb0",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sample.png.import",
+      "bytes": 943,
+      "sha256": "a239308b3c008414cb10cea4a13026d8093e1dc785e709581b5b3f8bef69aa48",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/click-a.ogg",
+      "bytes": 10945,
+      "sha256": "c5faa31bbf4a921332cdc9e7d7f7d930ca73fc8cc96e35ccc70ed2de975b26e5",
+      "formal_duplicates": [
+        "assets/audio/ui/click.ogg"
+      ],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/click-a.ogg.import",
+      "bytes": 405,
+      "sha256": "183367756ddeaaf66dedd9104c89abd74bd42c172ca74900e084ac4a7fad6954",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/click-b.ogg",
+      "bytes": 6157,
+      "sha256": "154991a6d9ac80ae193ebad3de7eacb642821e9e48d801d054aa9d2b1004e8c6",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/click-b.ogg.import",
+      "bytes": 405,
+      "sha256": "6c020798fc2d1556404f6a9203e7504fbf6a6e4473731427f155f85fd0413bd2",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/switch-a.ogg",
+      "bytes": 9433,
+      "sha256": "1a4c90fed704b4f4b36d58f481117cfac5cdc25279a9af97d4765b71ff21ed48",
+      "formal_duplicates": [
+        "assets/audio/ui/card.ogg"
+      ],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/switch-a.ogg.import",
+      "bytes": 408,
+      "sha256": "b0b13b6b5445281a91d07a8c8e9690a7d17167913c45298a04220d0d2669259f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/switch-b.ogg",
+      "bytes": 10138,
+      "sha256": "f2ed0b3b5ad7662f0900d3ca5db81f314af6bf4583802874d308656ba31de1ad",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/switch-b.ogg.import",
+      "bytes": 408,
+      "sha256": "bed0a02d4ad70d10f32266bca57daefc7e09cbd21571f5bd325c865b68dbdc04",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/tap-a.ogg",
+      "bytes": 7043,
+      "sha256": "f74c1334c0c1ab9ec69f3dd723611a8eb89a2630df6c3760dee3b09413370c83",
+      "formal_duplicates": [
+        "assets/audio/ui/hover.ogg"
+      ],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/tap-a.ogg.import",
+      "bytes": 399,
+      "sha256": "3731bc11f07b88d912f33c950e8405046b094f5c74d661d247073dbccaee303f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/tap-b.ogg",
+      "bytes": 6119,
+      "sha256": "736c70844cc7cfe87fc95d5e9711c186a593bbe8ccca04e3f4c9cfa7d4e42f3a",
+      "formal_duplicates": [
+        "assets/audio/ui/confirm.ogg"
+      ],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Sounds/tap-b.ogg.import",
+      "bytes": 399,
+      "sha256": "c37013f74b3f9ee1f33cf8bacd7b3ccf2a74fcfc6022527bae90a1950c5ec15c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_rectangle_depth_line.svg",
+      "bytes": 1890,
+      "sha256": "a7da42c273e5901207024966ef7e1d297fdf7e2b0b3ee616a6e247d1549a8e6d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_rectangle_depth_line.svg.import",
+      "bytes": 1116,
+      "sha256": "9ff54d7b4f01d7abbbd4150f9b0fefccb02feabcf05d38c7bc4b762b4b02ca6b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_rectangle_line.svg",
+      "bytes": 938,
+      "sha256": "8a780dabf6692cfadf1c33bf1ae153c69ed1eb2d942f69e2575e268f380fc68f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_rectangle_line.svg.import",
+      "bytes": 1098,
+      "sha256": "545533fadd6932389f781894643ee39abfe7583679cefd411d56f59b21a026e3",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_round_depth_line.svg",
+      "bytes": 2314,
+      "sha256": "e809fc9bab23bc12c805f3a4d6244829f3ce876148326c77b82257f3a56e77ab",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_round_depth_line.svg.import",
+      "bytes": 1103,
+      "sha256": "53e69f49d9a7af0be2850e731dc192c7362dce8dc83af53292c9d8ee35b446ad",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_round_line.svg",
+      "bytes": 1331,
+      "sha256": "a2bb261b5387ea9aea689d6f2f961b215411af44a98f573f01a860eaecd018b7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_round_line.svg.import",
+      "bytes": 1085,
+      "sha256": "277085311cdcb64d414894168d94fe11e3060f84a4ee4acf3ce1e7c66db939cc",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_square_depth_line.svg",
+      "bytes": 1795,
+      "sha256": "496692cdcb443371e8de05a265f4c62cb67f53ffba5d175bcd42790a5061ca16",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_square_depth_line.svg.import",
+      "bytes": 1107,
+      "sha256": "181ef8dda87cbdd83ac970c30b7c07ccbd33e4f62491ac1504bdfbc816c74faa",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_square_line.svg",
+      "bytes": 898,
+      "sha256": "508e7d96576b81da431b28c5b3dee99a44e0e5db193ba6bf7a167bc537d1d7c2",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/button_square_line.svg.import",
+      "bytes": 1089,
+      "sha256": "7b2704fed1373f0877a67bb5003cc9fcce9965dec3a3c990a2edc0b751a98579",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/divider.svg",
+      "bytes": 275,
+      "sha256": "dca40e4b538ed9bc2ac3674ab808f8c9b1666f12effba0aa913c2b00e5ccd1c7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/divider.svg.import",
+      "bytes": 1055,
+      "sha256": "9399f0448f18bc53f856cc2d564f6fed7b4ae62426b247c8f522e6534561c32c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/divider_edges.svg",
+      "bytes": 273,
+      "sha256": "fc90d2190bd01769446a8a783473f5f7de307fc9c4123f1d6c7b55cafb2025e2",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/divider_edges.svg.import",
+      "bytes": 1074,
+      "sha256": "0eebe6883ba98edcdedb24f04f9bc70704a6033b5629a98746cb243803079eca",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_down_dark.svg",
+      "bytes": 355,
+      "sha256": "432f6b33066720d356781c7e5b1b2cf7f24cca3f618d67e0be68c6b7dfe3d39c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_down_dark.svg.import",
+      "bytes": 1095,
+      "sha256": "e246abef8001e334c1746e923929d86829566a52480629ea80bf6376d077c2b6",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_down_light.svg",
+      "bytes": 355,
+      "sha256": "8acceef77b0009dd16044a64debccaf685d10a26d16b37e0bb931f43f4e89a41",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_down_light.svg.import",
+      "bytes": 1098,
+      "sha256": "6d9a9ff08c545fa5039f324e9020a0027c158d2f471a4e28e5f11ce2d012710a",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_down_outline.svg",
+      "bytes": 837,
+      "sha256": "508c380828a8ff26e9b2957568cee3ddf5a062573d259294f5fc991f779ea7a2",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_down_outline.svg.import",
+      "bytes": 1103,
+      "sha256": "1d4e3d3d758553e9c19355a9420d7f8ae6221c05eb8177fa0dfe5a440be66b9d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_up_dark.svg",
+      "bytes": 376,
+      "sha256": "9280549b0304908f777bb41cbbb841d302f6451f2dc36d14747bd90ca8f1c8db",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_up_dark.svg.import",
+      "bytes": 1089,
+      "sha256": "904f8d60da0c9ac2f7a479798803ba76b293c38a68ec675dc3963218a12365c3",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_up_light.svg",
+      "bytes": 376,
+      "sha256": "95ecf24f8ef8761080e9edf1da89b953a18e59c90dc8d9533d165d9415ae9929",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_up_light.svg.import",
+      "bytes": 1092,
+      "sha256": "fd2c9bb2017a1a87a8b77303f1feadc670095035e5ff01a0e67b509aee391ad8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_up_outline.svg",
+      "bytes": 927,
+      "sha256": "552173ddc5c782e74f0cc78f00c1ca1582c26a8c18c315a7d0a0672641e4c50f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_arrow_up_outline.svg.import",
+      "bytes": 1098,
+      "sha256": "8085cc172563fcad329d066e26003d51b58847d5eeb9cab87a354aa68b0fa191",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_play_dark.svg",
+      "bytes": 420,
+      "sha256": "d12092da51a7bbee48e7e34f81515edba0258438936bc17b0b8d3fc0a391c8c9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_play_dark.svg.import",
+      "bytes": 1077,
+      "sha256": "02acf006141c8eedca9549b5609721671f05b1eda2bac7fa7a3d3e1c8f04a4e0",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_play_light.svg",
+      "bytes": 420,
+      "sha256": "a22d50c1b783e79f1bd29dd4b1f98d41b1b24ccbcc3642b28e0c82ae5623b18d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_play_light.svg.import",
+      "bytes": 1079,
+      "sha256": "73be7b53885ad9e9450124cb106c7aa2db6978fd2dba08a0848edc77b1c9b23f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_play_outline.svg",
+      "bytes": 1003,
+      "sha256": "30f878a6e586fd5318fe4e0ec8b73188bf9d5c67f2166595a7978d7d52c66312",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_play_outline.svg.import",
+      "bytes": 1086,
+      "sha256": "5a63c8a7b0c34d06656c5665f1ff3bad1e5b9d838005b9fdc5e98cfdf5da9ee9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_repeat_dark.svg",
+      "bytes": 816,
+      "sha256": "934905d993e09ef7cd5dedbe8b6353ead04cf6214325f1cbb82a8521fbd8858f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_repeat_dark.svg.import",
+      "bytes": 1082,
+      "sha256": "4abe8ec00a6f5e8c1c7396b8bd9ac8f0f20380e896bba8b745affce9bd12c13e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_repeat_light.svg",
+      "bytes": 816,
+      "sha256": "7301bc9705160885eb9efeb32e4b9b32d9cca51c0c3251c3938a2c8de3c4814d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_repeat_light.svg.import",
+      "bytes": 1086,
+      "sha256": "2618e2650d592de2388290033f95619e02d55bdbdfad02053e9a6f8f8d8d41e1",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_repeat_outline.svg",
+      "bytes": 2296,
+      "sha256": "835d81812454d266b814d22c427ee53dc3f61b65944f6be1c67afa7885313bb5",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/icon_repeat_outline.svg.import",
+      "bytes": 1092,
+      "sha256": "10823925afea81daf61527b54e8f614140c0c8867a3c74b64d0f414752b349ce",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_outline_rectangle.svg",
+      "bytes": 773,
+      "sha256": "e4dc7cdeb451c257095aa395106ee202b5649da981756d3148bd46aa99d18a60",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_outline_rectangle.svg.import",
+      "bytes": 1104,
+      "sha256": "2b5ce04cc3fb92e5fcd107d96682cc6b37a260925a3b14ae50ebaae015e9ead2",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_outline_square.svg",
+      "bytes": 763,
+      "sha256": "baf9f0124c7206481836b11cba80b3dffc35e92faf72fef0f3d2bb1df30c64a7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_outline_square.svg.import",
+      "bytes": 1095,
+      "sha256": "89f5935f4a61a2afbe3726824ddc253a4234124503d2ccc3f1ef91be870b8ad2",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_rectangle.svg",
+      "bytes": 825,
+      "sha256": "6e9e49a9de95e010c0b47f8ba4dbefe28266e412546baa333d69a045c3498a51",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_rectangle.svg.import",
+      "bytes": 1080,
+      "sha256": "2f0dea9b05a63526620a87affe5699f3b396b89eb89939a7744ea2bec64ea1e5",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_square.svg",
+      "bytes": 786,
+      "sha256": "ba27afcddc8685a2f7caeb388a3d5f1e0929741985974b7b24ebf71a61c972df",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Extra/input_square.svg.import",
+      "bytes": 1071,
+      "sha256": "d81552d8996f4bc1b9efc2f5771bd6224eeef5a166df391f6821cf9f477d6c50",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_e.svg",
+      "bytes": 1355,
+      "sha256": "a89b37d8cef8f70c42ce52ef5cc328f019cf2b2143bf0e836be13c7eda956016",
+      "formal_duplicates": [
+        "assets/ui/icons/navigation_arrow.svg"
+      ],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_e.svg.import",
+      "bytes": 1072,
+      "sha256": "bef66eb5400314bbcc9e953e004491e905a93e4b03b89e7f9f1308643252c673",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_e_small.svg",
+      "bytes": 1029,
+      "sha256": "15a9e03e9cd4c1d2081401942f8b1c60f8f29317745ef2314f5378b7f399c7b3",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_e_small.svg.import",
+      "bytes": 1091,
+      "sha256": "0181691b3ce56b579bc2dd362ce60702bfaadb9e50a3ac15aca9cd13aadd37f8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_n.svg",
+      "bytes": 1458,
+      "sha256": "461094ec7255695f1a75f346a0f83b69370aafdfad3d63de5196a3d0c3435bc3",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_n.svg.import",
+      "bytes": 1073,
+      "sha256": "f114e259327bb50ef86c2f62d1ed2b11b4929a568b69ef94b1330df76b98ee10",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_n_small.svg",
+      "bytes": 1084,
+      "sha256": "1e2dc06588c45e360ce542f233b9dbaf3351a0153cbd6ab42d1f524a4a9cf9f7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_n_small.svg.import",
+      "bytes": 1091,
+      "sha256": "8059aa3b895b3dd3112533697cef23643b489a2962dc3d44fbe56da7a8bec1db",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_s.svg",
+      "bytes": 1432,
+      "sha256": "00373520111403dae00c09b89395e677b8f3bd5dd6a651091cd4967c9784de7c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_s.svg.import",
+      "bytes": 1073,
+      "sha256": "9cbb51da942450b9a1d3906f7430c82d01c89540cee68e41453789bba0d7ff19",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_s_small.svg",
+      "bytes": 1069,
+      "sha256": "7b8e0c37a808f43a32e9d61185f14bb7206f3b0305df94a6fd10001563bd05bf",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_s_small.svg.import",
+      "bytes": 1091,
+      "sha256": "a24169a376c282a18cf201d23e88e62eccf0df52db3975955f26203460282103",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_w.svg",
+      "bytes": 1401,
+      "sha256": "67277a46d498a93b90a30119e576f6bec6d641b8cbe5d1065c4df5707c48dcbe",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_w.svg.import",
+      "bytes": 1072,
+      "sha256": "dff68a2aeb72a40b83ea2ee79c5d4b2ae2f7705a3e2ebb677fa7ad6d502dd3a8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_w_small.svg",
+      "bytes": 1012,
+      "sha256": "41fb435042a00775885c51a26c1796d62de9119b9dd76a55b088aa8d9b167aad",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_basic_w_small.svg.import",
+      "bytes": 1091,
+      "sha256": "ec996b1cc47838cb91fe4572c8cd1db11b2d9f7c0589600a5403a7bc431e1753",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_e.svg",
+      "bytes": 2480,
+      "sha256": "ecca26f96892d8844564fd4d122a81d6a65b3c52a1e75e8cb0a90b546dd7f85b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_e.svg.import",
+      "bytes": 1088,
+      "sha256": "bf25191d98db53fc7d198c819abe38592ab98cc65a9f70e451264d0b23d4ddc5",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_e_small.svg",
+      "bytes": 1535,
+      "sha256": "dfe814a39ceb6180ada5a859c5ae08f0e848245e0a1f35aef8d861d8448a4903",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_e_small.svg.import",
+      "bytes": 1105,
+      "sha256": "edaafca8d5643c7126637c3c04be58ed70018e4105e3ab29243c83df93565170",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_n.svg",
+      "bytes": 2598,
+      "sha256": "0dd5c725668a53822297013984e8b525208bd9a628e835cdbeadca1a7942609d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_n.svg.import",
+      "bytes": 1088,
+      "sha256": "8739f71d1738cfd63679e604ad9d9a55956dd77b84b673c9888173245d800fa1",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_n_small.svg",
+      "bytes": 1704,
+      "sha256": "c3c132d2bce1571ddb9b6660446cfabfe854a6acb214022487d368067b36dad4",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_n_small.svg.import",
+      "bytes": 1106,
+      "sha256": "b9093e17da3bed38a98b0d11bfac5bab6bc69d9872b3eca59e053872823aee16",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_s.svg",
+      "bytes": 2472,
+      "sha256": "0bf80652aaf6e485a41c292df7c2ec9119e8daa387966a35de573fa3cde593f0",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_s.svg.import",
+      "bytes": 1087,
+      "sha256": "698c0788086a9892bc5f1e4dba7554b775d7589c44eb7bda5bd20b140f2d4985",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_s_small.svg",
+      "bytes": 1587,
+      "sha256": "b58df051cd06341811bda338d9de5033b569aea7d96e80f493177296a09bb1a8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_s_small.svg.import",
+      "bytes": 1106,
+      "sha256": "54cfa19b9333095118c2baca1dd9117f5e04884dfba22663e6205299a3166b5b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_w.svg",
+      "bytes": 2557,
+      "sha256": "05d580692d3b05d66070da7fa1da28ac20041f820a0831f5467078e32d9081da",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_w.svg.import",
+      "bytes": 1088,
+      "sha256": "423bb6890833376c481e3773a9ed23132c072c35f8d422c0c95b3eca8f6425b3",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_w_small.svg",
+      "bytes": 1604,
+      "sha256": "689427fc95406fe2bffe1d237db45a805cebe76c7e55b28c20dd8ccc53960007",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/arrow_decorative_w_small.svg.import",
+      "bytes": 1105,
+      "sha256": "1d87ac5004d0cd196fdda460f64f764eefd691def6e4305f26bd8e162f9712c1",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_border.svg",
+      "bytes": 1010,
+      "sha256": "2e027b7631d7fb306381d49aaf7e068f0c38f0b4e58d94f7c17a6bb888b33734",
+      "formal_duplicates": [
+        "assets/ui/buttons/archive_hover.svg"
+      ],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_border.svg.import",
+      "bytes": 1102,
+      "sha256": "676a833092a8050061972a697abbef22c2d63bd37bfbb623d3f585850ba4bad8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_border.svg",
+      "bytes": 2236,
+      "sha256": "709965b2fa42476b8dadf41a1849eec4e48a8657fd05d5b91da14c39e91862e7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_border.svg.import",
+      "bytes": 1121,
+      "sha256": "e9bd12218af5070ac2e10f364471c844d976335485d76a3062af985925739b73",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_flat.svg",
+      "bytes": 1002,
+      "sha256": "be71c445beb6968604a317d04616925b77c6bece00b9bba9746f4dbece3ba200",
+      "formal_duplicates": [
+        "assets/ui/buttons/archive_normal.svg"
+      ],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_flat.svg.import",
+      "bytes": 1115,
+      "sha256": "19868f87818e1781db856acdedd57a036b0d3bc0fd197ee172fdc0cea49fc3e2",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_gloss.svg",
+      "bytes": 886,
+      "sha256": "f5bb5213c61a529e3016dbed7a95398e0e92150b104e8e162eae522e4d1f9497",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_gloss.svg.import",
+      "bytes": 1118,
+      "sha256": "901d7d8cca074a82457d5f6dbbe43a3d00ea710a27acc793dce6bbbf13de0d44",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_gradient.svg",
+      "bytes": 1316,
+      "sha256": "3f45506f4eb1763b9e94c7ba6d59eb18d9e2004561c1ccbcd94f736cb7342c71",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_gradient.svg.import",
+      "bytes": 1127,
+      "sha256": "9b2d5fd542b3037666de0f076cca15428fb683648caece90f6e44189a5db972a",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_line.svg",
+      "bytes": 2236,
+      "sha256": "acbecaf27f90e4e38af7a1473fc1ee5e7f7f721cdbbbe037382eab0500ade2bd",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_depth_line.svg.import",
+      "bytes": 1115,
+      "sha256": "9adb23864ddb6cc563725e0778e8807852db2ffc81d03f61f7e958037d998fc9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_flat.svg",
+      "bytes": 854,
+      "sha256": "48bf9cae58d01b3ee3edd4d43cf7fefc19f82e319c05c17e3da77ee8ffbd06f3",
+      "formal_duplicates": [
+        "assets/ui/buttons/archive_pressed.svg"
+      ],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_flat.svg.import",
+      "bytes": 1097,
+      "sha256": "19fe42450863c552e601307be2490f3602f60ac343d271c04b37f46b7cb185df",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_gloss.svg",
+      "bytes": 738,
+      "sha256": "80e42812de460b4048d0bd8bc08e9346c593db7186bc7731d5ae051ce39dda10",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_gloss.svg.import",
+      "bytes": 1100,
+      "sha256": "f5adc1cee6e444e065477e43acadaf58a3d4b5616a38cca38e4ca6ce18cb79fb",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_gradient.svg",
+      "bytes": 1168,
+      "sha256": "7198746a3fae5f08ff22cbc5e5e9deefbdb39cd83a706c24679af84efd5b6e0f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_gradient.svg.import",
+      "bytes": 1109,
+      "sha256": "9d9888c205c08ee1bd681f74ea06a09affc1f611da78428b3f46f4329bb68326",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_line.svg",
+      "bytes": 1010,
+      "sha256": "bf95ab68c31ad7f71db21740b6c1039a14db3e1bff180a0f38a9a9a6a8fbc0d8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_rectangle_line.svg.import",
+      "bytes": 1097,
+      "sha256": "dcc6387a2353c4232ca04c41bf25bd60126361783342b62bd6042ad6fbd1e953",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_border.svg",
+      "bytes": 2211,
+      "sha256": "05413cb684d02084879aee6adfe780b53af95a47afa6b8e6fc5f31f809a5f26e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_border.svg.import",
+      "bytes": 1090,
+      "sha256": "797ce9804d91e8f0ad0407cf2d5fa1c6d315476f42869729c93ff8ae255e5471",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_border.svg",
+      "bytes": 2991,
+      "sha256": "4c8bed3114aca1dbe642e889f0b716a49cdbb32d2073aa5485c966a2496cdac7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_border.svg.import",
+      "bytes": 1109,
+      "sha256": "7b586cb205ba8d61eb8482c8fa6ad1831e6ec6860d613d0cc6bc1f25887906d8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_flat.svg",
+      "bytes": 1772,
+      "sha256": "af1cc483e60fb1f610e15c3faeb92c2b56492a80fdf9c326017d1d9a310793d5",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_flat.svg.import",
+      "bytes": 1103,
+      "sha256": "bc755bac8394ce3a76b9696310b97b23c7cdf9ccd69f504937026721525aefd3",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_gloss.svg",
+      "bytes": 1417,
+      "sha256": "54c0515732904c911a9cab1591d857b8e0fa07418005ad1df5909b026d4b8cd7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_gloss.svg.import",
+      "bytes": 1105,
+      "sha256": "8766012b20de678f245c8f454b56086bc54e3860b0353f6788d9dfa7feb6ec59",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_gradient.svg",
+      "bytes": 2063,
+      "sha256": "5f833e3923d3218c8038790bb59b3f758d1c206bd60d78a3859896f0b34cfcd5",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_gradient.svg.import",
+      "bytes": 1115,
+      "sha256": "d8aadbb46c89cd46af7a86567228a47f3e2c87ece81e3a9da0b3856186683bdb",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_line.svg",
+      "bytes": 2988,
+      "sha256": "44273ecf28d1562dd26ccf1698978ce6728d276da755408e1b229d2dfa43d7d7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_depth_line.svg.import",
+      "bytes": 1103,
+      "sha256": "ed67056e9a92abff80dc1fa8d9bb12380d01779a0dc31fc8ed316d6a5b0623d2",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_flat.svg",
+      "bytes": 1009,
+      "sha256": "e7c486fa67fa4fa3d750fbba3a0f4b08e480cc810172b614cd19212d958286da",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_flat.svg.import",
+      "bytes": 1084,
+      "sha256": "90b47d8bde4ea96bbaf1f5c4a73d73e9c3af62cc918100ad041afc0051fd03a4",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_gloss.svg",
+      "bytes": 875,
+      "sha256": "af835ed9b1cbc9e74e5c11f605736d8ef2ca3cbc66ff420555ec90b55b958a1b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_gloss.svg.import",
+      "bytes": 1088,
+      "sha256": "37d31586a4ebe0959d7782b7ed846b95f1689b14a60ea50cad6022aa05e69a33",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_gradient.svg",
+      "bytes": 1476,
+      "sha256": "4c9ad1a95967504ac8a78da94fd9d75662cec3e3dafabaa296a6345316491b64",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_gradient.svg.import",
+      "bytes": 1097,
+      "sha256": "8a4ff860159b8108b34e4fe1faa57f15113a094658b5569fc906ccfc71d4a86d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_line.svg",
+      "bytes": 1745,
+      "sha256": "a221346e554035d6e82f01dcde99cdded8c8514da45cfc127ff94158acf58b44",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_round_line.svg.import",
+      "bytes": 1085,
+      "sha256": "70ffd8ff63d29ae3ca7a9142619356ed0d61dc5b53390ded27f48cc990d0b193",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_border.svg",
+      "bytes": 984,
+      "sha256": "7decb4d5f5c273342f70b1f98c42615259a70f61042267ed9df3b070c8b8a84a",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_border.svg.import",
+      "bytes": 1093,
+      "sha256": "a3f40ecc4a101742982d1594c0d5125dd2ea52e55c411dead4a9b6031594ac3e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_border.svg",
+      "bytes": 2121,
+      "sha256": "39778a2dcc22135a1a785d1c6df77aba46c720b1f90ebffc547569b0724d19b6",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_border.svg.import",
+      "bytes": 1111,
+      "sha256": "b3977bf86bcaf1cadb4eb3f85666ba231a82c1a733d31ffd14e531b9e7c6eb53",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_flat.svg",
+      "bytes": 1872,
+      "sha256": "bf4dba47f962b26b24f4968636417d6dfda8f0723069200e29074222cbc789ca",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_flat.svg.import",
+      "bytes": 1105,
+      "sha256": "7c51aff471776a53051bcab430b4971968ecec5459d937b1a18eded4ee10355e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_gloss.svg",
+      "bytes": 837,
+      "sha256": "20cafb0d726c3c202f55ea8e5cff8e3bfabfe0ce7b9623e97b8840af58082686",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_gloss.svg.import",
+      "bytes": 1108,
+      "sha256": "eb6925fef268703fd727efccc64795bad3833d12ff0dff6ac1e558f028b8f610",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_gradient.svg",
+      "bytes": 1302,
+      "sha256": "4e8972dc282d5f50bdac45cd4059f7a0750c7c0231f18bde9af9cb72dc8ad7c8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_gradient.svg.import",
+      "bytes": 1118,
+      "sha256": "0497aeee823945c3c672a7caa996dd0a22c3aba7344e4d088e945f0ff9f46998",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_line.svg",
+      "bytes": 2121,
+      "sha256": "7310ef455b1d70e47b67f80bb3917c4f4e5511d42a77bc6b2a9b36ce0b758fd8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_depth_line.svg.import",
+      "bytes": 1106,
+      "sha256": "02a69a0cdd2c6d82af0dec2d9eed4ae0d74c5c5f2a54a17d376b95ba10ae1b06",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_flat.svg",
+      "bytes": 1207,
+      "sha256": "59e33b0c709e00b028f38f157a21d1d3181ea9dc73dfd8676413a74a08f65ced",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_flat.svg.import",
+      "bytes": 1087,
+      "sha256": "1e90ed85f206700edb2b5451782c1b291da95343436440dfe80982f4c59816c9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_gloss.svg",
+      "bytes": 1241,
+      "sha256": "af96d07334ccc2bc140baa5530013483d2eb2e162626e99f5290467bee392f02",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_gloss.svg.import",
+      "bytes": 1090,
+      "sha256": "7cfd3c62804ca8f6d83030639234f5387c3eb92289890dc87173ceaf0c69744c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_gradient.svg",
+      "bytes": 1992,
+      "sha256": "a71daa70d6c579d9027a30ffe5ba94f178d2163b85609274ee756354d6160903",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_gradient.svg.import",
+      "bytes": 1100,
+      "sha256": "a062a6e9ac5d85eed6052f7a6dc87d80bcf091ba8a2dd0c30b928acc4160cca0",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_line.svg",
+      "bytes": 984,
+      "sha256": "61667488077c33669fd6853f19cb4f69605bbf189098be1adfbb5ccc69dfc32f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/button_square_line.svg.import",
+      "bytes": 1088,
+      "sha256": "8eec655a9c7be21780c7bf623a18d10f57deca44e0d76958a931c429dd7273da",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_color.svg",
+      "bytes": 985,
+      "sha256": "ecd7798cc8909d5f748d9fed109fe4ac684508690f340e57a9e1f2c52144397b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_color.svg.import",
+      "bytes": 1085,
+      "sha256": "7e96a8b24be0864e09ed19b1376ed83e0a578ff9b1adda3c1e980887cf3ee0f2",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_grey.svg",
+      "bytes": 985,
+      "sha256": "4053bd73b4944d2d7eaac9d4ff66cd7f36df2d14e364677f34f6048108059242",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_grey.svg.import",
+      "bytes": 1082,
+      "sha256": "c575b52e20e3de66dba080093c18c05e59a073071a2e88272dee1ea2bca37b59",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_grey_circle.svg",
+      "bytes": 1659,
+      "sha256": "2f2c256dcadce521205d42d8c889edf1b9207371c4a0f35678150b7b777c94f1",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_grey_circle.svg.import",
+      "bytes": 1103,
+      "sha256": "d097bf2f6c89a3fec87eecc2b9aaa7c88e94e690dd5119816a78ef37e0326a88",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_round_circle.svg",
+      "bytes": 1661,
+      "sha256": "06a3613d7bd700ddfc6365e50d09f3d3f34f8516db0eb0afeff00fc6964f17e4",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_round_round_circle.svg.import",
+      "bytes": 1106,
+      "sha256": "41d9c905f58551ef650ac3c483df65ca50b3761b51083f81c356d31e5d5548dd",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color.svg",
+      "bytes": 642,
+      "sha256": "67ebca20cb08c54ec0ea0a1c529017c23eacb215f41a20bd5d18b1df75f52f35",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color.svg.import",
+      "bytes": 1088,
+      "sha256": "111e89a62bea385e5e1be80c60868f51c5ba2801fab648ae446d7ae2e3d66bb6",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color_checkmark.svg",
+      "bytes": 1610,
+      "sha256": "53885fdb31a3632de4c14229675cccf57c7fa75e4ae0900751060f2959959b6a",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color_checkmark.svg.import",
+      "bytes": 1117,
+      "sha256": "ba197d8ff01a9ae87419c63a178b67b84a5e9033448ad0d99b0575cb38c25530",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color_cross.svg",
+      "bytes": 1978,
+      "sha256": "f1dc5be3a2429f62dc376c6eca84770fc2c19313fb4ce02b4f59afecbb06b70f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color_cross.svg.import",
+      "bytes": 1106,
+      "sha256": "b1c7a4dc967ba166ae97e6eeec5da0c4497cd72924ad33c4be84c51a6205b9f2",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color_square.svg",
+      "bytes": 875,
+      "sha256": "f5d20357a9fca2babc96c4cc3880906eebc95cf1f318d89def2069434bd7331a",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_color_square.svg.import",
+      "bytes": 1109,
+      "sha256": "98883510b12fc054f9652821fa38481d23a19e069bf4521be4157408beca9cb7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey.svg",
+      "bytes": 642,
+      "sha256": "e2ff9b904390ebf1c1692738d0b9eafa2c636662d52dbb7f6eb1cc1f766e62d9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey.svg.import",
+      "bytes": 1084,
+      "sha256": "07c4934b0b3c4e66c6047b3c161efd9433d0091d6fa422dcf3980f19d8b9d8c8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey_checkmark.svg",
+      "bytes": 1610,
+      "sha256": "6890c1acf13875fa4b109f0aec886a829066d029eae9634c47341c0ded830b49",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey_checkmark.svg.import",
+      "bytes": 1115,
+      "sha256": "5ec039829bfbc3d299d73c6d397814b33e966ebce2bb1dd0ef7da929d71d6be8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey_cross.svg",
+      "bytes": 1978,
+      "sha256": "c5dc22ef9b084cc7a037a439f5b2d50c287a49c3d5ac394fef4a66d75e0585dc",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey_cross.svg.import",
+      "bytes": 1103,
+      "sha256": "f5e04ee51a1a39638fd9473a80f02447ef0b08fd5bb79deae8b9f33212cb58d9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey_square.svg",
+      "bytes": 875,
+      "sha256": "d00c72f285934f4277f0f2b544f6219f3168dc1f8db1c9faa89fce4a814deea1",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/check_square_grey_square.svg.import",
+      "bytes": 1106,
+      "sha256": "6e9f5da8a79513e6fe5acadf64debd19691b347fe19e8771fadd31f5f3557baa",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_checkmark.svg",
+      "bytes": 996,
+      "sha256": "86c4df4a58ac1f8c672abaf7e2e55e6709689525ce9bd6424d00d1374664fd4b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_checkmark.svg.import",
+      "bytes": 1076,
+      "sha256": "f63b5d097777314ca758ba703b25dde4e5bf82baed3177e52b3e100cae7f1c61",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_circle.svg",
+      "bytes": 740,
+      "sha256": "0f341323e4d7c0d4ac95d2fd512489e3d817456831673ef3903a851bffee137c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_circle.svg.import",
+      "bytes": 1067,
+      "sha256": "396c3b3e87b3986140a13255f13a10a5fa498de4dd8e4105e4336edc4177751e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_cross.svg",
+      "bytes": 1403,
+      "sha256": "52dbc06653a03cbbb04c05ee33cc7323f4c22770e82ac7b8b056d711e58c0758",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_cross.svg.import",
+      "bytes": 1064,
+      "sha256": "ed2c994b10918e39c39667ea835c3589dca71f3a6579b89af3b380aa70542492",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_checkmark.svg",
+      "bytes": 996,
+      "sha256": "386d499751294b70088408f873444e2a62d3fe3e71987ef30ed2cb02baa73804",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_checkmark.svg.import",
+      "bytes": 1100,
+      "sha256": "d1a5540d5315a0d76e45ce6d18ffae79c51f2105c000ab16ae7b44d35e4ca084",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_circle.svg",
+      "bytes": 748,
+      "sha256": "6cb33d29742f4b240fb4c52508f6a5b3bf762c394f5ac2fd5edb21768fa83e31",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_circle.svg.import",
+      "bytes": 1091,
+      "sha256": "f4ea7199f1a15191341989ddf29b57056b7c5db47321fb529070ab8a46be9abe",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_cross.svg",
+      "bytes": 1403,
+      "sha256": "9e40599838b3e1f56ea7ceeabf4bd14b6166140bc0a474496e2229e08243e924",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_cross.svg.import",
+      "bytes": 1088,
+      "sha256": "10c866b442b58d0b6dd0a3eea706c61203da2860ac458103d141785c210bee2e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_square.svg",
+      "bytes": 352,
+      "sha256": "788a1dcf4a0a0b73d9747e77ebc22dd13a3b9796e4dc9493372a09565b595908",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_outline_square.svg.import",
+      "bytes": 1091,
+      "sha256": "05fda1b099da4f5c3ecd85d0d47106d0eb76cef5895aa3542c5d3b54979a2bea",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_square.svg",
+      "bytes": 352,
+      "sha256": "375230fad0535d116acb43b1751905c087f01784d384afbad516cde69f7ea852",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/icon_square.svg.import",
+      "bytes": 1066,
+      "sha256": "717835009eceb1202cc5dac2466f55255b99c3df5a1fe0f0f76461de6d39fde7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_hangle.svg",
+      "bytes": 1202,
+      "sha256": "352360f81efca6224c3f7de26929b43204aca2c941f75a800ffa7603e0b64d32",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_hangle.svg.import",
+      "bytes": 1070,
+      "sha256": "cec7fbcd1aa9980c944958c41a83ec88cfdb259e31f981008fd3f83ae1754cd8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_color.svg",
+      "bytes": 1094,
+      "sha256": "6be0fd6f5c673282c15bb19524ac1b44649b3ad44b8cab5b47aae8dfeb2ce7aa",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_color.svg.import",
+      "bytes": 1099,
+      "sha256": "f344f7f4ed3872f47889c7713596c4f17b518a2eda8a5859af343ff20d7b882e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_color_section.svg",
+      "bytes": 924,
+      "sha256": "6020057630088abd775f646f0f94741483d1d15442535ef18a35527beaaa056d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_color_section.svg.import",
+      "bytes": 1124,
+      "sha256": "22b1ba0a06c002afd94f5de31d20ea7718202161d6da891fee9454b4cced8aa1",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_color_section_wide.svg",
+      "bytes": 919,
+      "sha256": "e8fdc9c78255b46333cd2e2d1988edbf2ba92ed7067e10aff01d2736318cc735",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_color_section_wide.svg.import",
+      "bytes": 1139,
+      "sha256": "8f5eac38aedf1840b7421dd7977bb71722418abc7a76bbcac9b5c753c0cd3e2b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_grey.svg",
+      "bytes": 1094,
+      "sha256": "bda26ef45528ae84428a29929cb470500f1ec47b13ab492d694f0ed77d5a49b3",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_grey.svg.import",
+      "bytes": 1097,
+      "sha256": "583406c4b22bec0a3f1e14d2ac8c43e5d9d2a14937d04a5ffdf0a800877ee318",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_grey_section.svg",
+      "bytes": 924,
+      "sha256": "a2ed71ac6136e05e4dc52080fcf7b2e81c84dd6df80276739ab17cf00c6b4dd1",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_grey_section.svg.import",
+      "bytes": 1120,
+      "sha256": "98ccdc0ee23e76e009e8173a978f2284f7a4d31a6713ffed86954a9dba747dc9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_grey_section_wide.svg",
+      "bytes": 918,
+      "sha256": "67db3b47d6ca5b86cfdcbb5ae9d3346a0780bd9ecbb8290fbf6b50852bec10fb",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_horizontal_grey_section_wide.svg.import",
+      "bytes": 1136,
+      "sha256": "e0cfd4c643900dc7c5ba1ae954b6276d06cfa246911af087e9de21ffa0245b07",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_color.svg",
+      "bytes": 1081,
+      "sha256": "2e18a941bc7658303ca9f181a70089668175850c579761c5e66f7efbef8bb40e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_color.svg.import",
+      "bytes": 1094,
+      "sha256": "6ba9718656bcd0a840674c6934fa06bce8c247c8f7cd4a9f79dde4e46d1df523",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_color_section.svg",
+      "bytes": 912,
+      "sha256": "650ca3e6fa5eb434b6c246ac53609e1483141568b45908737aaed780d87fafe9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_color_section.svg.import",
+      "bytes": 1118,
+      "sha256": "5cf52a2629220ca03aa274450ab42eb8b5c39173394634f780db028d539d8fb3",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_color_section_wide.svg",
+      "bytes": 910,
+      "sha256": "17419ebd98388e109719a05035a453476715948529e852476e2fc0b478452c30",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_color_section_wide.svg.import",
+      "bytes": 1133,
+      "sha256": "f564bc694d469d85cb037074b05421a3568eb00d899f7cc2abfe0523b307c797",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey.svg",
+      "bytes": 1081,
+      "sha256": "3f6dae498aa8a1c3bf210840e258f938c46f934f64db389a0505e58d99d8cb46",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey.svg.import",
+      "bytes": 1091,
+      "sha256": "ff93543ecac9b03f74f3fcfc9971259a3923ce2d037423846a3b6a413e9a19aa",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey_section.svg",
+      "bytes": 912,
+      "sha256": "a27935fc79ef6f46d69c136087963087ece1bc35bf44f826e1f080e8d6fa7d2f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey_section.svg.import",
+      "bytes": 1115,
+      "sha256": "22a045ed0bda94dc58c279a66f73bd270ab6a550a4fce3040dc8f4b1922bc87c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey_section_wide.svg",
+      "bytes": 909,
+      "sha256": "e4a1dca702a4d544211da8313ff600b009c9177f1622c6c81b54b70baaf09f0e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/slide_vertical_grey_section_wide.svg.import",
+      "bytes": 1130,
+      "sha256": "bbbe1ab6ef5f855c5b643161e2a7f6c45bfe062462057befbb46e69401c1aa73",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/star.svg",
+      "bytes": 2465,
+      "sha256": "f4b44bef576efa18664b378f74db4670d4d14af097c150daa4fbf3162dc047be",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/star.svg.import",
+      "bytes": 1046,
+      "sha256": "7528f6680b62051253a9ef9d22a4757ab6082fe80ddce326c170049e101d7076",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/star_outline.svg",
+      "bytes": 2717,
+      "sha256": "88f7acccb7b973d3ba502f93956aa60f59d50f665f195fb07af0d6b8d3f49afa",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/star_outline.svg.import",
+      "bytes": 1070,
+      "sha256": "d547430c560a59c14bf5d5ceb0ce806475f31e8056ff16485f3988a4e230044f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/star_outline_depth.svg",
+      "bytes": 1322,
+      "sha256": "2872807a9e6beb8fb04a03dcaa8549ca0cc277dc5bebd2667b0bc1f4cb7cebdd",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Grey/star_outline_depth.svg.import",
+      "bytes": 1088,
+      "sha256": "eb30f495a7bf84aa3b83c42a63c5581ef7175a4664c9fd38e0ae9b8412531de5",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_e.svg",
+      "bytes": 1355,
+      "sha256": "f73d4ec16e865be49a1cc18ed01b630947c9db6963c4949e65ad28e5336788a6",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_e.svg.import",
+      "bytes": 1072,
+      "sha256": "c402b303319614b687d051527c06f2e30399b79ca0c39051c60ad68cd0148499",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_e_small.svg",
+      "bytes": 1029,
+      "sha256": "22447e590660c5eb58a61c967f34e02bcdfd06182bdf8bba77db7e274b98d1a5",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_e_small.svg.import",
+      "bytes": 1089,
+      "sha256": "9e825575a019a0e28dcf15fe2d729dab9279486dfd99885dc85348cc83c2e8fd",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_n.svg",
+      "bytes": 1458,
+      "sha256": "fb9913d613f2fd4b852014c41387f985a47691bc71d0beee86c9f19c39f09a2d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_n.svg.import",
+      "bytes": 1071,
+      "sha256": "cb017cda68484103b5cfc8e0538d79d60065b428256be08bb17be6d0546e3e0b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_n_small.svg",
+      "bytes": 1084,
+      "sha256": "21d25ded41eea99945a437548c0aef9d3db5a595b0c92b7e792abae98e80441d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_n_small.svg.import",
+      "bytes": 1090,
+      "sha256": "abcbb6f35fb7688026cb4b5ef0d1d9091d404f70a89ecd16e52bad1eb87b552b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_s.svg",
+      "bytes": 1432,
+      "sha256": "02a98dc9e5bbf6be1172c3dccf3cdaaf49b20271b1bfd69bd12dcaf0ae2c41f7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_s.svg.import",
+      "bytes": 1071,
+      "sha256": "6813ce758e571100ecd17cf34c59063bbe68d3bcd6e558b5c5bd32efa39c0096",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_s_small.svg",
+      "bytes": 1069,
+      "sha256": "6232b26588760b9c704b29132cae61324d7ec2f456a39e470989c15d9adfbad6",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_s_small.svg.import",
+      "bytes": 1089,
+      "sha256": "bcd3a721597c87fb44981148e392c66ef52a61207651adfd8c548c1cfc002f38",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_w.svg",
+      "bytes": 1401,
+      "sha256": "45c143d64d9aa30f7535ce540bf53d14915200667ff475d504bc344e9cd688e2",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_w.svg.import",
+      "bytes": 1071,
+      "sha256": "8478dc46551e852883c0d5ac32a7bc3ffde5379f5e9b59a52f10a3d912a94c0c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_w_small.svg",
+      "bytes": 1012,
+      "sha256": "d90863088634eb203085e32acee20ce0d6bbb44f97ad82c0a96d47f7b2855811",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_basic_w_small.svg.import",
+      "bytes": 1089,
+      "sha256": "c03a449c9774cafe0bb01a47aae8f9de7aedcbe62557c9ffe69063081bf31b4d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_e.svg",
+      "bytes": 2480,
+      "sha256": "5ed8426c4dbf7b8c777857bf92f636dcbe5ece104f7ba89462edab82be951a52",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_e.svg.import",
+      "bytes": 1086,
+      "sha256": "6ca975ab13c9cff312eedb78bdb429b3b25339b36c2b639c17d7c1eaeb845a69",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_e_small.svg",
+      "bytes": 1535,
+      "sha256": "04de7a3fec512085b20dc8381de81621e9f923a123d5f10f443b35a81bab49a7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_e_small.svg.import",
+      "bytes": 1105,
+      "sha256": "857a6bafa62089582a96b9973b18ca3e3d4aaabe26d46dc3feddd7b2edbd03c1",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_n.svg",
+      "bytes": 2598,
+      "sha256": "b4880782ca2d42c3565e859aeda32c8bc99a1500b53686f06d26b72966930b40",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_n.svg.import",
+      "bytes": 1087,
+      "sha256": "85c414ad5907913c31d06c06b9292159149e3a6376b99ad5867d3a739b1693b0",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_n_small.svg",
+      "bytes": 1704,
+      "sha256": "807a661df3a277916f3fc6791060ec8ddc0f0b23f6314cf5ce583a7b2ea64389",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_n_small.svg.import",
+      "bytes": 1104,
+      "sha256": "18bdc0d8157228ead2bacffff1691b2568c95659bf77cdd4b1671f4c54c95436",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_s.svg",
+      "bytes": 2472,
+      "sha256": "91183dcea584aa4e6ddd7a23d0d12798daf30d6deb5aef1a5e19f1f3c7bd529a",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_s.svg.import",
+      "bytes": 1087,
+      "sha256": "b48122abd4ce886d6c63f66386e52a7ce749694f5e5c4f16fb9565f699e260ec",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_s_small.svg",
+      "bytes": 1587,
+      "sha256": "31835d267ab149a20f9a690fc22d940c0037abc9b2c8013c646d62a66a16b6d7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_s_small.svg.import",
+      "bytes": 1105,
+      "sha256": "0951f6187a6b4cef2d3e97f84775e1e4c32ffa06884c43f7d2af8224f19fecb1",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_w.svg",
+      "bytes": 2557,
+      "sha256": "2174c6dbd8590da5d2935421a36a40f0d8d4c200c16a5e02306d7b397c6e4b06",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_w.svg.import",
+      "bytes": 1087,
+      "sha256": "1058a49b89f3bc47ee02f251cc8c0648097794c99a23c8fb144783252eb38888",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_w_small.svg",
+      "bytes": 1604,
+      "sha256": "735d9bc6fd6d0f48b8bd5fef3fb171dbbbdd4df5d58ce8e3f40aa07ff044fb82",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/arrow_decorative_w_small.svg.import",
+      "bytes": 1105,
+      "sha256": "1e4d8ca6f1eba64e6ae4cc209339c028c54c2b110a2fb43f754bb45b8afece29",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_border.svg",
+      "bytes": 1100,
+      "sha256": "d07085f76f532fbd1413e9d6eba54600e17a69ca6d6240337301f22e03187a07",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_border.svg.import",
+      "bytes": 1102,
+      "sha256": "aa3b579670c61f27f03ce20a573d3838f2b1fd8a143c5b88062da936cc19f9fe",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_border.svg",
+      "bytes": 2326,
+      "sha256": "39dfebdf138258b8dd016e94790b61b13fde14743cebee6c2302d4c092992f85",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_border.svg.import",
+      "bytes": 1119,
+      "sha256": "2b9103e02c04dcbd188656fab2f00c299f385af000d9db1679c96bee42a6d371",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_flat.svg",
+      "bytes": 1002,
+      "sha256": "ae4c420cc885cebb31b7ed2ac0a6d8a4cc9bd0381ddb37b019dc6d2d374fdd09",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_flat.svg.import",
+      "bytes": 1114,
+      "sha256": "dac89c275581b421103801f3cfadbfc2dbd41eceb1a2106ba5bd5860a52d7342",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_gloss.svg",
+      "bytes": 886,
+      "sha256": "7f9f176dfd08602ba6b5a404a6681d7735ce59015243dade39c9dd3b084a30b6",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_gloss.svg.import",
+      "bytes": 1117,
+      "sha256": "4ab9dfdd911eb79ff7e8dbb168142aa02cd57959cd775206e6ccf5445f335422",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_gradient.svg",
+      "bytes": 1316,
+      "sha256": "642168434976b4e67c9a25488b2b809e3825fb281308e6fd04c67e0c98cab8d6",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_gradient.svg.import",
+      "bytes": 1126,
+      "sha256": "db25f3096155b481aae6e5df4df8928e67dd3775a1f4372c9ee1bb7abe3223c9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_line.svg",
+      "bytes": 2281,
+      "sha256": "c707d6248c37cda96b9e386122dbc1f7891e231615d10ded49722c5a20904347",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_depth_line.svg.import",
+      "bytes": 1113,
+      "sha256": "952f16caa2aa6e4580e27258ee9c01cde438eadc90ed63011408ad16084cdf4f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_flat.svg",
+      "bytes": 854,
+      "sha256": "7a1001c40f6c269de2dfb1b9733bc860bc4d04dabbf6e3448b77833c67337573",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_flat.svg.import",
+      "bytes": 1096,
+      "sha256": "06d5618c6b4162d3784c8256d628f7a41369db8ab7f0e94a12ff00a01aa12a20",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_gloss.svg",
+      "bytes": 738,
+      "sha256": "d20f2eb40f334224588437925429cdd5e41f0fcc25cf2e13a83bb15c5d5d8ae0",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_gloss.svg.import",
+      "bytes": 1099,
+      "sha256": "a127422334d22772f9e40ec483ec25e0070835a04eefc4a77b21f3bf6694e325",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_gradient.svg",
+      "bytes": 1168,
+      "sha256": "5e68aff6d40e456626340e4548cd308654508e16358b1d4f1684e17a78a806ee",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_gradient.svg.import",
+      "bytes": 1108,
+      "sha256": "469349614610b0a9054704d9364fe71f1da72c4565f7579fe3fec965c2b21e76",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_line.svg",
+      "bytes": 1055,
+      "sha256": "4e8d17f33bdc1217414322ab71f7a55d533251476f106001f09b5bd988c5367e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_rectangle_line.svg.import",
+      "bytes": 1096,
+      "sha256": "66ff56711ae586474a4a76ae750285727824aad4885a0a0248d867e9f5c8602e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_border.svg",
+      "bytes": 2301,
+      "sha256": "9f0a8359cbbad59437aaa05f17a65b5a992c220277f42767a6c07d58fd40b96d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_border.svg.import",
+      "bytes": 1089,
+      "sha256": "c1770e28fdf58e06b4ded44fa0a409d97fd935fc519bb69b0c19895a1ef36143",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_border.svg",
+      "bytes": 3078,
+      "sha256": "1c2f2d5cc12f1f41f7e1ed8b78f5fee8ccf5b145aa52ee5bb92ad64502e5ec1e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_border.svg.import",
+      "bytes": 1108,
+      "sha256": "228443e856e7a3e4a684855ad2d59067d5b7b9f87b69d02a34ac4029a7050b20",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_flat.svg",
+      "bytes": 1772,
+      "sha256": "8160485e7ebe1d90835bc1b50ad25f0671e9ab39500726cc4c0ab94091571675",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_flat.svg.import",
+      "bytes": 1102,
+      "sha256": "9c6e013659397a92c730c9df04be13ab4368ff546a1e2328ffdeb6e92179fbb4",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_gloss.svg",
+      "bytes": 1417,
+      "sha256": "06789fec1808735e6d4d3f80fc40b75e4c1f1edfc623dd4863c881e768fa939e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_gloss.svg.import",
+      "bytes": 1105,
+      "sha256": "cc6ef779c54fabbf6ef765536bb7a1152f7c594040b22a16617e1a74375b8fc3",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_gradient.svg",
+      "bytes": 2063,
+      "sha256": "a14091354e25a55695c04b9f0ebe9eb1ca1f8fbaae8f2cf20fac632a822e5a70",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_gradient.svg.import",
+      "bytes": 1113,
+      "sha256": "04c313ceb383dea047e36db4c92a7e440c55a6a3f9c2ef0201b67ea60caf2769",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_line.svg",
+      "bytes": 3035,
+      "sha256": "2ae419c618925c2082448f836d6dcca1d3fd83c6c8ef18e31eb6e7d965937b1a",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_depth_line.svg.import",
+      "bytes": 1102,
+      "sha256": "fb015f5d5cfb6ece9070baea1bfa41a88e08a6c9e7ec22b3f727a248e3a8d2a4",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_flat.svg",
+      "bytes": 1009,
+      "sha256": "d375413b9c4e0da62246b822965aa45d2fe744aa470d30cd73b27009d6f7f886",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_flat.svg.import",
+      "bytes": 1083,
+      "sha256": "d61c082c725f3d63a341f98c6715ee16ab1b2e9602c23b158ec7717c84343c94",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_gloss.svg",
+      "bytes": 875,
+      "sha256": "ccec6e0f3468d17610ed72cfa8d592cf40e99a5e0a3e37987a12e259f5672925",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_gloss.svg.import",
+      "bytes": 1087,
+      "sha256": "97c85cf8b25048fa70ef84386e90bf14e2e1cd87c60c3c880ee78c3705253314",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_gradient.svg",
+      "bytes": 1476,
+      "sha256": "7d8ac5ed08a9190e36f343914d3597b081451db6fea4fc75b162c8e380e8df89",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_gradient.svg.import",
+      "bytes": 1096,
+      "sha256": "ba2d9cf57b655e817da86531229c4c455277260a20573b6c42732b7cd3bf8dd8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_line.svg",
+      "bytes": 1780,
+      "sha256": "469684a8465bb2ec5b846645f5de63ccec6e5fc039cd3566cb9bc0f161dbcc5b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_round_line.svg.import",
+      "bytes": 1083,
+      "sha256": "8e4196de962e5bc62df9042d3b079bdf1c9aeead496dce10c1894a17c7d23635",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_border.svg",
+      "bytes": 1074,
+      "sha256": "9b805a222fc9340126cf72fbe500c7a6567c8004df52e8fd436c05c4bc496215",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_border.svg.import",
+      "bytes": 1092,
+      "sha256": "b3a33c2e12e6f8db214d86ef9772a9fa1d81795419d462ec1d93564620fc5149",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_border.svg",
+      "bytes": 2211,
+      "sha256": "92d87cd3d6115d2ed3dae9d11675150d5e648d51f1fbb1c546dca47da2872f47",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_border.svg.import",
+      "bytes": 1111,
+      "sha256": "4f32570104b85b64f845d7394de3bb1854ce2e8f91aeb1c9158fae4fc4929917",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_flat.svg",
+      "bytes": 1872,
+      "sha256": "761df3094b3f70ebdf8d7238fda1e6b64bc3e6d901e6c310a2e98b75195264ac",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_flat.svg.import",
+      "bytes": 1105,
+      "sha256": "e43bb1d2448308b2fcd2f59e85691d04cead05f14ec64a5e15ce244a03d050a8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_gloss.svg",
+      "bytes": 837,
+      "sha256": "230c9157831079448e14170ceefadbe9b7a75dd84191d95b5298ffd9c783c7f4",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_gloss.svg.import",
+      "bytes": 1107,
+      "sha256": "706e8da3c2b8fe06a19668741f75b800b9a15d604b72280e3536272ef1f27d53",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_gradient.svg",
+      "bytes": 1301,
+      "sha256": "cc75b3b0650c3d1bd13be33d1e59afd712aa05e949300a65836ca8470e8e4c42",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_gradient.svg.import",
+      "bytes": 1117,
+      "sha256": "37b2d72739371190ababf6bde3cecfb944ba2cd138e00c7e94a65f2dd3bcc01a",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_line.svg",
+      "bytes": 2166,
+      "sha256": "935692d2c1b2f5ca163cbdb5eff203b0f76cb12ba224f18f0786bb3beb3c0d9e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_depth_line.svg.import",
+      "bytes": 1104,
+      "sha256": "1354c3485bfaac92cc1f0542b426956d0236be07fa9b778941f264eb7fc3f721",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_flat.svg",
+      "bytes": 1207,
+      "sha256": "1ae41d64a36157b7bd1cd89fbf882a7b5b02db382adaef800a508671480a8742",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_flat.svg.import",
+      "bytes": 1085,
+      "sha256": "dfeaf63e3a9e4f38df15f9731314212394317b6caa76d755914d475a1cdbdff9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_gloss.svg",
+      "bytes": 1241,
+      "sha256": "8cbcc88e38bf87a87318b3d8c80d4b5903405a20f2d605c7d89e5107a6191fae",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_gloss.svg.import",
+      "bytes": 1089,
+      "sha256": "d5de480bd25e14dc016b75c0356adddb98f6098aa67c864a58b20d0f0573e357",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_gradient.svg",
+      "bytes": 1991,
+      "sha256": "fabc28db6715eb0607466a4132ba353de28aa8b0d6c49a8d00fe4c1a96dabd16",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_gradient.svg.import",
+      "bytes": 1098,
+      "sha256": "1845f2e41aef69e541a63f46bc9df64e79377a28d7ae0c0fb7852760d403e973",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_line.svg",
+      "bytes": 1029,
+      "sha256": "62b4e9486a606a201f97cd5f9a9f7f8d23755cfbd1951ec67f5ed92564bf8571",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/button_square_line.svg.import",
+      "bytes": 1087,
+      "sha256": "f1fd32d66fa742521bbb7094da5cc66b560fe076b4521823f937cbcee6317b08",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_color.svg",
+      "bytes": 985,
+      "sha256": "e5b9104213351da5b7091bbd61446c089b350f4ace358cf2f0a9d4363810f48b",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_color.svg.import",
+      "bytes": 1084,
+      "sha256": "a9841d09fbfdd0b1e155ec759d9012aa2e0f7742b1942cec6858c040142e5c69",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_grey.svg",
+      "bytes": 985,
+      "sha256": "4053bd73b4944d2d7eaac9d4ff66cd7f36df2d14e364677f34f6048108059242",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_grey.svg.import",
+      "bytes": 1081,
+      "sha256": "01f603b8b50ab9de707c08afbfff9382425295075071dca07e5822105537c3d6",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_grey_circle.svg",
+      "bytes": 1659,
+      "sha256": "9ba79145920d6f0a5e6958a4f2f53c3468a9b5511bad5d53b60df41d201c3139",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_grey_circle.svg.import",
+      "bytes": 1102,
+      "sha256": "72b1469f6bc6ba040dbe67441188d34aac57b5f1549227682c92a03d89e7275e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_round_circle.svg",
+      "bytes": 1661,
+      "sha256": "7c96a2d86685d17a51b712c986a839473c8836b0d403ed00d9fdc47b7e6d5689",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_round_round_circle.svg.import",
+      "bytes": 1105,
+      "sha256": "6f1114be73643a48d59d73a874754f2f2e7c9a8e6c2cc5ce1286821889d39a2e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color.svg",
+      "bytes": 642,
+      "sha256": "8e6417f29d0708c1baf5f0675d72b4aff3d897b47fbbd88376e09754fd1e3d86",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color.svg.import",
+      "bytes": 1086,
+      "sha256": "e493937c0ea628160ca81cb355b74cafa0ba1fa4e64fbcb39152159e2754a716",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color_checkmark.svg",
+      "bytes": 1610,
+      "sha256": "07e77458e75bce40f7d3df3c98e086e50fa3ce54f11406d404f6542b06cb4e50",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color_checkmark.svg.import",
+      "bytes": 1117,
+      "sha256": "c04ff2f3fd1df71686ac54a254a385e67d6dd129f0f8362ccb4077ace039a2d3",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color_cross.svg",
+      "bytes": 1978,
+      "sha256": "ecdd4acd100522f17abb025cb1f6ad9704e6d69f088a92e08d1c1767d3499ebc",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color_cross.svg.import",
+      "bytes": 1105,
+      "sha256": "a53f6e1bb8ed434193d3e39d998e99741b3337bccdc2da394fcb0b13c5753b4c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color_square.svg",
+      "bytes": 875,
+      "sha256": "2b96b605b2dbf18f8b9a379a552b69dee59e399e4a65957bbd4e052e951b7037",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_color_square.svg.import",
+      "bytes": 1107,
+      "sha256": "f7b5b6492efdb9001af4746478359afb36a24b5c2247997a83306d57c42b6097",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey.svg",
+      "bytes": 642,
+      "sha256": "e2ff9b904390ebf1c1692738d0b9eafa2c636662d52dbb7f6eb1cc1f766e62d9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey.svg.import",
+      "bytes": 1084,
+      "sha256": "8cc8707e9a199871357f0c14ca6ac5fdbd5ad59259a0b03df3bb3bbf08db570c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey_checkmark.svg",
+      "bytes": 1610,
+      "sha256": "64bf4c391f5398ce30f4361f62e5909239f4c24730591bd715643fef923c296f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey_checkmark.svg.import",
+      "bytes": 1114,
+      "sha256": "a3cf35c34faca0209615df32766cabaa89ebea2446a14d37731b87dc3317184f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey_cross.svg",
+      "bytes": 1978,
+      "sha256": "8fd0cf3f1bf16ae49c9baaeb6c3626ef85355d4ef6597677f746bdfb188a3514",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey_cross.svg.import",
+      "bytes": 1102,
+      "sha256": "6303fa4498d81b8e58076335ec3ab524abbc7f88189242e9bf088d4e2ea3603d",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey_square.svg",
+      "bytes": 875,
+      "sha256": "bd8070678b3a18507cc1cb591b753561b34a012a33cf9c9959fbcfc260b44a96",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/check_square_grey_square.svg.import",
+      "bytes": 1105,
+      "sha256": "e20cdb3f3451bebc2a2a0e784b0ea0eaf63dd498eb55ef2a2de1043aee1bfe93",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_checkmark.svg",
+      "bytes": 996,
+      "sha256": "076e6281824d44ee85fff6bdaf0d0c8e50a643db572492e66c2e3cd80b4208cb",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_checkmark.svg.import",
+      "bytes": 1074,
+      "sha256": "0c429e06d5a4ee6a4f474e0e1e6b2bdfb0027c7ce56836612fb19c02d89e7ae0",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_circle.svg",
+      "bytes": 740,
+      "sha256": "191632968265a79afe98604d1d347f27f0f0919cc8dbe728f2db8f2ce66ae7a7",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_circle.svg.import",
+      "bytes": 1066,
+      "sha256": "b09ce3918fac37b649ff1e07d90af39c4ca319dccc2ee745e3d448dd4c18965c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_cross.svg",
+      "bytes": 1403,
+      "sha256": "4f387c6b86e35779ab7e998415caa0628fad7f8959a8fae80f21870bb73d55bf",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_cross.svg.import",
+      "bytes": 1062,
+      "sha256": "4b9cc1d5540b7249e69095bb8e50edd36afd277c843c8f702d56a590c1ac0953",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_checkmark.svg",
+      "bytes": 996,
+      "sha256": "cbabbc67c3bb9a5329b1787a3be592a69ffdff0c7f9e7c53e780751e56bb2a60",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_checkmark.svg.import",
+      "bytes": 1099,
+      "sha256": "0405708e2a81a8d813880dca17630eaab555448bcb1accc9a62c16076a1e3a5c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_circle.svg",
+      "bytes": 748,
+      "sha256": "2abde8896855e57699db491e5338889d994ee76e24da9d7d579624be0735886c",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_circle.svg.import",
+      "bytes": 1089,
+      "sha256": "befe30aeef1edbbbb45db359b7f5d430baa743d6093bc774d6f3f70be0c91439",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_cross.svg",
+      "bytes": 1403,
+      "sha256": "be600dcf28b82a8f9d0cbbe12e751d46bc9d5d27147bec573988fdb282484760",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_cross.svg.import",
+      "bytes": 1087,
+      "sha256": "d9754e083343c989c72d9d19af5011ff2b5056e806e3f42dce88ac97b8cf517f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_square.svg",
+      "bytes": 352,
+      "sha256": "aa043092ad50e51bc8cbb207714d05ac1858d9f31790c9fbb540fda647424ac5",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_outline_square.svg.import",
+      "bytes": 1090,
+      "sha256": "69b85bb1d529bb0432674be02e13cb08e3b4f75cc0651c38b5c40364abe84e79",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_square.svg",
+      "bytes": 352,
+      "sha256": "e15662fb181152d538312947370aa942c9c20bc50250e44bc8c0e1b9315ec524",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/icon_square.svg.import",
+      "bytes": 1065,
+      "sha256": "53d4746f7ed8c4cd1bf6bb08d429b9dbd7f13b111f0aff88c3144e19b9b06eb9",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_hangle.svg",
+      "bytes": 1202,
+      "sha256": "dc720622c06bf4df2a95c96b95cebf347d1c970396ce367034b3e7ebb19e1259",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_hangle.svg.import",
+      "bytes": 1068,
+      "sha256": "625f5d410e0f3bc39569f257ce66df6e29f9d9eb58c235c95ee197cb2f820975",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_color.svg",
+      "bytes": 1094,
+      "sha256": "a0183ccf9b1082f68461fee047c66c1d52bc593dd7ce408c25ff238230ef688e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_color.svg.import",
+      "bytes": 1098,
+      "sha256": "82bc2bc75e7b6195b52cf69c003e4059b5e3e15d094994494fd793b1549b7360",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_color_section.svg",
+      "bytes": 924,
+      "sha256": "7672bea8c5a7c1d547b89ae760913c401ca27983a9fb5680379722f8663c7c89",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_color_section.svg.import",
+      "bytes": 1123,
+      "sha256": "129d776eaf0e2bd1e4f8875a0b339b93ea5b0010498126f6d25eff28c88a2c9f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_color_section_wide.svg",
+      "bytes": 918,
+      "sha256": "f90e7a73227954b8396d5c40a991897adbbb4553c5ed156f107542702876a434",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_color_section_wide.svg.import",
+      "bytes": 1137,
+      "sha256": "65ba6086605fa0cc2017c5add945450c1f44c6141ce9b5af7d9d3ba3a922a264",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_grey.svg",
+      "bytes": 1094,
+      "sha256": "5c1cccba921ff2cd12dcc49975ff155bbd1baa8b898694b162689691d2702281",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_grey.svg.import",
+      "bytes": 1096,
+      "sha256": "2dfa802685c05431efd02027470460fdc2e811aae70362e986fca547b77c0b85",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_grey_section.svg",
+      "bytes": 924,
+      "sha256": "a2ed71ac6136e05e4dc52080fcf7b2e81c84dd6df80276739ab17cf00c6b4dd1",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_grey_section.svg.import",
+      "bytes": 1120,
+      "sha256": "1cfe608abadab407dc94ffacf1164340aef8532da90076a433e702139704f792",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_grey_section_wide.svg",
+      "bytes": 918,
+      "sha256": "67db3b47d6ca5b86cfdcbb5ae9d3346a0780bd9ecbb8290fbf6b50852bec10fb",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_horizontal_grey_section_wide.svg.import",
+      "bytes": 1135,
+      "sha256": "a8d24d59a686c0ecc687f61bf118d852375fa69143345e58a1487c63011a4df5",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_color.svg",
+      "bytes": 1081,
+      "sha256": "0aa55f2beec64da6deccebd4106fbf7badb1bd5f6549fc61284f964b65fb2f5e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_color.svg.import",
+      "bytes": 1093,
+      "sha256": "095f99ab8bc87f48ad1a397007cc330e6126b01de066f33c9c16639100567dd0",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_color_section.svg",
+      "bytes": 911,
+      "sha256": "4e7e7cc669b324975f7f0358ef0eb4dc66ac4b459558448ab93e838c929e60c3",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_color_section.svg.import",
+      "bytes": 1117,
+      "sha256": "ffe900368aae5d2001ec4fd537af735289062a83b92aae48a04916b4f9aaa062",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_color_section_wide.svg",
+      "bytes": 909,
+      "sha256": "ba96210c9c61153dc39134be3053ddaba8fcc65b6d9b70bb8d596d2f4c20cd61",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_color_section_wide.svg.import",
+      "bytes": 1131,
+      "sha256": "47bca0bb669640830d7d3e1742344758fd920829c12b458ffbc9a9537b87f738",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_grey.svg",
+      "bytes": 1081,
+      "sha256": "3f6dae498aa8a1c3bf210840e258f938c46f934f64db389a0505e58d99d8cb46",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_grey.svg.import",
+      "bytes": 1090,
+      "sha256": "de65e865410a588c5d3f0977247a717b3a888ef8ff17259c636080798ac82c26",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_grey_section.svg",
+      "bytes": 912,
+      "sha256": "a27935fc79ef6f46d69c136087963087ece1bc35bf44f826e1f080e8d6fa7d2f",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_grey_section.svg.import",
+      "bytes": 1114,
+      "sha256": "2996e4d2056d6646521886a00ac448d04137de046eae6bb66348f8e255e907e8",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_grey_section_wide.svg",
+      "bytes": 909,
+      "sha256": "e4a1dca702a4d544211da8313ff600b009c9177f1622c6c81b54b70baaf09f0e",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/slide_vertical_grey_section_wide.svg.import",
+      "bytes": 1129,
+      "sha256": "3d4b2d6ef68e650a41de48fe32c51b950bd68ace9b8121739237284a04473941",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/star.svg",
+      "bytes": 2465,
+      "sha256": "7bbe500f09ede0fbcdc7bfe4f66def7942f58a8e51d05abd4485202bcc3f9943",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/star.svg.import",
+      "bytes": 1045,
+      "sha256": "9b2fb428fcd916c39ccd46b5b7f01a5c0c8828c7d153dc1a3b20b9abaeb7db95",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/star_outline.svg",
+      "bytes": 2717,
+      "sha256": "88f7acccb7b973d3ba502f93956aa60f59d50f665f195fb07af0d6b8d3f49afa",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/star_outline.svg.import",
+      "bytes": 1069,
+      "sha256": "088ff136f91e8bb98352eb4d9c8df1758f58b9ea44a42757f8513cead5f55726",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/star_outline_depth.svg",
+      "bytes": 1322,
+      "sha256": "2872807a9e6beb8fb04a03dcaa8549ca0cc277dc5bebd2667b0bc1f4cb7cebdd",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Vector/Red/star_outline_depth.svg.import",
+      "bytes": 1087,
+      "sha256": "45b7db0cc21de33ac55052b973199e7d1dd236b18a484ac1c54c502faf88b271",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Visit Kenney.url",
+      "bytes": 44,
+      "sha256": "6787defa3ecb6118622e1903b65802c0200628fae5164b51b4fd467f92f3f284",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ui_asset_pack/Visit Patreon.url",
+      "bytes": 54,
+      "sha256": "2fcba31333935f4aa35e9de2e74e2b7ba1b1a8011540e08016ff6d81e9dd7490",
+      "formal_duplicates": [],
+      "reason": "原始包已排除导入，采用的 8 项及许可已复制到正式目录"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_flashlight.png",
+      "bytes": 277009,
+      "sha256": "11c1877bd2bd8a604e490a6f5854c1fe52b8b9d0531e17858d64ae8a61e7f6ea",
+      "formal_duplicates": [
+        "assets/cards/player/card_extinguish.png",
+        "assets/cards/player/card_light.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_flashlight.png.import",
+      "bytes": 991,
+      "sha256": "e0e5ae3c0a4899a322a8bf2577097a4e8ad4fca1b263c3597467779eaf985bae",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_flicker.png",
+      "bytes": 501269,
+      "sha256": "0c968589e709b2c54943d0f4699d19478e9ca20682f97922ae5989e592bf1802",
+      "formal_duplicates": [
+        "assets/defaults/art_flicker.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_flicker.png.import",
+      "bytes": 981,
+      "sha256": "6ea9029aa0dffc59d0ead74bbb19fa2256b3104ad83f87afe33b9010597424ae",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_hallway.png",
+      "bytes": 560447,
+      "sha256": "abfdcaaad869eefcd499aa4a4a26c25c5daab04c3b868ee20799e744cb60578e",
+      "formal_duplicates": [
+        "assets/defaults/art_hallway.png",
+        "assets/cards/events/art_hallway.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_hallway.png.import",
+      "bytes": 982,
+      "sha256": "18803d1499a5c1582d1bfa1a3223deede155736419eca21e7851fe1d6a87deda",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_level0.png",
+      "bytes": 559295,
+      "sha256": "bc8f9d200c1f4286f2ad29ec682343ad7eb260fe3b8fc01a4fe8eff3baf5a280",
+      "formal_duplicates": [
+        "assets/backgrounds/level_0/background.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/art_level0.png.import",
+      "bytes": 978,
+      "sha256": "f8493b0d1b38adeedfdafe5c19fd559e468758833def4dd561b6977e0175ab41",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/background_grunge.png",
+      "bytes": 1191654,
+      "sha256": "104c61c3b0357dcae84d8fc9a56da6fdb1ac917e93cd5800129d09e1dc08ed11",
+      "formal_duplicates": [
+        "assets/ui/overlays/card_paper.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/background_grunge.png.import",
+      "bytes": 1000,
+      "sha256": "965e0f214c663c7793aa8a5f66d76072c22e2b8bed7c9fba7f76418eee3ab3dd",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/blank_ui_overlay.png.import",
+      "bytes": 997,
+      "sha256": "53e6828715233250ecb513784299d7d95f786f854857eea5a38fbf201cb1f971",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/cost_medallion.png",
+      "bytes": 19004,
+      "sha256": "10f5c25b3e7518a347e9f033f5344ffb80d7c6be4b5a7afebaf2378441bfb2e9",
+      "formal_duplicates": [
+        "assets/ui/icons/cost_medallion.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/cost_medallion.png.import",
+      "bytes": 991,
+      "sha256": "a8255187efbc7ef9c61a2d5b913e478c5b7b31c14cb49816db292470c061aa8f",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_entity.png.import",
+      "bytes": 985,
+      "sha256": "64382d9e0e94dfc6901ada898a2e628520d2ca936cc3f374d8c962d207114186",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_entity_a.png",
+      "bytes": 689776,
+      "sha256": "76e82048d2a8e4995b61dbb0d06dcc6d48964e91e1578f3ab94f55b7d5356022",
+      "formal_duplicates": [
+        "assets/ui/frames/entity.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_entity_a.png.import",
+      "bytes": 991,
+      "sha256": "37ef477ea7e2851e4580c684913779de000f4a33ffd64fe1ab563158adddadef",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_event.png.import",
+      "bytes": 981,
+      "sha256": "d732b114ac28d183662b02f3300311349a22f9cc54896b34fd80667ebfe4976d",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_event_a.png",
+      "bytes": 708832,
+      "sha256": "1039dbc04e24af76cb264e0bb27216015a7dd29695ff3c2c1deda9aadce965f0",
+      "formal_duplicates": [
+        "assets/ui/frames/event.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_event_a.png.import",
+      "bytes": 987,
+      "sha256": "4849549346ce9c1c14288871943a9545503f90ae4be763ea35638b20dca56550",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_item.png",
+      "bytes": 541929,
+      "sha256": "4095baf39cdaa50bed4ce915047e4012a7e4631729327bda01cf06a7e1289529",
+      "formal_duplicates": [
+        "assets/ui/frames/equipment.png",
+        "assets/ui/frames/objective.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_item.png.import",
+      "bytes": 979,
+      "sha256": "0201e7bddfa67b134711e6f3fd673fbdce7115e51b99e34be6b40e80efeca9c0",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_location.png.import",
+      "bytes": 991,
+      "sha256": "76231cca167944c807eeeeb3cc6552ff5c4fc00c9cccbbeafeef3eb1877753c5",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_location_a.png",
+      "bytes": 710465,
+      "sha256": "2150fc0f5ad5783aac531b691dc378720967a195a13925e9b87d9634df469f05",
+      "formal_duplicates": [
+        "assets/ui/frames/frame_location_a.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_location_a.png.import",
+      "bytes": 997,
+      "sha256": "07e65143c1ffea621ab9acfd5708b041a33439f10e50aaf28ef9c4d645f811fe",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_skill.png.import",
+      "bytes": 982,
+      "sha256": "4e7680f3c49974a609b0948508801adf47b6d26f025495f6eb1a81d914567c51",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_skill_a.png",
+      "bytes": 549764,
+      "sha256": "87e8b1bcd5af3b4d1c677590c59ff5db091f9bb6b8ae7976af840c40718eaaea",
+      "formal_duplicates": [
+        "assets/ui/frames/player.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_skill_a.png.import",
+      "bytes": 988,
+      "sha256": "ffd023e19ed84d9ea65c8a09f8e617ab6b92646fab1da1d9a4d4b3f8704b8fb2",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_alert.png",
+      "bytes": 4777,
+      "sha256": "604eaf2dcf6fe2b8e34e12bd5aa45831f90edaa9a8c68c95bc18454141592cf6",
+      "formal_duplicates": [
+        "assets/defaults/icon_alert.png",
+        "assets/ui/icons/noise.png",
+        "assets/ui/icons/threat.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_alert.png.import",
+      "bytes": 979,
+      "sha256": "b90b62c40c0032f9c2310e80810574eca0b4db59ea8183b9865e9829f948f7ac",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_arrow.png",
+      "bytes": 4096,
+      "sha256": "e895986b9057c47f59aae3984e80bd0039838758469dfaa3e4319b8e171f7d36",
+      "formal_duplicates": [
+        "assets/defaults/icon_arrow.png",
+        "assets/ui/buttons/primary.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_arrow.png.import",
+      "bytes": 979,
+      "sha256": "ca5375e04bd4f49b0226b5f5a20da58ec4f43796dac34c18bc6c991bed02f1b1",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_event_category.png",
+      "bytes": 7998,
+      "sha256": "dcf5cc7ca17cba05aff08ea67a0eb6942da6410bb31bf34b7cd94d79458002fd",
+      "formal_duplicates": [
+        "assets/ui/icons/icon_event_category.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_event_category.png.import",
+      "bytes": 1006,
+      "sha256": "9afc9d0c9e7c325c1301b711e8290f4d70846a976c91ced6ba906474ea78da65",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_flashlight.png",
+      "bytes": 6312,
+      "sha256": "ebe9279e7c6698dd43312cfbcff1c3635f0e19c049f5a906ceab5d91fd081495",
+      "formal_duplicates": [
+        "assets/ui/icons/light.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_flashlight.png.import",
+      "bytes": 994,
+      "sha256": "0cf8a92d1177b6d77374612871bf105d944f0e7f1806c462a59cfd98723ffb22",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_gear.png",
+      "bytes": 5583,
+      "sha256": "1831af52cf49085f055b259a51f32f18f3b1f872dc155b782d9ea69f858aa031",
+      "formal_duplicates": [
+        "assets/defaults/icon_gear.png",
+        "assets/ui/icons/icon_gear.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_gear.png.import",
+      "bytes": 976,
+      "sha256": "9fc12e47869556b1b7c1f9335bfff2fa200ffe255c6a77ba39280609e3eafd90",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_heart.png",
+      "bytes": 3752,
+      "sha256": "9c9ec8133f54b7cea54795aff63b210fd0c4cc151e30a0d49284a5dfc720d067",
+      "formal_duplicates": [
+        "assets/ui/icons/aahp.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_heart.png.import",
+      "bytes": 979,
+      "sha256": "de737d24be475ba6cb73dc19545f985809ca9d3b7fc83a133c6178f16dc56a95",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_item_category.png",
+      "bytes": 7234,
+      "sha256": "6899ff3872c9fa5328252f43b0e3c27b01418238df32fe926bbecf6ad7eca8bf",
+      "formal_duplicates": [
+        "assets/ui/icons/icon_item_category.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_item_category.png.import",
+      "bytes": 1002,
+      "sha256": "d3df17d377e21d8541cd7b134e130c854fa2293210d8f4ac45c06bf6bd46b4f2",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_search.png",
+      "bytes": 3874,
+      "sha256": "fecf16b60a6fbf6c4573901514d2b9b640cf7c2625caa6ff369bfb4d1e0addfd",
+      "formal_duplicates": [
+        "assets/defaults/icon_search.png",
+        "assets/ui/icons/cognition.png",
+        "assets/ui/icons/search.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_search.png.import",
+      "bytes": 981,
+      "sha256": "c1cc9643515c0a430614760cfc075ac0c41b4b2234850b44cc6d57d71d3eeb1c",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_shield.png",
+      "bytes": 5399,
+      "sha256": "748e6eef43c87f9f4df142213e19506df03283a0a89c3173be39450614f1621e",
+      "formal_duplicates": [
+        "assets/defaults/icon_shield.png",
+        "assets/ui/icons/guard.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_shield.png.import",
+      "bytes": 982,
+      "sha256": "8cd0440af7b41a45640671af2c9d911893a5beb33474ebee54c56131d723c173",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_skill_category.png",
+      "bytes": 8056,
+      "sha256": "266afca70e201a5ce46d692c805b0113aac71593de7459359d99e7f5f4ca2d33",
+      "formal_duplicates": [
+        "assets/ui/icons/icon_skill_category.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_skill_category.png.import",
+      "bytes": 1006,
+      "sha256": "6b872df153fab674dae2d4d2a610f4e0ecb02e061beb77865177eb0b7a488ca4",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_stack.png",
+      "bytes": 6310,
+      "sha256": "7d2141bc683a6c19707895dae69c205b914ec232d2f81db6f9ecc070f4f04a10",
+      "formal_duplicates": [
+        "assets/defaults/icon_stack.png",
+        "assets/ui/icons/retain.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_stack.png.import",
+      "bytes": 978,
+      "sha256": "876ab2d94b3d4c1c593971bb51918cde4eb42eae466e3cd5908503acc5bc44b8",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_status_category.png",
+      "bytes": 6760,
+      "sha256": "720564627ea6c3cb60ae01a3e872e5edd442b7c05f9550bc2261a3912cf910e6",
+      "formal_duplicates": [
+        "assets/ui/icons/icon_status_category.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/icon_status_category.png.import",
+      "bytes": 1009,
+      "sha256": "6f2efeb3544bd486a9dd32017495a5063403c82ddb79ffdf35088a0ac777f346",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_description.png",
+      "bytes": 194153,
+      "sha256": "725764c28a7e04a08f50e68a2d7432dabc59e4daf7e3872d214054378195e5b6",
+      "formal_duplicates": [
+        "assets/ui/frames/description_panel.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_description.png.import",
+      "bytes": 999,
+      "sha256": "61d8659299e6ff049a9979747720edbac1509b68d134669396b5a887f4146007",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_name.png",
+      "bytes": 103552,
+      "sha256": "3d99c578eb617aa732f71bc797e71efa5f8127dbeab3a5f3707885afd25d5966",
+      "formal_duplicates": [
+        "assets/ui/frames/name_panel.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_name.png.import",
+      "bytes": 978,
+      "sha256": "e7d6dfa29f17feb9d8f71d04bf9c65fcea3813f31a611a865d869666719feb0a",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_stat.png",
+      "bytes": 30861,
+      "sha256": "e1e3e1fbd0b2cde12bef390456d2fdba9af629fe346f7ff97ca33734efc7368d",
+      "formal_duplicates": [
+        "assets/ui/frames/stat_panel.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_stat.png.import",
+      "bytes": 979,
+      "sha256": "a05326ab74df70791511891cdf45521d090ff0b425080bbb6582d4ebfbd42ec1",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_type.png",
+      "bytes": 18764,
+      "sha256": "83f71856601e9165da76bd56ab080ecb0a3b0d195466c35b0cf8b4a6709b1aa9",
+      "formal_duplicates": [
+        "assets/ui/frames/type_panel.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/panel_type.png.import",
+      "bytes": 979,
+      "sha256": "1a019aec683628f3a71a94a25a7e88544373995e4db743a0fddf71fc6e3405be",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/切出-仓促切出.png",
+      "bytes": 5738408,
+      "sha256": "d21655d650a3c0e2167db3e48f59ab969ac818347a05fa87150e2865a157bf82",
+      "formal_duplicates": [
+        "assets/cards/player/card_cutout_rushed.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/切出-仓促切出.png.import",
+      "bytes": 1006,
+      "sha256": "8bb87d4245c889a28deb032c0009aaf4d860608827ef968858512e989983298b",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/切出-安全切出.png",
+      "bytes": 5217426,
+      "sha256": "3aeedef49c6f479b4fe611c6f2308fa86f0928873460d50e199e57321cfbbb4e",
+      "formal_duplicates": [
+        "assets/cards/player/card_cutout_safe.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/切出-安全切出.png.import",
+      "bytes": 1006,
+      "sha256": "9ea8acf3755b32e18483d5d5b0d3f46e79aac0a842bd0a5c863f19747a7298ed",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/实体-Hound.png",
+      "bytes": 2267631,
+      "sha256": "ac233dcbb47dcf2cfff506709d881fa49c342acd2f2d0897db14d263798f3d8c",
+      "formal_duplicates": [
+        "assets/entities/hound.png",
+        "assets/cards/entities/entity_hound.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/实体-Hound.png.import",
+      "bytes": 985,
+      "sha256": "c28a94c53520e5178b59b1001290740864764fecb611ffcb7d57f7f3afd8e7e8",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/实体：笑魇.png",
+      "bytes": 3368242,
+      "sha256": "596fa3d50a518a1ec87d3368c0f76fb0d7111ae37b8c16b73503824d83a207e0",
+      "formal_duplicates": [
+        "assets/entities/smiler.png",
+        "assets/cards/entities/entity_smiler.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/实体：笑魇.png.import",
+      "bytes": 994,
+      "sha256": "f48a2f784c28ac9f5076e9ce6d0a000a78a82dc06a1eff74d8544e60fc378608",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/物品-撬棍.png",
+      "bytes": 6435011,
+      "sha256": "5f95fb6e4ad92082cca9cfacf79220c1ba2ae65d8be5583eaef0f1ffada3ecf9",
+      "formal_duplicates": [
+        "assets/cards/player/card_crowbar.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/物品-撬棍.png.import",
+      "bytes": 988,
+      "sha256": "07f3140a466ed850bb25e8bb3358f6614c76f02159de6e8daba393911b3cb8e8",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/物品-杏仁水.png",
+      "bytes": 291732,
+      "sha256": "0fd771c638111e0339389276de8bc9a270290ded2db3ed0a4b263fef25d62f1a",
+      "formal_duplicates": [
+        "assets/cards/player/card_water.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/物品-杏仁水.png.import",
+      "bytes": 997,
+      "sha256": "9de560a82f5a2e36f8673d8a1bffa2d31c37c04ef9dd2c3e1b8391f846f2a4a8",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/行动-挣扎.png",
+      "bytes": 5034610,
+      "sha256": "50a32984b633ae09a2958f920cc9ec83335adb18725255da1e490e4094d1b35f",
+      "formal_duplicates": [
+        "assets/cards/player/行动-挣扎.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/行动-挣扎.png.import",
+      "bytes": 988,
+      "sha256": "cfe26c02d2d9a0bc3ae4233402b5e4b8ad5fdac807675e802c8f027f6a43466d",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_flashlight.png",
+      "bytes": 277009,
+      "sha256": "11c1877bd2bd8a604e490a6f5854c1fe52b8b9d0531e17858d64ae8a61e7f6ea",
+      "formal_duplicates": [
+        "assets/cards/player/card_extinguish.png",
+        "assets/cards/player/card_light.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_flicker.png",
+      "bytes": 501269,
+      "sha256": "0c968589e709b2c54943d0f4699d19478e9ca20682f97922ae5989e592bf1802",
+      "formal_duplicates": [
+        "assets/defaults/art_flicker.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_hallway.png",
+      "bytes": 560447,
+      "sha256": "abfdcaaad869eefcd499aa4a4a26c25c5daab04c3b868ee20799e744cb60578e",
+      "formal_duplicates": [
+        "assets/defaults/art_hallway.png",
+        "assets/cards/events/art_hallway.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_level0.png",
+      "bytes": 559295,
+      "sha256": "bc8f9d200c1f4286f2ad29ec682343ad7eb260fe3b8fc01a4fe8eff3baf5a280",
+      "formal_duplicates": [
+        "assets/backgrounds/level_0/background.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/art_listener.png",
+      "bytes": 528352,
+      "sha256": "ab309e35564147613e6b4ce5377c1b7a1a18387b14512414d5f2640bd296d1f9",
+      "formal_duplicates": [
+        "assets/cards/events/art_listener.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/background_grunge.png",
+      "bytes": 1191654,
+      "sha256": "104c61c3b0357dcae84d8fc9a56da6fdb1ac917e93cd5800129d09e1dc08ed11",
+      "formal_duplicates": [
+        "assets/ui/overlays/card_paper.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/blank_ui_overlay.png",
+      "bytes": 769806,
+      "sha256": "a0bdbba84d3f72812c2ab6779ff998643c29dbb3ba263fa83bfd03730e8dcdd7",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/cost_medallion.png",
+      "bytes": 19004,
+      "sha256": "10f5c25b3e7518a347e9f033f5344ffb80d7c6be4b5a7afebaf2378441bfb2e9",
+      "formal_duplicates": [
+        "assets/ui/icons/cost_medallion.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_entity.png",
+      "bytes": 541892,
+      "sha256": "fb69f120ca3aff8a97bcad013a3cdcd74cc517080a21d9b14b59ba27d7c0b7f5",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_event.png",
+      "bytes": 541960,
+      "sha256": "3966586b158b3e14cf3d6203ac90c4f400d7ee06cb521736c94b61c129aee742",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_item.png",
+      "bytes": 541929,
+      "sha256": "4095baf39cdaa50bed4ce915047e4012a7e4631729327bda01cf06a7e1289529",
+      "formal_duplicates": [
+        "assets/ui/frames/equipment.png",
+        "assets/ui/frames/objective.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_location.png",
+      "bytes": 541939,
+      "sha256": "654caac996c952b99798e6606dc908839bd2ad2657e08bc2107e1bcaaa559196",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/frame_skill.png",
+      "bytes": 541858,
+      "sha256": "7bff2078d53ad24b0dd52705883c41222502bdbf7b5e766c2cdb3dc350404305",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_alert.png",
+      "bytes": 4777,
+      "sha256": "604eaf2dcf6fe2b8e34e12bd5aa45831f90edaa9a8c68c95bc18454141592cf6",
+      "formal_duplicates": [
+        "assets/defaults/icon_alert.png",
+        "assets/ui/icons/noise.png",
+        "assets/ui/icons/threat.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_arrow.png",
+      "bytes": 4096,
+      "sha256": "e895986b9057c47f59aae3984e80bd0039838758469dfaa3e4319b8e171f7d36",
+      "formal_duplicates": [
+        "assets/defaults/icon_arrow.png",
+        "assets/ui/buttons/primary.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_event_category.png",
+      "bytes": 7998,
+      "sha256": "dcf5cc7ca17cba05aff08ea67a0eb6942da6410bb31bf34b7cd94d79458002fd",
+      "formal_duplicates": [
+        "assets/ui/icons/icon_event_category.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_flashlight.png",
+      "bytes": 6312,
+      "sha256": "ebe9279e7c6698dd43312cfbcff1c3635f0e19c049f5a906ceab5d91fd081495",
+      "formal_duplicates": [
+        "assets/ui/icons/light.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_gear.png",
+      "bytes": 5583,
+      "sha256": "1831af52cf49085f055b259a51f32f18f3b1f872dc155b782d9ea69f858aa031",
+      "formal_duplicates": [
+        "assets/defaults/icon_gear.png",
+        "assets/ui/icons/icon_gear.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_heart.png",
+      "bytes": 3752,
+      "sha256": "9c9ec8133f54b7cea54795aff63b210fd0c4cc151e30a0d49284a5dfc720d067",
+      "formal_duplicates": [
+        "assets/ui/icons/aahp.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_item_category.png",
+      "bytes": 7234,
+      "sha256": "6899ff3872c9fa5328252f43b0e3c27b01418238df32fe926bbecf6ad7eca8bf",
+      "formal_duplicates": [
+        "assets/ui/icons/icon_item_category.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_search.png",
+      "bytes": 3874,
+      "sha256": "fecf16b60a6fbf6c4573901514d2b9b640cf7c2625caa6ff369bfb4d1e0addfd",
+      "formal_duplicates": [
+        "assets/defaults/icon_search.png",
+        "assets/ui/icons/cognition.png",
+        "assets/ui/icons/search.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_shield.png",
+      "bytes": 5399,
+      "sha256": "748e6eef43c87f9f4df142213e19506df03283a0a89c3173be39450614f1621e",
+      "formal_duplicates": [
+        "assets/defaults/icon_shield.png",
+        "assets/ui/icons/guard.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_skill_category.png",
+      "bytes": 8056,
+      "sha256": "266afca70e201a5ce46d692c805b0113aac71593de7459359d99e7f5f4ca2d33",
+      "formal_duplicates": [
+        "assets/ui/icons/icon_skill_category.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_stack.png",
+      "bytes": 6310,
+      "sha256": "7d2141bc683a6c19707895dae69c205b914ec232d2f81db6f9ecc070f4f04a10",
+      "formal_duplicates": [
+        "assets/defaults/icon_stack.png",
+        "assets/ui/icons/retain.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/icon_status_category.png",
+      "bytes": 6760,
+      "sha256": "720564627ea6c3cb60ae01a3e872e5edd442b7c05f9550bc2261a3912cf910e6",
+      "formal_duplicates": [
+        "assets/ui/icons/icon_status_category.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_description.png",
+      "bytes": 194153,
+      "sha256": "725764c28a7e04a08f50e68a2d7432dabc59e4daf7e3872d214054378195e5b6",
+      "formal_duplicates": [
+        "assets/ui/frames/description_panel.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_name.png",
+      "bytes": 103552,
+      "sha256": "3d99c578eb617aa732f71bc797e71efa5f8127dbeab3a5f3707885afd25d5966",
+      "formal_duplicates": [
+        "assets/ui/frames/name_panel.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_stat.png",
+      "bytes": 30861,
+      "sha256": "e1e3e1fbd0b2cde12bef390456d2fdba9af629fe346f7ff97ca33734efc7368d",
+      "formal_duplicates": [
+        "assets/ui/frames/stat_panel.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/assets/panel_type.png",
+      "bytes": 18764,
+      "sha256": "83f71856601e9165da76bd56ab080ecb0a3b0d195466c35b0cf8b4a6709b1aa9",
+      "formal_duplicates": [
+        "assets/ui/frames/type_panel.png"
+      ],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/data/cards.json",
+      "bytes": 2311,
+      "sha256": "f278183c3e24985dc69fd4f32ca87007eba7a003a628a738c464c52ba831e90e",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/main.tscn",
+      "bytes": 290,
+      "sha256": "18c4d2562d8b94ecc8d72e0a59b620eba7f022db1d5f8958e098076a2adfb38c",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/project.godot",
+      "bytes": 436,
+      "sha256": "5c9ff5326773b9d096b66b39d192f0b5e765a7c6109a0271504409a954c9914e",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/scripts/card_view.gd",
+      "bytes": 4201,
+      "sha256": "e0c02622935b6125f0e85ed252cac6418c4e4dac1d212909eea48f34fd5b35ac",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/godot_demo/scripts/main.gd",
+      "bytes": 2816,
+      "sha256": "97cd372e5dac7064e90a4020ea9567d3e68169017865d1f4225cff46858316db",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/LAYOUT_GUIDE.png.import",
+      "bytes": 978,
+      "sha256": "fb3cc60b40960275a2b068e33825d01b23435dbf7435ce0fc9e5c538cddbd5c1",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/PREVIEW_5_CARDS.png",
+      "bytes": 1073647,
+      "sha256": "0716030ed5621517285d82a5166948baf157e8d37715721716937eb6bc706d5b",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/PREVIEW_5_CARDS.png.import",
+      "bytes": 987,
+      "sha256": "850dd052dfe23c1ae06d8fe1f1d0afaa630dfe5c04e2cf666ab7ce54663acfd8",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/flashlight.png",
+      "bytes": 1352537,
+      "sha256": "ee5ded4abd320dc052df36a53468839bc54b595fa49720c0bb4b78c7ca528e4d",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/flashlight.png.import",
+      "bytes": 980,
+      "sha256": "62d105a3943302c711d6fc5a937440ea57c10444c777dcc4fb4c6c4325e3e8fb",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/flashlight_cost_0.png",
+      "bytes": 1354494,
+      "sha256": "5b4841995d6d5a03ebd3f326760fea54cd722bda99bf7794960cca4461ed7939",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/flashlight_cost_0.png.import",
+      "bytes": 1001,
+      "sha256": "cf58834f20a33001546cd6fa18284668b1bada61d2ddafcec98095f862720364",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/flicker.png",
+      "bytes": 1350736,
+      "sha256": "16d7cac2c40c80164dfe3a984a6e68ea0af3ab18bd256f15f77a2310d97953f9",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/flicker.png.import",
+      "bytes": 971,
+      "sha256": "525b0dc2184008bdb0c7a23adfdb8bb8c1cd21927057f87977119aa9cf95d879",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/level0.png",
+      "bytes": 1401685,
+      "sha256": "2ab4eaf8bd3f4fe13b23a666c9058649e6156c82b323ea921848f450d8d60cb2",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/level0.png.import",
+      "bytes": 967,
+      "sha256": "12bdde9e0baf20c8b5fc302911681f6954ac89f6839687c37ceeb698f6339fee",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/listener.png",
+      "bytes": 1374655,
+      "sha256": "d13e403464f01c525dfb6a5bbce26b08d7a4b25b0a6b8feaaa4cb8fb1508fec5",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/listener.png.import",
+      "bytes": 974,
+      "sha256": "08b83077fe333c766b403fdcf4ba49933d5cb32ae21082776afbebe23a2a7f24",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/stealth.png",
+      "bytes": 1400731,
+      "sha256": "0d021843912abcd3edd6e54d4ed517fbb59fc1a6192526764c977c825b5a4e43",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/samples/stealth.png.import",
+      "bytes": 970,
+      "sha256": "5298a35282efc67c776654ea5b0d371cd129c02e680e789f7689778402a407f7",
+      "formal_duplicates": [],
+      "reason": "字节相同的正式副本已存在，或为不再启动的示例工程/合成预览/导入旁文件"
+    }
+  ],
+  "retained": [
+    {
+      "path": "assets/ref/.gdignore",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "formal_duplicates": [],
+      "reason": "保留参考目录的导入隔离标记"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/blank_ui_overlay.png",
+      "bytes": 769806,
+      "sha256": "a0bdbba84d3f72812c2ab6779ff998643c29dbb3ba263fa83bfd03730e8dcdd7",
+      "formal_duplicates": [],
+      "reason": "独有原始美术，无正式相同副本；保留待人工筛选"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_entity.png",
+      "bytes": 541892,
+      "sha256": "fb69f120ca3aff8a97bcad013a3cdcd74cc517080a21d9b14b59ba27d7c0b7f5",
+      "formal_duplicates": [],
+      "reason": "独有原始美术，无正式相同副本；保留待人工筛选"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_event.png",
+      "bytes": 541960,
+      "sha256": "3966586b158b3e14cf3d6203ac90c4f400d7ee06cb521736c94b61c129aee742",
+      "formal_duplicates": [],
+      "reason": "独有原始美术，无正式相同副本；保留待人工筛选"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_location.png",
+      "bytes": 541939,
+      "sha256": "654caac996c952b99798e6606dc908839bd2ad2657e08bc2107e1bcaaa559196",
+      "formal_duplicates": [],
+      "reason": "独有原始美术，无正式相同副本；保留待人工筛选"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/assets/frame_skill.png",
+      "bytes": 541858,
+      "sha256": "7bff2078d53ad24b0dd52705883c41222502bdbf7b5e766c2cdb3dc350404305",
+      "formal_duplicates": [],
+      "reason": "独有原始美术，无正式相同副本；保留待人工筛选"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/cards.example.json",
+      "bytes": 2311,
+      "sha256": "f278183c3e24985dc69fd4f32ca87007eba7a003a628a738c464c52ba831e90e",
+      "formal_duplicates": [],
+      "reason": "保留有价值的布局说明/源配置"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/layout.json",
+      "bytes": 1487,
+      "sha256": "25ac1af5bbc4995facff997c3cfc14de16d516aff890037ae1a7648b5231040b",
+      "formal_duplicates": [],
+      "reason": "保留有价值的布局说明/源配置"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/LAYOUT_GUIDE.png",
+      "bytes": 9052,
+      "sha256": "3ae8def97c7a9df0c7d1d87efdbfe485755cade75bfef1e11ca1a9fb84a7d1e5",
+      "formal_duplicates": [],
+      "reason": "保留有价值的布局说明/源配置"
+    },
+    {
+      "path": "assets/ref/backrooms_card_template_v1/README.md",
+      "bytes": 2456,
+      "sha256": "1b86c806ae46b9ad797d21bb5b29de9d7935fe8c8b65afd0111aa6636282fabe",
+      "formal_duplicates": [],
+      "reason": "保留有价值的布局说明/源配置"
+    }
+  ],
+  "active_original_references": []
+}

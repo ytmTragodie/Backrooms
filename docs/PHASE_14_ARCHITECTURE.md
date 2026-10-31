@@ -1,5 +1,7 @@
 # Phase 14：实际运行架构与迁移契约
 
+> Phase 16 展示增量见 [PHASE_16_ARCHITECTURE.md](PHASE_16_ARCHITECTURE.md)：正式入口为 Start.tscn，Main.tscn 保留为游戏视图与夹具；AssetAudio 为应用级唯一声音服务。以下玩法状态与事务合同不变。
+
 > Phase 15 增量见 [PHASE_15_ARCHITECTURE.md](PHASE_15_ARCHITECTURE.md)：当前已有第三个 Level、多出口/代价出口、地图生成规则和只读楼层网络。以下保留 Phase 14 基础契约；数量与新增字段以增量文档为准。
 
 以 [Phase14_GAMEPLAY _Redesign.md](<Phase14_GAMEPLAY _Redesign.md>) 为设计源。以下描述当前实现，不把旧探索原型或未来建议当作完成项。

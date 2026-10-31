@@ -536,82 +536,46 @@
     "transparency_requirement": "是"
   },
   "ambience_level_0": {
-    "path": "res://assets/audio/ambience/level_0.ogg",
-    "category": "音频",
-    "usage": "0层循环环境",
-    "required": false,
-    "dimensions": "30–60秒",
-    "format": "OGG",
-    "status": "MISSING",
-    "notes": "可循环，无首尾爆音；低音量。",
-    "priority": "P1",
-    "fallback": "静音",
-    "transparency_requirement": "不适用"
+    "path": "res://assets/audio/ambience/hum_loop_L.ogg",
+    "category": "环境/音乐",
+    "status": "PROVIDED",
+    "usage_scope": "development_preview",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
   },
   "ambience_level_6": {
-    "path": "res://assets/audio/ambience/level_6.ogg",
-    "category": "音频",
-    "usage": "6层循环环境",
-    "required": false,
-    "dimensions": "30–60秒",
-    "format": "OGG",
-    "status": "MISSING",
-    "notes": "可循环，无首尾爆音；低音量。",
-    "priority": "P1",
-    "fallback": "静音",
-    "transparency_requirement": "不适用"
+    "path": "res://assets/audio/ambience/Mormo_loop_L.ogg",
+    "category": "环境/音乐",
+    "status": "PROVIDED",
+    "usage_scope": "development_preview",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
   },
   "audio_card_play": {
-    "path": "res://assets/audio/sfx/card_play.ogg",
-    "category": "音频",
-    "usage": "出牌",
-    "required": false,
-    "dimensions": "0.2–3秒",
-    "format": "OGG/WAV",
-    "status": "MISSING",
-    "notes": "短音效，峰值留余量。",
-    "priority": "P1",
-    "fallback": "静音",
-    "transparency_requirement": "不适用"
+    "path": "res://assets/audio/ui/card.ogg",
+    "category": "音效",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
   },
   "audio_hound": {
-    "path": "res://assets/audio/sfx/hound.ogg",
-    "category": "音频",
-    "usage": "猎犬预警",
-    "required": false,
-    "dimensions": "0.2–3秒",
-    "format": "OGG/WAV",
-    "status": "MISSING",
-    "notes": "短音效，峰值留余量。",
-    "priority": "P1",
-    "fallback": "静音",
-    "transparency_requirement": "不适用"
+    "path": "res://assets/audio/sfx/juanjo_sound - Backrooms Entity 1.wav",
+    "category": "实体音",
+    "status": "PROVIDED",
+    "usage_scope": "development_preview",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
   },
   "audio_smiler": {
-    "path": "res://assets/audio/sfx/smiler.ogg",
-    "category": "音频",
-    "usage": "笑魇预警",
-    "required": false,
-    "dimensions": "0.2–3秒",
-    "format": "OGG/WAV",
-    "status": "MISSING",
-    "notes": "短音效，峰值留余量。",
-    "priority": "P1",
-    "fallback": "静音",
-    "transparency_requirement": "不适用"
+    "path": "res://assets/audio/sfx/juanjo_sound - Backrooms Entity 5.wav",
+    "category": "实体音",
+    "status": "PROVIDED",
+    "usage_scope": "development_preview",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
   },
   "audio_cutout": {
-    "path": "res://assets/audio/sfx/cutout.ogg",
-    "category": "音频",
-    "usage": "切出",
-    "required": false,
-    "dimensions": "0.2–3秒",
-    "format": "OGG/WAV",
-    "status": "MISSING",
-    "notes": "短音效，峰值留余量。",
-    "priority": "P1",
-    "fallback": "静音",
-    "transparency_requirement": "不适用"
+    "path": "res://assets/audio/ui/confirm.ogg",
+    "category": "音效",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
   },
   "audio_event": {
     "path": "res://assets/audio/sfx/event.ogg",
@@ -640,17 +604,11 @@
     "transparency_requirement": "不适用"
   },
   "audio_button_click": {
-    "path": "res://assets/audio/ui/button_click.ogg",
-    "category": "音频",
-    "usage": "按钮点击",
-    "required": false,
-    "dimensions": "0.2–3秒",
-    "format": "OGG/WAV",
-    "status": "MISSING",
-    "notes": "短音效，峰值留余量。",
-    "priority": "P1",
-    "fallback": "静音",
-    "transparency_requirement": "不适用"
+    "path": "res://assets/audio/ui/click.ogg",
+    "category": "音效",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
   },
   "card_attack": {
     "path": "res://assets/cards/player/card_attack.png",
@@ -1919,5 +1877,194 @@
     "fallback_path": "res://assets/placeholders/background.svg",
     "notes": "Phase 15：缺少专属素材，使用本地默认；素材不影响玩法。",
     "missing_priority": "P1"
+  },
+  "ui_archive_normal": {
+    "path": "res://assets/ui/buttons/archive_normal.svg",
+    "category": "UI",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "ui_archive_hover": {
+    "path": "res://assets/ui/buttons/archive_hover.svg",
+    "category": "UI",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "ui_archive_pressed": {
+    "path": "res://assets/ui/buttons/archive_pressed.svg",
+    "category": "UI",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "icon_navigation": {
+    "path": "res://assets/ui/icons/navigation_arrow.svg",
+    "category": "图标",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "menu_background": {
+    "path": "res://assets/backgrounds/level_0/background.png",
+    "category": "背景",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "intro_background": {
+    "path": "res://assets/defaults/art_flicker.png",
+    "category": "背景",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "font_display": {
+    "path": "res://assets/ui/fonts/ShinsyokuMincho-Regular.ttf",
+    "category": "字体",
+    "status": "PROVIDED",
+    "usage_scope": "development_preview",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "font_archive": {
+    "path": "res://assets/ui/fonts/bahnschrift.ttf",
+    "category": "字体",
+    "status": "PROVIDED",
+    "usage_scope": "development_preview",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "font_numbers": {
+    "path": "res://assets/ui/fonts/bahnschrift.ttf",
+    "category": "字体",
+    "status": "PROVIDED",
+    "usage_scope": "development_preview",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "audio_button_hover": {
+    "path": "res://assets/audio/ui/hover.ogg",
+    "category": "音效",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "audio_card_draw": {
+    "path": "res://assets/audio/ui/card.ogg",
+    "category": "音效",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "audio_reward": {
+    "path": "res://assets/audio/ui/confirm.ogg",
+    "category": "音效",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "audio_block": {
+    "path": "res://assets/audio/ui/confirm.ogg",
+    "category": "音效",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "audio_attack": {
+    "path": "res://assets/audio/ui/card.ogg",
+    "category": "音效",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "audio_hit": {
+    "path": "res://assets/audio/ui/click.ogg",
+    "category": "音效",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "audio_status": {
+    "path": "res://assets/audio/ui/confirm.ogg",
+    "category": "音效",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "music_menu": {
+    "path": "res://assets/audio/ambience/Beige_Nocturne_loop_L.ogg",
+    "category": "环境/音乐",
+    "status": "PROVIDED",
+    "usage_scope": "development_preview",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "music_intro": {
+    "path": "res://assets/audio/ambience/hum_loop_L.ogg",
+    "category": "环境/音乐",
+    "status": "PROVIDED",
+    "usage_scope": "development_preview",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "ambience_level_7": {
+    "path": "res://assets/audio/ambience/DamplyDry_loop1_L.ogg",
+    "category": "环境/音乐",
+    "status": "PROVIDED",
+    "usage_scope": "development_preview",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "music_combat": {
+    "path": "res://assets/audio/ambience/Unusable_Eyelid_loop_L.ogg",
+    "category": "环境/音乐",
+    "status": "PROVIDED",
+    "usage_scope": "development_preview",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "icon_supply": {
+    "path": "res://assets/ui/icons/icon_item_category.png",
+    "category": "图标",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "icon_intel": {
+    "path": "res://assets/ui/icons/search.png",
+    "category": "图标",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "icon_event": {
+    "path": "res://assets/ui/icons/icon_event_category.png",
+    "category": "图标",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "icon_combat": {
+    "path": "res://assets/ui/icons/icon_skill_category.png",
+    "category": "图标",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "icon_reward": {
+    "path": "res://assets/ui/icons/icon_item_category.png",
+    "category": "图标",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "icon_shop": {
+    "path": "res://assets/ui/icons/icon_gear.png",
+    "category": "图标",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
+  },
+  "icon_status": {
+    "path": "res://assets/ui/icons/icon_status_category.png",
+    "category": "图标",
+    "status": "PROVIDED",
+    "usage_scope": "project",
+    "source": "用户本地素材；许可状态见 docs/PHASE_16_LICENSES.md"
   }
 }
